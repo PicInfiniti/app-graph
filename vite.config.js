@@ -7,7 +7,7 @@ const outDir = resolve(__dirname, 'dist')
 
 export default defineConfig({
   root,
-  base: '/app.graph/',
+  base: '/',
   build: {
     outDir,
     emptyOutDir: true,
