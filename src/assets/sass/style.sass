@@ -13,6 +13,9 @@ body
   width: 100vw
   height: 100vh
 
+.nodes text
+  pointer-events: none
+
 .container
   width: 100%
   height: 100%
@@ -22,9 +25,9 @@ body
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2) 1%, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1%, transparent 1px)
   background-size: var(--grid-size) var(--grid-size)
   .main 
+    flex: 1
     display: flex
     flex-direction: column
-    flex: 1
     .setting
       padding: 10px
       display: flex 
@@ -32,7 +35,6 @@ body
       gap: 10px
       
     #chart
-      border: 1px dashed black 
       width: 100%
       height: 100%
       user-select: none
@@ -40,9 +42,11 @@ body
       -moz-user-select: none
       -ms-user-select: none
 
-
-.nodes text
-  pointer-events: none
+  footer
+    position: absolute
+    bottom: 0
+    left: 10px
+    pointer-events: none
 
 #floating-panel 
   position: fixed
@@ -75,3 +79,53 @@ body
     padding: 10px
     overflow: auto
     scrollbar-width: thin
+
+
+
+.menu-bar 
+  background-color: #f4f4f4
+  border-bottom: 1px solid #ddd
+  padding: 0
+  margin: 0
+
+  ul 
+    list-style-type: none
+    margin: 0
+    padding: 0
+    display: flex
+  
+
+  .menu-item 
+    position: relative
+    padding: 10px 20px
+    cursor: pointer
+
+    &:hover 
+      background-color: #e0e0e0
+      
+      .dropdown 
+        display: block
+
+
+  .dropdown 
+    display: none
+    position: absolute
+    top: 100%
+    left: 0
+    background-color: #ffffff
+    border: 1px solid #ddd
+    list-style-type: none
+    padding: 0
+    margin: 0
+    min-width: 150px
+    z-index: 1000
+
+
+    li 
+      padding: 10px
+      cursor: pointer
+
+
+      &:hover 
+        background-color: #f4f4f4
+
