@@ -50,7 +50,13 @@ body {
 .container footer {
   position: absolute;
   bottom: 0;
-  left: 10px;
+  padding: 5px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.container footer div:first-child {
   pointer-events: none;
 }
 

@@ -60,13 +60,14 @@ svg.on("contextmenu", (event) => {
   event.preventDefault(); // Disable the default right-click menu
 
   const [x, y] = d3.pointer(event);
+  const color = $("#color").val()
 
   // Generate the next available label
   const existingLabels = graph.nodes();
   const newLabel = generateNextLabel(existingLabels);
 
   // Add node to Graphology with the new label
-  graph.addNode(newLabel, { x, y });
+  graph.addNode(newLabel, { x: x, y: y, color: color });
 
   updateGraph(); // Update the graph to include the new node
 });
@@ -113,8 +114,8 @@ function updateGraph() {
     .attr("y1", d => graph.getNodeAttribute(graph.source(d), 'y'))
     .attr("x2", d => graph.getNodeAttribute(graph.target(d), 'x'))
     .attr("y2", d => graph.getNodeAttribute(graph.target(d), 'y'))
-    .attr("stroke", "gray")
-    .attr("stroke-width", 1)
+    .attr("stroke", d => graph.getEdgeAttribute(d, 'color'))
+    .attr("stroke-width", 2)
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
     })
@@ -133,8 +134,8 @@ function updateGraph() {
     .attr("cy", d => d.y)
     .attr("r", 10)
     .attr("fill", "white")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 2)
+    .attr("stroke", d => d.color)
+    .attr("stroke-width", 3)
     .on("click", handleNodeClick)
     .call(drag); // Apply drag behavior
 
@@ -153,14 +154,10 @@ function updateGraph() {
     .attr("fill", "black");
 }
 
-
-
-
-
 function handleNodeClick(event, d) {
   if (!isCtrlPressed) return; // Only allow selection when Ctrl is held
   event.stopPropagation(); // Prevent SVG click event
-
+  const color = $("#color").val()
   if (selectedNode === null) {
     // Select the first node
     selectedNode = d.id;
@@ -170,7 +167,7 @@ function handleNodeClick(event, d) {
 
     // Add edge if it doesn't exist
     if (!graph.hasEdge(selectedNode, targetNode)) {
-      graph.addEdge(selectedNode, targetNode);
+      graph.addEdge(selectedNode, targetNode, { color: color });
     }
 
     // Reset selection
@@ -191,7 +188,7 @@ function organizeNodesInCircle() {
     const angle = getMultiCharIndex(id) * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
       return {
-        x: centerX + radius * Math.cos(angle),
+        x: 2 * radius + radius * Math.cos(angle),
         y: centerY + radius * Math.sin(angle),
       };
     });
