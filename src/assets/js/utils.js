@@ -1,33 +1,51 @@
 
 export function generateNextLabel(existingLabels) {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  let label = '';
+  // Generate all possible labels from the string
+  const GeneratedLabels = generateLabels();
+  console.log(GeneratedLabels.sort())
 
-  if (existingLabels.length === 0) {
-    return 'a'; // First label
-  }
-
-  const lastLabel = existingLabels.sort().pop(); // Get the last used label
-  let carry = true;
-  label = lastLabel;
-
-  for (let i = label.length - 1; i >= 0; i--) {
-    const currentIndex = alphabet.indexOf(label[i]);
-    if (carry) {
-      if (currentIndex === alphabet.length - 1) {
-        label = label.substring(0, i) + 'a' + label.substring(i + 1); // Wrap to 'a'
-      } else {
-        label = label.substring(0, i) + alphabet[currentIndex + 1] + label.substring(i + 1); // Increment
-        carry = false;
-      }
+  // Find the first label not in the existing labels
+  for (const label of GeneratedLabels) {
+    if (!existingLabels.includes(label)) {
+      return label; // Return the first available label
     }
   }
 
-  if (carry) {
-    label = 'a' + label; // Add a new letter if needed
-  }
-
-  return label;
+  return null; // Return null if no label is available
 }
 
+export function getMinAvailableNumber(existingNumbers) {
+  // Convert strings to numbers and create a Set for fast lookup
+  const numberSet = new Set(existingNumbers.map(Number));
+
+  // Start checking from 1
+  let minNumber = 1;
+
+  // Increment until we find a missing number
+  while (numberSet.has(minNumber)) {
+    minNumber++;
+  }
+
+  return minNumber;
+}
+
+export function generateLabels(inputString = "abc") {
+  const labels = [];
+  const length = inputString.length;
+
+  // Helper function to generate combinations recursively
+  function generateCombinations(prefix, start) {
+    if (prefix) {
+      labels.push(prefix); // Add non-empty combinations
+    }
+    for (let i = start; i < length; i++) {
+      generateCombinations(prefix + inputString[i], i + 1);
+    }
+  }
+
+  // Start generating combinations
+  generateCombinations('', 0);
+
+  return labels;
+}
 

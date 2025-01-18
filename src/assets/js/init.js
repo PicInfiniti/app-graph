@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
-import { generateNextLabel } from './utils';
+import { getMinAvailableNumber } from './utils';
 // Initialize data structures for nodes and edges
 const graph = new Graph();
 
@@ -45,10 +45,10 @@ svg.on("contextmenu", (event) => {
 
   // Generate the next available label
   const existingLabels = graph.nodes();
-  const newLabel = generateNextLabel(existingLabels);
+  const newID = getMinAvailableNumber(existingLabels);
 
   // Add node to Graphology with the new label
-  graph.addNode(newLabel, { x: x, y: y, color: color });
+  graph.addNode(newID, { x: x, y: y, color: color, label: "5" });
 
   updateGraph(); // Update the graph to include the new node
 });

@@ -10,7 +10,7 @@ function organizeNodesInCircle() {
   const centerY = svg.node().getBoundingClientRect().height / 2;
   const angleStep = -(2 * Math.PI) / graph.order;
   graph.forEachNode((id, attributes) => {
-    const angle = getMultiCharIndex(id) * angleStep - Math.PI / 2;
+    const angle = id * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
       return {
         color: attr.color,
@@ -22,17 +22,4 @@ function organizeNodesInCircle() {
 
   updateGraph(); // Re-draw nodes and edges
 }
-
-function getMultiCharIndex(label) {
-  const alphabetSize = 26;
-  let index = 0;
-
-  for (let i = 0; i < label.length; i++) {
-    const charIndex = label.charCodeAt(i) - 'a'.charCodeAt(0);
-    index = index * alphabetSize + charIndex;
-  }
-
-  return index;
-}
-
 
