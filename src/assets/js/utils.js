@@ -1,19 +1,3 @@
-
-export function generateNextLabel(existingLabels) {
-  // Generate all possible labels from the string
-  const GeneratedLabels = generateLabels();
-  console.log(GeneratedLabels.sort())
-
-  // Find the first label not in the existing labels
-  for (const label of GeneratedLabels) {
-    if (!existingLabels.includes(label)) {
-      return label; // Return the first available label
-    }
-  }
-
-  return null; // Return null if no label is available
-}
-
 export function getMinAvailableNumber(existingNumbers) {
   // Convert strings to numbers and create a Set for fast lookup
   const numberSet = new Set(existingNumbers.map(Number));
@@ -29,23 +13,32 @@ export function getMinAvailableNumber(existingNumbers) {
   return minNumber;
 }
 
-export function generateLabels(inputString = "abc") {
-  const labels = [];
-  const length = inputString.length;
 
-  // Helper function to generate combinations recursively
-  function generateCombinations(prefix, start) {
-    if (prefix) {
-      labels.push(prefix); // Add non-empty combinations
+export function getAvailableLabel(n, maxLength = 3) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const combinations = [];
+
+  // Generate nth combination recursively
+  function generateNthCombination(prefix, start, remaining) {
+    if (remaining === 0) {
+      combinations.push(prefix);
+      return;
     }
-    for (let i = start; i < length; i++) {
-      generateCombinations(prefix + inputString[i], i + 1);
+
+    for (let i = start; i < alphabet.length; i++) {
+      generateNthCombination(prefix + alphabet[i], i + 1, remaining - 1);
+      if (combinations.length > n) {
+        return; // Stop early if we found the nth combination
+      }
     }
   }
 
-  // Start generating combinations
-  generateCombinations('', 0);
+  let currentLength = 1;
+  while (combinations.length <= n && currentLength <= maxLength) {
+    generateNthCombination('', 0, currentLength);
+    currentLength++;
+  }
 
-  return labels;
+  return combinations[n - 1] || null; // Return nth combination or null if out of bounds
 }
 

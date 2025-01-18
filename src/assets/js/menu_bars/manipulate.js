@@ -7,11 +7,12 @@ $('#make-complete-btn').on('click', function () {
 
 
 function makeGraphComplete() {
+  const color = $("#color").val()
   graph.forEachNode((i, attr_i) => {
     graph.forEachNode((j, attr_j) => {
       if (i != j) {
         if (!graph.hasEdge(i, j) && !graph.hasEdge(j, i)) {
-          graph.addEdge(i, j, { color: "gray" }); // Add edge if it doesn't exist
+          graph.addEdge(i, j, { color: color }); // Add edge if it doesn't exist
         }
       }
     })

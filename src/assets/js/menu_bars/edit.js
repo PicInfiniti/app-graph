@@ -13,6 +13,7 @@ function organizeNodesInCircle() {
     const angle = id * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
       return {
+        label: attr.label,
         color: attr.color,
         x: 2 * radius + radius * Math.cos(angle),
         y: centerY + radius * Math.sin(angle),

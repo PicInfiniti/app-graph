@@ -1,25 +1,13 @@
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
-import { getMinAvailableNumber } from './utils';
+import { getMinAvailableNumber, getAvailableLabel } from './utils';
+import { keyDown } from '../../main';
 // Initialize data structures for nodes and edges
-const graph = new Graph();
 
 let selectedNode = null;
-let isCtrlPressed = false;
+let selectedEdge = null;
 
-// Track "Ctrl" key state
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Control") {
-    isCtrlPressed = true;
-  }
-});
-
-document.addEventListener("keyup", (event) => {
-  if (event.key === "Control") {
-    isCtrlPressed = false;
-  }
-});
-
+const graph = new Graph();
 
 // Dimensions of the SVG
 const width = "100%";
@@ -31,31 +19,33 @@ export const svg = d3.select("#chart")
   .attr("width", width)
   .attr("height", height)
   .attr("preserveAspectRatio", "xMinYMin meet")
+
+
 // Draw edges and nodes
 const edgeGroup = svg.append("g").attr("class", "edges");
 const nodeGroup = svg.append("g").attr("class", "nodes");
+
 // Disable the default context menu
-
-
 svg.on("contextmenu", (event) => {
   event.preventDefault(); // Disable the default right-click menu
-
-  const [x, y] = d3.pointer(event);
   const color = $("#color").val()
 
-  // Generate the next available label
-  const existingLabels = graph.nodes();
-  const newID = getMinAvailableNumber(existingLabels);
+  const [x, y] = d3.pointer(event);
 
+  // Generate the next available label
+  const existingIds = graph.nodes();
+  const newID = getMinAvailableNumber(existingIds)
+  const NewLable = getAvailableLabel(newID)
   // Add node to Graphology with the new label
-  graph.addNode(newID, { x: x, y: y, color: color, label: "5" });
+  graph.addNode(newID, { x: x, y: y, color: color, label: NewLable });
 
   updateGraph(); // Update the graph to include the new node
 });
 
 svg.on("click", (event) => {
-  if (event.target.tagName === "svg") { // Check if the click is on the empty canvas
+  if (keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
     selectedNode = null; // Deselect any selected node
+    selectedEdge = null;
     graph.forEachNode((id, attributes) => {
       graph.updateNodeAttributes(id, attr => {
         return {
@@ -66,6 +56,13 @@ svg.on("click", (event) => {
       });
     });
 
+    graph.forEachEdge((id, attributes) => {
+      graph.updateEdgeAttributes(id, attr => {
+        return {
+          color: attr.color,
+        };
+      });
+    });
     updateGraph(); // Re-draw nodes and edges
 
   }
@@ -112,11 +109,12 @@ export function updateGraph() {
     .attr("y2", d => graph.getNodeAttribute(graph.target(d), 'y'))
     .attr("stroke", d => graph.getEdgeAttribute(d, 'color'))
     .attr("stroke-width", 2)
+    .on("click", handleEdgeClick)
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
     })
     .on("mouseout", function () {
-      d3.select(this).attr("stroke", "gray");
+      d3.select(this).attr("stroke", d => graph.getEdgeAttribute(d, 'color'));
     });
 
 
@@ -133,7 +131,14 @@ export function updateGraph() {
     .attr("stroke", d => d.color)
     .attr("stroke-width", 3)
     .on("click", handleNodeClick)
+    .on("mouseover", function () {
+      d3.select(this).attr("stroke", "orange");
+    })
+    .on("mouseout", function () {
+      d3.select(this).attr("stroke", d => d.color);
+    })
     .call(drag); // Apply drag behavior
+
 
   // Update labels
   const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
@@ -145,7 +150,7 @@ export function updateGraph() {
     .attr("y", d => d.y)
     .attr("dy", "0.35em")
     .attr("text-anchor", "middle")
-    .text(d => d.id)
+    .text(d => d.label)
     .attr("font-size", "15px")
     .attr("fill", "black");
 }
@@ -153,7 +158,7 @@ export function updateGraph() {
 function handleNodeClick(event, d) {
   event.stopPropagation(); // Prevent SVG click event
 
-  if (isCtrlPressed) {
+  if (keyDown[0] && keyDown[1] == 'Control') {
     const color = $("#color").val()
     if (selectedNode === null) {
       // Select the first node
@@ -173,20 +178,46 @@ function handleNodeClick(event, d) {
       updateGraph();
     }
   }
-  if (event.key === "c") {
+  if (keyDown[0] && keyDown[1] === "c") {
     const color = $("#color").val()
-    graph.updateNodeAttributes(d, attr => {
+    graph.updateNodeAttributes(d.id, attr => {
+      return {
+        color: color,
+        x: attr.x,
+        y: attr.y,
+        label: attr.label
+      };
+    })
+    updateGraph(); // Re-draw graph
+  }
+}
+
+function handleEdgeClick(event, d) {
+  event.stopPropagation(); // Prevent SVG click event
+  const color = $("#color").val()
+
+  if (keyDown[0] && keyDown[1] == 'Control') {
+    if (selectedEdge === null) {
+      // Select the first node
+      //
+      selectedEdge = d;
+      d3.select(event.target).attr("stroke", "orange");
+    } else {
+      d3.select(event.target).attr("stroke", d => graph.getEdgeAttribute(d, color));
+      updateGraph();
+    }
+  }
+
+  if (keyDown[0] && keyDown[1] === "c") {
+
+    graph.updateEdgeAttributes(d, attr => {
       return {
         color: color,
       };
     })
     updateGraph(); // Re-draw graph
   }
-
-
 }
-
-
 
 // Listen for "Delete" key to delete selected node and its edges
 
@@ -197,12 +228,6 @@ document.addEventListener("keydown", (event) => {
     updateGraph(); // Re-draw graph
   }
 });
-
-
-
-
-
-
 
 
 export default graph;
