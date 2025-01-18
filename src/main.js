@@ -155,26 +155,41 @@ function updateGraph() {
 }
 
 function handleNodeClick(event, d) {
-  if (!isCtrlPressed) return; // Only allow selection when Ctrl is held
   event.stopPropagation(); // Prevent SVG click event
-  const color = $("#color").val()
-  if (selectedNode === null) {
-    // Select the first node
-    selectedNode = d.id;
-    d3.select(event.target).attr("stroke", "orange");
-  } else {
-    const targetNode = d.id;
 
-    // Add edge if it doesn't exist
-    if (!graph.hasEdge(selectedNode, targetNode)) {
-      graph.addEdge(selectedNode, targetNode, { color: color });
+  if (isCtrlPressed) {
+    const color = $("#color").val()
+    if (selectedNode === null) {
+      // Select the first node
+      selectedNode = d.id;
+      d3.select(event.target).attr("stroke", "orange");
+    } else {
+      const targetNode = d.id;
+
+      // Add edge if it doesn't exist
+      if (!graph.hasEdge(selectedNode, targetNode)) {
+        graph.addEdge(selectedNode, targetNode, { color: color });
+      }
+
+      // Reset selection
+      selectedNode = null;
+      d3.selectAll("circle").attr("fill", "steelblue"); // Reset color
+      updateGraph();
     }
-
-    // Reset selection
-    selectedNode = null;
-    d3.selectAll("circle").attr("fill", "steelblue"); // Reset color
-    updateGraph();
   }
+  console.log(event)
+  if (event.key === "c") {
+    console.log(56)
+    const color = $("#color").val()
+    graph.updateNodeAttributes(d, attr => {
+      return {
+        color: color,
+      };
+    })
+    updateGraph(); // Re-draw graph
+  }
+
+
 }
 
 
@@ -188,6 +203,7 @@ function organizeNodesInCircle() {
     const angle = getMultiCharIndex(id) * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
       return {
+        color: attr.color,
         x: 2 * radius + radius * Math.cos(angle),
         y: centerY + radius * Math.sin(angle),
       };
@@ -322,5 +338,26 @@ function appendAndListNodeDegrees() {
 // Attach the function to a button click event
 $('#list-degrees-btn').on('click', function () {
   appendAndListNodeDegrees();
+});
+// Function to make the graph complete
+function makeGraphComplete() {
+  graph.forEachNode((i, attr_i) => {
+    graph.forEachNode((j, attr_j) => {
+      if (i != j) {
+        if (!graph.hasEdge(i, j) && !graph.hasEdge(j, i)) {
+          graph.addEdge(i, j, { color: "gray" }); // Add edge if it doesn't exist
+        }
+      }
+    })
+  })
+
+  // Re-draw the graph after adding edges
+  updateGraph();
+}
+
+// Attach the function to the button
+$('#make-complete-btn').on('click', function () {
+  console.log(45)
+  makeGraphComplete();
 });
 
