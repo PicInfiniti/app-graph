@@ -6,7 +6,6 @@ import $ from "jquery";
 import './assets/sass/style.sass';
 // sass ------------------------------------------
 
-
 const $gridSizeInput = $('#grid-size'); // Select the input element
 const $root = $(':root'); // Select the root element
 
@@ -27,7 +26,6 @@ document.addEventListener("keyup", (event) => {
   keyDown[0] = false
   keyDown[1] = ''
 });
-
 
 import "./assets/js/init"
 import "./assets/js/menu_bars/file"

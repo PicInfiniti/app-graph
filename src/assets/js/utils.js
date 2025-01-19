@@ -42,3 +42,7 @@ export function getAvailableLabel(n, maxLength = 3) {
   return combinations[n - 1] || null; // Return nth combination or null if out of bounds
 }
 
+export const includesById = (array, id) => array.filter(obj => obj.id === id).length > 0;
+export function removeString(array, str) {
+  return array.filter(item => item !== str);
+}

@@ -1,14 +1,11 @@
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
-import { getMinAvailableNumber, getAvailableLabel } from './utils';
+import { getMinAvailableNumber, getAvailableLabel, includesById, removeString } from './utils';
 import { keyDown } from '../../main';
 // Initialize data structures for nodes and edges
 
-let selectedNode = null;
-let selectedEdge = null;
-
-const graph = new Graph();
-
+let selectedNode = [];
+let selectedEdge = [];
 // Dimensions of the SVG
 const width = "100%";
 const height = "100%";
@@ -20,6 +17,8 @@ export const svg = d3.select("#chart")
   .attr("height", height)
   .attr("preserveAspectRatio", "xMinYMin meet")
 
+
+const graph = new Graph();
 
 // Draw edges and nodes
 const edgeGroup = svg.append("g").attr("class", "edges");
@@ -43,28 +42,10 @@ svg.on("contextmenu", (event) => {
 });
 
 svg.on("click", (event) => {
-  if (keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
-    selectedNode = null; // Deselect any selected node
-    selectedEdge = null;
-    graph.forEachNode((id, attributes) => {
-      graph.updateNodeAttributes(id, attr => {
-        return {
-          color: attr.color,
-          x: attr.x,
-          y: attr.y,
-        };
-      });
-    });
-
-    graph.forEachEdge((id, attributes) => {
-      graph.updateEdgeAttributes(id, attr => {
-        return {
-          color: attr.color,
-        };
-      });
-    });
+  if (!keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
+    selectedNode = []; // Deselect any selected node
+    selectedEdge = [];
     updateGraph(); // Re-draw nodes and edges
-
   }
 });
 
@@ -81,7 +62,6 @@ const drag = d3.drag()
 
     updateGraph(); // Re-draw to reflect new positions
     d3.select(this).attr("stroke", "orange");
-
   })
   .on("end", function (event, d) {
     graph.updateNodeAttributes(d.id, (attributes) => {
@@ -107,16 +87,21 @@ export function updateGraph() {
     .attr("y1", d => graph.getNodeAttribute(graph.source(d), 'y'))
     .attr("x2", d => graph.getNodeAttribute(graph.target(d), 'x'))
     .attr("y2", d => graph.getNodeAttribute(graph.target(d), 'y'))
-    .attr("stroke", d => graph.getEdgeAttribute(d, 'color'))
+    .attr("stroke", d => {
+      if (selectedEdge.includes(d)) return "orange"
+      return graph.getEdgeAttribute(d, 'color')
+    })
     .attr("stroke-width", 2)
     .on("click", handleEdgeClick)
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
     })
     .on("mouseout", function () {
-      d3.select(this).attr("stroke", d => graph.getEdgeAttribute(d, 'color'));
-    });
-
+      d3.select(this).attr("stroke", d => {
+        if (selectedEdge.includes(d)) return "orange"
+        else return graph.getEdgeAttribute(d, 'color')
+      });
+    })
 
   // Update nodes
   const nodesSelection = nodeGroup.selectAll("circle").data(nodes, d => d.id);
@@ -128,17 +113,22 @@ export function updateGraph() {
     .attr("cy", d => d.y)
     .attr("r", 10)
     .attr("fill", "white")
-    .attr("stroke", d => d.color)
+    .attr("stroke", d => {
+      if (selectedNode.includes(d.id)) return "orange"
+      return d.color
+    })
     .attr("stroke-width", 3)
     .on("click", handleNodeClick)
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
     })
     .on("mouseout", function () {
-      d3.select(this).attr("stroke", d => d.color);
+      d3.select(this).attr("stroke", d => {
+        if (selectedNode.includes(d.id)) return "orange"
+        else return d.color
+      });
     })
     .call(drag); // Apply drag behavior
-
 
   // Update labels
   const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
@@ -157,38 +147,33 @@ export function updateGraph() {
 
 function handleNodeClick(event, d) {
   event.stopPropagation(); // Prevent SVG click event
+  const color = $("#color").val()
 
-  if (keyDown[0] && keyDown[1] == 'Control') {
-    const color = $("#color").val()
-    if (selectedNode === null) {
-      // Select the first node
-      selectedNode = d.id;
-      d3.select(event.target).attr("stroke", "orange");
-    } else {
-      const targetNode = d.id;
+  if (keyDown[0]) {
+    switch (keyDown[1]) {
+      case 'Control':
+        if (selectedNode.includes(d.id)) {
+          removeString(selectedNode, d.id)
+        } else {
+          selectedNode.push(d.id)
+        }
 
-      // Add edge if it doesn't exist
-      if (!graph.hasEdge(selectedNode, targetNode)) {
-        graph.addEdge(selectedNode, targetNode, { color: color });
-      }
-
-      // Reset selection
-      selectedNode = null;
-      d3.selectAll("circle").attr("fill", "steelblue"); // Reset color
-      updateGraph();
+        break;
+      case 'c':
+        graph.updateNodeAttributes(d.id, attr => {
+          return {
+            color: color,
+            x: attr.x,
+            y: attr.y,
+            label: attr.label
+          };
+        })
+        break;
+      default:
+        break;
     }
-  }
-  if (keyDown[0] && keyDown[1] === "c") {
-    const color = $("#color").val()
-    graph.updateNodeAttributes(d.id, attr => {
-      return {
-        color: color,
-        x: attr.x,
-        y: attr.y,
-        label: attr.label
-      };
-    })
     updateGraph(); // Re-draw graph
+
   }
 }
 
@@ -196,25 +181,25 @@ function handleEdgeClick(event, d) {
   event.stopPropagation(); // Prevent SVG click event
   const color = $("#color").val()
 
-  if (keyDown[0] && keyDown[1] == 'Control') {
-    if (selectedEdge === null) {
-      // Select the first node
-      //
-      selectedEdge = d;
-      d3.select(event.target).attr("stroke", "orange");
-    } else {
-      d3.select(event.target).attr("stroke", d => graph.getEdgeAttribute(d, color));
-      updateGraph();
+  if (keyDown[0]) {
+    switch (keyDown[1]) {
+      case 'Control':
+        if (selectedEdge.includes(d)) {
+          removeString(selectedEdge, d)
+        } else {
+          selectedEdge.push(d)
+        }
+        break;
+      case 'c':
+        graph.updateEdgeAttributes(d, attr => {
+          return {
+            color: color,
+          };
+        })
+        break;
+      default:
+        break;
     }
-  }
-
-  if (keyDown[0] && keyDown[1] === "c") {
-
-    graph.updateEdgeAttributes(d, attr => {
-      return {
-        color: color,
-      };
-    })
     updateGraph(); // Re-draw graph
   }
 }
@@ -222,12 +207,21 @@ function handleEdgeClick(event, d) {
 // Listen for "Delete" key to delete selected node and its edges
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "d" && selectedNode !== null) {
-    graph.dropNode(selectedNode); // Remove the selected node
-    selectedNode = null;
+  if (event.key === "d") {
+    for (let edge of selectedEdge) {
+      graph.dropEdge(edge); // Remove the selected node
+    }
+    for (let edge of selectedNode) {
+      graph.dropNode(edge); // Remove the selected node
+    }
+    selectedNode = [];
+    selectedEdge = [];
+
     updateGraph(); // Re-draw graph
   }
+
 });
 
 
 export default graph;
+

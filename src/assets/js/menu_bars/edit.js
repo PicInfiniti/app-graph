@@ -15,7 +15,7 @@ function organizeNodesInCircle() {
       return {
         label: attr.label,
         color: attr.color,
-        x: 2 * radius + radius * Math.cos(angle),
+        x: centerX + radius * Math.cos(angle),
         y: centerY + radius * Math.sin(angle),
       };
     });

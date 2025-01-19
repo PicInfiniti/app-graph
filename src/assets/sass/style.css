@@ -75,7 +75,7 @@ body {
   font-size: 14px;
   z-index: 1000;
   cursor: grab;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 #floating-panel #info {
