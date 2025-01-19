@@ -4,8 +4,8 @@ import { getMinAvailableNumber, getAvailableLabel, includesById, removeString } 
 import { keyDown } from '../../main';
 // Initialize data structures for nodes and edges
 
-let selectedNode = [];
-let selectedEdge = [];
+export const selectedNode = [];
+export const selectedEdge = [];
 // Dimensions of the SVG
 const width = "100%";
 const height = "100%";
@@ -43,8 +43,8 @@ svg.on("contextmenu", (event) => {
 
 svg.on("click", (event) => {
   if (!keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
-    selectedNode = []; // Deselect any selected node
-    selectedEdge = [];
+    selectedNode.length = 0; // Deselect any selected node
+    selectedEdge.length = 0;
     updateGraph(); // Re-draw nodes and edges
   }
 });
@@ -205,22 +205,6 @@ function handleEdgeClick(event, d) {
 }
 
 // Listen for "Delete" key to delete selected node and its edges
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "d") {
-    for (let edge of selectedEdge) {
-      graph.dropEdge(edge); // Remove the selected node
-    }
-    for (let edge of selectedNode) {
-      graph.dropNode(edge); // Remove the selected node
-    }
-    selectedNode = [];
-    selectedEdge = [];
-
-    updateGraph(); // Re-draw graph
-  }
-
-});
 
 
 export default graph;

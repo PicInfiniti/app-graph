@@ -31,7 +31,6 @@ import "./assets/js/init"
 import "./assets/js/menu_bars/file"
 import "./assets/js/menu_bars/edit"
 import "./assets/js/menu_bars/view"
-import "./assets/js/menu_bars/manipulate"
 import "./assets/js/menu_bars/analyze"
 import "./assets/js/menu_bars/help"
 
