@@ -64,6 +64,19 @@ function removeSelection() {
 
 }
 
+function removeEdge() {
+  graph.forEachEdge((edge, attr) => {
+    const [i, j] = graph.extremities(edge)
+    if (selectedNode.includes(i) && selectedNode.includes(j)) {
+      graph.dropEdge(edge)
+    }
+  })
+  selectedNode.length = 0; // Deselect any selected node
+  selectedEdge.length = 0;
+
+  updateGraph(); // Re-draw graph
+}
+
 function colorSelection() {
   const color = $("#color").val()
   for (let node of selectedNode) {
@@ -112,6 +125,9 @@ document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "d":
       removeSelection();
+      break;
+    case "r":
+      removeEdge();
       break;
     case "c":
       colorSelection();
