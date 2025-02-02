@@ -1,3 +1,5 @@
+import { History } from "./init";
+
 export function getMinAvailableNumber(existingNumbers) {
   // Convert strings to numbers and create a Set for fast lookup
   const numberSet = new Set(existingNumbers.map(Number));
@@ -45,4 +47,34 @@ export function getAvailableLabel(n, maxLength = 3) {
 export const includesById = (array, id) => array.filter(obj => obj.id === id).length > 0;
 export function removeString(array, str) {
   return array.filter(item => item !== str);
+}
+
+
+export class LimitedArray {
+  constructor(limit) {
+    this.limit = limit;
+    this.index = -1;
+    this.data = [];
+    this.graph = null;
+  }
+
+  push(value) {
+    if (this.data.length >= this.limit) {
+      this.data.shift(); // Remove the first element
+    }
+    this.data.push(value);
+    this.index = this.data.length - 1
+    this.graph = this.data[this.index]
+  }
+
+  getArray() {
+    return this.data;
+  }
+  getIndex() {
+    return this.data[this.index]
+  }
+  updateIndex(value) {
+    this.index = value;
+    this.graph = this.data[value]
+  }
 }

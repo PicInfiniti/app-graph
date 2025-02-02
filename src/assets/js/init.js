@@ -2,10 +2,13 @@ import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, includesById, removeString } from './utils';
 import { keyDown } from '../../main';
+import { LimitedArray } from './utils';
 // Initialize data structures for nodes and edges
 
 export const selectedNode = [];
 export const selectedEdge = [];
+export const History = new LimitedArray(20)
+
 // Dimensions of the SVG
 const width = "100%";
 const height = "100%";
@@ -18,7 +21,7 @@ export const svg = d3.select("#chart")
   .attr("preserveAspectRatio", "xMinYMin meet")
 
 
-const graph = new Graph();
+History.push(new Graph())
 
 // Draw edges and nodes
 const edgeGroup = svg.append("g").attr("class", "edges");
@@ -32,20 +35,20 @@ svg.on("contextmenu", (event) => {
   const [x, y] = d3.pointer(event);
 
   // Generate the next available label
-  const existingIds = graph.nodes();
+  const existingIds = History.graph.nodes();
   const newID = getMinAvailableNumber(existingIds)
   const NewLable = getAvailableLabel(newID)
   // Add node to Graphology with the new label
-  graph.addNode(newID, { x: x, y: y, color: color, label: NewLable });
+  History.graph.addNode(newID, { x: x, y: y, color: color, label: NewLable });
 
-  updateGraph(); // Update the graph to include the new node
+  updateHistory(History, "update"); // Update the graph to include the new node
 });
 
 svg.on("click", (event) => {
   if (!keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
     selectedNode.length = 0; // Deselect any selected node
     selectedEdge.length = 0;
-    updateGraph(); // Re-draw nodes and edges
+    updateGraph(History.graph); // Re-draw nodes and edges
   }
 });
 
@@ -56,23 +59,23 @@ const drag = d3.drag()
   })
   .on("drag", function (event, d) {
     // Update node position in Graphology
-    graph.updateNodeAttributes(d.id, (attributes) => {
+    History.graph.updateNodeAttributes(d.id, (attributes) => {
       return { ...attributes, x: event.x, y: event.y };
     });
 
-    updateGraph(); // Re-draw to reflect new positions
+    updateGraph(History.graph); // Re-draw to reflect new positions
     d3.select(this).attr("stroke", "orange");
   })
   .on("end", function (event, d) {
-    graph.updateNodeAttributes(d.id, (attributes) => {
+    History.graph.updateNodeAttributes(d.id, (attributes) => {
       return { ...attributes, x: event.x, y: event.y };
     });
 
-    updateGraph(); // Re-draw to reflect new positions
+    updateHistory(History, "update"); // Update the graph to include the new node
   });
 
 
-export function updateGraph() {
+export function updateGraph(graph) {
   const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
   const edges = graph.edges();
 
@@ -160,7 +163,7 @@ function handleNodeClick(event, d) {
 
         break;
       case 'c':
-        graph.updateNodeAttributes(d.id, attr => {
+        History.graph.updateNodeAttributes(d.id, attr => {
           return {
             color: color,
             x: attr.x,
@@ -172,7 +175,7 @@ function handleNodeClick(event, d) {
       default:
         break;
     }
-    updateGraph(); // Re-draw graph
+    updateGraph(History.graph); // Re-draw graph
 
   }
 }
@@ -204,8 +207,31 @@ function handleEdgeClick(event, d) {
   }
 }
 
-// Listen for "Delete" key to delete selected node and its edges
 
+export function updateHistory(History, status = 'update') {
+  switch (status) {
+    case "redo":
+      console.log("redo")
+      if (History.index < History.data.length - 2) {
+        History.index++;
+      };
+      break;
+    case "undo":
+      console.log("undo")
+      if (History.index > 1) {
+        History.index--;
+      };
+      break;
 
-export default graph;
+    default:
+      console.log("update")
+      const graphData = History.graph.export();
+      const graphClone = new Graph();
+      graphClone.import(graphData);
+      History.push(graphClone);
+      break;
+  }
 
+  updateGraph(History.getIndex(History.index));
+
+}

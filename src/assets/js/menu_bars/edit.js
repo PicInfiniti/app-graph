@@ -1,5 +1,4 @@
-import graph from "../init";
-import { svg, updateGraph, selectedNode, selectedEdge } from "../init"
+import { svg, History, updateGraph, selectedNode, selectedEdge, updateHistory } from "../init"
 
 // Attach the circular layout function to the button
 $("#organize-circle").on("click", organizeNodesInCircle);
@@ -28,17 +27,17 @@ function organizeNodesInCircle() {
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 
-  updateGraph(); // Re-draw graph
+  updateGraph(History.graph); // Re-draw graph
 }
 
 
 function makeGraphComplete() {
   const color = $("#color").val()
-  graph.forEachNode((i, attr_i) => {
-    graph.forEachNode((j, attr_j) => {
+  History.graph.forEachNode((i, attr_i) => {
+    History.graph.forEachNode((j, attr_j) => {
       if (i != j) {
-        if (!graph.hasEdge(i, j) && !graph.hasEdge(j, i)) {
-          graph.addEdge(i, j, { color: color }); // Add edge if it doesn't exist
+        if (!History.graph.hasEdge(i, j) && !History.graph.hasEdge(j, i)) {
+          History.graph.addEdge(i, j, { color: color }); // Add edge if it doesn't exist
         }
       }
     })
@@ -47,40 +46,27 @@ function makeGraphComplete() {
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 
-  updateGraph(); // Re-draw graph
+  updateGraph(History.graph); // Re-draw graph
 }
 
 function removeSelection() {
   for (let edge of selectedEdge) {
-    graph.dropEdge(edge); // Remove the selected node
+    History.graph.dropEdge(edge); // Remove the selected node
   }
   for (let node of selectedNode) {
-    graph.dropNode(node); // Remove the selected node
+    History.graph.dropNode(node); // Remove the selected node
   }
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 
-  updateGraph(); // Re-draw graph
+  updateGraph(History.graph); // Re-draw graph
 
-}
-
-function removeEdge() {
-  graph.forEachEdge((edge, attr) => {
-    const [i, j] = graph.extremities(edge)
-    if (selectedNode.includes(i) && selectedNode.includes(j)) {
-      graph.dropEdge(edge)
-    }
-  })
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
-
-  updateGraph(); // Re-draw graph
 }
 
 function colorSelection() {
   const color = $("#color").val()
   for (let node of selectedNode) {
-    graph.updateNodeAttributes(node, attr => {
+    History.graph.updateNodeAttributes(node, attr => {
       return {
         ...attr,
         color: color,
@@ -89,7 +75,7 @@ function colorSelection() {
   }
 
   for (let edge of selectedEdge) {
-    graph.updateEdgeAttributes(edge, attr => {
+    History.graph.updateEdgeAttributes(edge, attr => {
       return {
         ...attr,
         color: color,
@@ -99,7 +85,7 @@ function colorSelection() {
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 
-  updateGraph(); // Re-draw graph
+  updateGraph(History.graph); // Re-draw graph
 }
 
 
@@ -109,8 +95,8 @@ function addEdge() {
   for (let source of selectedNode) {
     for (let target of selectedNode) {
       if (source != target) {
-        if (!graph.hasEdge(source, target) && !graph.hasEdge(target, source)) {
-          graph.addEdge(source, target, { color: color }); // Add edge if it doesn't exist
+        if (!History.graph.hasEdge(source, target) && !History.graph.hasEdge(target, source)) {
+          History.graph.addEdge(source, target, { color: color }); // Add edge if it doesn't exist
         }
       }
     }
@@ -118,7 +104,7 @@ function addEdge() {
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 
-  updateGraph(); // Re-draw graph
+  updateGraph(History.graph); // Re-draw graph
 }
 
 document.addEventListener("keydown", (event) => {
@@ -126,9 +112,7 @@ document.addEventListener("keydown", (event) => {
     case "d":
       removeSelection();
       break;
-    case "r":
-      removeEdge();
-      break;
+
     case "c":
       colorSelection();
       break;
@@ -136,9 +120,23 @@ document.addEventListener("keydown", (event) => {
     case "e":
       addEdge();
       break;
+
+    case "u":
+      updateHistory(History, "undo")
+      break;
+
+    case "y":
+      updateHistory(History, "redo")
+      break;
+
     default:
       break;
   }
 });
+
+$('#undo-btn').on('click', function () {
+  updateHistory(History, "undo"); // Update the graph to include the new node
+});
+
 
 

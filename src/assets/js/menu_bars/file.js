@@ -1,8 +1,14 @@
-import graph from "../init"
-import { updateGraph } from "../init"
+import { updateGraph, History } from "../init"
+
+
+$('#new-btn').on('click', function () {
+  History.graph.clear();
+  updateGraph();
+
+});
 
 $('#export-graph').on('click', function () {
-  const graphJSON = graph.export();
+  const graphJSON = History.graph.export();
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(graphJSON, null, 2));
   const downloadAnchor = $('<a>')
     .attr('href', dataStr)
@@ -21,14 +27,12 @@ $('#file-input').on('change', function (event) {
     reader.onload = function (e) {
       const importedData = JSON.parse(e.target.result);
 
-      // Clear the existing graph
-      graph.clear();
-
-      // Import the new graph data
-      graph.import(importedData);
+      const graphClone = new Graph();
+      graphClone.import(importedData);
+      History.push(graphClone);
 
       // Re-draw the graph
-      updateGraph();
+      updateGraph(History.graph);
     };
     reader.readAsText(file);
   }

@@ -1,4 +1,4 @@
-import graph from "../init"
+import { History } from "../init";
 
 function appendAndListNodeDegrees() {
   // Check if the degree list already exists to prevent duplicates
@@ -17,10 +17,10 @@ function appendAndListNodeDegrees() {
   $('#degree-list .body').empty();
 
   // Get node degrees and populate the list
-  const degrees = graph.nodes().map(nodeId => {
+  const degrees = History.graph.nodes().map(nodeId => {
     return {
       node: nodeId,
-      degree: graph.degree(nodeId)
+      degree: History.graph.degree(nodeId)
     };
   });
 
