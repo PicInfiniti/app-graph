@@ -3,7 +3,7 @@ import { updateGraph, History } from "../init"
 
 $('#new-btn').on('click', function () {
   History.graph.clear();
-  updateGraph();
+  updateGraph(History.graph);
 
 });
 
