@@ -9,6 +9,8 @@ html, body
   *
     box-sizing: border-box
 
+
+
 body
   width: 100vw
   height: 100vh
@@ -24,6 +26,9 @@ body
   flex-direction: column
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2) 1%, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1%, transparent 1px)
   background-size: var(--grid-size) var(--grid-size)
+  *
+    user-select: none
+    
   .main 
     flex: 1
     display: flex
@@ -68,23 +73,33 @@ body
   font-family: Arial, sans-serif
   font-size: 14px
   z-index: 1000
-  cursor: grab
-  display: none
+  display: flex
   flex-direction: column
 
 
   #info
     width: 100%
-    padding: 15px
+    padding: 10px
     top: 0
-    background-color: rgba(255, 255, 255, 0.5)
+    background-color: rgba(255, 255, 150, .5)
     user-select: none
     margin: 0
-    
+    display: flex
+    justify-content: space-between
+    align-items: center
+    cursor: grab
+    .close:hover 
+      color: red
+      cursor: pointer 
+    user-select: text !important
+    -webkit-user-select: text !important // Chrome & Safari
+    -moz-user-select: text !important // Firefox
+    -ms-user-select: text !important // Edge
   .body-info
-    padding: 10px
+    padding: 0 10px 10px 10px
     overflow: auto
     scrollbar-width: thin
+    cursor: text
 
 
 
@@ -134,4 +149,7 @@ body
 
       &:hover 
         background-color: #f4f4f4
-
+    #panel-btn
+      display: flex
+      justify-content: space-between
+      align-items: center

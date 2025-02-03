@@ -9,9 +9,9 @@ $('#add-edge-btn').on('click', addEdge);
 
 function organizeNodesInCircle() {
   updateHistory(History, "update")
-  const radius = 200; // Radius of the circle
   const centerX = svg.node().getBoundingClientRect().width / 2;
   const centerY = svg.node().getBoundingClientRect().height / 2;
+  const radius = Math.min(centerX * .8, centerY * .8)
   const angleStep = -(2 * Math.PI) / History.graph.order;
   History.graph.forEachNode((id, attributes) => {
     const angle = id * angleStep - Math.PI / 2;

@@ -45,9 +45,7 @@
             <ul class="dropdown">
               <li>            <label for="grid-size">Grid Size:</label>
                 <input type="range" id="grid-size" min="5" max="50" value="20"></li>
-              <li>Zoom In</li>
-              <li>Zoom Out</li>
-              <li>Reset</li>
+              <li id="panel-btn"><span>Info Panel</span> <span class="check">&#10004;</span></li>
             </ul>
           </li>
 
@@ -77,21 +75,23 @@
           <input type="color" id="color" name="color" value="#4682B4">
         </div>
       </footer>
-      <div id="floating-panel">
-        <h3 id="info">Info</h3>
-        <div class="body-info">
 
-        </div>
-      </div>
     </div>
 
   </body>
+  <widgets>
+    <div id="floating-panel">
+      <h3 id="info"><span>Info</span><span class="close">x</span></h3>
+      <div class="body-info">
 
+      </div>
+    </div>
+  </widgets>
 </html>
 
 <script>
 $(function() {
-  $('#floating-panel').draggable();
+  $('#floating-panel').draggable({ handle: "#info" });
 });
 
 
