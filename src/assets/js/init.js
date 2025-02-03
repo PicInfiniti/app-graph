@@ -193,7 +193,7 @@ function handleEdgeClick(event, d) {
 export function updateHistory(History, status = 'update') {
   switch (status) {
     case "redo":
-      if (History.index < History.data.length - 2) {
+      if (History.index < History.data.length - 1) {
         History.updateIndex(History.index + 1);
         console.log("redo")
       } else {

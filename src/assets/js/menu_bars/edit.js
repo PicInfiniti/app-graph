@@ -114,6 +114,12 @@ function addEdge() {
 
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
+    case "C":
+      makeGraphComplete();
+      break;
+    case "O":
+      organizeNodesInCircle();
+      break;
     case "d":
       removeSelection();
       break;
@@ -143,5 +149,8 @@ $('#undo-btn').on('click', function () {
   updateHistory(History, "undo"); // Update the graph to include the new node
 });
 
+$('#redo-btn').on('click', function () {
+  updateHistory(History, "redo"); // Update the graph to include the new node
+});
 
 

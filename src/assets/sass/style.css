@@ -124,6 +124,11 @@ body {
   padding: 10px 20px;
   cursor: pointer;
 }
+.menu-bar .menu-item li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .menu-bar .menu-item:hover {
   background-color: #e0e0e0;
 }
@@ -140,12 +145,15 @@ body {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  min-width: 150px;
+  min-width: 200px;
   z-index: 1000;
 }
 .menu-bar .dropdown li {
   padding: 10px;
   cursor: pointer;
+}
+.menu-bar .dropdown li span:nth-child(2) {
+  color: rgb(100, 100, 100);
 }
 .menu-bar .dropdown li:hover {
   background-color: #f4f4f4;
