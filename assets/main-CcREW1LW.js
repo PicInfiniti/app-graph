@@ -15,4 +15,4 @@
         <h4 class="title">Nodes degree</h4>
         <div class="body"></div> 
       </div>
-    `),$("#degree-list .body").empty(),Y.graph.nodes().map(e=>({node:e,degree:Y.graph.degree(e)})).forEach(({node:e,degree:r})=>{$("#degree-list .body").append(`<div>${e}: ${r}</div>`)})}$("#list-degrees-btn").on("click",function(){ed()});const td=Ir("#grid-size"),nd=Ir(":root");td.on("input",function(){const t=Ir(this).val();nd.css("--grid-size",`${t}px`)});const dt=[!1,""];document.addEventListener("keydown",t=>{dt[0]=!0,dt[1]=t.key});document.addEventListener("keyup",t=>{dt[0]=!1,dt[1]=""});
+    `),$("#degree-list .body").empty(),Y.graph.nodes().map(e=>({node:Y.graph.getNodeAttribute(e,"label"),degree:Y.graph.degree(e)})).forEach(({node:e,degree:r})=>{$("#degree-list .body").append(`<div>${e}: ${r}</div>`)})}$("#list-degrees-btn").on("click",function(){ed()});const td=Ir("#grid-size"),nd=Ir(":root");td.on("input",function(){const t=Ir(this).val();nd.css("--grid-size",`${t}px`)});const dt=[!1,""];document.addEventListener("keydown",t=>{dt[0]=!0,dt[1]=t.key});document.addEventListener("keyup",t=>{dt[0]=!1,dt[1]=""});
