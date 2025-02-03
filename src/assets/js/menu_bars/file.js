@@ -1,7 +1,8 @@
-import { updateGraph, History } from "../init"
+import { updateGraph, History, updateHistory } from "../init"
 
 
 $('#new-btn').on('click', function () {
+  updateHistory(History, "update")
   History.graph.clear();
   updateGraph(History.graph);
 
@@ -27,9 +28,9 @@ $('#file-input').on('change', function (event) {
     reader.onload = function (e) {
       const importedData = JSON.parse(e.target.result);
 
-      const graphClone = new Graph();
-      graphClone.import(importedData);
-      History.push(graphClone);
+      updateHistory(History, "update")
+      History.graph.clear();
+      History.graph.import(importedData)
 
       // Re-draw the graph
       updateGraph(History.graph);

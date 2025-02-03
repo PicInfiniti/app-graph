@@ -8,13 +8,14 @@ $('#color-selection-btn').on('click', colorSelection);
 $('#add-edge-btn').on('click', addEdge);
 
 function organizeNodesInCircle() {
+  updateHistory(History, "update")
   const radius = 200; // Radius of the circle
   const centerX = svg.node().getBoundingClientRect().width / 2;
   const centerY = svg.node().getBoundingClientRect().height / 2;
-  const angleStep = -(2 * Math.PI) / graph.order;
-  graph.forEachNode((id, attributes) => {
+  const angleStep = -(2 * Math.PI) / History.graph.order;
+  History.graph.forEachNode((id, attributes) => {
     const angle = id * angleStep - Math.PI / 2;
-    graph.updateNodeAttributes(id, attr => {
+    History.graph.updateNodeAttributes(id, attr => {
       return {
         label: attr.label,
         color: attr.color,
@@ -32,6 +33,7 @@ function organizeNodesInCircle() {
 
 
 function makeGraphComplete() {
+  updateHistory(History, "update")
   const color = $("#color").val()
   History.graph.forEachNode((i, attr_i) => {
     History.graph.forEachNode((j, attr_j) => {
@@ -50,6 +52,7 @@ function makeGraphComplete() {
 }
 
 function removeSelection() {
+  updateHistory(History, "update")
   for (let edge of selectedEdge) {
     History.graph.dropEdge(edge); // Remove the selected node
   }
@@ -65,6 +68,8 @@ function removeSelection() {
 
 function colorSelection() {
   const color = $("#color").val()
+  updateHistory(History, "update")
+
   for (let node of selectedNode) {
     History.graph.updateNodeAttributes(node, attr => {
       return {
@@ -91,7 +96,7 @@ function colorSelection() {
 
 function addEdge() {
   const color = $("#color").val()
-
+  updateHistory(History, "update")
   for (let source of selectedNode) {
     for (let target of selectedNode) {
       if (source != target) {

@@ -70,8 +70,8 @@ export class LimitedArray {
   getArray() {
     return this.data;
   }
-  getIndex() {
-    return this.data[this.index]
+  getIndex(index) {
+    return this.data[index]
   }
   updateIndex(value) {
     this.index = value;

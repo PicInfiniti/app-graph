@@ -20,9 +20,7 @@ export const svg = d3.select("#chart")
   .attr("height", height)
   .attr("preserveAspectRatio", "xMinYMin meet")
 
-
 History.push(new Graph())
-
 // Draw edges and nodes
 const edgeGroup = svg.append("g").attr("class", "edges");
 const nodeGroup = svg.append("g").attr("class", "nodes");
@@ -39,9 +37,9 @@ svg.on("contextmenu", (event) => {
   const newID = getMinAvailableNumber(existingIds)
   const NewLable = getAvailableLabel(newID)
   // Add node to Graphology with the new label
+  updateHistory(History, "add"); // add to History before change
   History.graph.addNode(newID, { x: x, y: y, color: color, label: NewLable });
-
-  updateHistory(History, "update"); // Update the graph to include the new node
+  updateGraph(History.graph);
 });
 
 svg.on("click", (event) => {
@@ -55,6 +53,7 @@ svg.on("click", (event) => {
 // Dragging behavior
 const drag = d3.drag()
   .on("start", function (event, d) {
+    updateHistory(History, "update"); // Update the graph to include the new node
     d3.select(this).attr("stroke", "orange");
   })
   .on("drag", function (event, d) {
@@ -71,7 +70,6 @@ const drag = d3.drag()
       return { ...attributes, x: event.x, y: event.y };
     });
 
-    updateHistory(History, "update"); // Update the graph to include the new node
   });
 
 
@@ -160,18 +158,8 @@ function handleNodeClick(event, d) {
         } else {
           selectedNode.push(d.id)
         }
+        break;
 
-        break;
-      case 'c':
-        History.graph.updateNodeAttributes(d.id, attr => {
-          return {
-            color: color,
-            x: attr.x,
-            y: attr.y,
-            label: attr.label
-          };
-        })
-        break;
       default:
         break;
     }
@@ -193,17 +181,11 @@ function handleEdgeClick(event, d) {
           selectedEdge.push(d)
         }
         break;
-      case 'c':
-        graph.updateEdgeAttributes(d, attr => {
-          return {
-            color: color,
-          };
-        })
-        break;
+
       default:
         break;
     }
-    updateGraph(); // Re-draw graph
+    updateGraph(History.graph); // Re-draw graph
   }
 }
 
@@ -211,15 +193,19 @@ function handleEdgeClick(event, d) {
 export function updateHistory(History, status = 'update') {
   switch (status) {
     case "redo":
-      console.log("redo")
       if (History.index < History.data.length - 2) {
-        History.index++;
+        History.updateIndex(History.index + 1);
+        console.log("redo")
+      } else {
+        console.log("nothing to redo")
       };
       break;
     case "undo":
-      console.log("undo")
-      if (History.index > 1) {
-        History.index--;
+      if (History.index > 0) {
+        History.updateIndex(History.index - 1);
+        console.log("undo")
+      } else {
+        console.log("nothing to undo")
       };
       break;
 
@@ -228,10 +214,12 @@ export function updateHistory(History, status = 'update') {
       const graphData = History.graph.export();
       const graphClone = new Graph();
       graphClone.import(graphData);
+      History.data.length = History.index + 1
       History.push(graphClone);
       break;
   }
 
-  updateGraph(History.getIndex(History.index));
+  updateGraph(History.graph);
 
 }
+
