@@ -19,7 +19,7 @@ function appendAndListNodeDegrees() {
   // Get node degrees and populate the list
   const degrees = History.graph.nodes().map(nodeId => {
     return {
-      node: nodeId,
+      node: History.graph.getNodeAttribute(nodeId, "label"),
       degree: History.graph.degree(nodeId)
     };
   });
