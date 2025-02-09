@@ -1,3 +1,4 @@
+import $ from "jquery"
 import { History } from "../init";
 
 function appendAndListNodeDegrees() {

@@ -1,3 +1,4 @@
+import $ from "jquery"
 import { svg, History, updateGraph, selectedNode, selectedEdge, updateHistory } from "../init"
 
 // Attach the circular layout function to the button

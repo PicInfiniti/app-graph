@@ -1,5 +1,5 @@
+import $ from "jquery"
 import { updateGraph, History, updateHistory } from "../init"
-
 
 $('#new-btn').on('click', function () {
   updateHistory(History, "update")

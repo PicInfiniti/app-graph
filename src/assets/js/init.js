@@ -1,12 +1,17 @@
+import $ from "jquery";
+import interact from 'interactjs';
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, includesById, removeString } from './utils';
 import { keyDown } from '../../main';
 import { LimitedArray } from './utils';
+
+
 // Initialize data structures for nodes and edges
 
 export const selectedNode = [];
 export const selectedEdge = [];
+export let pressTimer = null;
 export const History = new LimitedArray(20)
 
 // Dimensions of the SVG
@@ -25,22 +30,53 @@ History.push(new Graph())
 const edgeGroup = svg.append("g").attr("class", "edges");
 const nodeGroup = svg.append("g").attr("class", "nodes");
 
-// Disable the default context menu
-svg.on("contextmenu", (event) => {
-  event.preventDefault(); // Disable the default right-click menu
-  const color = $("#color").val()
 
-  const [x, y] = d3.pointer(event);
+// Disable default right-click (context menu) globally
+document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+// Double Click (Desktop) & Double Tap (Touch) to Add Node
+let lastTapTime = 0;
+svg.on("dblclick touchend", (event) => {
+  let currentTime = new Date().getTime();
+  let tapInterval = currentTime - lastTapTime;
+
+  // Check for double tap (touch) OR double click (desktop)
+  if (event.type === "dblclick" || (event.type === "touchend" && tapInterval < 300)) {
+    addNodeAtEvent(event);
+  }
+
+  lastTapTime = currentTime;
+});
+
+// Function to Add Node (Corrects Touch Positioning)
+function addNodeAtEvent(event) {
+  event.preventDefault(); // Prevent default behavior (like zooming on double tap)
+
+  const color = $("#color").val();
+  let x, y;
+
+  if (event.type === "touchend") {
+    // Get correct touch position
+    const touch = event.changedTouches[0];
+    const rect = svg.node().getBoundingClientRect();
+    x = touch.clientX - rect.left;
+    y = touch.clientY - rect.top;
+  } else {
+    // Desktop (mouse event)
+    [x, y] = d3.pointer(event);
+  }
 
   // Generate the next available label
   const existingIds = History.graph.nodes();
-  const newID = getMinAvailableNumber(existingIds)
-  const NewLable = getAvailableLabel(newID)
-  // Add node to Graphology with the new label
-  updateHistory(History, "add"); // add to History before change
-  History.graph.addNode(newID, { x: x, y: y, color: color, label: NewLable });
+  const newID = getMinAvailableNumber(existingIds);
+  const newLabel = getAvailableLabel(newID);
+
+  // Add node to Graphology
+  updateHistory(History, "add"); // Add to history before changing graph
+  History.graph.addNode(newID, { x: x, y: y, color: color, label: newLabel });
   updateGraph(History.graph);
-});
+}
+
 
 svg.on("click", (event) => {
   if (!keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
@@ -93,15 +129,27 @@ export function updateGraph(graph) {
       return graph.getEdgeAttribute(d, 'color')
     })
     .attr("stroke-width", 2)
-    .on("click", handleEdgeClick)
+    .on("click", function (event, d) {
+      if (event.ctrlKey) {
+        selectElement("edge", d);
+      }
+    })
+    .on("mousedown", function (event, d) {
+      pressTimer = setTimeout(() => {
+        selectElement("edge", d);
+        console.log("select edge")
+      }, 500); // Long press to select
+    })
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
+      clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
     })
     .on("mouseout", function () {
       d3.select(this).attr("stroke", d => {
         if (selectedEdge.includes(d)) return "orange"
         else return graph.getEdgeAttribute(d, 'color')
       });
+      clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
     })
 
   // Update nodes
@@ -119,15 +167,28 @@ export function updateGraph(graph) {
       return d.color
     })
     .attr("stroke-width", 3)
-    .on("click", handleNodeClick)
+    .on("click", function (event, d) {
+      if (event.ctrlKey) {
+        selectElement("node", d);
+      }
+    })
+    .on("mousedown", function (event, d) {
+      pressTimer = setTimeout(() => {
+        selectElement("node", d);
+        console.log("select node")
+      }, 500); // Long press to select
+    })
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "orange");
+      clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
+
     })
     .on("mouseout", function () {
       d3.select(this).attr("stroke", d => {
         if (selectedNode.includes(d.id)) return "orange"
         else return d.color
       });
+      clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
     })
     .call(drag); // Apply drag behavior
 
@@ -146,49 +207,23 @@ export function updateGraph(graph) {
     .attr("fill", "black");
 }
 
-function handleNodeClick(event, d) {
-  event.stopPropagation(); // Prevent SVG click event
-  const color = $("#color").val()
-
-  if (keyDown[0]) {
-    switch (keyDown[1]) {
-      case 'Control':
-        if (selectedNode.includes(d.id)) {
-          removeString(selectedNode, d.id)
-        } else {
-          selectedNode.push(d.id)
-        }
-        break;
-
-      default:
-        break;
+function selectElement(element = "node", d) {
+  if (element == "node") {
+    if (selectedNode.includes(d.id)) {
+      removeString(selectedNode, d.id)
+    } else {
+      selectedNode.push(d.id)
     }
-    updateGraph(History.graph); // Re-draw graph
-
   }
-}
-
-function handleEdgeClick(event, d) {
-  event.stopPropagation(); // Prevent SVG click event
-  const color = $("#color").val()
-
-  if (keyDown[0]) {
-    switch (keyDown[1]) {
-      case 'Control':
-        if (selectedEdge.includes(d)) {
-          removeString(selectedEdge, d)
-        } else {
-          selectedEdge.push(d)
-        }
-        break;
-
-      default:
-        break;
+  if (element == "edge") {
+    if (selectedEdge.includes(d)) {
+      removeString(selectedEdge, d)
+    } else {
+      selectedEdge.push(d)
     }
-    updateGraph(History.graph); // Re-draw graph
   }
+  updateGraph(History.graph); // Re-draw graph
 }
-
 
 export function updateHistory(History, status = 'update') {
   switch (status) {
@@ -222,4 +257,26 @@ export function updateHistory(History, status = 'update') {
   updateGraph(History.graph);
 
 }
+
+
+
+
+interact('#floating-panel')
+  .draggable({
+    allowFrom: "#info", // Only allow dragging from the header
+    listeners: {
+      move(event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+        // Apply smooth movement
+        target.style.transform = `translate(${x}px, ${y}px)`;
+
+        // Store new position
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      }
+    }
+  });
 

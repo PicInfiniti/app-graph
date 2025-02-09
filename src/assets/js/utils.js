@@ -1,5 +1,3 @@
-import { History } from "./init";
-
 export function getMinAvailableNumber(existingNumbers) {
   // Convert strings to numbers and create a Set for fast lookup
   const numberSet = new Set(existingNumbers.map(Number));
