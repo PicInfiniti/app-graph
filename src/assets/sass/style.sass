@@ -9,6 +9,11 @@ html, body
   *
     box-sizing: border-box
 
+    text-decoration: none 
+
+    a:visited 
+      color: black !important 
+
 body
   width: 100vw
   height: 100vh
@@ -188,4 +193,49 @@ body
 
       &:hover 
         background-color: #f4f4f4
+
+
+
+// Help Panel Styles
+.modal
+  position: fixed
+  top:0
+  left: 0
+  width: 100vw
+  height: 100vh
+  display: none
+  justify-content: center
+  align-items: center
+  *
+    user-select: none
+    font-size: 18px
+
+  .help-panel
+    padding: 15px
+    background-color: rgba(255,255,255, 0.5) 
+    width: 350px
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+
+    .help-title
+      text-align: center
+      font-weight: bold
+      padding: 5px
+
+    hr 
+      width: 50%
+
+    .help-content
+      width: 100%
+      padding: 5px
+
+      .help-table
+        width: 100%
+        tr 
+          padding: 3px
+          width: 100%
+          display: flex
+          justify-content: space-between
+          align-items: center
+          .key 
+            font-weight: bold
 
