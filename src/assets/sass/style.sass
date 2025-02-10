@@ -9,8 +9,6 @@ html, body
   *
     box-sizing: border-box
 
-
-
 body
   width: 100vw
   height: 100vh
@@ -152,7 +150,42 @@ body
 
       &:hover 
         background-color: #f4f4f4
+
     #panel-btn
       display: flex
       justify-content: space-between
       align-items: center
+
+
+#custom-context-menu
+  display: none 
+  position: absolute  
+  background: white 
+  border: 1px solid gray 
+  padding: 5px
+
+  *
+    user-select: none
+
+  ul 
+    background-color: #ffffff
+    border: 1px solid #ddd
+    list-style-type: none
+    padding: 0
+    margin: 0
+    min-width: 200px
+    z-index: 1000
+
+    li 
+      display: flex
+      justify-content: space-between
+      align-items: center
+      padding: 10px
+      cursor: pointer
+      span:nth-child(2)
+        color: rgb(100,100,100)
+
+
+      &:hover 
+        background-color: #f4f4f4
+

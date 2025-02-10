@@ -2,11 +2,11 @@ import $ from "jquery"
 import { svg, History, updateGraph, selectedNode, selectedEdge, updateHistory } from "../init"
 
 // Attach the circular layout function to the button
-$("#organize-circle").on("click", organizeNodesInCircle);
-$('#make-complete-btn').on('click', makeGraphComplete);
-$('#remove-selection-btn').on('click', removeSelection);
-$('#color-selection-btn').on('click', colorSelection);
-$('#add-edge-btn').on('click', addEdge);
+$("[name='organize-circle']").on("click", organizeNodesInCircle);
+$('[name="make-complete-btn"]').on('click', makeGraphComplete);
+$('[name="remove-selection-btn"]').on('click', removeSelection);
+$('[name="color-selection-btn"]').on('click', colorSelection);
+$('[name="add-edge-btn"]').on('click', addEdge);
 
 function organizeNodesInCircle() {
   updateHistory(History, "update")
@@ -146,11 +146,11 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-$('#undo-btn').on('click', function () {
+$('[name="undo-btn"]').on('click', function () {
   updateHistory(History, "undo"); // Update the graph to include the new node
 });
 
-$('#redo-btn').on('click', function () {
+$('[name="redo-btn"]').on('click', function () {
   updateHistory(History, "redo"); // Update the graph to include the new node
 });
 
