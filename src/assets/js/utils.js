@@ -1,11 +1,7 @@
 export function getMinAvailableNumber(existingNumbers) {
-  // Convert strings to numbers and create a Set for fast lookup
   const numberSet = new Set(existingNumbers.map(Number));
-
-  // Start checking from 1
   let minNumber = 1;
 
-  // Increment until we find a missing number
   while (numberSet.has(minNumber)) {
     minNumber++;
   }
@@ -13,12 +9,10 @@ export function getMinAvailableNumber(existingNumbers) {
   return minNumber;
 }
 
-
 export function getAvailableLabel(n, maxLength = 3) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   const combinations = [];
 
-  // Generate nth combination recursively
   function generateNthCombination(prefix, start, remaining) {
     if (remaining === 0) {
       combinations.push(prefix);
@@ -27,9 +21,7 @@ export function getAvailableLabel(n, maxLength = 3) {
 
     for (let i = start; i < alphabet.length; i++) {
       generateNthCombination(prefix + alphabet[i], i + 1, remaining - 1);
-      if (combinations.length > n) {
-        return; // Stop early if we found the nth combination
-      }
+      if (combinations.length > n) return;
     }
   }
 
@@ -39,14 +31,14 @@ export function getAvailableLabel(n, maxLength = 3) {
     currentLength++;
   }
 
-  return combinations[n - 1] || null; // Return nth combination or null if out of bounds
+  return combinations[n - 1] || null;
 }
 
-export const includesById = (array, id) => array.filter(obj => obj.id === id).length > 0;
+export const includesById = (array, id) => array.some(obj => obj.id === id);
+
 export function removeString(array, str) {
   return array.filter(item => item !== str);
 }
-
 
 export class LimitedArray {
   constructor(limit) {
@@ -58,21 +50,31 @@ export class LimitedArray {
 
   push(value) {
     if (this.data.length >= this.limit) {
-      this.data.shift(); // Remove the first element
+      this.data.shift();
     }
     this.data.push(value);
-    this.index = this.data.length - 1
-    this.graph = this.data[this.index]
+    this.index = this.data.length - 1;
+    this.graph = this.data[this.index];
   }
 
   getArray() {
     return this.data;
   }
+
   getIndex(index) {
-    return this.data[index]
+    return this.data[index] ?? null;
   }
+
   updateIndex(value) {
-    this.index = value;
-    this.graph = this.data[value]
+    if (value >= 0 && value < this.data.length) {
+      this.index = value;
+      this.graph = this.data[value];
+    }
   }
+}
+
+export function getTouchPosition(event, svg) {
+  const touch = event.changedTouches[0];
+  const rect = svg.node().getBoundingClientRect();
+  return [touch.clientX - rect.left, touch.clientY - rect.top];
 }

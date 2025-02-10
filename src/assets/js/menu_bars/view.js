@@ -1,4 +1,5 @@
 import $ from "jquery"
+import interact from 'interactjs';
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
@@ -25,3 +26,19 @@ $('#floating-panel .close').on('click', function () {
   $('#panel-btn .check').hide();
 });
 
+// Make floating panel draggable
+interact('#floating-panel')
+  .draggable({
+    allowFrom: "#info",
+    listeners: {
+      move(event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      }
+    }
+  });
