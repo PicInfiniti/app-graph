@@ -1,5 +1,4 @@
 import $ from "jquery";
-import interact from 'interactjs';
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, removeString } from './utils';

@@ -108,6 +108,9 @@ body {
   scrollbar-width: thin;
   cursor: text;
 }
+#floating-panel .body-info .body div {
+  padding: 1px;
+}
 
 .menu-bar {
   background-color: #f4f4f4;

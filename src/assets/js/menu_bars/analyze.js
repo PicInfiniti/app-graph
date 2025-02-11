@@ -1,7 +1,8 @@
 import $ from "jquery"
 import { History } from "../init";
+import { countConnectedComponents, connectedComponents, forEachConnectedComponent } from 'graphology-components';
 
-function appendAndListNodeDegrees() {
+function appendAndListNodeDegrees(graph) {
   // Check if the degree list already exists to prevent duplicates
   if ($('#degree-list').length === 0) {
 
@@ -18,10 +19,10 @@ function appendAndListNodeDegrees() {
   $('#degree-list .body').empty();
 
   // Get node degrees and populate the list
-  const degrees = History.graph.nodes().map(nodeId => {
+  const degrees = graph.nodes().map(nodeId => {
     return {
-      node: History.graph.getNodeAttribute(nodeId, "label"),
-      degree: History.graph.degree(nodeId)
+      node: graph.getNodeAttribute(nodeId, "label"),
+      degree: graph.degree(nodeId)
     };
   });
 
@@ -34,7 +35,40 @@ function appendAndListNodeDegrees() {
 
 // Attach the function to a button click event
 $('#list-degrees-btn').on('click', function () {
-  appendAndListNodeDegrees();
+  appendAndListNodeDegrees(History.graph);
+});
+// Function to make the graph complete
+function countComponents(graph) {
+  // Check if the degree list already exists to prevent duplicates
+  if ($('#components-list').length === 0) {
+
+    // Append the structure dynamically to the #info-body
+    $('#floating-panel .body-info').append(`
+      <div id="components-list" class="info-body">
+        <h4 class="title">Connected Components</h4>
+        <div class="body"></div> 
+      </div>
+    `);
+  }
+
+  // Clear the existing content in the body div
+  $('#components-list .body').empty();
+
+  // Append degree information to the body
+  $('#components-list .body').append(`<div>count: ${countConnectedComponents(graph)}</div><br>`);
+
+  forEachConnectedComponent(History.graph, component => {
+    let div = document.createElement("div");
+    div.textContent = component.map(function (node) {
+      return graph.getNodeAttribute(node, "label")
+    }).join(', ');
+    $('#components-list .body').append(div);
+  });
+}
+
+// Attach the function to a button click event
+$('#components-btn').on('click', function () {
+  countComponents(History.graph)
 });
 // Function to make the graph complete
 
