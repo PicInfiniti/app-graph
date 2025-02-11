@@ -1,6 +1,6 @@
 import $ from "jquery"
 import { History } from "../init";
-import { countConnectedComponents, connectedComponents, forEachConnectedComponent } from 'graphology-components';
+import { countConnectedComponents, forEachConnectedComponent } from 'graphology-components';
 
 function appendAndListNodeDegrees(graph) {
   // Check if the degree list already exists to prevent duplicates

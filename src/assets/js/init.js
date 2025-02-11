@@ -4,7 +4,7 @@ import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, removeString } from './utils';
 import { keyDown } from '../../main';
 import { LimitedArray, getTouchPosition } from './utils';
-
+import { getComponent } from "./utils";
 
 // Initialize data structures
 export const selectedNode = [];
@@ -14,6 +14,7 @@ export const History = new LimitedArray(50);
 export const common = {
   lastTapTime: 0,
   hover: false,
+  dragComponent: false,
   x: 0,
   y: 0
 }
@@ -70,16 +71,37 @@ svg.on("click", (event) => {
 const dragNode = d3.drag()
   .on("start", (event, d) => {
     // Store the initial pointer position
+    common.x = event.x;
+    common.y = event.y;
+
     updateHistory(History, "update");
   })
   .on("drag", (event, d) => {
-    History.graph.updateNodeAttributes(d.id, attrs => ({ ...attrs, x: event.x, y: event.y }));
+    // Calculate the distance moved from the initial pointer position
+    const distanceX = event.x - common.x;
+    const distanceY = event.y - common.y;
+
+    if (common.dragComponent) {
+      for (let node of getComponent(History.graph, d.id)) {
+        History.graph.updateNodeAttributes(node, attrs => ({
+          ...attrs,
+          x: attrs.x + distanceX,
+          y: attrs.y + distanceY
+        }));
+      }
+    } else {
+      History.graph.updateNodeAttributes(d.id, attrs => ({
+        ...attrs,
+        x: attrs.x + distanceX,
+        y: attrs.y + distanceY
+      }));
+    }
+
+    common.x = event.x;
+    common.y = event.y;
+
     updateGraph(History.graph);
   })
-  .on("end", (event, d) => {
-    History.graph.updateNodeAttributes(d.id, attrs => ({ ...attrs, x: event.x, y: event.y }));
-    updateGraph(History.graph);
-  });
 
 
 // Dragging behavior
@@ -96,17 +118,28 @@ const dragEdge = d3.drag()
     const distanceX = event.x - common.x;
     const distanceY = event.y - common.y;
 
-    // Update node position using the original node coordinates
-    History.graph.updateNodeAttributes(History.graph.source(d), attrs => ({
-      ...attrs,
-      x: attrs.x + distanceX,
-      y: attrs.y + distanceY
-    }));
-    History.graph.updateNodeAttributes(History.graph.target(d), attrs => ({
-      ...attrs,
-      x: attrs.x + distanceX,
-      y: attrs.y + distanceY
-    }));
+    if (common.dragComponent) {
+      for (let node of getComponent(History.graph, History.graph.source(d))) {
+        History.graph.updateNodeAttributes(node, attrs => ({
+          ...attrs,
+          x: attrs.x + distanceX,
+          y: attrs.y + distanceY
+        }));
+      }
+    } else {
+      // Update node position using the original node coordinates
+      History.graph.updateNodeAttributes(History.graph.source(d), attrs => ({
+        ...attrs,
+        x: attrs.x + distanceX,
+        y: attrs.y + distanceY
+      }));
+      History.graph.updateNodeAttributes(History.graph.target(d), attrs => ({
+        ...attrs,
+        x: attrs.x + distanceX,
+        y: attrs.y + distanceY
+      }));
+
+    }
 
     // Update the stored pointer position for continuous tracking
     common.x = event.x;
@@ -114,23 +147,6 @@ const dragEdge = d3.drag()
 
     updateGraph(History.graph);
   })
-  .on("end", (event, d) => {
-    // Update node position using the original node coordinates
-    const distanceX = event.x - common.x;
-    const distanceY = event.y - common.y;
-    History.graph.updateNodeAttributes(History.graph.source(d), attrs => ({
-      ...attrs,
-      x: attrs.x + distanceX,
-      y: attrs.y + distanceY
-    }));
-    History.graph.updateNodeAttributes(History.graph.target(d), attrs => ({
-      ...attrs,
-      x: attrs.x + distanceX,
-      y: attrs.y + distanceY
-    }));
-
-    updateGraph(History.graph);
-  });
 
 export function updateGraph(graph) {
   const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));

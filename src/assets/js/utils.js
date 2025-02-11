@@ -1,3 +1,5 @@
+import { connectedComponents } from "graphology-components";
+
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
   let minNumber = 1;
@@ -78,3 +80,19 @@ export function getTouchPosition(event, svg) {
   const rect = svg.node().getBoundingClientRect();
   return [touch.clientX - rect.left, touch.clientY - rect.top];
 }
+
+
+export function getComponent(graph, node) {
+  // Get all connected components
+  const components = connectedComponents(graph);
+
+  // Find the component that contains the given node
+  for (let component of components) {
+    if (component.includes(node)) {
+      return component;
+    }
+  }
+
+  return null; // If node is not found in any component
+}
+

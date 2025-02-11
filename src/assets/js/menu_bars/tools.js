@@ -1,5 +1,6 @@
 import $ from "jquery"
 import interact from 'interactjs';
+import { common } from "../init";
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
@@ -42,3 +43,15 @@ interact('#floating-panel')
       }
     }
   });
+
+
+$('#drag-btn').on('click', function () {
+  let check = $('#drag-btn .check');
+  if (check.is(':visible')) {
+    check.hide();
+    common.dragComponent = false
+  } else {
+    common.dragComponent = true
+    check.show();
+  }
+});

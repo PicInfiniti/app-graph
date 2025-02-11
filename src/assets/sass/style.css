@@ -172,6 +172,9 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+.menu-bar .dropdown #drag-btn .check {
+  display: none;
+}
 
 #custom-context-menu {
   display: none;
