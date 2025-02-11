@@ -14,7 +14,9 @@ export let pressTimer = null;
 export const History = new LimitedArray(50);
 export const common = {
   lastTapTime: 0,
-  hover: false
+  hover: false,
+  x: 0,
+  y: 0
 }
 
 // Create SVG container
@@ -66,10 +68,10 @@ svg.on("click", (event) => {
 });
 
 // Dragging behavior
-const drag = d3.drag()
+const dragNode = d3.drag()
   .on("start", (event, d) => {
+    // Store the initial pointer position
     updateHistory(History, "update");
-    d3.select(event.sourceEvent.target).attr("stroke", "orange");
   })
   .on("drag", (event, d) => {
     History.graph.updateNodeAttributes(d.id, attrs => ({ ...attrs, x: event.x, y: event.y }));
@@ -77,6 +79,58 @@ const drag = d3.drag()
   })
   .on("end", (event, d) => {
     History.graph.updateNodeAttributes(d.id, attrs => ({ ...attrs, x: event.x, y: event.y }));
+    updateGraph(History.graph);
+  });
+
+
+// Dragging behavior
+const dragEdge = d3.drag()
+  .on("start", (event, d) => {
+    // Store the initial pointer position
+    common.x = event.x;
+    common.y = event.y;
+
+    updateHistory(History, "update");
+  })
+  .on("drag", (event, d) => {
+    // Calculate the distance moved from the initial pointer position
+    const distanceX = event.x - common.x;
+    const distanceY = event.y - common.y;
+
+    // Update node position using the original node coordinates
+    History.graph.updateNodeAttributes(History.graph.source(d), attrs => ({
+      ...attrs,
+      x: attrs.x + distanceX,
+      y: attrs.y + distanceY
+    }));
+    History.graph.updateNodeAttributes(History.graph.target(d), attrs => ({
+      ...attrs,
+      x: attrs.x + distanceX,
+      y: attrs.y + distanceY
+    }));
+
+    // Update the stored pointer position for continuous tracking
+    common.x = event.x;
+    common.y = event.y;
+
+    updateGraph(History.graph);
+  })
+  .on("end", (event, d) => {
+    // Update node position using the original node coordinates
+    const distanceX = event.x - common.x;
+    const distanceY = event.y - common.y;
+    History.graph.updateNodeAttributes(History.graph.source(d), attrs => ({
+      ...attrs,
+      x: attrs.x + distanceX,
+      y: attrs.y + distanceY
+    }));
+    History.graph.updateNodeAttributes(History.graph.target(d), attrs => ({
+      ...attrs,
+      x: attrs.x + distanceX,
+      y: attrs.y + distanceY
+    }));
+
+    updateGraph(History.graph);
   });
 
 export function updateGraph(graph) {
@@ -121,6 +175,7 @@ export function updateGraph(graph) {
       clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
       common.hover = false;
     })
+    .call(dragEdge)
 
   // Update nodes
   const nodesSelection = nodeGroup.selectAll("circle").data(nodes, d => d.id);
@@ -160,7 +215,7 @@ export function updateGraph(graph) {
       clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
       common.hover = false;
     })
-    .call(drag); // Apply drag behavior
+    .call(dragNode); // Apply drag behavior
 
   // Update labels
   const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
