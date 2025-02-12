@@ -96,3 +96,5 @@ export function getComponent(graph, node) {
   return null; // If node is not found in any component
 }
 
+
+

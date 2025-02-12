@@ -1,5 +1,6 @@
 import $ from "jquery"
-import { updateGraph, History, updateHistory } from "../init"
+import { updateGraph, History, updateHistory, svg } from "../init"
+import { saveSvgAsPng } from 'save-svg-as-png';
 
 $('#new-btn').on('click', function () {
   updateHistory(History, "update")
@@ -37,6 +38,7 @@ $('#file-input').on('change', function (event) {
     reader.readAsText(file);
   }
 });
+
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "n":
@@ -46,6 +48,10 @@ document.addEventListener("keydown", (event) => {
       break;
     case "o":
       $('#file-input').click(); // Open file dialog
+      break;
+    case "p":
+      downloadPNG()
+      console.log("download png")
       break;
     case "s":
       const graphJSON = History.graph.export();
@@ -60,4 +66,17 @@ document.addEventListener("keydown", (event) => {
       break;
   }
 });
+
+
+
+$('#export-png').on('click', function () {
+  downloadPNG()
+  console.log("download png")
+});
+
+
+function downloadPNG() {
+  const svgElement = document.querySelector("#chart svg");
+  saveSvgAsPng(svgElement, "chart.png", { scale: 2 });
+}
 
