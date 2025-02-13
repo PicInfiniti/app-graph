@@ -71,6 +71,9 @@ body {
 .container footer div:first-child a {
   color: #009e9e;
 }
+.container footer .color {
+  z-index: 12;
+}
 
 #floating-panel {
   position: fixed;
