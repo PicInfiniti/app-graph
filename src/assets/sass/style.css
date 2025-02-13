@@ -168,6 +168,17 @@ body {
 .menu-bar .dropdown li:hover {
   background-color: #f4f4f4;
 }
+.menu-bar .dropdown #grid-btn {
+  margin: 0;
+  padding: 0;
+}
+.menu-bar .dropdown #grid-btn label, .menu-bar .dropdown #grid-btn span {
+  padding: 10px;
+}
+.menu-bar .dropdown #grid-btn input {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 .menu-bar .dropdown #panel-btn {
   display: flex;
   justify-content: space-between;
@@ -254,6 +265,10 @@ body {
 }
 .modal .help-panel .help-content .help-table tr .key {
   font-weight: bold;
+}
+
+.grid-hidden {
+  background-image: none !important;
 }
 
 /*# sourceMappingURL=style.css.map */

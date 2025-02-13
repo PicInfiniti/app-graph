@@ -4,16 +4,6 @@ import $ from "jquery";
 // Importing styles
 import './assets/sass/style.sass';
 
-// Selecting elements
-const $gridSizeInput = $('#grid-size');
-const $root = $(':root');
-
-// Event listener to update grid size dynamically
-$gridSizeInput.on('input', function () {
-  const gridSize = $(this).val();
-  $root.css('--grid-size', `${gridSize}px`);
-});
-
 // Track key states
 export const keyDown = [false, ''];
 

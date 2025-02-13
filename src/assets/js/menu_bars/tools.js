@@ -2,6 +2,33 @@ import $ from "jquery"
 import interact from 'interactjs';
 import { common } from "../init";
 
+// Selecting elements
+const $gridSizeInput = $('#grid-size');
+const $root = $(':root');
+
+// Event listener to update grid size dynamically
+$gridSizeInput.on('input', function () {
+  const gridSize = $(this).val();
+  $root.css('--grid-size', `${gridSize}px`);
+});
+
+$('#grid-btn label, .check').on('click', function () {
+  let check = $('#grid-btn .check');
+  $(".container").toggleClass("grid-hidden");
+
+  if ($(".container").hasClass("grid-hidden")) {
+    check.css(
+      { "opacity": "0" }
+    );
+  } else {
+    check.css(
+      { "opacity": "1" }
+    );
+  }
+
+});
+
+
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
   let check = $('#panel-btn .check');
