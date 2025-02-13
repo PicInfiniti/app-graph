@@ -15,6 +15,7 @@ export const common = {
   lastTapTime: 0,
   hover: false,
   dragComponent: false,
+  vertexLabel: true,
   x: 0,
   y: 0
 }
@@ -193,7 +194,13 @@ export function updateGraph(graph) {
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
     .attr("r", 10)
-    .attr("fill", "white")
+    .attr("fill", d => {
+      if (common.vertexLabel) {
+        return "white"
+      } else {
+        return d.color
+      }
+    })
     .attr("stroke", d => {
       if (selectedNode.includes(d.id)) return "orange"
       return d.color
@@ -231,18 +238,23 @@ export function updateGraph(graph) {
     .call(dragNode); // Apply drag behavior
 
   // Update labels
-  const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
-  labelsSelection.exit().remove();
-  labelsSelection.enter()
-    .append("text")
-    .merge(labelsSelection)
-    .attr("x", d => d.x)
-    .attr("y", d => d.y)
-    .attr("dy", "0.35em")
-    .attr("text-anchor", "middle")
-    .text(d => d.label)
-    .attr("font-size", "15px")
-    .attr("fill", "black");
+
+  if (common.vertexLabel) {
+    const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
+    labelsSelection.exit().remove();
+    labelsSelection.enter()
+      .append("text")
+      .merge(labelsSelection)
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "middle")
+      .text(d => d.label)
+      .attr("font-size", "15px")
+      .attr("fill", "black");
+  } else {
+    nodeGroup.selectAll("text").remove();
+  }
 }
 
 function selectElement(element = "node", d) {

@@ -1,6 +1,6 @@
 import $ from "jquery"
 import interact from 'interactjs';
-import { common } from "../init";
+import { common, updateGraph, History } from "../init";
 
 // Selecting elements
 const $gridSizeInput = $('#grid-size');
@@ -25,9 +25,19 @@ $('#grid-btn label, .check').on('click', function () {
       { "opacity": "1" }
     );
   }
-
 });
 
+$('#vertex-label').on('click', function () {
+  let check = $('#vertex-label .check');
+  if (check.is(':visible')) {
+    check.hide();
+    common.vertexLabel = false
+  } else {
+    common.vertexLabel = true
+    check.show();
+  }
+  updateGraph(History.graph)
+});
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
