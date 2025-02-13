@@ -209,11 +209,17 @@ export function updateGraph(graph) {
     .attr("stroke-width", 3)
     .on("click touchend", function (event, d) {
       if (event.ctrlKey || event.type === "touchend") {
-        selectElement("node", d);
+        selectElement("node", d.id);
       }
     })
     .on("dblclick", function (event, d) {
-      selectElement("node", d);
+      if (common.dragComponent) {
+        for (let node of getComponent(History.graph, d.id)) {
+          selectElement("node", node);
+        }
+      } else {
+        selectElement("node", d.id);
+      }
       console.log("select node")
     })
     .on("mouseover", function () {
@@ -249,10 +255,10 @@ export function updateGraph(graph) {
 
 function selectElement(element = "node", d) {
   if (element == "node") {
-    if (selectedNode.includes(d.id)) {
-      removeString(selectedNode, d.id)
+    if (selectedNode.includes(d)) {
+      removeString(selectedNode, d)
     } else {
-      selectedNode.push(d.id)
+      selectedNode.push(d)
     }
   }
   if (element == "edge") {
@@ -286,9 +292,7 @@ export function updateHistory(History, status = 'update') {
 
     default:
       console.log("update")
-      const graphData = History.graph.export();
-      const graphClone = new Graph();
-      graphClone.import(graphData);
+      const graphClone = History.graph.copy();
       History.data.length = History.index + 1
       History.push(graphClone);
       break;
