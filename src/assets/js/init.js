@@ -59,14 +59,6 @@ function addNodeAtEvent(event) {
   updateGraph(History.graph);
 }
 
-svg.on("click", (event) => {
-  if (!keyDown[0] && event.target.tagName === "svg") { // Check if the click is on the empty canvas
-    selectedNode.length = 0; // Deselect any selected node
-    selectedEdge.length = 0;
-    updateGraph(History.graph); // Re-draw nodes and edges
-  }
-});
-
 // Dragging behavior
 const dragNode = d3.drag()
   .on("start", (event, d) => {
@@ -301,4 +293,72 @@ export function updateHistory(History, status = 'update') {
   updateGraph(History.graph);
 
 }
+
+// Selection Box
+let selectionBox = svg.append("rect")
+  .attr("fill", "rgba(0, 0, 200, 0.2)") // Semi-transparent blue
+  .attr("stroke", "blue")
+  .attr("stroke-dasharray", "4")
+  .style("display", "none");
+
+let startX, startY;
+
+// Mouse Down - Start Selection
+svg.on("mousedown", function (event) {
+  if (event.target.tagName !== "svg") return; // Only start if clicking on empty space
+
+  const [x, y] = d3.pointer(event);
+  startX = x;
+  startY = y;
+
+  selectionBox
+    .attr("x", x)
+    .attr("y", y)
+    .attr("width", 0)
+    .attr("height", 0)
+    .style("display", "block");
+
+  svg.on("mousemove", function (event) {
+    const [newX, newY] = d3.pointer(event);
+
+    selectionBox
+      .attr("x", Math.min(startX, newX))
+      .attr("y", Math.min(startY, newY))
+      .attr("width", Math.abs(newX - startX))
+      .attr("height", Math.abs(newY - startY));
+  });
+
+  svg.on("mouseup", function () {
+    const x = parseFloat(selectionBox.attr("x")),
+      y = parseFloat(selectionBox.attr("y")),
+      w = parseFloat(selectionBox.attr("width")),
+      h = parseFloat(selectionBox.attr("height"));
+
+    // Select nodes inside the box
+    selectedNode.length = 0;
+    selectedEdge.length = 0;
+
+    nodeGroup.selectAll("circle").each(function (d) {
+      if (d.x >= x && d.x <= x + w && d.y >= y && d.y <= y + h) {
+        selectElement("node", d.id); // Store selected node ID
+      }
+    });
+
+    edgeGroup.selectAll("line").each(function (d) {
+      const sx = History.graph.getNodeAttribute(History.graph.source(d), 'x');
+      const sy = History.graph.getNodeAttribute(History.graph.source(d), 'y');
+      const tx = History.graph.getNodeAttribute(History.graph.target(d), 'x');
+      const ty = History.graph.getNodeAttribute(History.graph.target(d), 'y');
+
+      if ((sx >= x && sx <= x + w && sy >= y && sy <= y + h) ||
+        (tx >= x && tx <= x + w && ty >= y && ty <= y + h)) {
+        selectElement("edge", d); // Store selected edge
+      }
+    });
+
+    updateGraph(History.graph); // Re-draw the graph with selection changes
+    selectionBox.style("display", "none"); // Hide selection box
+    svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
+  });
+});
 
