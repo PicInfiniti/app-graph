@@ -208,7 +208,14 @@ export function updateGraph(graph) {
     .attr("stroke-width", 3)
     .on("click touchend", function (event, d) {
       if (event.ctrlKey || event.type === "touchend") {
-        selectElement("node", d.id);
+        if (common.dragComponent) {
+          for (let node of getComponent(History.graph, d.id)) {
+            selectElement("node", node);
+          }
+        } else {
+          selectElement("node", d.id);
+        }
+        console.log("select node")
       }
     })
     .on("dblclick", function (event, d) {
