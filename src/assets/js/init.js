@@ -16,6 +16,9 @@ export const common = {
   hover: false,
   dragComponent: false,
   vertexLabel: true,
+  node_radius: 10,
+  edge_size: 2,
+  label_size: 15,
   x: 0,
   y: 0
 }
@@ -160,7 +163,7 @@ export function updateGraph(graph) {
       if (selectedEdge.includes(d)) return "orange"
       return graph.getEdgeAttribute(d, 'color')
     })
-    .attr("stroke-width", 2)
+    .attr("stroke-width", common.edge_size)
     .on("click touchend", function (event, d) {
       if (event.ctrlKey || event.type === "touchend") {
         selectElement("edge", d);
@@ -193,7 +196,7 @@ export function updateGraph(graph) {
     .merge(nodesSelection)
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
-    .attr("r", 10)
+    .attr("r", common.node_radius)
     .attr("fill", d => {
       if (common.vertexLabel) {
         return "white"
@@ -257,7 +260,7 @@ export function updateGraph(graph) {
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
       .text(d => d.label)
-      .attr("font-size", "15px")
+      .attr("font-size", `${common.label_size}px`)
       .attr("fill", "black");
   } else {
     nodeGroup.selectAll("text").remove();
@@ -353,6 +356,7 @@ svg.on("mousedown", function (event) {
       w = parseFloat(selectionBox.attr("width")),
       h = parseFloat(selectionBox.attr("height"));
 
+
     // Select nodes inside the box
     selectedNode.length = 0;
     selectedEdge.length = 0;
@@ -369,8 +373,10 @@ svg.on("mousedown", function (event) {
       const tx = History.graph.getNodeAttribute(History.graph.target(d), 'x');
       const ty = History.graph.getNodeAttribute(History.graph.target(d), 'y');
 
-      if ((sx >= x && sx <= x + w && sy >= y && sy <= y + h) ||
-        (tx >= x && tx <= x + w && ty >= y && ty <= y + h)) {
+      const rect = { x: x, y: y, width: w, height: h };
+      const line = [{ x: sx, y: sy }, { x: tx, y: ty }];
+
+      if (lineIntersectsRect(line, rect)) {
         selectElement("edge", d); // Store selected edge
       }
     });
@@ -380,4 +386,42 @@ svg.on("mousedown", function (event) {
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
   });
 });
+
+function lineIntersectsLine(p1, p2, q1, q2) {
+  function crossProduct(a, b) {
+    return a.x * b.y - a.y * b.x;
+  }
+
+  let r = { x: p2.x - p1.x, y: p2.y - p1.y };
+  let s = { x: q2.x - q1.x, y: q2.y - q1.y };
+
+  let rxs = crossProduct(r, s);
+  let qpxr = crossProduct({ x: q1.x - p1.x, y: q1.y - p1.y }, r);
+
+  if (rxs === 0) return false; // Lines are parallel or collinear
+
+  let t = crossProduct({ x: q1.x - p1.x, y: q1.y - p1.y }, s) / rxs;
+  let u = qpxr / rxs;
+
+  return (t >= 0 && t <= 1 && u >= 0 && u <= 1);
+}
+
+function lineIntersectsRect(line, rect) {
+  let { x, y, width, height } = rect;
+
+  let rectEdges = [
+    [{ x, y }, { x: x + width, y }],            // Top edge
+    [{ x: x + width, y }, { x: x + width, y: y + height }], // Right edge
+    [{ x: x + width, y: y + height }, { x, y: y + height }], // Bottom edge
+    [{ x, y: y + height }, { x, y }]            // Left edge
+  ];
+
+  for (let edge of rectEdges) {
+    if (lineIntersectsLine(line[0], line[1], edge[0], edge[1])) {
+      return true;
+    }
+  }
+
+  return false;
+}
 

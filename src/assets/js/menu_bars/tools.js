@@ -1,43 +1,6 @@
 import $ from "jquery"
 import interact from 'interactjs';
-import { common, updateGraph, History } from "../init";
-
-// Selecting elements
-const $gridSizeInput = $('#grid-size');
-const $root = $(':root');
-
-// Event listener to update grid size dynamically
-$gridSizeInput.on('input', function () {
-  const gridSize = $(this).val();
-  $root.css('--grid-size', `${gridSize}px`);
-});
-
-$('#grid-btn label, .check').on('click', function () {
-  let check = $('#grid-btn .check');
-  $(".container").toggleClass("grid-hidden");
-
-  if ($(".container").hasClass("grid-hidden")) {
-    check.css(
-      { "opacity": "0" }
-    );
-  } else {
-    check.css(
-      { "opacity": "1" }
-    );
-  }
-});
-
-$('#vertex-label').on('click', function () {
-  let check = $('#vertex-label .check');
-  if (check.is(':visible')) {
-    check.hide();
-    common.vertexLabel = false
-  } else {
-    common.vertexLabel = true
-    check.show();
-  }
-  updateGraph(History.graph)
-});
+import { common } from "../init";
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');

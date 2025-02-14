@@ -1,6 +1,3 @@
-// Importing necessary libraries
-import $ from "jquery";
-
 // Importing styles
 import './assets/sass/style.sass';
 
@@ -25,4 +22,5 @@ import "./assets/js/menu_bars/file";
 import "./assets/js/menu_bars/edit";
 import "./assets/js/menu_bars/tools";
 import "./assets/js/menu_bars/analyze";
+import "./assets/js/menu_bars/setting";
 import "./assets/js/menu_bars/help";
