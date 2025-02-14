@@ -327,7 +327,7 @@ let startX, startY;
 
 // Mouse Down - Start Selection
 svg.on("mousedown", function (event) {
-  if (event.target.tagName !== "svg") return; // Only start if clicking on empty space
+  if (event.target.tagName !== "svg") return; // Only start selection if clicking on empty space
 
   const [x, y] = d3.pointer(event);
   startX = x;
@@ -351,77 +351,79 @@ svg.on("mousedown", function (event) {
   });
 
   svg.on("mouseup", function () {
-    const x = parseFloat(selectionBox.attr("x")),
-      y = parseFloat(selectionBox.attr("y")),
-      w = parseFloat(selectionBox.attr("width")),
-      h = parseFloat(selectionBox.attr("height"));
+    const x1 = parseFloat(selectionBox.attr("x")),
+      y1 = parseFloat(selectionBox.attr("y")),
+      x2 = x1 + parseFloat(selectionBox.attr("width")),
+      y2 = y1 + parseFloat(selectionBox.attr("height"));
 
-
-    // Select nodes inside the box
+    // Clear previous selections
     selectedNode.length = 0;
     selectedEdge.length = 0;
 
+    // Select nodes inside the box
     nodeGroup.selectAll("circle").each(function (d) {
-      if (d.x >= x && d.x <= x + w && d.y >= y && d.y <= y + h) {
+      if (pointInRect(d.x, d.y, x1, y1, x2, y2)) {
         selectElement("node", d.id); // Store selected node ID
       }
     });
 
+    // Select edges that have at least one endpoint inside OR intersect the selection box
     edgeGroup.selectAll("line").each(function (d) {
       const sx = History.graph.getNodeAttribute(History.graph.source(d), 'x');
       const sy = History.graph.getNodeAttribute(History.graph.source(d), 'y');
       const tx = History.graph.getNodeAttribute(History.graph.target(d), 'x');
       const ty = History.graph.getNodeAttribute(History.graph.target(d), 'y');
 
-      const rect = { x: x, y: y, width: w, height: h };
-      const line = [{ x: sx, y: sy }, { x: tx, y: ty }];
-
-      if (lineIntersectsRect(line, rect)) {
-        selectElement("edge", d); // Store selected edge
+      if (
+        pointInRect(sx, sy, x1 + 10, y1 + 10, x2 - 10, y2 - 10) ||
+        pointInRect(tx, ty, x1 + 10, y1 + 10, x2 - 10, y2 - 10) ||
+        lineIntersectsRect([sx, sy, tx, ty], [x1, y1, x2, y2])
+      ) {
+        selectElement("edge", d);
       }
     });
 
-    updateGraph(History.graph); // Re-draw the graph with selection changes
+    updateGraph(History.graph); // Re-draw the graph with selections
     selectionBox.style("display", "none"); // Hide selection box
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
   });
 });
 
-function lineIntersectsLine(p1, p2, q1, q2) {
-  function crossProduct(a, b) {
-    return a.x * b.y - a.y * b.x;
-  }
-
-  let r = { x: p2.x - p1.x, y: p2.y - p1.y };
-  let s = { x: q2.x - q1.x, y: q2.y - q1.y };
-
-  let rxs = crossProduct(r, s);
-  let qpxr = crossProduct({ x: q1.x - p1.x, y: q1.y - p1.y }, r);
-
-  if (rxs === 0) return false; // Lines are parallel or collinear
-
-  let t = crossProduct({ x: q1.x - p1.x, y: q1.y - p1.y }, s) / rxs;
-  let u = qpxr / rxs;
-
-  return (t >= 0 && t <= 1 && u >= 0 && u <= 1);
-}
+// Function to check if a line (edge) intersects the selection box
 
 function lineIntersectsRect(line, rect) {
-  let { x, y, width, height } = rect;
+  let [x1, y1, x2, y2] = line;  // Line segment coordinates
+  let [a, b, c, d] = rect;  // Rectangle properties
 
-  let rectEdges = [
-    [{ x, y }, { x: x + width, y }],            // Top edge
-    [{ x: x + width, y }, { x: x + width, y: y + height }], // Right edge
-    [{ x: x + width, y: y + height }, { x, y: y + height }], // Bottom edge
-    [{ x, y: y + height }, { x, y }]            // Left edge
-  ];
-
-  for (let edge of rectEdges) {
-    if (lineIntersectsLine(line[0], line[1], edge[0], edge[1])) {
-      return true;
-    }
+  // Check if the line intersects any of the rectangle's edges
+  if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) {
+    return true;  // Intersection found
   }
-
-  return false;
+  if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) {
+    return true;  // Intersection found
+  }
+  return false;  // No intersection
 }
 
+// returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
+function lineIntersectsLine(line1, line2) {
+  var det, gamma, lambda;
+  const [a, b, c, d] = line1
+  const [p, q, r, s] = line2
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
+};
+
+function pointInRect(a, b, x1, y1, x2, y2) {
+  if (a >= x1 && a <= x2 && b >= y1 && b <= y2) {
+    return true
+  } else {
+    return false
+  }
+}
