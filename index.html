@@ -7,7 +7,7 @@
     <title>Graph Studio</title>
 
     <link rel="icon" href="./favicon.svg" type="image/gif">
-    <script type="module" crossorigin src="/assets/main-DIuzaskS.js"></script>
+    <script type="module" crossorigin src="/assets/main-Cjr6Zcbf.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/main-CMLeeXYF.css">
   </head>
   <body>
@@ -36,15 +36,6 @@
           </li>
           <li class="menu-item">Tools
             <ul class="dropdown">
-              <li id="grid-btn">
-                <label for="grid-size">Grid</label>
-                <input type="range" id="grid-size" min="5" max="50" value="20">
-                <span class="check">&#10004;</span>
-              </li>
-              <li id="vertex-label">
-                <span>Veterx Label</span>
-                <span class="check">&#10004;</span>
-              </li>
               <li id="panel-btn">
                 <span>Info Panel</span>
                 <span class="check">&#10004;</span>
@@ -62,6 +53,32 @@
               <li id="components-btn">Components</li>
             </ul>
           </li>
+
+          <li class="menu-item">Setting
+            <ul class="dropdown">
+              <li id="grid-btn">
+                <label for="grid-size">Grid</label>
+                <input type="range" id="grid-size" min="0" max="50" value="20">
+              </li>
+              <li id="vertex-btn">
+                <label for="vertex-size">VSize</label>
+                <input type="range" id="vertex-size" min="0" max="50" value="10">
+              </li>
+              <li>
+                <label for="edge-size">ESize</label>
+                <input type="range" id="edge-size" min="1" max="20" value="2">
+              </li>
+              <li>
+                <label for="label-size">LSize</label>
+                <input type="range" id="label-size" min="1" max="100" value="15">
+              </li>
+              <li id="vertex-label">
+                <span>Veterx Label</span>
+                <span class="check">&#10004;</span>
+              </li>
+            </ul>
+          </li>
+
           <li class="menu-item">Help
             <ul class="dropdown">
               <a href="https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3" target="_blank"><li>How to use</li></a>
