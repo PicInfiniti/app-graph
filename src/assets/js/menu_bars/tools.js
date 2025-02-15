@@ -8,7 +8,7 @@ $('#panel-btn').on('click', function () {
 
   if (panel.is(':visible')) {
     panel.hide();
-    check.hide();
+    check.addClass("hidden");
   } else {
     // Reset Interact.js position
     panel.css({
@@ -18,7 +18,8 @@ $('#panel-btn').on('click', function () {
     panel.attr('data-y', 0);
 
     panel.show();
-    check.show();
+    check.removeClass("hidden");
+
   }
 });
 
@@ -46,12 +47,12 @@ interact('#floating-panel')
 
 
 $('#drag-btn').on('click', function () {
-  let check = $('#drag-btn .check');
-  if (check.is(':visible')) {
-    check.hide();
+  if (common.dragComponent) {
+    $('#drag-btn .check').addClass("hidden")
     common.dragComponent = false
   } else {
+    $('#drag-btn .check').removeClass("hidden")
     common.dragComponent = true
-    check.show();
   }
+  console.log(common.dragComponent)
 });

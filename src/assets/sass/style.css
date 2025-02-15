@@ -134,7 +134,7 @@ body {
 }
 .menu-bar .menu-item {
   position: relative;
-  padding: 10px 20px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .menu-bar .menu-item li {
@@ -156,13 +156,13 @@ body {
   background-color: #ffffff;
   border: 1px solid #ddd;
   list-style-type: none;
-  padding: 0;
+  padding: 5px;
   margin: 0;
   min-width: 200px;
   z-index: 20;
 }
 .menu-bar .dropdown li {
-  padding: 10px;
+  padding: 5px;
   cursor: pointer;
 }
 .menu-bar .dropdown li span:nth-child(2) {
@@ -187,16 +187,13 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.menu-bar .dropdown #drag-btn .check {
-  display: none;
-}
 
 #custom-context-menu {
-  display: none;
   position: absolute;
   background: white;
   border: 1px solid gray;
   padding: 5px;
+  z-index: 20;
 }
 #custom-context-menu * {
   user-select: none;
@@ -214,7 +211,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
   cursor: pointer;
 }
 #custom-context-menu ul li span:nth-child(2) {
@@ -273,6 +270,10 @@ body {
 
 .grid-hidden {
   background-image: none !important;
+}
+
+.hidden {
+  opacity: 0 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

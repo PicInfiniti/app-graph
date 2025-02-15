@@ -19,6 +19,7 @@ export const common = {
   node_radius: 10,
   edge_size: 2,
   label_size: 15,
+  info_panel: true,
   x: 0,
   y: 0
 }
@@ -327,6 +328,7 @@ let startX, startY;
 
 // Mouse Down - Start Selection
 svg.on("mousedown", function (event) {
+  if (event.button !== 0) return
   if (event.target.tagName !== "svg") return; // Only start selection if clicking on empty space
 
   const [x, y] = d3.pointer(event);

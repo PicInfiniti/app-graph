@@ -104,6 +104,7 @@ body
     .close:hover 
       color: red
       cursor: pointer 
+
   .body-info
     padding: 0 10px 10px 10px
     overflow: auto
@@ -111,9 +112,6 @@ body
     cursor: text
     .body div
       padding: 1px
-
-
-
 
 .menu-bar 
   background-color: #f4f4f4
@@ -126,22 +124,22 @@ body
     margin: 0
     padding: 0
     display: flex
-  
 
   .menu-item 
     position: relative
-    padding: 10px 20px
+    padding: 5px 10px
     cursor: pointer
+
     li
       display: flex
       justify-content: space-between
       align-items: center
+
     &:hover 
       background-color: #e0e0e0
       
       .dropdown 
         display: block
-
 
   .dropdown 
     display: none
@@ -151,19 +149,20 @@ body
     background-color: #ffffff
     border: 1px solid #ddd
     list-style-type: none
-    padding: 0
+    padding: 5px
     margin: 0
     min-width: 200px
     z-index: 20
 
     li 
-      padding: 10px
+      padding: 5px
       cursor: pointer
       span:nth-child(2)
         color: rgb(100,100,100)
 
       &:hover 
         background-color: #f4f4f4
+
     #grid-btn
       margin: 0
       padding: 0
@@ -172,22 +171,19 @@ body
       input
         margin-left: 10px
         margin-right: 10px
+
     #panel-btn
       display: flex
       justify-content: space-between
       align-items: center
 
-    #drag-btn .check
-      display: none
-
-
 
 #custom-context-menu
-  display: none 
   position: absolute  
   background: white 
   border: 1px solid gray 
   padding: 5px
+  z-index: 20
 
   *
     user-select: none
@@ -205,11 +201,10 @@ body
       display: flex
       justify-content: space-between
       align-items: center
-      padding: 10px
+      padding: 5px
       cursor: pointer
       span:nth-child(2)
         color: rgb(100,100,100)
-
 
       &:hover 
         background-color: #f4f4f4
@@ -262,3 +257,6 @@ body
 
 .grid-hidden 
   background-image: none !important
+
+.hidden
+  opacity: 0 !important

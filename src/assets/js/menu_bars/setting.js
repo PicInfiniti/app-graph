@@ -16,20 +16,6 @@ $gridSizeInput.on('input', function () {
   }
 });
 
-$('#grid-btn label, .check').on('click', function () {
-  let check = $('#grid-btn .check');
-
-  if ($(".container").hasClass("grid-hidden")) {
-    check.css(
-      { "opacity": "0" }
-    );
-  } else {
-    check.css(
-      { "opacity": "1" }
-    );
-  }
-});
-
 $('#vertex-size').on('input', function () {
   common.node_radius = $(this).val();
   updateGraph(History.graph)
@@ -47,12 +33,12 @@ $('#label-size').on('input', function () {
 
 $('#vertex-label').on('click', function () {
   let check = $('#vertex-label .check');
-  if (check.is(':visible')) {
-    check.hide();
+  if (common.vertexLabel) {
+    check.addClass("hidden");
     common.vertexLabel = false
   } else {
     common.vertexLabel = true
-    check.show();
+    check.removeClass("hidden");
   }
   updateGraph(History.graph)
 });
