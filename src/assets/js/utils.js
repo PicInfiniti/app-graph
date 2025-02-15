@@ -2,7 +2,7 @@ import { connectedComponents } from "graphology-components";
 
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
-  let minNumber = 1;
+  let minNumber = 0;
 
   while (numberSet.has(minNumber)) {
     minNumber++;
@@ -33,7 +33,7 @@ export function getAvailableLabel(n, maxLength = 3) {
     currentLength++;
   }
 
-  return combinations[n - 1] || null;
+  return combinations[n] || null;
 }
 
 export const includesById = (array, id) => array.some(obj => obj.id === id);

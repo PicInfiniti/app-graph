@@ -165,6 +165,7 @@ export function updateGraph(graph) {
       if (graph.getEdgeAttribute(d, 'color')) {
         return graph.getEdgeAttribute(d, 'color')
       } else {
+        graph.setEdgeAttribute(d, 'color', color)
         return color
       }
     })
@@ -218,6 +219,7 @@ export function updateGraph(graph) {
       if (d.color) {
         return d.color
       } else {
+        graph.setNodeAttribute(d.id, 'color', color)
         return color
       }
     })
@@ -272,7 +274,15 @@ export function updateGraph(graph) {
       .attr("y", d => d.y)
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
-      .text(d => d.label)
+      .text(d => {
+        if (d.label) {
+          return d.label
+        } else {
+          const label = getAvailableLabel(d.id)
+          graph.setNodeAttribute(d.id, 'label', label)
+          return label
+        }
+      })
       .attr("font-size", `${common.label_size}px`)
       .attr("fill", "black");
   } else {
