@@ -2,7 +2,6 @@ import $ from "jquery";
 import * as d3 from 'd3';
 import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, removeString, lineIntersectsRect, pointInRect } from './utils';
-import { keyDown } from '../../main';
 import { LimitedArray, getTouchPosition } from './utils';
 import { getComponent } from "./utils";
 
@@ -146,6 +145,7 @@ const dragEdge = d3.drag()
   })
 
 export function updateGraph(graph) {
+  const color = $("#color").val();
   const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
   const edges = graph.edges();
 
@@ -162,7 +162,11 @@ export function updateGraph(graph) {
     .attr("y2", d => graph.getNodeAttribute(graph.target(d), 'y'))
     .attr("stroke", d => {
       if (selectedEdge.includes(d)) return "orange"
-      return graph.getEdgeAttribute(d, 'color')
+      if (graph.getEdgeAttribute(d, 'color')) {
+        return graph.getEdgeAttribute(d, 'color')
+      } else {
+        return color
+      }
     })
     .attr("stroke-width", common.edge_size)
     .on("click touchend", function (event, d) {
@@ -202,12 +206,20 @@ export function updateGraph(graph) {
       if (common.vertexLabel) {
         return "white"
       } else {
-        return d.color
+        if (d.color) {
+          return d.color
+        } else {
+          return color
+        }
       }
     })
     .attr("stroke", d => {
       if (selectedNode.includes(d.id)) return "orange"
-      return d.color
+      if (d.color) {
+        return d.color
+      } else {
+        return color
+      }
     })
     .attr("stroke-width", 3)
     .on("click touchend", function (event, d) {

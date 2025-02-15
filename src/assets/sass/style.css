@@ -126,7 +126,11 @@ body {
   padding: 0;
   margin: 0;
 }
-.menu-bar ul {
+.menu-bar hr {
+  opacity: 0.5;
+  width: 90%;
+}
+.menu-bar > ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -136,11 +140,6 @@ body {
   position: relative;
   padding: 5px 10px;
   cursor: pointer;
-}
-.menu-bar .menu-item li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 .menu-bar .menu-item:hover {
   background-color: #e0e0e0;
@@ -162,25 +161,33 @@ body {
   z-index: 20;
 }
 .menu-bar .dropdown li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 5px;
   cursor: pointer;
 }
 .menu-bar .dropdown li span:nth-child(2) {
   color: rgb(100, 100, 100);
 }
+.menu-bar .dropdown li ul {
+  display: none;
+  position: absolute;
+  top: 95%;
+  left: 35%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  list-style-type: none;
+  padding: 5px;
+  margin: 0;
+  min-width: 200px;
+  z-index: 20;
+}
 .menu-bar .dropdown li:hover {
   background-color: #f4f4f4;
 }
-.menu-bar .dropdown #grid-btn {
-  margin: 0;
-  padding: 0;
-}
-.menu-bar .dropdown #grid-btn label, .menu-bar .dropdown #grid-btn span {
-  padding: 10px;
-}
-.menu-bar .dropdown #grid-btn input {
-  margin-left: 10px;
-  margin-right: 10px;
+.menu-bar .dropdown li:hover ul {
+  display: block;
 }
 .menu-bar .dropdown #panel-btn {
   display: flex;

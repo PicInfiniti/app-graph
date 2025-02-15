@@ -2,21 +2,27 @@ import $ from "jquery"
 import { svg, History, updateGraph, selectedNode, selectedEdge, updateHistory } from "../init"
 
 // Attach the circular layout function to the button
-$("[name='organize-circle']").on("click", organizeNodesInCircle);
+$("[name='organize-circle']").on("click", function () {
+  updateHistory(History, "update")
+  organizeNodesInCircle(History.graph, svg)
+  updateGraph(History.graph);
+  selectedNode.length = 0; // Deselect any selected node
+  selectedEdge.length = 0;
+});
+
 $('[name="make-complete-btn"]').on('click', makeGraphComplete);
 $('[name="remove-selection-btn"]').on('click', removeSelection);
 $('[name="color-selection-btn"]').on('click', colorSelection);
 $('[name="add-edge-btn"]').on('click', addEdge);
 
-function organizeNodesInCircle() {
-  updateHistory(History, "update")
+export function organizeNodesInCircle(graph, svg) {
   const centerX = svg.node().getBoundingClientRect().width / 2;
   const centerY = svg.node().getBoundingClientRect().height / 2;
   const radius = Math.min(centerX * .8, centerY * .8)
-  const angleStep = -(2 * Math.PI) / History.graph.order;
-  History.graph.forEachNode((id, attributes) => {
+  const angleStep = -(2 * Math.PI) / graph.order;
+  graph.forEachNode((id, attributes) => {
     const angle = id * angleStep - Math.PI / 2;
-    History.graph.updateNodeAttributes(id, attr => {
+    graph.updateNodeAttributes(id, attr => {
       return {
         label: attr.label,
         color: attr.color,
@@ -25,11 +31,6 @@ function organizeNodesInCircle() {
       };
     });
   });
-
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
-
-  updateGraph(History.graph); // Re-draw graph
 }
 
 

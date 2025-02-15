@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { updateGraph, History, updateHistory, svg } from "../init"
+import { updateGraph, History, updateHistory } from "../init"
 import { saveSvgAsPng } from 'save-svg-as-png';
 
 $('#new-btn').on('click', function () {
@@ -67,16 +67,10 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-
-
-$('#export-png').on('click', function () {
-  downloadPNG()
-  console.log("download png")
-});
-
-
 function downloadPNG() {
   const svgElement = document.querySelector("#chart svg");
   saveSvgAsPng(svgElement, "chart.png", { scale: 2 });
 }
+
+
 
