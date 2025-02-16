@@ -7,8 +7,8 @@
     <title>Graph Studio</title>
 
     <link rel="icon" href="./favicon.svg" type="image/gif">
-    <script type="module" crossorigin src="/assets/main-5OJttP2h.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/main-BTojF3Xm.css">
+    <script type="module" crossorigin src="/assets/main-BSqRoiqA.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/main-vybTnxL1.css">
   </head>
   <body>
     <div class="container">
@@ -81,9 +81,20 @@
                     <label for="g-complete"><span>K<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_graph" target="_blank">?</a></label>
                     <input type="number" id="g-complete" min="1" max="500" value="5">
                   </li>
+                  <li id="g-complete-bipartite-btn">
+                    <label for="g-complete-bipartie"><span>K<sub>n,n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_bipartite_graph" target="_blank">?</a></label>
+                  <div>
+                    <input type="number" id="g-complete-bipartite-1" min="1" max="500" value="5">
+                    <input type="number" id="g-complete-bipartite-2" min="1" max="500" value="5">
+                  </div>
+                  </li>
                   <li id="g-path-btn">
                     <label for="g-path"><span>P<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Path_graph" target="_blank">?</a></label>
                     <input type="number" id="g-path" min="2" max="500" value="5">
+                  </li>
+                  <li id="g-cycle-btn">
+                    <label for="g-cycle"><span>C<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Cycle_graph" target="_blank">?</a></label>
+                    <input type="number" id="g-cycle" min="3" max="500" value="5">
                   </li>
                   <li id="g-ladder-btn">
                     <label for="g-ladder"><span>L<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Ladder_graph" target="_blank">?</a></label>
