@@ -89,7 +89,7 @@ body {
   font-family: Arial, sans-serif;
   font-size: 14px;
   z-index: 15;
-  display: none;
+  display: flex;
   flex-direction: column;
 }
 #floating-panel #info {
