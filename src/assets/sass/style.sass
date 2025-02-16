@@ -161,8 +161,6 @@ body
       span:nth-child(2)
         color: rgb(100,100,100)
 
-
-
       > ul 
         display: none
         position: absolute
@@ -176,16 +174,20 @@ body
         min-width: 200px
         z-index: 20
 
-        li 
+        li
           input
             &[type=number]
               width: 50px
+          div
+            display: flex
+            gap: 5px
+
           label
             display: flex
             align-items: center
             width: 100%
             span:first-child
-              width: 25px
+              width: 30px
             a
               border: 1px solid gray
               width: 12px

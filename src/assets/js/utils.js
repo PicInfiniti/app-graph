@@ -161,11 +161,11 @@ export function organizeNodesInLine(graph, svg) {
 }
 
 
-export function organizeNodesInTwoLines(graph, svg, line1Count) {
+export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
   const svgBounds = svg.node().getBoundingClientRect();
   const centerY = svgBounds.height / 2;
-  const paddingX = 100; // Horizontal padding
-  const paddingY = 50; // Vertical spacing between lines
+  const paddingX = 200; // Horizontal padding
+  const paddingY = Y; // Vertical spacing between lines
 
   const nodeIds = Array.from(graph.nodes()); // Get all node IDs
   const totalNodes = nodeIds.length;
