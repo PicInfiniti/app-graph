@@ -87,11 +87,21 @@ const dragNode = d3.drag()
         }));
       }
     } else {
-      History.graph.updateNodeAttributes(d.id, attrs => ({
-        ...attrs,
-        x: attrs.x + distanceX,
-        y: attrs.y + distanceY
-      }));
+      for (let node of selectedNode) {
+        History.graph.updateNodeAttributes(node, attrs => ({
+          ...attrs,
+          x: attrs.x + distanceX,
+          y: attrs.y + distanceY
+        }));
+      }
+      if (!selectedNode.includes(d.id)) {
+        History.graph.updateNodeAttributes(d.id, attrs => ({
+          ...attrs,
+          x: attrs.x + distanceX,
+          y: attrs.y + distanceY
+        }));
+
+      }
     }
 
     common.x = event.x;
