@@ -120,7 +120,11 @@ document.addEventListener("keydown", (event) => {
       makeGraphComplete();
       break;
     case "O":
-      organizeNodesInCircle();
+      updateHistory(History, "update")
+      organizeNodesInCircle(History.graph, svg)
+      updateGraph(History.graph);
+      selectedNode.length = 0; // Deselect any selected node
+      selectedEdge.length = 0;
       break;
     case "d":
       removeSelection();
@@ -154,5 +158,6 @@ $('[name="undo-btn"]').on('click', function () {
 $('[name="redo-btn"]').on('click', function () {
   updateHistory(History, "redo"); // Update the graph to include the new node
 });
+
 
 

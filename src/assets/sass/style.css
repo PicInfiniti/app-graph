@@ -89,7 +89,7 @@ body {
   font-family: Arial, sans-serif;
   font-size: 14px;
   z-index: 15;
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 #floating-panel #info {
@@ -170,11 +170,11 @@ body {
 .menu-bar .dropdown li span:nth-child(2) {
   color: rgb(100, 100, 100);
 }
-.menu-bar .dropdown li ul {
+.menu-bar .dropdown li > ul {
   display: none;
   position: absolute;
   top: 90%;
-  left: 60%;
+  left: 30%;
   background-color: #ffffff;
   border: 1px solid #ddd;
   list-style-type: none;
@@ -182,6 +182,30 @@ body {
   margin: 0;
   min-width: 200px;
   z-index: 20;
+}
+.menu-bar .dropdown li > ul li input[type=number] {
+  width: 50px;
+}
+.menu-bar .dropdown li > ul li label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.menu-bar .dropdown li > ul li label span:first-child {
+  width: 25px;
+}
+.menu-bar .dropdown li > ul li label a {
+  border: 1px solid gray;
+  width: 12px;
+  height: 12px;
+  font-size: 10px;
+  display: flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+}
+.menu-bar .dropdown li > ul li label a:hover {
+  cursor: help;
 }
 .menu-bar .dropdown li:hover {
   background-color: #f4f4f4;

@@ -10,6 +10,7 @@ export const selectedNode = [];
 export const selectedEdge = [];
 export let pressTimer = null;
 export const History = new LimitedArray(50);
+window.History = History
 export const common = {
   lastTapTime: 0,
   hover: false,
@@ -254,8 +255,16 @@ export function updateGraph(graph) {
     })
     .on("mouseout", function () {
       d3.select(this).attr("stroke", d => {
-        if (selectedNode.includes(d.id)) return "orange"
-        else return d.color
+        if (selectedNode.includes(d.id)) {
+          return "orange"
+        } else {
+          if (d.color) {
+            return d.color
+          } else {
+            graph.setNodeAttribute(d.id, 'color', color)
+            return color
+          }
+        }
       });
       clearTimeout(pressTimer); // Cancel selection if user moves or lifts finger
       common.hover = false;

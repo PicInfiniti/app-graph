@@ -20,7 +20,6 @@
               <li id="export-graph"><span>Save</span><span>(s)</span></li>
               <li id="export-png"><span>Export as PNG</span><span>(p)</span></li>
               <input type="file" id="file-input" hidden>
-              <li id="test"><span>Test</span><span>(t)</span></li>
             </ul>
           </li>
           <li class="menu-item">Edit
@@ -73,26 +72,23 @@
               <hr>
               <li><span>Generator</span><span>></span>
                 <ul>
+                  <li id="g-empty-btn">
+                    <label for="g-empty">Empty</label>
+                    <input type="number" id="g-empty" min="1" max="500" value="5">
+                  </li>
                   <li id="g-complete-btn">
-                    <label for="grid-size">Complete</label>
+                    <label for="g-complete"><span>K<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_graph" target="_blank">?</a></label>
                     <input type="number" id="g-complete" min="1" max="500" value="5">
                   </li>
-                  <li id="vertex-btn">
-                    <label for="vertex-size">VSize</label>
-                    <input type="range" id="vertex-size" min="0" max="50" value="10">
+                  <li id="g-path-btn">
+                    <label for="g-path"><span>P<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Path_graph" target="_blank">?</a></label>
+                    <input type="number" id="g-path" min="2" max="500" value="5">
                   </li>
-                  <li>
-                    <label for="edge-size">ESize</label>
-                    <input type="range" id="edge-size" min="1" max="20" value="2">
+                  <li id="g-ladder-btn">
+                    <label for="g-ladder"><span>L<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Ladder_graph" target="_blank">?</a></label>
+                    <input type="number" id="g-ladder" min="2" max="500" value="5">
                   </li>
-                  <li>
-                    <label for="label-size">LSize</label>
-                    <input type="range" id="label-size" min="0" max="100" value="15">
-                  </li>
-                  <li id="vertex-label">
-                    <span>Veterx Label</span>
-                    <span class="check">&#10004;</span>
-                  </li>
+
                 </ul>
               </li>
             </ul>
@@ -104,8 +100,6 @@
               <li id="components-btn">Components</li>
             </ul>
           </li>
-
-
 
           <li class="menu-item">Help
             <ul class="dropdown">
