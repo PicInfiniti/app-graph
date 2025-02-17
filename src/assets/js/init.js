@@ -607,8 +607,6 @@ function moveNodes(selectedNode, rect) {
 
 
 export function deselectAll() {
-  selectedNode.length = 0;
-  selectedEdge.length = 0;
   svg.select('.rect').remove()
   svg.selectAll('.handle').remove()
 }
