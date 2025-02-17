@@ -1,6 +1,7 @@
 import $ from "jquery"
 import Graph from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
+import { disjointUnion } from 'graphology-operators';
 import { svg, updateGraph, History, deselectAll } from '../init'
 import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
@@ -10,20 +11,20 @@ $('#g-empty-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
   const graph = empty(Graph, val);
-  History.push(graph)
   organizeNodesInCircle(graph, svg)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $('#g-complete-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-complete").val())
   const graph = complete(Graph, val);
-  History.push(graph)
   organizeNodesInCircle(graph, svg)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $('#g-complete-bipartite-btn').on('click', function () {
@@ -32,40 +33,40 @@ $('#g-complete-bipartite-btn').on('click', function () {
   let val2 = parseInt($("#g-complete-bipartite-2").val())
 
   const graph = completeBipartite(Graph, val1, val2);
-  History.push(graph)
   organizeNodesInTwoLines(graph, svg, val1, 100)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $('#g-ladder-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-ladder").val())
   const graph = ladder(Graph, val);
-  History.push(graph)
   organizeNodesInTwoLines(graph, svg, val)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $('#g-path-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-path").val())
   const graph = path(Graph, val);
-  History.push(graph)
   organizeNodesInLine(graph, svg)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $('#g-cycle-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-cycle").val())
   const graph = cycle(Graph, val);
-  History.push(graph)
   organizeNodesInCircle(graph, svg)
+  History.push(disjointUnion(History.graph, graph))
   deselectAll()
-  updateGraph(graph)
+  updateGraph(History.graph)
 });
 
 $("a").on('click', function (event) {
