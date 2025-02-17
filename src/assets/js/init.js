@@ -16,12 +16,13 @@ export const common = {
   hover: false,
   dragComponent: false,
   scale: false,
+  scaleData: {},
   vertexLabel: true,
   node_radius: 10,
   edge_size: 2,
   label_size: 15,
   info_panel: true,
-  rect: {},
+  rect: { x: 100, y: 100, width: 150, height: 100 },
   x: 0,
   y: 0
 }
@@ -310,9 +311,9 @@ export function updateGraph(graph) {
   } else {
     nodeGroup.selectAll("text").remove();
   }
+
   if (selectedNode.length < 1) {
-    svg.select('.rect').remove()
-    svg.selectAll('.handle').remove()
+    deselectAll();
   }
 }
 
@@ -323,7 +324,6 @@ function selectElement(element = "node", d) {
     } else {
       selectedNode.push(d)
     }
-    salma();
   }
   if (element == "edge") {
     if (selectedEdge.includes(d)) {
@@ -437,6 +437,8 @@ svg.on("mousedown", function (event) {
     updateGraph(History.graph); // Re-draw the graph with selections
     selectionBox.style("display", "none"); // Hide selection box
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
+    if (common.scale)
+      salma();
   });
 
 });
@@ -459,15 +461,27 @@ function getBoundingBox(graph, selectedNodeIds) {
 
 function update(rect) {
   const handleSize = 8;
+  let rectSelection = svg.select(".rect");
   // Update or create the rectangle
-  let rectSelection = svg.selectAll(".rect") // Use selectAll instead of select
-    .data([rect]) // Bind data to a single-element array
-    .join("rect") // Ensures create/update behavior
-    .attr("class", "rect")
-    .attr("x", d => d.x)
-    .attr("y", d => d.y)
-    .attr("width", d => d.width)
-    .attr("height", d => d.height)
+  if (rectSelection.empty()) {
+    rectSelection = svg.append("rect").attr("class", "rect");
+    if (common.scale) {
+      common.scaleData = {};
+      selectedNode.forEach(
+        nodeId => {
+          const node = History.graph.getNodeAttributes(nodeId)
+          common.scaleData[nodeId] =
+            { id: nodeId, x: (node.x - rect.x) / rect.width, y: (node.y - rect.y) / rect.height }
+        }
+      )
+    }
+  }
+
+  rectSelection
+    .attr("x", rect.x)
+    .attr("y", rect.y)
+    .attr("width", rect.width)
+    .attr("height", rect.height)
     .style("cursor", "move")
     .call(d3.drag().on("drag", dragRect));
   // Handle positions
@@ -494,13 +508,15 @@ function update(rect) {
     .attr("height", handleSize)
     .style("cursor", d => d.cursor)
     .call(d3.drag().on("drag", handleDrag));
+
+
+  moveNodes(selectedNode, rect)
 }
 
 // Drag function for moving the rectangle
 function dragRect(event) {
   common.rect.x += event.dx;
   common.rect.y += event.dy;
-  moveNodes(selectedNode, event.dx, event.dy)
   update(common.rect);
 }
 
@@ -567,23 +583,32 @@ function handleDrag(event, d) {
   }
 
   update(rect);
+
 }
 
 function salma() {
   common.rect = getBoundingBox(History.graph, selectedNode)
-  update(common.rect);
+  if (common.rect)
+    update(common.rect);
 }
-common.rect = { x: 100, y: 100, width: 150, height: 100 };
-update(common.rect)
 
-function moveNodes(selectedNode, x, y) {
+function moveNodes(selectedNode, rect) {
   selectedNode.forEach(nodeId => {
-    History.graph.updateNodeAttributes(nodeId, attrs => ({
-      ...attrs,
-      x: attrs.x + x,
-      y: attrs.y + y
-    }));
+    History.graph.updateNodeAttributes(nodeId, attrs => {
+      return {
+        ...attrs,
+        x: rect.x + rect.width * common.scaleData[nodeId].x,
+        y: rect.y + rect.height * common.scaleData[nodeId].y
+      }
+    });
   })
   updateGraph(History.graph)
+}
 
+
+export function deselectAll() {
+  selectedNode.length = 0;
+  selectedEdge.length = 0;
+  svg.select('.rect').remove()
+  svg.selectAll('.handle').remove()
 }

@@ -1,7 +1,7 @@
 import $ from "jquery"
 import Graph from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { svg, updateGraph, History } from '../init'
+import { svg, updateGraph, History, deselectAll } from '../init'
 import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
 
@@ -12,6 +12,7 @@ $('#g-empty-btn').on('click', function () {
   const graph = empty(Graph, val);
   History.push(graph)
   organizeNodesInCircle(graph, svg)
+  deselectAll()
   updateGraph(graph)
 });
 
@@ -21,6 +22,7 @@ $('#g-complete-btn').on('click', function () {
   const graph = complete(Graph, val);
   History.push(graph)
   organizeNodesInCircle(graph, svg)
+  deselectAll()
   updateGraph(graph)
 });
 
@@ -32,6 +34,7 @@ $('#g-complete-bipartite-btn').on('click', function () {
   const graph = completeBipartite(Graph, val1, val2);
   History.push(graph)
   organizeNodesInTwoLines(graph, svg, val1, 100)
+  deselectAll()
   updateGraph(graph)
 });
 
@@ -41,6 +44,7 @@ $('#g-ladder-btn').on('click', function () {
   const graph = ladder(Graph, val);
   History.push(graph)
   organizeNodesInTwoLines(graph, svg, val)
+  deselectAll()
   updateGraph(graph)
 });
 
@@ -50,6 +54,7 @@ $('#g-path-btn').on('click', function () {
   const graph = path(Graph, val);
   History.push(graph)
   organizeNodesInLine(graph, svg)
+  deselectAll()
   updateGraph(graph)
 });
 
@@ -59,6 +64,7 @@ $('#g-cycle-btn').on('click', function () {
   const graph = cycle(Graph, val);
   History.push(graph)
   organizeNodesInCircle(graph, svg)
+  deselectAll()
   updateGraph(graph)
 });
 
