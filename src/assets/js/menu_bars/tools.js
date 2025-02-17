@@ -54,5 +54,14 @@ $('#drag-btn').on('click', function () {
     $('#drag-btn .check').removeClass("hidden")
     common.dragComponent = true
   }
-  console.log(common.dragComponent)
+});
+
+$('#scale-btn').on('click', function () {
+  if (common.scale) {
+    $('#scale-btn .check').addClass("hidden")
+    common.scale = false
+  } else {
+    $('#scale-btn .check').removeClass("hidden")
+    common.scale = true
+  }
 });

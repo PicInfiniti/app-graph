@@ -15,11 +15,13 @@ export const common = {
   lastTapTime: 0,
   hover: false,
   dragComponent: false,
+  scale: false,
   vertexLabel: true,
   node_radius: 10,
   edge_size: 2,
   label_size: 15,
   info_panel: true,
+  rect: {},
   x: 0,
   y: 0
 }
@@ -32,6 +34,7 @@ export const svg = d3.select("#chart")
   .attr("preserveAspectRatio", "xMinYMin meet");
 
 History.push(new Graph())
+
 const edgeGroup = svg.append("g").attr("class", "edges");
 const nodeGroup = svg.append("g").attr("class", "nodes");
 
@@ -307,6 +310,10 @@ export function updateGraph(graph) {
   } else {
     nodeGroup.selectAll("text").remove();
   }
+  if (selectedNode.length < 1) {
+    svg.select('.rect').remove()
+    svg.selectAll('.handle').remove()
+  }
 }
 
 function selectElement(element = "node", d) {
@@ -316,6 +323,7 @@ function selectElement(element = "node", d) {
     } else {
       selectedNode.push(d)
     }
+    salma();
   }
   if (element == "edge") {
     if (selectedEdge.includes(d)) {
@@ -430,6 +438,152 @@ svg.on("mousedown", function (event) {
     selectionBox.style("display", "none"); // Hide selection box
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
   });
+
 });
 
+function getBoundingBox(graph, selectedNodeIds) {
+  if (selectedNodeIds.length === 0) return null;
 
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+  selectedNodeIds.forEach(nodeId => {
+    let node = graph.getNodeAttributes(nodeId);
+    if (node.x < minX) minX = node.x;
+    if (node.y < minY) minY = node.y;
+    if (node.x > maxX) maxX = node.x;
+    if (node.y > maxY) maxY = node.y;
+  });
+
+  return { x: minX - common.node_radius, y: minY - common.node_radius, width: maxX - minX + 2 * common.node_radius, height: maxY - minY + 2 * common.node_radius };
+}
+
+function update(rect) {
+  const handleSize = 8;
+  // Update or create the rectangle
+  let rectSelection = svg.selectAll(".rect") // Use selectAll instead of select
+    .data([rect]) // Bind data to a single-element array
+    .join("rect") // Ensures create/update behavior
+    .attr("class", "rect")
+    .attr("x", d => d.x)
+    .attr("y", d => d.y)
+    .attr("width", d => d.width)
+    .attr("height", d => d.height)
+    .style("cursor", "move")
+    .call(d3.drag().on("drag", dragRect));
+  // Handle positions
+  let handles = [
+    { x: rect.x, y: rect.y, cursor: "nwse-resize", action: "top-left" },
+    { x: rect.x + rect.width / 2, y: rect.y, cursor: "ns-resize", action: "top" },
+    { x: rect.x + rect.width, y: rect.y, cursor: "nesw-resize", action: "top-right" },
+    { x: rect.x + rect.width, y: rect.y + rect.height / 2, cursor: "ew-resize", action: "right" },
+    { x: rect.x + rect.width, y: rect.y + rect.height, cursor: "nwse-resize", action: "bottom-right" },
+    { x: rect.x + rect.width / 2, y: rect.y + rect.height, cursor: "ns-resize", action: "bottom" },
+    { x: rect.x, y: rect.y + rect.height, cursor: "nesw-resize", action: "bottom-left" },
+    { x: rect.x, y: rect.y + rect.height / 2, cursor: "ew-resize", action: "left" }
+  ];
+
+  // Update or create handles
+  let handleSelection = svg.selectAll(".handle").data(handles);
+
+  handleSelection
+    .join("rect") // If it doesn’t exist, create it
+    .attr("class", "handle")
+    .attr("x", d => d.x - handleSize / 2)
+    .attr("y", d => d.y - handleSize / 2)
+    .attr("width", handleSize)
+    .attr("height", handleSize)
+    .style("cursor", d => d.cursor)
+    .call(d3.drag().on("drag", handleDrag));
+}
+
+// Drag function for moving the rectangle
+function dragRect(event) {
+  common.rect.x += event.dx;
+  common.rect.y += event.dy;
+  moveNodes(selectedNode, event.dx, event.dy)
+  update(common.rect);
+}
+
+function handleDrag(event, d) {
+  const rect = common.rect
+  const minSize = 10; // Minimum size constraint
+
+  let dx = event.dx, dy = event.dy;
+  let newX = rect.x, newY = rect.y, newWidth = rect.width, newHeight = rect.height;
+
+  switch (d.action) {
+    case "top-left":
+      newX += dx;
+      newY += dy;
+      newWidth -= dx;
+      newHeight -= dy;
+      break;
+    case "top":
+      newY += dy;
+      newHeight -= dy;
+      break;
+    case "top-right":
+      newY += dy;
+      newWidth += dx;
+      newHeight -= dy;
+      break;
+    case "right":
+      newWidth += dx;
+      break;
+    case "bottom-right":
+      newWidth += dx;
+      newHeight += dy;
+      break;
+    case "bottom":
+      newHeight += dy;
+      break;
+    case "bottom-left":
+      newX += dx;
+      newWidth -= dx;
+      newHeight += dy;
+      break;
+    case "left":
+      newX += dx;
+      newWidth -= dx;
+      break;
+  }
+
+  // Prevent width/height from going below minSize
+  if (newWidth >= minSize && newHeight >= minSize) {
+    rect.x = newX;
+    rect.y = newY;
+    rect.width = newWidth;
+    rect.height = newHeight;
+  } else {
+    // If size is too small, adjust x/y to prevent movement
+    if (newWidth < minSize) {
+      if (d.action.includes("left")) rect.x = rect.x + rect.width - minSize;
+      rect.width = minSize;
+    }
+    if (newHeight < minSize) {
+      if (d.action.includes("top")) rect.y = rect.y + rect.height - minSize;
+      rect.height = minSize;
+    }
+  }
+
+  update(rect);
+}
+
+function salma() {
+  common.rect = getBoundingBox(History.graph, selectedNode)
+  update(common.rect);
+}
+common.rect = { x: 100, y: 100, width: 150, height: 100 };
+update(common.rect)
+
+function moveNodes(selectedNode, x, y) {
+  selectedNode.forEach(nodeId => {
+    History.graph.updateNodeAttributes(nodeId, attrs => ({
+      ...attrs,
+      x: attrs.x + x,
+      y: attrs.y + y
+    }));
+  })
+  updateGraph(History.graph)
+
+}

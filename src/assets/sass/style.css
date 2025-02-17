@@ -311,4 +311,19 @@ body {
   opacity: 0 !important;
 }
 
+.rect {
+  fill: lightblue;
+  stroke: black;
+  stroke-dasharray: 2;
+  opacity: 0.2;
+}
+
+.handle {
+  fill: white;
+  stroke: black;
+  stroke-width: 1.5;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
 /*# sourceMappingURL=style.css.map */
