@@ -47,21 +47,21 @@ interact('#floating-panel')
 
 
 $('#drag-btn').on('click', function () {
-  if (common.dragComponent) {
+  if (appSetting.dragComponent) {
     $('#drag-btn .check').addClass("hidden")
-    common.dragComponent = false
+    appSetting.dragComponent = false
   } else {
     $('#drag-btn .check').removeClass("hidden")
-    common.dragComponent = true
+    appSetting.dragComponent = true
   }
 });
 
 $('#scale-btn').on('click', function () {
-  if (common.scale) {
+  if (appSetting.scale) {
     $('#scale-btn .check').addClass("hidden")
-    common.scale = false
+    appSetting.scale = false
   } else {
     $('#scale-btn .check').removeClass("hidden")
-    common.scale = true
+    appSetting.scale = true
   }
 });

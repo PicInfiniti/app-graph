@@ -17,29 +17,38 @@ $gridSizeInput.on('input', function () {
 });
 
 $('#vertex-size').on('input', function () {
-  common.node_radius = $(this).val();
+  appSetting.node_radius = $(this).val();
   updateGraph(History.graph)
 });
 
 $('#edge-size').on('input', function () {
-  common.edge_size = $(this).val();
+  appSetting.edge_size = $(this).val();
   updateGraph(History.graph)
 });
 
 $('#label-size').on('input', function () {
-  common.label_size = $(this).val();
+  appSetting.label_size = $(this).val();
   updateGraph(History.graph)
 });
 
 $('#vertex-label').on('click', function () {
   let check = $('#vertex-label .check');
-  if (common.vertexLabel) {
+  if (appSetting.vertexLabel) {
     check.addClass("hidden");
-    common.vertexLabel = false
+    appSetting.vertexLabel = false
   } else {
-    common.vertexLabel = true
+    appSetting.vertexLabel = true
     check.removeClass("hidden");
   }
   updateGraph(History.graph)
 });
 
+export const appSetting = {
+  dragComponent: false,
+  scale: false,
+  vertexLabel: true,
+  node_radius: 10,
+  edge_size: 2,
+  label_size: 15,
+  info_panel: true,
+}
