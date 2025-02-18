@@ -86,9 +86,17 @@ function loadSettings() {
   $('#label-size').val(appSettings.label_size);
   $('#vertex-label .check').toggleClass("hidden", !appSettings.vertexLabel);
 
-  $('#panel-btn .check').toggleClass('hidden', !appSettings.info_panel)
+  $('#panel-btn .check').toggleClass('hidden', appSettings.info_panel)
   $('#drag-btn .check').toggleClass("hidden", !appSettings.dragComponent)
   $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
+
+  if (appSettings.info_panel) {
+    $('#floating-panel').hide();
+  } else {
+    $('#floating-panel').show()
+      .css({ transform: 'translate(0px, 0px)' }) // Reset position
+      .attr({ 'data-x': 0, 'data-y': 0 });
+  }
 }
 
 loadSettings();
