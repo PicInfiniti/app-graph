@@ -40,7 +40,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-.container .main .setting {
+.container .main .settings {
   padding: 10px;
   display: flex;
   flex-direction: column;

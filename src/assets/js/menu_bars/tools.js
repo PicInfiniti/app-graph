@@ -1,6 +1,6 @@
 import $ from "jquery"
 import interact from 'interactjs';
-import { common } from "../init";
+import { appSettings } from "./settings";
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
@@ -47,21 +47,21 @@ interact('#floating-panel')
 
 
 $('#drag-btn').on('click', function () {
-  if (appSetting.dragComponent) {
+  if (appSettings.dragComponent) {
     $('#drag-btn .check').addClass("hidden")
-    appSetting.dragComponent = false
+    appSettings.dragComponent = false
   } else {
     $('#drag-btn .check').removeClass("hidden")
-    appSetting.dragComponent = true
+    appSettings.dragComponent = true
   }
 });
 
 $('#scale-btn').on('click', function () {
-  if (appSetting.scale) {
+  if (appSettings.scale) {
     $('#scale-btn .check').addClass("hidden")
-    appSetting.scale = false
+    appSettings.scale = false
   } else {
     $('#scale-btn .check').removeClass("hidden")
-    appSetting.scale = true
+    appSettings.scale = true
   }
 });

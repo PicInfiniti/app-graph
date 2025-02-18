@@ -4,7 +4,7 @@ import Graph from 'graphology'; // Import Graphology
 import { getMinAvailableNumber, getAvailableLabel, removeString, lineIntersectsRect, pointInRect } from './utils';
 import { LimitedArray, getTouchPosition } from './utils';
 import { getComponent } from "./utils";
-import { appSetting } from "./menu_bars/setting";
+import { appSettings } from "./menu_bars/settings";
 
 // Initialize data structures
 export const selectedNode = [];
@@ -77,7 +77,7 @@ const dragNode = d3.drag()
     const distanceX = event.x - common.x;
     const distanceY = event.y - common.y;
 
-    if (appSetting.dragComponent) {
+    if (appSettings.dragComponent) {
       for (let node of getComponent(History.graph, d.id)) {
         History.graph.updateNodeAttributes(node, attrs => ({
           ...attrs,
@@ -124,7 +124,7 @@ const dragEdge = d3.drag()
     const distanceX = event.x - common.x;
     const distanceY = event.y - common.y;
 
-    if (appSetting.dragComponent) {
+    if (appSettings.dragComponent) {
       for (let node of getComponent(History.graph, History.graph.source(d))) {
         History.graph.updateNodeAttributes(node, attrs => ({
           ...attrs,
@@ -179,7 +179,7 @@ export function updateGraph(graph) {
         return color
       }
     })
-    .attr("stroke-width", appSetting.edge_size)
+    .attr("stroke-width", appSettings.edge_size)
     .on("click touchend", function (event, d) {
       if (event.ctrlKey || event.type === "touchend") {
         selectElement("edge", d);
@@ -212,9 +212,9 @@ export function updateGraph(graph) {
     .merge(nodesSelection)
     .attr("cx", d => d.x)
     .attr("cy", d => d.y)
-    .attr("r", appSetting.node_radius)
+    .attr("r", appSettings.node_radius)
     .attr("fill", d => {
-      if (appSetting.vertexLabel) {
+      if (appSettings.vertexLabel) {
         return "white"
       } else {
         if (d.color) {
@@ -236,7 +236,7 @@ export function updateGraph(graph) {
     .attr("stroke-width", 3)
     .on("click touchend", function (event, d) {
       if (event.ctrlKey || event.type === "touchend") {
-        if (appSetting.dragComponent) {
+        if (appSettings.dragComponent) {
           for (let node of getComponent(History.graph, d.id)) {
             selectElement("node", node);
           }
@@ -247,7 +247,7 @@ export function updateGraph(graph) {
       }
     })
     .on("dblclick", function (event, d) {
-      if (appSetting.dragComponent) {
+      if (appSettings.dragComponent) {
         for (let node of getComponent(History.graph, d.id)) {
           selectElement("node", node);
         }
@@ -282,7 +282,7 @@ export function updateGraph(graph) {
 
   // Update labels
 
-  if (appSetting.vertexLabel) {
+  if (appSettings.vertexLabel) {
     const labelsSelection = nodeGroup.selectAll("text").data(nodes, d => d.id);
     labelsSelection.exit().remove();
     labelsSelection.enter()
@@ -301,7 +301,7 @@ export function updateGraph(graph) {
           return label
         }
       })
-      .attr("font-size", `${appSetting.label_size}px`)
+      .attr("font-size", `${appSettings.label_size}px`)
       .attr("fill", "black");
   } else {
     nodeGroup.selectAll("text").remove();
@@ -432,7 +432,7 @@ svg.on("mousedown", function (event) {
     updateGraph(History.graph); // Re-draw the graph with selections
     selectionBox.style("display", "none"); // Hide selection box
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
-    if (appSetting.scale)
+    if (appSettings.scale)
       salma();
   });
 
@@ -451,7 +451,7 @@ function getBoundingBox(graph, selectedNodeIds) {
     if (node.y > maxY) maxY = node.y;
   });
 
-  return { x: minX - appSetting.node_radius, y: minY - appSetting.node_radius, width: maxX - minX + 2 * appSetting.node_radius, height: maxY - minY + 2 * appSetting.node_radius };
+  return { x: minX - appSettings.node_radius, y: minY - appSettings.node_radius, width: maxX - minX + 2 * appSettings.node_radius, height: maxY - minY + 2 * appSettings.node_radius };
 }
 
 function update(rect) {
@@ -460,7 +460,7 @@ function update(rect) {
   // Update or create the rectangle
   if (rectSelection.empty()) {
     rectSelection = svg.append("rect").attr("class", "rect");
-    if (appSetting.scale) {
+    if (appSettings.scale) {
       common.scaleData = {};
       selectedNode.forEach(
         nodeId => {
