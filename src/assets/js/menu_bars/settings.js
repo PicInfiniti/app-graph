@@ -7,13 +7,9 @@ const $root = $(':root');
 
 // Event listener to update grid size dynamically
 $gridSizeInput.on('input', function () {
-  const gridSize = $(this).val();
-  if (gridSize <= 2) {
-    $(".container").addClass("grid-hidden");
-  } else {
-    $(".container").removeClass("grid-hidden");
-    $root.css('--grid-size', `${gridSize}px`);
-  }
+  appSettings.grid = $(this).val();
+  $(".container").toggleClass('grid-hidden', appSettings.grid <= 2)
+  $root.css('--grid-size', `${appSettings.grid}px`);
 });
 
 $('#vertex-size').on('input', function () {
@@ -32,14 +28,8 @@ $('#label-size').on('input', function () {
 });
 
 $('#vertex-label').on('click', function () {
-  let check = $('#vertex-label .check');
-  if (appSettings.vertexLabel) {
-    check.addClass("hidden");
-    appSettings.vertexLabel = false
-  } else {
-    appSettings.vertexLabel = true
-    check.removeClass("hidden");
-  }
+  appSettings.vertexLabel = !appSettings.vertexLabel
+  $('#vertex-label .check').toggleClass("hidden", appSettings.vertexLabel)
   updateGraph(History.graph)
 });
 
@@ -53,6 +43,7 @@ const defaultSettings = {
   edge_size: 2,
   label_size: 15,
   info_panel: true,
+  grid: 20
 };
 
 // Load settings from localStorage or use defaults
@@ -64,12 +55,13 @@ function saveSettingsDebounced(settings) {
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
     localStorage.setItem('appSettings', JSON.stringify(settings));
-    console.log("Settings saved:", settings);
+    // console.log("Settings saved:", settings);
+    console.log("Update Settings")
   }, 300); // Adjust debounce time as needed
 }
 
 // Proxy to track changes and auto-save to localStorage
-const appSettings = new Proxy(savedSettings, {
+export const appSettings = new Proxy(savedSettings, {
   set(target, key, value) {
     target[key] = value; // Update the value
     saveSettingsDebounced(target); // Auto-save with debounce
@@ -81,9 +73,23 @@ const appSettings = new Proxy(savedSettings, {
 $("#default-settings-btn").on('click', function () {
   Object.assign(appSettings, defaultSettings); // Reset settings
   localStorage.setItem('appSettings', JSON.stringify(defaultSettings)); // Save immediately
-  console.log("Settings reset to default:", appSettings);
+  // console.log("Settings reset to default:", appSettings);
+  console.log("Reset Settings")
 });
 
-// Exporting for usage in other modules
-export { appSettings };
+function loadSettings() {
+  $(".container").toggleClass('grid-hidden', appSettings.grid <= 2)
+  $root.css('--grid-size', `${appSettings.grid}px`);
 
+  $('#vertex-size').val(appSettings.node_radius);
+  $('#edge-size').val(appSettings.edge_size);
+  $('#label-size').val(appSettings.label_size);
+  $('#vertex-label .check').toggleClass("hidden", !appSettings.vertexLabel);
+
+  $('#panel-btn .check').toggleClass('hidden', !appSettings.info_panel)
+  $('#drag-btn .check').toggleClass("hidden", !appSettings.dragComponent)
+  $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
+}
+
+loadSettings();
+window.appSettings = appSettings;

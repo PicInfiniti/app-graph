@@ -173,7 +173,7 @@ body {
 .menu-bar .dropdown li > ul {
   display: none;
   position: absolute;
-  top: 90%;
+  top: 95%;
   left: 30%;
   background-color: #ffffff;
   border: 1px solid #ddd;

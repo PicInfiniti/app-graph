@@ -4,28 +4,24 @@ import { appSettings } from "./settings";
 
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
-  let check = $('#panel-btn .check');
 
-  if (panel.is(':visible')) {
+  appSettings.info_panel = !appSettings.info_panel
+  $('#panel-btn .check').toggleClass('hidden', appSettings.info_panel)
+
+  if (appSettings.info_panel) {
     panel.hide();
-    check.addClass("hidden");
   } else {
-    // Reset Interact.js position
-    panel.css({
-      transform: 'translate(0px, 0px)' // Reset position
-    });
-    panel.attr('data-x', 0);
-    panel.attr('data-y', 0);
-
-    panel.show();
-    check.removeClass("hidden");
-
+    panel.show()
+      .css({ transform: 'translate(0px, 0px)' }) // Reset position
+      .attr({ 'data-x': 0, 'data-y': 0 });
   }
+
 });
 
 $('#floating-panel .close').on('click', function () {
-  $('#floating-panel').hide(); // Correctly hide the panel
-  $('#panel-btn .check').hide();
+  appSettings.info_panel = false
+  $('#floating-panel').hide();
+  $('#panel-btn .check').addClass("hidden");
 });
 
 // Make floating panel draggable
@@ -47,21 +43,11 @@ interact('#floating-panel')
 
 
 $('#drag-btn').on('click', function () {
-  if (appSettings.dragComponent) {
-    $('#drag-btn .check').addClass("hidden")
-    appSettings.dragComponent = false
-  } else {
-    $('#drag-btn .check').removeClass("hidden")
-    appSettings.dragComponent = true
-  }
+  appSettings.dragComponent = !appSettings.dragComponent
+  $('#drag-btn .check').toggleClass("hidden", appSettings)
 });
 
 $('#scale-btn').on('click', function () {
-  if (appSettings.scale) {
-    $('#scale-btn .check').addClass("hidden")
-    appSettings.scale = false
-  } else {
-    $('#scale-btn .check').removeClass("hidden")
-    appSettings.scale = true
-  }
+  appSettings.scale = !appSettings.scale
+  $('#scale-btn .check').toggleClass("hidden", appSettings.scale)
 });
