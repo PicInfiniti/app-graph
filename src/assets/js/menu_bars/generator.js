@@ -12,7 +12,7 @@ $('#g-empty-btn').on('click', function () {
   let val = parseInt($("#g-empty").val())
   const graph = empty(Graph, val);
   organizeNodesInCircle(graph, svg)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
@@ -22,7 +22,7 @@ $('#g-complete-btn').on('click', function () {
   let val = parseInt($("#g-complete").val())
   const graph = complete(Graph, val);
   organizeNodesInCircle(graph, svg)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
@@ -34,7 +34,7 @@ $('#g-complete-bipartite-btn').on('click', function () {
 
   const graph = completeBipartite(Graph, val1, val2);
   organizeNodesInTwoLines(graph, svg, val1, 100)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
@@ -44,7 +44,7 @@ $('#g-ladder-btn').on('click', function () {
   let val = parseInt($("#g-ladder").val())
   const graph = ladder(Graph, val);
   organizeNodesInTwoLines(graph, svg, val)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
@@ -54,7 +54,7 @@ $('#g-path-btn').on('click', function () {
   let val = parseInt($("#g-path").val())
   const graph = path(Graph, val);
   organizeNodesInLine(graph, svg)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
@@ -64,7 +64,7 @@ $('#g-cycle-btn').on('click', function () {
   let val = parseInt($("#g-cycle").val())
   const graph = cycle(Graph, val);
   organizeNodesInCircle(graph, svg)
-  History.push(disjointUnion(History.graph, graph))
+  History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
