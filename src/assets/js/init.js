@@ -14,6 +14,9 @@ export const History = new LimitedArray(50);
 window.History = History
 
 export const common = {
+  selectedEdge: [],
+  selectedNode: [],
+  pressTimer: null,
   lastTapTime: 0,
   hover: false,
   scaleData: {},
