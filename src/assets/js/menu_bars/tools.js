@@ -49,5 +49,5 @@ $('#drag-btn').on('click', function () {
 
 $('#scale-btn').on('click', function () {
   appSettings.scale = !appSettings.scale
-  $('#scale-btn .check').toggleClass("hidden", appSettings.scale)
+  $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
 });

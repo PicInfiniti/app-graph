@@ -73,7 +73,6 @@ export const appSettings = new Proxy(savedSettings, {
 $("#default-settings-btn").on('click', function () {
   Object.assign(appSettings, defaultSettings); // Reset settings
   localStorage.setItem('appSettings', JSON.stringify(defaultSettings)); // Save immediately
-  // console.log("Settings reset to default:", appSettings);
   console.log("Reset Settings")
 });
 
