@@ -27,8 +27,7 @@
     "interactjs": "^1.10.27",
     "jquery": "^3.7.1",
     "jquery-ui": "^1.14.1",
-    "pixi-viewport": "^6.0.3",
-    "pixi.js": "^8.8.0",
+    "pixi.js": "^7.4.2",
     "sass": "^1.83.4",
     "save-svg-as-png": "^1.4.17",
     "sigma": "^3.0.1"
