@@ -79,9 +79,9 @@ export class LimitedArray {
   }
 }
 
-export function getTouchPosition(event, svg) {
+export function getTouchPosition(event, canvas) {
   const touch = event.changedTouches[0];
-  const rect = svg.node().getBoundingClientRect();
+  const rect = canvas.node().getBoundingClientRect();
   return [touch.clientX - rect.left, touch.clientY - rect.top];
 }
 
@@ -245,6 +245,6 @@ export function updateHistory(History, status = 'update') {
 }
 
 export function deselectAll() {
-  // svg.select('.rect').remove()
-  // svg.selectAll('.handle').remove()
+  // canvas.select('.rect').remove()
+  // canvas.selectAll('.handle').remove()
 }

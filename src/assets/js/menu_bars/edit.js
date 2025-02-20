@@ -4,7 +4,7 @@ import { updateHistory } from "../utils";
 // Attach the circular layout function to the button
 $("[name='organize-circle']").on("click", function () {
   updateHistory(History, "update")
-  organizeNodesInCircle(History.graph, svg)
+  organizeNodesInCircle(History.graph, canvas)
   updateGraph(History.graph);
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
@@ -127,7 +127,7 @@ document.addEventListener("keydown", (event) => {
       break;
     case "O":
       updateHistory(History, "update")
-      organizeNodesInCircle(History.graph, svg)
+      organizeNodesInCircle(History.graph, canvas)
       updateGraph(History.graph);
       selectedNode.length = 0; // Deselect any selected node
       selectedEdge.length = 0;
