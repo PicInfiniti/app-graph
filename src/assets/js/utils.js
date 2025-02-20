@@ -1,5 +1,5 @@
 import { connectedComponents } from "graphology-components";
-
+import { updateGraph } from "./init";
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
   let minNumber = 0;
@@ -208,4 +208,38 @@ export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
     }));
   });
 }
+export function updateHistory(History, status = 'update') {
+  switch (status) {
+    case "redo":
+      if (History.index < History.data.length - 1) {
+        History.updateIndex(History.index + 1);
+        console.log("redo")
+      } else {
+        console.log("nothing to redo")
+      };
+      break;
+    case "undo":
+      if (History.index > 0) {
+        History.updateIndex(History.index - 1);
+        console.log("undo")
+      } else {
+        console.log("nothing to undo")
+      };
+      break;
 
+    default:
+      console.log("update")
+      const graphClone = History.graph.copy();
+      History.data.length = History.index + 1
+      History.push(graphClone);
+      break;
+  }
+
+  updateGraph(History.graph);
+
+}
+
+export function deselectAll() {
+  svg.select('.rect').remove()
+  svg.selectAll('.handle').remove()
+}

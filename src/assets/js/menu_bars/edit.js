@@ -1,6 +1,6 @@
 import $ from "jquery"
-import { svg, History, updateGraph, selectedNode, selectedEdge, updateHistory } from "../init"
-
+import { canvas, History, updateGraph, selectedNode, selectedEdge } from "../init"
+import { updateHistory } from "../utils";
 // Attach the circular layout function to the button
 $("[name='organize-circle']").on("click", function () {
   updateHistory(History, "update")

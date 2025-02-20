@@ -2,11 +2,11 @@ import $ from "jquery"
 import Graph from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { disjointUnion } from 'graphology-operators';
-import { svg, updateGraph, History, deselectAll } from '../init'
+import { canvas, updateGraph, History } from '../init'
 import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
 
-
+import { deselectAll } from "../utils";
 $('#g-empty-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
