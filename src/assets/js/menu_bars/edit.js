@@ -15,11 +15,13 @@ $('[name="remove-selection-btn"]').on('click', removeSelection);
 $('[name="color-selection-btn"]').on('click', colorSelection);
 $('[name="add-edge-btn"]').on('click', addEdge);
 
-export function organizeNodesInCircle(graph, svg) {
-  const centerX = svg.node().getBoundingClientRect().width / 2;
-  const centerY = svg.node().getBoundingClientRect().height / 2;
-  const radius = Math.min(centerX * .8, centerY * .8)
+
+export function organizeNodesInCircle(graph, canvas) {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = Math.min(centerX * 0.8, centerY * 0.8);
   const angleStep = -(2 * Math.PI) / graph.order;
+
   graph.forEachNode((id, attributes) => {
     const angle = id * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
@@ -31,7 +33,11 @@ export function organizeNodesInCircle(graph, svg) {
       };
     });
   });
+
+  // Redraw the graph after reorganization
+  updateGraph(graph);
 }
+
 
 
 function makeGraphComplete() {

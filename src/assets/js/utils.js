@@ -138,16 +138,16 @@ export function pointInRect(a, b, x1, y1, x2, y2) {
   }
 }
 
-export function organizeNodesInLine(graph, svg) {
-  const svgBounds = svg.node().getBoundingClientRect();
-  const centerY = svgBounds.height / 2; // Middle of the page
+
+export function organizeNodesInLine(graph, canvas) {
+  const centerY = canvas.height / 2; // Middle of the canvas
   const padding = 100; // Space from edges
   const nodeIds = Array.from(graph.nodes()); // Get ordered nodes
   const totalNodes = nodeIds.length;
 
   if (totalNodes === 0) return; // Avoid errors if no nodes
 
-  const stepX = (svgBounds.width - 2 * padding) / Math.max(1, totalNodes - 1); // Space between nodes
+  const stepX = (canvas.width - 2 * padding) / Math.max(1, totalNodes - 1); // Space between nodes
 
   nodeIds.forEach((id, index) => {
     const x = padding + index * stepX; // Spread across the width
@@ -158,12 +158,13 @@ export function organizeNodesInLine(graph, svg) {
       y: centerY, // Align all nodes in the middle
     }));
   });
+
+  // Redraw the graph after reorganization
+  updateGraph(graph);
 }
 
-
-export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
-  const svgBounds = svg.node().getBoundingClientRect();
-  const centerY = svgBounds.height / 2;
+export function organizeNodesInTwoLines(graph, canvas, line1Count, Y = 50) {
+  const centerY = canvas.height / 2;
   const paddingX = 200; // Horizontal padding
   const paddingY = Y; // Vertical spacing between lines
 
@@ -182,8 +183,8 @@ export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
   const totalLine2 = line2Ids.length;
 
   // Compute spacing for each line
-  const stepX1 = totalLine1 > 1 ? (svgBounds.width - 2 * paddingX) / (totalLine1 - 1) : 0;
-  const stepX2 = totalLine2 > 1 ? (svgBounds.width - 2 * paddingX) / (totalLine2 - 1) : 0;
+  const stepX1 = totalLine1 > 1 ? (canvas.width - 2 * paddingX) / (totalLine1 - 1) : 0;
+  const stepX2 = totalLine2 > 1 ? (canvas.width - 2 * paddingX) / (totalLine2 - 1) : 0;
 
   const y1 = centerY - paddingY; // Upper line
   const y2 = centerY + paddingY; // Lower line
@@ -207,7 +208,11 @@ export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
       y: y2,
     }));
   });
+
+  // Redraw the graph after reorganization
+  updateGraph(graph);
 }
+
 export function updateHistory(History, status = 'update') {
   switch (status) {
     case "redo":
@@ -240,6 +245,6 @@ export function updateHistory(History, status = 'update') {
 }
 
 export function deselectAll() {
-  svg.select('.rect').remove()
-  svg.selectAll('.handle').remove()
+  // svg.select('.rect').remove()
+  // svg.selectAll('.handle').remove()
 }
