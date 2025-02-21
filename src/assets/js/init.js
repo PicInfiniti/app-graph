@@ -7,6 +7,7 @@ import { getComponent } from "./utils";
 import { appSettings } from "./menu_bars/settings";
 import { Logger } from "sass";
 import { updateHistory } from "./utils";
+import { edge } from "graphology-metrics";
 
 // Initialize data structures
 export const selectedNode = [];
@@ -49,33 +50,29 @@ function addNodeAtEvent(event) {
 // Function to update the graph
 const drawGraph = (graph) => {
   const color = $("#color").val();
-  const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
-  const edges = graph.edges();
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw edges
-  edges.forEach(d => {
-    const source = graph.getNodeAttributes(graph.source(d));
-    const target = graph.getNodeAttributes(graph.target(d));
+  graph.forEachUndirectedEdge(function (edge, attr, s, t, source, target) {
     context.beginPath();
     context.moveTo(source.x, source.y);
     context.lineTo(target.x, target.y);
-    context.strokeStyle = selectedEdge.includes(d) ? "orange" : (graph.getEdgeAttribute(d, 'color') || color);
+    context.strokeStyle = selectedEdge.includes(edge) ? "orange" : attr.color || color;
     context.lineWidth = appSettings.edge_size;
     context.stroke();
     context.closePath();
-    if (!graph.getEdgeAttribute(d, 'color')) graph.setEdgeAttribute(d, 'color', color);
+    if (!attr.color) graph.setEdgeAttribute(edge, 'color', color);
   });
 
   // Draw nodes
-  nodes.forEach(d => {
+  graph.forEachNode(function (node, attr) {
     context.beginPath();
-    context.arc(d.x, d.y, appSettings.node_radius, 0, 2 * Math.PI);
-    context.fillStyle = appSettings.vertexLabel ? "white" : (d.color || color);
+    context.arc(attr.x, attr.y, appSettings.node_radius, 0, 2 * Math.PI);
+    context.fillStyle = appSettings.vertexLabel ? "white" : (attr.color || color);
     context.fill();
     context.lineWidth = 3;
-    context.strokeStyle = selectedNode.includes(d.id) ? "orange" : (d.color || color);
+    context.strokeStyle = selectedNode.includes(edge.id) ? "orange" : (attr.color || color);
     context.stroke();
     context.closePath();
 
@@ -84,8 +81,8 @@ const drawGraph = (graph) => {
       context.font = `${appSettings.label_size}px sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillText(d.label || getAvailableLabel(d.id), d.x, d.y);
-      if (!d.label) graph.setNodeAttribute(d.id, 'label', getAvailableLabel(d.id));
+      context.fillText(attr.label || getAvailableLabel(attr.id), attr.x, attr.y);
+      if (!attr.label) graph.setNodeAttribute(attr.id, 'label', getAvailableLabel(attr.id));
     }
   });
 }
