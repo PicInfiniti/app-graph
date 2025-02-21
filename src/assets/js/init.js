@@ -1,6 +1,6 @@
 import $ from "jquery";
 import Graph from 'graphology'; // Import Graphology
-
+import * as PIXI from 'pixi.js'
 import { Application, Graphics, Container } from "pixi.js";
 import { LimitedArray, updateGraph, updateHistory, getMinAvailableNumber, getAvailableLabel } from "./utils";
 
@@ -57,4 +57,4 @@ function addNodeAtEvent(event) {
   History.graph.addNode(newID, { x, y, color, label: newLabel });
   updateGraph(History.graph)
 }
-
+console.log(app.renderer.type === PIXI.RENDERER_TYPE.WEBGL)

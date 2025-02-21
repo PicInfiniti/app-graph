@@ -242,27 +242,18 @@ export function updateHistory(History, status = 'update') {
 
 }
 export function updateGraph(graph) {
-  const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
-  const edges = graph.edges();
-  console.log(89)
   edgeContainer.removeChildren(); // Clear previous edges
-  edges.forEach((edge) => {
-    const d = graph.getEdgeAttribu
-    const sourceNode = graph.getNodeAttributes(graph.source(edge));
-    const targetNode = graph.getNodeAttributes(graph.target(edge));
-    const color = graph.getEdgeAttribute(edge, 'color')
-    if (sourceNode && targetNode) {
-      const line = new Graphics();
-      line.lineStyle(appSettings.edge_size, color)
-        .moveTo(sourceNode.x, sourceNode.y)
-        .lineTo(targetNode.x, targetNode.y);
-      edgeContainer.addChild(line);
-    }
-  });
-
+  graph.forEachUndirectedEdge(function (edge, attr, s, t, source, target) {
+    const color = attr.color
+    const line = new Graphics();
+    line.lineStyle(appSettings.edge_size, color)
+      .moveTo(source.x, source.y)
+      .lineTo(target.x, target.y);
+    edgeContainer.addChild(line);
+  })
   // Update nodes
   nodeContainer.removeChildren();
-  nodes.forEach(d => {
+  graph.forEachNode(function (node, attr) {
     const circle = new Graphics();
     // Draw circle
     circle
@@ -271,8 +262,8 @@ export function updateGraph(graph) {
       .endFill();
 
     // Position the circle
-    circle.x = d.x;
-    circle.y = d.y;
+    circle.x = attr.x;
+    circle.y = attr.y;
 
     nodeContainer.addChild(circle);
   });
