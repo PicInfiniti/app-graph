@@ -1,4 +1,7 @@
+import $ from "jquery"
 import { connectedComponents } from "graphology-components";
+import { Color, Graphics, utils } from "pixi.js";
+import { nodeContainer, edgeContainer, selectedNode } from "./init";
 
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
@@ -208,4 +211,69 @@ export function organizeNodesInTwoLines(graph, svg, line1Count, Y = 50) {
     }));
   });
 }
+export function updateHistory(History, status = 'update') {
+  switch (status) {
+    case "redo":
+      if (History.index < History.data.length - 1) {
+        History.updateIndex(History.index + 1);
+        console.log("redo")
+      } else {
+        console.log("nothing to redo")
+      };
+      break;
+    case "undo":
+      if (History.index > 0) {
+        History.updateIndex(History.index - 1);
+        console.log("undo")
+      } else {
+        console.log("nothing to undo")
+      };
+      break;
 
+    default:
+      console.log("update")
+      const graphClone = History.graph.copy();
+      History.data.length = History.index + 1
+      History.push(graphClone);
+      break;
+  }
+
+  updateGraph(History.graph);
+
+}
+export function updateGraph(graph) {
+  const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
+  const edges = graph.edges();
+  console.log(89)
+  edgeContainer.removeChildren(); // Clear previous edges
+  edges.forEach((edge) => {
+    const d = graph.getEdgeAttribu
+    const sourceNode = graph.getNodeAttributes(graph.source(edge));
+    const targetNode = graph.getNodeAttributes(graph.target(edge));
+    const color = graph.getEdgeAttribute(edge, 'color')
+    if (sourceNode && targetNode) {
+      const line = new Graphics();
+      line.lineStyle(appSettings.edge_size, color)
+        .moveTo(sourceNode.x, sourceNode.y)
+        .lineTo(targetNode.x, targetNode.y);
+      edgeContainer.addChild(line);
+    }
+  });
+
+  // Update nodes
+  nodeContainer.removeChildren();
+  nodes.forEach(d => {
+    const circle = new Graphics();
+    // Draw circle
+    circle
+      .beginFill(d.color)
+      .drawCircle(0, 0, appSettings.node_radius)
+      .endFill();
+
+    // Position the circle
+    circle.x = d.x;
+    circle.y = d.y;
+
+    nodeContainer.addChild(circle);
+  });
+}

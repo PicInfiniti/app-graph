@@ -1,7 +1,7 @@
 import $ from "jquery"
-import { updateGraph, History, updateHistory } from "../init"
 import { saveSvgAsPng } from 'save-svg-as-png';
-
+import { History } from "../init";
+import { updateGraph, updateHistory } from "../utils";
 $('#new-btn').on('click', function () {
   updateHistory(History, "update")
   History.graph.clear();

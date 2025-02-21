@@ -2,9 +2,9 @@ import $ from "jquery"
 import Graph from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { disjointUnion } from 'graphology-operators';
-import { svg, updateGraph, History, deselectAll } from '../init'
+import { app, History } from '../init'
 import { organizeNodesInCircle } from './edit'
-import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
+import { organizeNodesInLine, organizeNodesInTwoLines, updateGraph } from "../utils";
 
 
 $('#g-empty-btn').on('click', function () {
@@ -21,9 +21,8 @@ $('#g-complete-btn').on('click', function () {
   event.preventDefault();
   let val = parseInt($("#g-complete").val())
   const graph = complete(Graph, val);
-  organizeNodesInCircle(graph, svg)
+  organizeNodesInCircle(graph, app)
   History.push(disjointUnion(History.graph, graph))
-  deselectAll()
   updateGraph(History.graph)
 });
 
@@ -35,7 +34,6 @@ $('#g-complete-bipartite-btn').on('click', function () {
   const graph = completeBipartite(Graph, val1, val2);
   organizeNodesInTwoLines(graph, svg, val1, 100)
   History.push(disjointUnion(History.graph, graph))
-  deselectAll()
   updateGraph(History.graph)
 });
 
@@ -55,7 +53,6 @@ $('#g-path-btn').on('click', function () {
   const graph = path(Graph, val);
   organizeNodesInLine(graph, svg)
   History.push(disjointUnion(History.graph, graph))
-  deselectAll()
   updateGraph(History.graph)
 });
 
@@ -65,7 +62,6 @@ $('#g-cycle-btn').on('click', function () {
   const graph = cycle(Graph, val);
   organizeNodesInCircle(graph, svg)
   History.push(disjointUnion(History.graph, graph))
-  deselectAll()
   updateGraph(History.graph)
 });
 
