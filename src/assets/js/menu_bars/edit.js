@@ -10,7 +10,10 @@ $("[name='organize-circle']").on("click", function () {
   selectedEdge.length = 0;
 });
 
-$('[name="make-complete-btn"]').on('click', makeGraphComplete);
+$('[name="make-complete-btn"]').on('click', () => {
+  makeGraphComplete(History.graph);
+  updateGraph(History.graph)
+});
 $('[name="remove-selection-btn"]').on('click', removeSelection);
 $('[name="color-selection-btn"]').on('click', colorSelection);
 $('[name="add-edge-btn"]').on('click', addEdge);
@@ -35,19 +38,12 @@ export function organizeNodesInCircle(graph, canvas) {
   });
 }
 
-function makeGraphComplete() {
-  updateHistory(History, "update")
-  const color = $("#color").val()
-  History.graph.forEachNode((i, attr_i) => {
-    History.graph.forEachNode((j, attr_j) => {
-      if (i != j) {
-        if (!History.graph.hasEdge(i, j) && !History.graph.hasEdge(j, i)) {
-          History.graph.addEdge(i, j, { color: color }); // Add edge if it doesn't exist
-        }
-      }
-    })
-  })
-
+function makeGraphComplete(graph, color = null) {
+  for (let i = 0; i < graph.order; i++) {
+    for (let j = i + 1; j < graph.order; j++) {
+      History.graph.mergeEdge(i, j, { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
+    }
+  }
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
 }
@@ -110,7 +106,9 @@ function addEdge() {
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "C":
-      makeGraphComplete();
+      updateHistory(History, "update")
+      makeGraphComplete(History.graph);
+      updateGraph(History.graph)
       break;
     case "O":
       updateHistory(History, "update")

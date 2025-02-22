@@ -1,5 +1,4 @@
 import { connectedComponents } from "graphology-components";
-import { updateGraph } from "./init";
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
   let minNumber = 0;

@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { common, updateGraph, History } from "../init";
+import { updateGraph, History } from "../init";
 
 // Selecting elements
 const $gridSizeInput = $('#grid-size');

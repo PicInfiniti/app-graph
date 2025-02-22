@@ -1,68 +1,67 @@
 import $ from "jquery"
-import Graph from 'graphology';
+import { UndirectedGraph } from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { disjointUnion } from 'graphology-operators';
 import { canvas, updateGraph, History } from '../init'
 import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
-
 import { deselectAll } from "../utils";
-$('#g-empty-btn').on('click', function () {
+
+$('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
-  const graph = empty(Graph, val);
+  const graph = empty(UndirectedGraph, val);
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
 
-$('#g-complete-btn').on('click', function () {
+$('#g-complete-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-complete").val())
-  const graph = complete(Graph, val);
+  const graph = complete(UndirectedGraph, val);
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
 
-$('#g-complete-bipartite-btn').on('click', function () {
+$('#g-complete-bipartite-btn').on('click', function (event) {
   event.preventDefault();
   let val1 = parseInt($("#g-complete-bipartite-1").val())
   let val2 = parseInt($("#g-complete-bipartite-2").val())
 
-  const graph = completeBipartite(Graph, val1, val2);
+  const graph = completeBipartite(UndirectedGraph, val1, val2);
   organizeNodesInTwoLines(graph, canvas, val1, 100)
   History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
 
-$('#g-ladder-btn').on('click', function () {
+$('#g-ladder-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-ladder").val())
-  const graph = ladder(Graph, val);
+  const graph = ladder(UndirectedGraph, val);
   organizeNodesInTwoLines(graph, canvas, val)
   History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
 
-$('#g-path-btn').on('click', function () {
+$('#g-path-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-path").val())
-  const graph = path(Graph, val);
+  const graph = path(UndirectedGraph, val);
   organizeNodesInLine(graph, canvas)
   History.push(graph)
   deselectAll()
   updateGraph(History.graph)
 });
 
-$('#g-cycle-btn').on('click', function () {
+$('#g-cycle-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-cycle").val())
-  const graph = cycle(Graph, val);
+  const graph = cycle(UndirectedGraph, val);
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
