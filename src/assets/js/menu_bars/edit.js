@@ -33,12 +33,7 @@ export function organizeNodesInCircle(graph, canvas) {
       };
     });
   });
-
-  // Redraw the graph after reorganization
-  updateGraph(graph);
 }
-
-
 
 function makeGraphComplete() {
   updateHistory(History, "update")
@@ -55,8 +50,6 @@ function makeGraphComplete() {
 
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
-
-  updateGraph(History.graph); // Re-draw graph
 }
 
 function removeSelection() {
@@ -69,8 +62,6 @@ function removeSelection() {
   }
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
-
-  updateGraph(History.graph); // Re-draw graph
 
 }
 
@@ -97,8 +88,6 @@ function colorSelection() {
   }
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
-
-  updateGraph(History.graph); // Re-draw graph
 }
 
 
@@ -116,8 +105,6 @@ function addEdge() {
   }
   selectedNode.length = 0; // Deselect any selected node
   selectedEdge.length = 0;
-
-  updateGraph(History.graph); // Re-draw graph
 }
 
 document.addEventListener("keydown", (event) => {

@@ -158,9 +158,6 @@ export function organizeNodesInLine(graph, canvas) {
       y: centerY, // Align all nodes in the middle
     }));
   });
-
-  // Redraw the graph after reorganization
-  updateGraph(graph);
 }
 
 export function organizeNodesInTwoLines(graph, canvas, line1Count, Y = 50) {
@@ -208,9 +205,6 @@ export function organizeNodesInTwoLines(graph, canvas, line1Count, Y = 50) {
       y: y2,
     }));
   });
-
-  // Redraw the graph after reorganization
-  updateGraph(graph);
 }
 
 export function updateHistory(History, status = 'update') {
@@ -239,9 +233,6 @@ export function updateHistory(History, status = 'update') {
       History.push(graphClone);
       break;
   }
-
-  updateGraph(History.graph);
-
 }
 
 export function deselectAll() {

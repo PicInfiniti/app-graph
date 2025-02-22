@@ -29,7 +29,7 @@ $('#label-size').on('input', function () {
 
 $('#vertex-label').on('click', function () {
   appSettings.vertexLabel = !appSettings.vertexLabel
-  $('#vertex-label .check').toggleClass("hidden", appSettings.vertexLabel)
+  $('#vertex-label .check').toggleClass("hidden", !appSettings.vertexLabel)
   updateGraph(History.graph)
 });
 
