@@ -29,8 +29,7 @@ export function organizeNodesInCircle(graph, canvas) {
     const angle = id * angleStep - Math.PI / 2;
     graph.updateNodeAttributes(id, attr => {
       return {
-        label: attr.label,
-        color: attr.color,
+        ...attr,
         x: centerX + radius * Math.cos(angle),
         y: centerY + radius * Math.sin(angle),
       };

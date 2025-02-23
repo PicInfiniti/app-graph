@@ -1,6 +1,20 @@
 import $ from "jquery"
 import { updateGraph, History } from "../init";
 
+// Default settings
+const defaultSettings = {
+  forceSimulation: true,
+  dragComponent: false,
+  scale: false,
+  vertexLabel: true,
+  node_radius: 10,
+  edge_size: 2,
+  label_size: 15,
+  info_panel: true,
+  grid: 20,
+};
+
+
 // Selecting elements
 const $gridSizeInput = $('#grid-size');
 const $root = $(':root');
@@ -33,18 +47,6 @@ $('#vertex-label').on('click', function () {
   updateGraph(History.graph)
 });
 
-
-// Default settings
-const defaultSettings = {
-  dragComponent: false,
-  scale: false,
-  vertexLabel: true,
-  node_radius: 10,
-  edge_size: 2,
-  label_size: 15,
-  info_panel: true,
-  grid: 20
-};
 
 // Load settings from localStorage or use defaults
 let savedSettings = JSON.parse(localStorage.getItem('appSettings')) || defaultSettings;
@@ -88,6 +90,7 @@ function loadSettings() {
   $('#panel-btn .check').toggleClass('hidden', appSettings.info_panel)
   $('#drag-btn .check').toggleClass("hidden", !appSettings.dragComponent)
   $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
+  $('#force-btn .check').toggleClass("hidden", !appSettings.forceSimulation)
 
   if (appSettings.info_panel) {
     $('#floating-panel').hide();

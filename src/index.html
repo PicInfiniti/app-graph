@@ -75,6 +75,10 @@
                 <span>Scale</span>
                 <span class="check hidden">&#10004;</span>
               </li>
+              <li id="force-btn">
+                <span>Force Simulation</span>
+                <span class="check hidden">&#10004;</span>
+              </li>
               <hr>
               <li><span>Generator</span><span>></span>
                 <ul>
@@ -87,11 +91,14 @@
                     <input type="number" id="g-complete" min="1" max="500" value="5">
                   </li>
                   <li id="g-complete-bipartite-btn">
-                    <label for="g-complete-bipartie"><span>K<sub>n,n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_bipartite_graph" target="_blank">?</a></label>
-                  <div>
-                    <input type="number" id="g-complete-bipartite-1" min="1" max="500" value="5">
-                    <input type="number" id="g-complete-bipartite-2" min="1" max="500" value="5">
-                  </div>
+                    <label for="g-complete-bipartie">
+                      <span>K<sub>n,n</sub></span>
+                      <a href="https://en.wikipedia.org/wiki/Complete_bipartite_graph" target="_blank">?</a>
+                    </label>
+                    <div>
+                      <input type="number" id="g-complete-bipartite-1" min="1" max="500" value="5">
+                      <input type="number" id="g-complete-bipartite-2" min="1" max="500" value="5">
+                    </div>
                   </li>
                   <li id="g-path-btn">
                     <label for="g-path"><span>P<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Path_graph" target="_blank">?</a></label>
@@ -105,7 +112,16 @@
                     <label for="g-ladder"><span>L<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Ladder_graph" target="_blank">?</a></label>
                     <input type="number" id="g-ladder" min="2" max="500" value="5">
                   </li>
-
+                  <li id="g-caveman-btn">
+                    <label for="g-caveman">
+                      <span>C<sub>n,n</sub></span>
+                      <a href="https://mathworld.wolfram.com/CavemanGraph.html" target="_blank">?</a>
+                    </label>
+                    <div>
+                      <input type="number" id="g-caveman-1" min="1" max="500" value="5">
+                      <input type="number" id="g-caveman-2" min="1" max="500" value="5">
+                    </div>
+                  </li>
                 </ul>
               </li>
             </ul>

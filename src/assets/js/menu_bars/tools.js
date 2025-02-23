@@ -2,6 +2,24 @@ import $ from "jquery"
 import interact from 'interactjs';
 import { appSettings } from "./settings";
 
+$('#drag-btn').on('click', function () {
+  appSettings.dragComponent = !appSettings.dragComponent
+  $('#drag-btn .check').toggleClass("hidden", appSettings)
+});
+
+$('#scale-btn').on('click', function () {
+  console.log(appSettings.scale)
+  appSettings.scale = !appSettings.scale
+  $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
+});
+
+
+$('#force-btn').on('click', function () {
+  appSettings.forceSimulation = !appSettings.forceSimulation
+  $('#force-btn .check').toggleClass("hidden", !appSettings.forceSimulation)
+});
+
+
 $('#panel-btn').on('click', function () {
   let panel = $('#floating-panel');
 
@@ -15,7 +33,6 @@ $('#panel-btn').on('click', function () {
       .css({ transform: 'translate(0px, 0px)' }) // Reset position
       .attr({ 'data-x': 0, 'data-y': 0 });
   }
-
 });
 
 $('#floating-panel .close').on('click', function () {
@@ -40,14 +57,3 @@ interact('#floating-panel')
       }
     }
   });
-
-
-$('#drag-btn').on('click', function () {
-  appSettings.dragComponent = !appSettings.dragComponent
-  $('#drag-btn .check').toggleClass("hidden", appSettings)
-});
-
-$('#scale-btn').on('click', function () {
-  appSettings.scale = !appSettings.scale
-  $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
-});
