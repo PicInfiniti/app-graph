@@ -1,6 +1,6 @@
 import $ from "jquery"
 import { updateGraph, History } from "../init"
-import { saveSvgAsPng } from 'save-svg-as-png';
+import { canvas } from "../init";
 import { updateHistory } from "../utils";
 
 $('#new-btn').on('click', function () {
@@ -20,6 +20,11 @@ $('#export-graph').on('click', function () {
 
 $('#import-graph').on('click', function () {
   $('#file-input').click(); // Open file dialog
+});
+
+$('#export-png').on('click', function () {
+  downloadCanvasAsPNG()
+  console.log("download png")
 });
 
 $('#file-input').on('change', function (event) {
@@ -51,7 +56,7 @@ document.addEventListener("keydown", (event) => {
       $('#file-input').click(); // Open file dialog
       break;
     case "p":
-      downloadPNG()
+      downloadCanvasAsPNG()
       console.log("download png")
       break;
     case "s":
@@ -68,10 +73,9 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-function downloadPNG() {
-  const svgElement = document.querySelector("#chart svg");
-  saveSvgAsPng(svgElement, "chart.png", { scale: 2 });
+function downloadCanvasAsPNG() {
+  const link = document.createElement("a");
+  link.download = "d3_canvas.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
-
-
-

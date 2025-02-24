@@ -3,8 +3,8 @@ import { UndirectedGraph } from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { connectedCaveman } from 'graphology-generators/community';
 import { canvas, updateGraph, History } from '../init'
-import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
+import { organizeNodesInCircle } from "./edit";
 import { deselectAll } from "../utils";
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
@@ -107,14 +107,4 @@ function cycle(GraphClass, n) {
 }
 
 
-function updateNodePostion(graph, positions) {
-  graph.forEachNode((node, attr) => {
-    graph.updateNodeAttributes(node, attr => {
-      return {
-        ...attr,
-        x: (positions[node].x - 200) * 3,
-        y: (positions[node].y - 200) * 3,
-      };
-    });
-  })
-}
+

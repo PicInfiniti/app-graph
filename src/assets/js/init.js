@@ -8,8 +8,8 @@ import { updateHistory } from "./utils";
 import { edge } from "graphology-metrics";
 import { organizeNodesInCircle } from "./menu_bars/edit";
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
-
-import { connectedCaveman } from 'graphology-generators/community';
+import { addNodeId } from "./utils";
+import { caveman, connectedCaveman } from 'graphology-generators/community';
 
 export const common = {
   scaleData: {},
@@ -28,15 +28,14 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Set Up graph
-const graph = connectedCaveman(UndirectedGraph, 5, 5)
+const graph = ladder(UndirectedGraph, 10)
 
 export const History = new LimitedArray(50);
 History.push(graph)
 window.History = History
-organizeNodesInCircle(graph, canvas)
 
 // Extract nodes and edges from Graphology for D3
-const nodes = History.graph.mapNodes(function (node, attr) {
+export const nodes = History.graph.mapNodes(function (node, attr) {
   return {
     id: Number(node),
     x: attr.x,
@@ -48,6 +47,9 @@ const links = History.graph.mapEdges((edge, attr, s, t, source, target) => {
   return { source: Number(s), target: Number(t) };
 });
 
+if (!appSettings.forceSimulation) {
+  organizeNodesInCircle(graph, canvas)
+}
 // Force simulation (initially stopped)
 
 export const simulation = d3.forceSimulation(nodes)
@@ -201,12 +203,26 @@ function dragstarted(event) {
 function dragged(event) {
   event.subject.fx = event.x;
   event.subject.fy = event.y;
+
+  History.graph.updateNodeAttributes(event.subject.id, attr => {
+    return {
+      ...attr,
+      x: event.x,
+      y: event.y
+    };
+  });
+  if (!appSettings.forceSimulation) {
+    updateGraph(History.graph)
+  }
 }
 
 function dragended(event) {
-  if (!event.active && appSettings.forceSimulation) simulation.alphaTarget(0);
+  if (!event.active) simulation.alphaTarget(0);
   event.subject.fx = null;
   event.subject.fy = null;
+  event.subject.x = event.x;
+  event.subject.y = event.y;
+
 }
 
 function updateSimulation() {

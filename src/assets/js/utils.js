@@ -238,3 +238,26 @@ export function deselectAll() {
   // canvas.select('.rect').remove()
   // canvas.selectAll('.handle').remove()
 }
+
+export function updateNodePostion(graph, positions, center) {
+  graph.forEachNode((node, attr) => {
+    graph.updateNodeAttributes(node, attr => {
+      return {
+        ...attr,
+        x: positions[node].x + center.x,
+        y: positions[node].y + center.y,
+      };
+    });
+  })
+}
+export function addNodeId(graph, node, id) {
+  graph.setNodeAttribute(node, 'id', id);
+}
+
+
+export function updateNodeForce(graph, nodes) {
+  nodes.forEach((node) => {
+    node.x = graph.getNodeAttribute(node.id, 'x')
+    node.y = graph.getNodeAttribute(node.id, 'y')
+  })
+}
