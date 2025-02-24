@@ -1,13 +1,11 @@
 import $ from "jquery"
 import { UndirectedGraph } from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { caveman, connectedCaveman } from 'graphology-generators/community';
+import { connectedCaveman } from 'graphology-generators/community';
 import { canvas, updateGraph, History } from '../init'
 import { organizeNodesInCircle } from './edit'
 import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
 import { deselectAll } from "../utils";
-import forceAtlas2 from 'graphology-layout-forceatlas2';
-import { circular } from 'graphology-layout';
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
@@ -78,15 +76,6 @@ $('#g-caveman-btn').on('click', function (event) {
   const graph = connectedCaveman(UndirectedGraph, val1, val2);
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
-  deselectAll()
-  const positions = forceAtlas2(graph, {
-    iterations: 100,
-    settings: {
-      gravity: 1
-    }
-  });
-  console.log(positions)
-  updateNodePostion(graph, positions)
   updateGraph(graph)
 });
 

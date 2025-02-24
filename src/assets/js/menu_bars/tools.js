@@ -1,7 +1,7 @@
 import $ from "jquery"
 import interact from 'interactjs';
 import { appSettings } from "./settings";
-
+import { simulation } from "../init";
 $('#drag-btn').on('click', function () {
   appSettings.dragComponent = !appSettings.dragComponent
   $('#drag-btn .check').toggleClass("hidden", appSettings)
@@ -16,6 +16,13 @@ $('#scale-btn').on('click', function () {
 
 $('#force-btn').on('click', function () {
   appSettings.forceSimulation = !appSettings.forceSimulation
+  if (appSettings.forceSimulation) {
+    simulation.alpha(0.3).restart()
+  } else {
+    console.log(56)
+    simulation.stop();
+  }
+
   $('#force-btn .check').toggleClass("hidden", !appSettings.forceSimulation)
 });
 

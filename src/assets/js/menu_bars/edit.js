@@ -1,13 +1,11 @@
 import $ from "jquery"
-import { canvas, History, updateGraph, selectedNode, selectedEdge } from "../init"
+import { canvas, History, updateGraph, addLink } from "../init"
 import { updateHistory } from "../utils";
 // Attach the circular layout function to the button
 $("[name='organize-circle']").on("click", function () {
   updateHistory(History, "update")
   organizeNodesInCircle(History.graph, canvas)
   updateGraph(History.graph);
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
 });
 
 $('[name="make-complete-btn"]').on('click', () => {
@@ -41,10 +39,9 @@ function makeGraphComplete(graph, color = null) {
   for (let i = 0; i < graph.order; i++) {
     for (let j = i + 1; j < graph.order; j++) {
       History.graph.mergeEdge(i, j, { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
+      addLink(i, j)
     }
   }
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
 }
 
 function removeSelection() {
@@ -55,9 +52,6 @@ function removeSelection() {
   for (let node of selectedNode) {
     History.graph.dropNode(node); // Remove the selected node
   }
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
-
 }
 
 function colorSelection() {
@@ -81,8 +75,6 @@ function colorSelection() {
       };
     });
   }
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
 }
 
 
@@ -98,8 +90,6 @@ function addEdge() {
       }
     }
   }
-  selectedNode.length = 0; // Deselect any selected node
-  selectedEdge.length = 0;
 }
 
 document.addEventListener("keydown", (event) => {
@@ -113,8 +103,6 @@ document.addEventListener("keydown", (event) => {
       updateHistory(History, "update")
       organizeNodesInCircle(History.graph, canvas)
       updateGraph(History.graph);
-      selectedNode.length = 0; // Deselect any selected node
-      selectedEdge.length = 0;
       break;
     case "d":
       removeSelection();

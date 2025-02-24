@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { updateGraph, History } from "../init";
+import { updateGraph, History, simulation } from "../init";
 
 // Default settings
 const defaultSettings = {
@@ -99,6 +99,7 @@ function loadSettings() {
       .css({ transform: 'translate(0px, 0px)' }) // Reset position
       .attr({ 'data-x': 0, 'data-y': 0 });
   }
+
 }
 
 loadSettings();
