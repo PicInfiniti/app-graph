@@ -2,10 +2,8 @@ import $ from "jquery"
 import { UndirectedGraph } from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { connectedCaveman } from 'graphology-generators/community';
-import { canvas, updateGraph, History } from '../init'
-import { organizeNodesInLine, organizeNodesInTwoLines } from "../utils";
-import { organizeNodesInCircle } from "./edit";
-import { deselectAll } from "../utils";
+import { canvas, History } from '../init'
+
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
@@ -13,7 +11,7 @@ $('#g-empty-btn').on('click', function (event) {
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-complete-btn').on('click', function (event) {
@@ -23,7 +21,7 @@ $('#g-complete-btn').on('click', function (event) {
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-complete-bipartite-btn').on('click', function (event) {
@@ -35,7 +33,7 @@ $('#g-complete-bipartite-btn').on('click', function (event) {
   organizeNodesInTwoLines(graph, canvas, val1, 100)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-ladder-btn').on('click', function (event) {
@@ -45,7 +43,7 @@ $('#g-ladder-btn').on('click', function (event) {
   organizeNodesInTwoLines(graph, canvas, val)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-path-btn').on('click', function (event) {
@@ -55,7 +53,7 @@ $('#g-path-btn').on('click', function (event) {
   organizeNodesInLine(graph, canvas)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-cycle-btn').on('click', function (event) {
@@ -65,7 +63,7 @@ $('#g-cycle-btn').on('click', function (event) {
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
   deselectAll()
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $('#g-caveman-btn').on('click', function (event) {
@@ -76,7 +74,7 @@ $('#g-caveman-btn').on('click', function (event) {
   const graph = connectedCaveman(UndirectedGraph, val1, val2);
   organizeNodesInCircle(graph, canvas)
   History.push(graph)
-  updateGraph(graph)
+  drawGraph(graph)
 });
 
 $("a").on('click', function (event) {
@@ -87,7 +85,7 @@ $("a").on('click', function (event) {
   }
 });
 
-function completeBipartite(GraphClass, n1, n2) {
+export function completeBipartite(GraphClass, n1, n2) {
   const graph = empty(GraphClass, n1 + n2)
 
   for (let i = 0; i < n1; i++) {
@@ -96,14 +94,13 @@ function completeBipartite(GraphClass, n1, n2) {
     }
   }
   return graph
-
 }
 
-function cycle(GraphClass, n) {
+export function cycle(GraphClass, n) {
   const graph = path(GraphClass, n)
+
   graph.addEdge(0, n - 1)
   return graph
-
 }
 
 

@@ -1,12 +1,9 @@
 import $ from "jquery"
-import { updateGraph, History } from "../init"
-import { canvas } from "../init";
-import { updateHistory } from "../utils";
+import { canvas, History } from "../init"
 
 $('#new-btn').on('click', function () {
-  updateHistory(History, "update")
   History.graph.clear();
-  updateGraph(History.graph);
+  drawGraph(History.graph, canvas);
 });
 
 $('#export-graph').on('click', function () {
@@ -34,12 +31,11 @@ $('#file-input').on('change', function (event) {
     reader.onload = function (e) {
       const importedData = JSON.parse(e.target.result);
 
-      updateHistory(History, "update")
       History.graph.clear();
       History.graph.import(importedData)
 
       // Re-draw the graph
-      updateGraph(History.graph);
+      drawGraph(History.graph, canvas);
     };
     reader.readAsText(file);
   }
@@ -50,7 +46,7 @@ document.addEventListener("keydown", (event) => {
     case "n":
       updateHistory(History, "update")
       History.graph.clear();
-      updateGraph(History.graph);
+      drawGraph(History.graph, canvas);
       break;
     case "o":
       $('#file-input').click(); // Open file dialog

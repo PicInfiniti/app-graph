@@ -60,7 +60,7 @@ function addNodeAtEvent(event) {
 
   updateHistory(History, "add");
   History.graph.addNode(newID, { x, y, color, label: newLabel });
-  updateGraph(History.graph);
+  drawGraph(History.graph, canvas);
 }
 
 // Dragging behavior
@@ -106,7 +106,7 @@ const dragNode = d3.drag()
     common.x = event.x;
     common.y = event.y;
 
-    updateGraph(History.graph);
+    drawGraph(History.graph, canvas);
   })
 
 
@@ -151,10 +151,10 @@ const dragEdge = d3.drag()
     common.x = event.x;
     common.y = event.y;
 
-    updateGraph(History.graph);
+    drawGraph(History.graph, canvas);
   })
 
-export function updateGraph(graph) {
+export function drawGraph(graph) {
   const color = $("#color").val();
   const nodes = graph.nodes().map(id => ({ id, ...graph.getNodeAttributes(id) }));
   const edges = graph.edges();
@@ -327,7 +327,7 @@ function selectElement(element = "node", d) {
       selectedEdge.push(d)
     }
   }
-  updateGraph(History.graph); // Re-draw graph
+  drawGraph(History.graph, canvas); // Re-draw graph
 }
 
 export function updateHistory(History, status = 'update') {
@@ -357,7 +357,7 @@ export function updateHistory(History, status = 'update') {
       break;
   }
 
-  updateGraph(History.graph);
+  drawGraph(History.graph, canvas);
 
 }
 
@@ -429,7 +429,7 @@ svg.on("mousedown", function (event) {
       }
     });
 
-    updateGraph(History.graph); // Re-draw the graph with selections
+    drawGraph(History.graph, canvas); // Re-draw the graph with selections
     selectionBox.style("display", "none"); // Hide selection box
     svg.on("mousemove", null).on("mouseup", null); // Remove event listeners
     if (appSettings.scale)
@@ -597,7 +597,7 @@ function moveNodes(selectedNode, rect) {
       }
     });
   })
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 }
 
 

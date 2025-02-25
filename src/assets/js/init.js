@@ -1,16 +1,11 @@
 import $ from "jquery";
 import * as d3 from 'd3';
 import { UndirectedGraph } from 'graphology'; // Import Graphology
-import { getMinAvailableNumber, getAvailableLabel, removeString, lineIntersectsRect, pointInRect } from './utils';
-import { LimitedArray, getTouchPosition } from './utils';
-import { appSettings } from "./menu_bars/settings";
-import { updateHistory } from "./utils";
-import { edge } from "graphology-metrics";
-import { organizeNodesInCircle } from "./menu_bars/edit";
-import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { addNodeId } from "./utils";
-import { caveman, connectedCaveman } from 'graphology-generators/community';
+import { ladder } from 'graphology-generators/classic';
 
+import { appSettings } from "./menu_bars/settings";
+import { LimitedArray } from "./dependency/classes";
+import { drawGraph } from "./dependency/mutation";
 export const common = {
   scaleData: {},
   rect: { x: 100, y: 100, width: 150, height: 100 },
@@ -23,7 +18,6 @@ export const common = {
 
 // Set up canvas
 export const canvas = d3.select("#chart").node();
-const context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -69,7 +63,7 @@ export const simulation = d3.forceSimulation(nodes)
 
 if (!appSettings.forceSimulation) {
   simulation.stop()
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 }
 canvas.addEventListener("dblclick", addNodeAtEvent);
 
@@ -85,52 +79,6 @@ function addNodeAtEvent(event) {
   addNode(newID, { x: x, y: y });
 }
 
-// Function to update the graph
-export function updateGraph(graph) {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Draw edges
-  graph.forEachEdge(function (edge, attr, s, t, source, target) {
-    if (!attr.color) {
-      graph.setEdgeAttribute(edge, "color", $("#color").val())
-    }
-    context.beginPath();
-    context.moveTo(source.x, source.y);
-    context.lineTo(target.x, target.y);
-    context.strokeStyle = common.selectedEdge.includes(edge) ? "orange" : attr.color;
-    context.lineWidth = appSettings.edge_size;
-    context.stroke();
-    context.closePath();
-  });
-
-  // Draw nodes
-  graph.forEachNode(function (node, attr) {
-    if (!attr.label) {
-      const newLabel = getAvailableLabel(node);
-      graph.setNodeAttribute(node, "label", newLabel)
-    }
-    if (!attr.color) {
-      graph.setNodeAttribute(node, "color", $("#color").val())
-    }
-    context.beginPath();
-    context.arc(attr.x, attr.y, appSettings.node_radius, 0, 2 * Math.PI);
-    context.fillStyle = appSettings.vertexLabel ? "white" : attr.color;
-    context.fill();
-    context.lineWidth = 3;
-    context.strokeStyle = common.selectedNode.includes(edge.id) ? "orange" : attr.color;
-    context.stroke();
-    context.closePath();
-
-    if (appSettings.vertexLabel) {
-      context.fillStyle = "black";
-      context.font = `${appSettings.label_size}px sans-serif`;
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      context.fillText(attr.label, attr.x, attr.y);
-    }
-  });
-}
-
 
 // Redraw on window resize
 window.addEventListener("resize", () => {
@@ -140,7 +88,7 @@ window.addEventListener("resize", () => {
   if (appSettings.forceSimulation) {
     updateSimulation();
   } else {
-    updateGraph(History.graph);
+    drawGraph(History.graph, canvas);
   }
 });
 
@@ -167,7 +115,7 @@ function dragsubject(event) {
     const dx = x - node.x;
     const dy = y - node.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 10 && dist < minDist) {
+    if (dist < appSettings.node_radius && dist < minDist) {
       minDist = dist;
       subject = node;
     }
@@ -190,7 +138,7 @@ function ticked() {
         };
       });
     });
-    updateGraph(History.graph)
+    drawGraph(History.graph, canvas)
   }
 }
 
@@ -212,7 +160,7 @@ function dragged(event) {
     };
   });
   if (!appSettings.forceSimulation) {
-    updateGraph(History.graph)
+    drawGraph(History.graph, canvas)
   }
 }
 

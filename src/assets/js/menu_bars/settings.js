@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { updateGraph, History, simulation } from "../init";
+import { History } from "../init";
 
 // Default settings
 const defaultSettings = {
@@ -28,23 +28,23 @@ $gridSizeInput.on('input', function () {
 
 $('#vertex-size').on('input', function () {
   appSettings.node_radius = $(this).val();
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 });
 
 $('#edge-size').on('input', function () {
   appSettings.edge_size = $(this).val();
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 });
 
 $('#label-size').on('input', function () {
   appSettings.label_size = $(this).val();
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 });
 
 $('#vertex-label').on('click', function () {
   appSettings.vertexLabel = !appSettings.vertexLabel
   $('#vertex-label .check').toggleClass("hidden", !appSettings.vertexLabel)
-  updateGraph(History.graph)
+  drawGraph(History.graph, canvas)
 });
 
 

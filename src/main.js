@@ -21,7 +21,7 @@ import "./assets/js/context_menu";
 import "./assets/js/menu_bars/file";
 import "./assets/js/menu_bars/edit";
 import "./assets/js/menu_bars/tools";
-import "./assets/js/menu_bars/generator"
+import "./assets/js/menu_bars/generate"
 import "./assets/js/menu_bars/analyze";
 import "./assets/js/menu_bars/settings";
 import "./assets/js/menu_bars/help";
