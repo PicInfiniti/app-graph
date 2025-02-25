@@ -2,10 +2,10 @@ import $ from "jquery"
 import { UndirectedGraph } from 'graphology';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { connectedCaveman } from 'graphology-generators/community';
-import { canvas, History } from '../init'
+import { canvas, History, nodes, links } from '../init'
 import { appSettings } from "./settings";
 import { organizeNodesInCircle, organizeNodesInLine, organizeNodesInTwoLines } from "../dependency/organizer";
-import { drawGraph } from "../dependency/mutation";
+import { drawGraph, updateForce, updateSimulation } from "../dependency/mutation";
 
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
@@ -24,8 +24,11 @@ $('#g-complete-btn').on('click', function (event) {
   History.push(graph)
   if (!appSettings.forceSimulation) {
     organizeNodesInCircle(graph, canvas)
+    drawGraph(History.graph, canvas)
+  } else {
+    updateForce(graph, nodes, links)
+    updateSimulation();
   }
-  drawGraph(graph, canvas)
 });
 
 $('#g-complete-bipartite-btn').on('click', function (event) {

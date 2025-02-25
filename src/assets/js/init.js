@@ -2,7 +2,7 @@ import $ from "jquery";
 import * as d3 from 'd3';
 import { UndirectedGraph } from 'graphology'; // Import Graphology
 import { ladder } from 'graphology-generators/classic';
-
+import { updateSimulation } from "./dependency/mutation";
 import { appSettings } from "./menu_bars/settings";
 import { LimitedArray } from "./dependency/classes";
 import { drawGraph } from "./dependency/mutation";
@@ -38,8 +38,7 @@ export const nodes = History.graph.mapNodes(function (node, attr) {
     y: attr.y
   }
 });
-
-const links = History.graph.mapEdges((edge, attr, s, t, source, target) => {
+export const links = History.graph.mapEdges((edge, attr, s, t, source, target) => {
   return { source: Number(s), target: Number(t) };
 });
 
@@ -172,12 +171,6 @@ function dragended(event) {
   event.subject.x = event.x;
   event.subject.y = event.y;
 
-}
-
-function updateSimulation() {
-  simulation.nodes(nodes);
-  simulation.force("link").links(links);
-  simulation.alpha(.3).restart(); // Reheat simulation after updates
 }
 
 function addNode(node, attr) {

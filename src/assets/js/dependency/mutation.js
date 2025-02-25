@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { common } from "../init";
+import { common, simulation, nodes, links } from "../init";
 import { getAvailableLabel } from "./utils";
 
 export function updateHistory(History, status = 'update') {
@@ -48,15 +48,33 @@ export function addNodeId(graph, node, id) {
   graph.setNodeAttribute(node, 'id', id);
 }
 
-export function updateNodeForce(graph, nodes) {
+export function updateForce(graph, nodes, links) {
   // update all node's position beased on what store in graph
-  nodes.forEach((node) => {
-    node.x = graph.getNodeAttribute(node.id, 'x')
-    node.y = graph.getNodeAttribute(node.id, 'y')
+  //
+  nodes.length = 0
+  graph.forEachNode((node, attr) => {
+    nodes.push(
+      {
+        id: Number(node),
+        x: attr.x,
+        y: attr.y
+      }
+    )
+  })
+
+  links.length = 0
+  graph.forEachEdge(function (edge, attr, s, t, source, target) {
+    links.push(
+      {
+        source: Number(s),
+        target: Number(t)
+      }
+    )
   })
 }
 
-function makeGraphComplete(graph, color = null) {
+
+export function makeGraphComplete(graph, color = null) {
   for (let i = 0; i < graph.order; i++) {
     for (let j = i + 1; j < graph.order; j++) {
       History.graph.mergeEdge(i, j, { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
@@ -64,7 +82,7 @@ function makeGraphComplete(graph, color = null) {
   }
 }
 
-function removeNodes(graph, nodes, edges) {
+export function removeNodes(graph, nodes, edges) {
   for (let edge of edges) {
     graph.dropEdge(edge); // Remove the selected node
   }
@@ -73,7 +91,7 @@ function removeNodes(graph, nodes, edges) {
   }
 }
 
-function updateColor(selectedNode, selectedEdge) {
+export function updateColor(selectedNode, selectedEdge) {
   const color = $("#color").val()
 
   for (let node of selectedNode) {
@@ -96,7 +114,7 @@ function updateColor(selectedNode, selectedEdge) {
 }
 
 
-function connectNodes(graph, nodes, color) {
+export function connectNodes(graph, nodes, color) {
   for (let i = 0; i < nodes.lenght; i++) {
     for (let j = i + 1; j < nodes.lenght; j++) {
       graph.mergeEdge(nodes[i], nodes[j], { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
@@ -150,6 +168,12 @@ export function drawGraph(graph, canvas) {
       context.fillText(attr.label, attr.x, attr.y);
     }
   });
+}
+
+export function updateSimulation() {
+  simulation.nodes(nodes);
+  simulation.force("link").links(links);
+  simulation.alpha(.3).restart(); // Reheat simulation after updates
 }
 
 

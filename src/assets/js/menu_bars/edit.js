@@ -1,7 +1,8 @@
 import $ from "jquery"
-import { canvas, History } from "../init"
-
-
+import { canvas, History, nodes, links } from "../init"
+import { organizeNodesInCircle } from "../dependency/organizer";
+import { drawGraph, updateSimulation } from "../dependency/mutation";
+import { makeGraphComplete, updateForce } from "../dependency/mutation";
 // Attach the circular layout function to the button
 $("[name='organize-circle']").on("click", function () {
   organizeNodesInCircle(History.graph, canvas)
@@ -10,6 +11,8 @@ $("[name='organize-circle']").on("click", function () {
 
 $('[name="make-complete-btn"]').on('click', () => {
   makeGraphComplete(History.graph);
+  updateForce(History.graph, nodes, links)
+  updateSimulation()
   drawGraph(History.graph, canvas)
 });
 
@@ -26,17 +29,15 @@ $('[name="redo-btn"]').on('click', function () {
 });
 
 
-
-
 document.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "C":
-      updateHistory(History, "update")
       makeGraphComplete(History.graph);
+      updateForce(History.graph, nodes, links)
+      updateSimulation()
       drawGraph(History.graph, canvas)
       break;
     case "O":
-      updateHistory(History, "update")
       organizeNodesInCircle(History.graph, canvas)
       drawGraph(History.graph, canvas);
       break;

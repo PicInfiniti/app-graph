@@ -1,5 +1,5 @@
 import { circular } from "graphology-library/layout";
-import { updateNodesPostion, updateNodeForce } from "./mutation";
+import { updateNodesPostion, updateForce } from "./mutation";
 import { nodes } from "../init";
 
 export function organizeNodesInCircle(graph, canvas) {

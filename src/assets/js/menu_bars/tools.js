@@ -1,7 +1,8 @@
 import $ from "jquery"
 import interact from 'interactjs';
 import { appSettings } from "./settings";
-import { simulation } from "../init";
+import { History, simulation, nodes, links } from "../init";
+import { updateForce, updateSimulation } from "../dependency/mutation";
 $('#drag-btn').on('click', function () {
   appSettings.dragComponent = !appSettings.dragComponent
   $('#drag-btn .check').toggleClass("hidden", appSettings)
@@ -13,11 +14,11 @@ $('#scale-btn').on('click', function () {
   $('#scale-btn .check').toggleClass("hidden", !appSettings.scale)
 });
 
-
 $('#force-btn').on('click', function () {
   appSettings.forceSimulation = !appSettings.forceSimulation
   if (appSettings.forceSimulation) {
-    simulation.alpha(0.3).restart()
+    updateForce(History.graph, nodes, links)
+    updateSimulation()
   } else {
     simulation.stop();
   }
