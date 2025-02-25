@@ -1,12 +1,13 @@
 import { circular } from "graphology-library/layout";
+import { updateNodesPostion, updateNodeForce } from "./mutation";
+import { nodes } from "../init";
 
 export function organizeNodesInCircle(graph, canvas) {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
   const radius = Math.min(centerX * 0.8, centerY * 0.8);
   const positions = circular(graph, { scale: radius, dimensions: ['x', 'y'] });
-  updateNodePostion(graph, positions, { x: centerX, y: centerY })
-  updateNodeForce(graph, nodes)
+  updateNodesPostion(graph, positions, { x: centerX, y: centerY })
 }
 
 export function organizeNodesInLine(graph, canvas) {
@@ -32,7 +33,7 @@ export function organizeNodesInLine(graph, canvas) {
 
 export function organizeNodesInTwoLines(graph, canvas, line1Count, Y = 50) {
   const centerY = canvas.height / 2;
-  const paddingX = 200; // Horizontal padding
+  const paddingX = 100; // Horizontal padding
   const paddingY = Y; // Vertical spacing between lines
 
   const nodeIds = Array.from(graph.nodes()); // Get all node IDs

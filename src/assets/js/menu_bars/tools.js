@@ -19,7 +19,6 @@ $('#force-btn').on('click', function () {
   if (appSettings.forceSimulation) {
     simulation.alpha(0.3).restart()
   } else {
-    console.log(56)
     simulation.stop();
   }
 

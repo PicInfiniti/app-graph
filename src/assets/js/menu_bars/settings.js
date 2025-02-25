@@ -1,6 +1,6 @@
 import $ from "jquery"
-import { History } from "../init";
-
+import { canvas, History } from "../init";
+import { drawGraph } from "../dependency/mutation";
 // Default settings
 const defaultSettings = {
   forceSimulation: true,
@@ -75,6 +75,7 @@ export const appSettings = new Proxy(savedSettings, {
 $("#default-settings-btn").on('click', function () {
   Object.assign(appSettings, defaultSettings); // Reset settings
   localStorage.setItem('appSettings', JSON.stringify(defaultSettings)); // Save immediately
+  drawGraph(History.graph, canvas)
   console.log("Reset Settings")
 });
 

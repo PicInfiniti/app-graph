@@ -6,6 +6,8 @@ import { ladder } from 'graphology-generators/classic';
 import { appSettings } from "./menu_bars/settings";
 import { LimitedArray } from "./dependency/classes";
 import { drawGraph } from "./dependency/mutation";
+import { organizeNodesInCircle } from "./dependency/organizer";
+import { getAvailableLabel, getMinAvailableNumber } from "./dependency/utils";
 export const common = {
   scaleData: {},
   rect: { x: 100, y: 100, width: 150, height: 100 },
@@ -70,7 +72,6 @@ canvas.addEventListener("dblclick", addNodeAtEvent);
 // Function to add a new node at event position
 function addNodeAtEvent(event) {
   event.preventDefault();
-  updateHistory(History, "add");
 
   let [x, y] = event.type === "touchend" ? getTouchPosition(event, canvas) : d3.pointer(event, canvas);
   const newID = getMinAvailableNumber(History.graph.nodes());
