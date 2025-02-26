@@ -8,14 +8,7 @@ import { appSettings } from "./menu_bars/settings";
 import { LimitedArray } from "./dependency/classes";
 import { drawGraph } from "./dependency/mutation";
 import { addNodeAtEvent } from "./dependency/mutation";
-export const common = {
-  scaleData: {},
-  rect: { x: 100, y: 100, width: 150, height: 100 },
-  x: 0,
-  y: 0,
-  selectedNode: [],
-  selectedEdge: [],
-}
+
 
 // Set up canvas
 export const canvas = d3.select("#chart").node();

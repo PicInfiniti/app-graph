@@ -1,29 +1,12 @@
-// Importing styles
+// Import global styles
 import './assets/sass/style.sass';
 
-// Track key states
-export const keyDown = [false, ''];
+// Import and initialize the main App controller
+import { App } from './core/App.js';
 
-// Event listeners for key tracking
-document.addEventListener("keydown", (event) => {
-  keyDown[0] = true;
-  keyDown[1] = event.key;
+// Bootstrap the application
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new App();  // Create the app instance
+  app.init();             // Initialize the app
 });
 
-document.addEventListener("keyup", () => {
-  keyDown[0] = false;
-  keyDown[1] = '';
-});
-
-// Importing other JS modules
-import "./assets/js/events";
-import "./assets/js/init";
-import "./assets/js/force_simulation"
-import "./assets/js/context_menu";
-import "./assets/js/menu_bars/file";
-import "./assets/js/menu_bars/edit";
-import "./assets/js/menu_bars/tools";
-import "./assets/js/menu_bars/generate"
-import "./assets/js/menu_bars/analyze";
-import "./assets/js/menu_bars/settings";
-import "./assets/js/menu_bars/help";
