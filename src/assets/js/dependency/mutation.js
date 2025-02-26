@@ -1,7 +1,15 @@
 import $ from "jquery"
-import { common, simulation, nodes, links } from "../init";
-import { getAvailableLabel } from "./utils";
+import { common } from "../init";
+import { getMinAvailableNumber, getAvailableLabel } from "./utils";
 
+export function addNodeAtEvent(event, graph, canvas) {
+  event.preventDefault();
+
+  let [x, y] = event.type === "touchend" ? getTouchPosition(event, canvas) : d3.pointer(event, canvas);
+  const newID = getMinAvailableNumber(graph.nodes());
+  const newLabel = getAvailableLabel(newID);
+  graph.addNode(newID, { x, y, color: $("#color").val(), label: newLabel });
+}
 export function updateHistory(History, status = 'update') {
   switch (status) {
     case "redo":
@@ -170,7 +178,7 @@ export function drawGraph(graph, canvas) {
   });
 }
 
-export function updateSimulation() {
+export function updateSimulation(simulation, nodes, links) {
   simulation.nodes(nodes);
   simulation.force("link").links(links);
   simulation.alpha(.3).restart(); // Reheat simulation after updates

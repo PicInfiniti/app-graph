@@ -1,8 +1,10 @@
 import $ from "jquery"
-import { canvas, History, nodes, links } from "../init"
+import { canvas, History } from "../init"
 import { organizeNodesInCircle } from "../dependency/organizer";
 import { drawGraph, updateSimulation } from "../dependency/mutation";
 import { makeGraphComplete, updateForce } from "../dependency/mutation";
+import { updateHistory } from "../dependency/mutation";
+
 // Attach the circular layout function to the button
 $("[name='organize-circle']").on("click", function () {
   organizeNodesInCircle(History.graph, canvas)

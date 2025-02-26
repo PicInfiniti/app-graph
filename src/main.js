@@ -16,7 +16,9 @@ document.addEventListener("keyup", () => {
 });
 
 // Importing other JS modules
+import "./assets/js/events";
 import "./assets/js/init";
+import "./assets/js/force_simulation"
 import "./assets/js/context_menu";
 import "./assets/js/menu_bars/file";
 import "./assets/js/menu_bars/edit";

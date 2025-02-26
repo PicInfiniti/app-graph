@@ -1,6 +1,5 @@
 import { circular } from "graphology-library/layout";
 import { updateNodesPostion, updateForce } from "./mutation";
-import { nodes } from "../init";
 
 export function organizeNodesInCircle(graph, canvas) {
   const centerX = canvas.width / 2;
