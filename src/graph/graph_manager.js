@@ -1,4 +1,3 @@
-// src/graph/GraphManager.js
 import Graph from 'graphology';
 import { organizeNodesInCircle } from './layouts.js';
 

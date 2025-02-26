@@ -1,10 +1,7 @@
-// src/core/App.js
-
-import { EventBus } from './EventBus.js';
-import { GraphManager } from '../graph/GraphManager.js';
-import { renderGraph } from '../visualization/D3Renderer.js';
-import { simulation, startSimulation, stopSimulation } from '../visualization/ForceSimulation.js';
-import { KeyHandler } from './KeyHandler.js';
+import { EventBus } from './event_bus.js';
+import { GraphManager } from '../graph/graph_manager.js';
+import { simulation } from '../visualization/force_simulation.js';
+import { KeyHandler } from './key_handler.js';
 import { appSettings } from './State.js';
 
 export class App {
