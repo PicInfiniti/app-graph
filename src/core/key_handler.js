@@ -1,4 +1,4 @@
-import { EventBus } from './EventBus.js';
+import { EventBus } from "./event_bus";
 
 export const KeyHandler = {
   init() {

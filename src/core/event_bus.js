@@ -1,16 +1,32 @@
 export const EventBus = {
-  // Emit an event with optional data
+  listeners: {}, // Track active listeners
+
   emit(event, detail = {}) {
     document.dispatchEvent(new CustomEvent(event, { detail }));
   },
 
-  // Listen for a specific event
   on(event, callback) {
     document.addEventListener(event, callback);
+    if (!this.listeners[event]) {
+      this.listeners[event] = new Set();
+    }
+    this.listeners[event].add(callback);
   },
 
-  // Stop listening to a specific event
   off(event, callback) {
     document.removeEventListener(event, callback);
+    if (this.listeners[event]) {
+      this.listeners[event].delete(callback);
+    }
+  },
+
+  removeAll(event) {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach((callback) => {
+        document.removeEventListener(event, callback);
+      });
+      delete this.listeners[event];
+    }
   },
 };
+

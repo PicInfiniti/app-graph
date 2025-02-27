@@ -11,7 +11,7 @@ import { simulation, nodes, links } from "../force_simulation";
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())
-  const graph = empty(UndirectedGraph, val);
+  const graph = empty(Graph, val);
   organizeNodesInCircle(graph, canvas)
   drawGraph(graph)
 });
@@ -19,7 +19,7 @@ $('#g-empty-btn').on('click', function (event) {
 $('#g-complete-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-complete").val())
-  const graph = complete(UndirectedGraph, val);
+  const graph = complete(Graph, val);
   History.push(graph)
   if (!appSettings.forceSimulation) {
     organizeNodesInCircle(graph, canvas)
@@ -35,7 +35,7 @@ $('#g-complete-bipartite-btn').on('click', function (event) {
   let val1 = parseInt($("#g-complete-bipartite-1").val())
   let val2 = parseInt($("#g-complete-bipartite-2").val())
 
-  const graph = completeBipartite(UndirectedGraph, val1, val2);
+  const graph = completeBipartite(Graph, val1, val2);
   organizeNodesInTwoLines(graph, canvas, val1, 100)
   drawGraph(graph, canvas)
 });
@@ -43,7 +43,7 @@ $('#g-complete-bipartite-btn').on('click', function (event) {
 $('#g-ladder-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-ladder").val())
-  const graph = ladder(UndirectedGraph, val);
+  const graph = ladder(Graph, val);
   organizeNodesInTwoLines(graph, canvas, val)
   drawGraph(graph, canvas)
 });
@@ -51,7 +51,7 @@ $('#g-ladder-btn').on('click', function (event) {
 $('#g-path-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-path").val())
-  const graph = path(UndirectedGraph, val);
+  const graph = path(Graph, val);
   organizeNodesInLine(graph, canvas)
   drawGraph(graph, canvas)
 });
@@ -59,7 +59,7 @@ $('#g-path-btn').on('click', function (event) {
 $('#g-cycle-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-cycle").val())
-  const graph = cycle(UndirectedGraph, val);
+  const graph = cycle(Graph, val);
   organizeNodesInCircle(graph, canvas)
   drawGraph(graph, canvas)
 });
@@ -69,7 +69,7 @@ $('#g-caveman-btn').on('click', function (event) {
   let val1 = parseInt($("#g-caveman-1").val())
   let val2 = parseInt($("#g-caveman-2").val())
 
-  const graph = connectedCaveman(UndirectedGraph, val1, val2);
+  const graph = connectedCaveman(Graph, val1, val2);
   organizeNodesInCircle(graph, canvas)
   drawGraph(graph, canvas)
 });

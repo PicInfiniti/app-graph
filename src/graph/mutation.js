@@ -1,6 +1,6 @@
 import $ from "jquery"
-import { common } from "../init";
-import { getMinAvailableNumber, getAvailableLabel } from "./utils";
+import * as d3 from 'd3';
+import { getMinAvailableNumber, getAvailableLabel } from "../utils/helper_functions"
 
 export function addNodeAtEvent(event, graph, canvas) {
   event.preventDefault();
@@ -144,7 +144,7 @@ export function drawGraph(graph, canvas) {
     context.beginPath();
     context.moveTo(source.x, source.y);
     context.lineTo(target.x, target.y);
-    context.strokeStyle = common.selectedEdge.includes(edge) ? "orange" : attr.color;
+    context.strokeStyle = attr.color;
     context.lineWidth = appSettings.edge_size;
     context.stroke();
     context.closePath();
@@ -164,7 +164,7 @@ export function drawGraph(graph, canvas) {
     context.fillStyle = appSettings.vertexLabel ? "white" : attr.color;
     context.fill();
     context.lineWidth = 3;
-    context.strokeStyle = common.selectedNode.includes(node) ? "orange" : attr.color;
+    context.strokeStyle = attr.color;
     context.stroke();
     context.closePath();
 

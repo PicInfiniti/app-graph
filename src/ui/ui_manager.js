@@ -1,13 +1,14 @@
-// src/ui/UIManager.js
+import $ from "jquery"
+
 export function applySettingsToUI(appSettings) {
+  console.log(appSettings.color)
   $(".container").toggleClass('grid-hidden', appSettings.grid <= 2);
-  $root.css('--grid-size', `${appSettings.grid}px`);
 
   $('#vertex-size').val(appSettings.node_radius);
   $('#edge-size').val(appSettings.edge_size);
   $('#label-size').val(appSettings.label_size);
   $('#vertex-label .check').toggleClass("hidden", !appSettings.vertexLabel);
-
+  $('#color').val(appSettings.color);
   $('#panel-btn .check').toggleClass('hidden', appSettings.info_panel);
   $('#drag-btn .check').toggleClass("hidden", !appSettings.dragComponent);
   $('#scale-btn .check').toggleClass("hidden", !appSettings.scale);

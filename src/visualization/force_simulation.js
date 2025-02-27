@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
-import { canvas, History } from "./init";
-import { drawGraph } from './dependency/mutation';
-import { appSettings } from './menu_bars/settings';
-import { organizeNodesInCircle } from './dependency/organizer';
+import { canvas } from "../core/init"
+import { drawGraph } from '../graph/mutation';
+import { appSettings } from '../core/state';
+import { organizeNodesInCircle } from '../graph/layouts';
+import { History } from '../graph/graph_manager';
 // Extract nodes and edges from Graphology for D3
 
 export const nodes = History.graph.mapNodes(function (node, attr) {

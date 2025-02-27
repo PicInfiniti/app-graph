@@ -1,17 +1,22 @@
+import * as d3 from 'd3';
 import { EventBus } from './event_bus.js';
 import { GraphManager } from '../graph/graph_manager.js';
-import { simulation } from '../visualization/force_simulation.js';
 import { KeyHandler } from './key_handler.js';
-import { appSettings } from './State.js';
+import { caveman } from 'graphology-generators/community';
+import { Graph } from '../utils/classes.js';
+import AppSettings from './state.js';
+import { drawGraph } from '../graph/mutation.js';
 
 export class App {
   constructor() {
     this.graphManager = new GraphManager();  // Handles graph logic
+    this.canvas = d3.select("#chart").node();
+    this.setting = new AppSettings(EventBus);
   }
 
   init() {
-    console.log('App initialized 🚀');
 
+    this.initCanvas();
     // Initialize global handlers
     KeyHandler.init();  // Handle global keyboard shortcuts
 
@@ -20,11 +25,29 @@ export class App {
 
     // Set up all event listeners
     this.setupEventListeners();
+
+
+    d3.select(this.canvas)
+      .call(
+        d3.drag()
+          .container(this.canvas)
+          .subject(this.dragsubject)
+          .on("start", this.dragstarted)
+          .on("drag", this.dragged)
+          .on("end", this.dragended)
+      );
+  }
+
+  initCanvas() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.canvas.addEventListener("dblclick", (event) => {
+      addNodeAtEvent(event, this.graph, this.canvas)
+    });
   }
 
   loadInitialGraph() {
-    this.graphManager.createEmptyGraph();  // Or load from data
-    renderGraph(this.graphManager.getGraph());  // Visualize the graph
+    drawGraph(this.graphManager.graph, this.canvas);  // Visualize the graph
   }
 
   setupEventListeners() {
@@ -53,4 +76,54 @@ export class App {
       }
     });
   }
+
+  dragsubject(event) {
+    const x = event.x;
+    const y = event.y;
+    let subject = null;
+    let minDist = Infinity;
+
+    this.history.graph.forEachNode((node, attr) => {
+      const dx = x - attr.x;
+      const dy = y - attr.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < appSettings.node_radius && dist < minDist) {
+        minDist = dist;
+        subject = attr;
+      }
+    });
+    return subject;
+  }
+
+
+
+  dragstarted(event) {
+    event.subject.fx = event.subject.x;
+    event.subject.fy = event.subject.y;
+  }
+
+  dragged(event) {
+    event.subject.fx = event.x;
+    event.subject.fy = event.y;
+
+    this.history.graph.updateNodeAttributes(event.subject.id, attr => {
+      return {
+        ...attr,
+        x: event.x,
+        y: event.y
+      };
+    });
+    if (!appSettings.forceSimulation) {
+      drawGraph(this.history.graph, this.canvas)
+    }
+  }
+
+  dragended(event) {
+    event.subject.fx = null;
+    event.subject.fy = null;
+    event.subject.x = event.x;
+    event.subject.y = event.y;
+  }
 }
+
+
