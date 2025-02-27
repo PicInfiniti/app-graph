@@ -6,16 +6,18 @@ import { caveman } from 'graphology-generators/community';
 import { Graph } from '../utils/classes.js';
 import AppSettings from './state.js';
 import { drawGraph } from '../graph/mutation.js';
+import { createMenu } from '../ui/menu.js';
 
 export class App {
   constructor() {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
     this.setting = new AppSettings(EventBus);
+    this.init()
   }
 
   init() {
-
+    createMenu()
     this.initCanvas();
     // Initialize global handlers
     KeyHandler.init();  // Handle global keyboard shortcuts

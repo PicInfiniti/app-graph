@@ -170,34 +170,34 @@ body {
   padding: 1px;
 }
 
-.menu-bar {
+#menu-bar {
   background-color: #f4f4f4;
   border-bottom: 1px solid #ddd;
   padding: 0;
   margin: 0;
 }
-.menu-bar hr {
-  opacity: 0.5;
-  width: 90%;
-}
-.menu-bar > ul {
+#menu-bar > ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   display: flex;
 }
-.menu-bar .menu-item {
+#menu-bar > ul hr {
+  opacity: 0.5;
+  width: 90%;
+}
+#menu-bar > ul > li {
   position: relative;
   padding: 5px 10px;
   cursor: pointer;
 }
-.menu-bar .menu-item:hover {
+#menu-bar > ul > li:hover {
   background-color: #e0e0e0;
 }
-.menu-bar .menu-item:hover .dropdown {
+#menu-bar > ul > li:hover > ul {
   display: block;
 }
-.menu-bar .dropdown {
+#menu-bar > ul > li > ul {
   display: none;
   position: absolute;
   top: 100%;
@@ -210,17 +210,17 @@ body {
   min-width: 200px;
   z-index: 20;
 }
-.menu-bar .dropdown li {
+#menu-bar > ul > li > ul li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px;
   cursor: pointer;
 }
-.menu-bar .dropdown li span:nth-child(2) {
+#menu-bar > ul > li > ul li span:nth-child(2) {
   color: rgb(100, 100, 100);
 }
-.menu-bar .dropdown li > ul {
+#menu-bar > ul > li > ul li > ul {
   display: none;
   position: absolute;
   top: 95%;
@@ -233,22 +233,22 @@ body {
   min-width: 200px;
   z-index: 20;
 }
-.menu-bar .dropdown li > ul li input[type=number] {
+#menu-bar > ul > li > ul li > ul li input[type=number] {
   width: 50px;
 }
-.menu-bar .dropdown li > ul li div {
+#menu-bar > ul > li > ul li > ul li div {
   display: flex;
   gap: 5px;
 }
-.menu-bar .dropdown li > ul li label {
+#menu-bar > ul > li > ul li > ul li label {
   display: flex;
   align-items: center;
   width: 100%;
 }
-.menu-bar .dropdown li > ul li label span:first-child {
+#menu-bar > ul > li > ul li > ul li label span:first-child {
   width: 30px;
 }
-.menu-bar .dropdown li > ul li label a {
+#menu-bar > ul > li > ul li > ul li label a {
   border: 1px solid gray;
   width: 12px;
   height: 12px;
@@ -258,16 +258,16 @@ body {
   justify-content: center;
   align-items: center;
 }
-.menu-bar .dropdown li > ul li label a:hover {
+#menu-bar > ul > li > ul li > ul li label a:hover {
   cursor: help;
 }
-.menu-bar .dropdown li:hover {
+#menu-bar > ul > li > ul li:hover {
   background-color: #f4f4f4;
 }
-.menu-bar .dropdown li:hover ul {
+#menu-bar > ul > li > ul li:hover ul {
   display: block;
 }
-.menu-bar .dropdown #panel-btn {
+#menu-bar > ul > li > ul #panel-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
