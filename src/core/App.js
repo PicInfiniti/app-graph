@@ -113,25 +113,24 @@ export class App {
       }
     });
   }
-
   dragsubject(event) {
-    const [x, y] = d3.pointer(event, this.canvas);
+    const x = event.x;
+    const y = event.y;
     let subject = null;
     let minDist = Infinity;
 
-    this.graphManager.graph.forEachNode((node, attr) => {
-      const dx = x - attr.x;
-      const dy = y - attr.y;
+    this.nodes.forEach((node) => {
+      const dx = x - node.x;
+      const dy = y - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < this.appSettings.settings.node_radius && dist < minDist) {
+      if (dist < 10 && dist < minDist) {
         minDist = dist;
-        subject = attr;
+        subject = node;
       }
     });
+
     return subject;
   }
-
-
 
   dragstarted(event) {
     event.subject.fx = event.subject.x;
@@ -154,8 +153,6 @@ export class App {
   dragended(event) {
     event.subject.fx = null;
     event.subject.fy = null;
-    event.subject.x = event.x;
-    event.subject.y = event.y;
   }
   // Function to update the graph
   drawGraph() {
