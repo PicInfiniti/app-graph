@@ -1,6 +1,6 @@
 import { canvas, History } from "./init";
 import { updateForce, updateHistory } from "./dependency/mutation";
-import { simulation, nodes, links } from "./force_simulation";
+import { simulation, nodes, links } from "./forceSimulation";
 
 History.graph.on('nodeAdded', function ({ key }) {
   updateHistory(History, 'update')

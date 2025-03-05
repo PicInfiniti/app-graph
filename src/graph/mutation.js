@@ -1,6 +1,6 @@
 import $ from "jquery"
 import * as d3 from 'd3';
-import { getMinAvailableNumber, getAvailableLabel } from "../utils/helper_functions"
+import { getMinAvailableNumber, getAvailableLabel } from "../utils/helperFunctions"
 
 export function addNodeAtEvent(event, graph, canvas) {
   event.preventDefault();

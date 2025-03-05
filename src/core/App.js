@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
-import { EventBus } from './event_bus.js';
-import { GraphManager } from '../graph/graph_manager.js';
-import { KeyHandler } from './key_handler.js';
+import { EventBus } from './eventBus.js';
+import { GraphManager } from '../graph/graphManager.js';
+import { KeyHandler } from './keyHandler.js';
 import { caveman } from 'graphology-generators/community';
 import { Graph } from '../utils/classes.js';
 import AppSettings from './state.js';
@@ -18,6 +18,7 @@ export class App {
 
   init() {
     createMenu()
+    this.setting.init()
     this.initCanvas();
     // Initialize global handlers
     KeyHandler.init();  // Handle global keyboard shortcuts
@@ -73,8 +74,8 @@ export class App {
     // Example: Key event to toggle simulation
     EventBus.on('key:pressed', (event) => {
       if (event.detail.key === 's') {
-        appSettings.forceSimulation = !appSettings.forceSimulation;
-        EventBus.emit('simulation:toggled', { running: appSettings.forceSimulation });
+        this.ettings.forceSimulation = !this.ettings.forceSimulation;
+        EventBus.emit('simulation:toggled', { running: this.settings.forceSimulation });
       }
     });
   }
@@ -89,7 +90,7 @@ export class App {
       const dx = x - attr.x;
       const dy = y - attr.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < appSettings.node_radius && dist < minDist) {
+      if (dist < this.settings.node_radius && dist < minDist) {
         minDist = dist;
         subject = attr;
       }
@@ -115,7 +116,7 @@ export class App {
         y: event.y
       };
     });
-    if (!appSettings.forceSimulation) {
+    if (!this.settings.forceSimulation) {
       drawGraph(this.history.graph, this.canvas)
     }
   }

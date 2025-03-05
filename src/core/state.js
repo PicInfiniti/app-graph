@@ -1,4 +1,4 @@
-import { applySettingsToUI } from '../ui/ui_manager'
+import { applySettingsToUI } from '../ui/uiManager';
 
 class AppSettings {
   static instance = null;
@@ -27,12 +27,41 @@ class AppSettings {
     // Load validated settings from localStorage or use defaults
     this.settings = this.loadFromLocalStorage();
 
-    // Automatically apply settings on creation
-    this.init();
+
+    // Listen for external setting updates
+    this.registerEventListeners();
   }
 
   init() {
     applySettingsToUI(this.settings);
+    this.eventBus.emit("settingsChanged", this.getAllSettings());
+  }
+
+  registerEventListeners() {
+    this.eventBus.on("updateSetting", (event) => {
+      const { key, value } = event.detail;
+      if (key && value !== undefined) {
+        this.setSetting(key, value);
+      }
+    });
+
+    this.eventBus.on("updateAllSettings", (event) => {
+      const newSettings = event.detail;
+      if (newSettings && typeof newSettings === "object") {
+        this.setAllSettings(newSettings);
+      }
+    });
+
+    this.eventBus.on("resetSettings", () => {
+      this.resetToDefault();
+    });
+
+    this.eventBus.on("toggleSetting", (event) => {
+      const { key } = event.detail;
+      if (key) {
+        this.toggleSetting(key);
+      }
+    });
   }
 
   loadFromLocalStorage() {
@@ -53,12 +82,16 @@ class AppSettings {
     this.debounceTimer = setTimeout(() => {
       localStorage.setItem("appSettings", JSON.stringify(this.settings));
       console.log("Settings saved to localStorage");
+
+      // Emit a global settings change event
+      this.eventBus.emit("settingsChanged", this.getAllSettings());
     }, 500);
   }
 
   resetToDefault() {
     this.settings = { ...this.defaultSettings };
     this.eventBus.emit("settingsReset", this.settings);
+
     if (this.#autoSave) {
       this.saveToLocalStorage();
     }
@@ -86,6 +119,35 @@ class AppSettings {
       }
     } else {
       console.warn(`Setting "${key}" does not exist.`);
+    }
+  }
+
+  setAllSettings(newSettings) {
+    Object.keys(newSettings).forEach((key) => {
+      if (key in this.settings) {
+        this.settings[key] = newSettings[key];
+      }
+    });
+
+    this.eventBus.emit("settingsChanged", this.getAllSettings());
+
+    if (this.#autoSave) {
+      this.saveToLocalStorage();
+    }
+    this.init();
+  }
+
+  toggleSetting(key) {
+    if (key in this.settings && typeof this.settings[key] === "boolean") {
+      this.settings[key] = !this.settings[key];
+      this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
+
+      if (this.#autoSave) {
+        this.saveToLocalStorage();
+      }
+      this.init();
+    } else {
+      console.warn(`Setting "${key}" does not exist or is not a boolean.`);
     }
   }
 
