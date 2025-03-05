@@ -7,18 +7,19 @@ import { Graph } from '../utils/classes.js';
 import AppSettings from './state.js';
 import { drawGraph } from '../graph/mutation.js';
 import { createMenu } from '../ui/menu.js';
+import { addNodeAtEvent } from '../graph/mutation.js';
 
 export class App {
   constructor() {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
-    this.setting = new AppSettings(EventBus);
+    this.appSettings = new AppSettings(EventBus);
     this.init()
   }
 
   init() {
     createMenu()
-    this.setting.init()
+    this.appSettings.init()
     this.initCanvas();
     // Initialize global handlers
     KeyHandler.init();  // Handle global keyboard shortcuts
@@ -29,28 +30,29 @@ export class App {
     // Set up all event listeners
     this.setupEventListeners();
 
-
     d3.select(this.canvas)
       .call(
         d3.drag()
           .container(this.canvas)
-          .subject(this.dragsubject)
-          .on("start", this.dragstarted)
-          .on("drag", this.dragged)
-          .on("end", this.dragended)
+          .subject(this.dragsubject.bind(this))  // 👈 Bind this
+          .on("start", this.dragstarted.bind(this))
+          .on("drag", this.dragged.bind(this))
+          .on("end", this.dragended.bind(this))
       );
+
   }
 
   initCanvas() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.canvas.addEventListener("dblclick", (event) => {
-      addNodeAtEvent(event, this.graph, this.canvas)
+      addNodeAtEvent(event, this.graphManager.graph, this.canvas)
     });
   }
 
   loadInitialGraph() {
-    drawGraph(this.graphManager.graph, this.canvas);  // Visualize the graph
+    this.graphManager.applyLayout('circle', this.canvas)
+    drawGraph(this.graphManager.graph, this.canvas, this.appSettings.settings);  // Visualize the graph
   }
 
   setupEventListeners() {
@@ -74,8 +76,8 @@ export class App {
     // Example: Key event to toggle simulation
     EventBus.on('key:pressed', (event) => {
       if (event.detail.key === 's') {
-        this.ettings.forceSimulation = !this.ettings.forceSimulation;
-        EventBus.emit('simulation:toggled', { running: this.settings.forceSimulation });
+        this.appSettings.settings.forceSimulation = !this.appSettings.settings.forceSimulation;
+        EventBus.emit('simulation:toggled', { running: this.appSettings.settings.forceSimulation });
       }
     });
   }
@@ -85,12 +87,11 @@ export class App {
     const y = event.y;
     let subject = null;
     let minDist = Infinity;
-
-    this.history.graph.forEachNode((node, attr) => {
+    this.graphManager.graph.forEachNode((node, attr) => {
       const dx = x - attr.x;
       const dy = y - attr.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < this.settings.node_radius && dist < minDist) {
+      if (dist < this.appSettings.settings.node_radius && dist < minDist) {
         minDist = dist;
         subject = attr;
       }
@@ -109,15 +110,16 @@ export class App {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
 
-    this.history.graph.updateNodeAttributes(event.subject.id, attr => {
+    this.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
       return {
         ...attr,
         x: event.x,
         y: event.y
       };
     });
-    if (!this.settings.forceSimulation) {
-      drawGraph(this.history.graph, this.canvas)
+
+    if (!this.appSettings.settings.forceSimulation) {
+      drawGraph(this.graphManager.graph, this.canvas, this.appSettings.settings)
     }
   }
 

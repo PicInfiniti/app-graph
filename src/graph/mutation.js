@@ -132,7 +132,7 @@ export function connectNodes(graph, nodes, color) {
 
 
 // Function to update the graph
-export function drawGraph(graph, canvas) {
+export function drawGraph(graph, canvas, settings) {
   const context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -145,7 +145,7 @@ export function drawGraph(graph, canvas) {
     context.moveTo(source.x, source.y);
     context.lineTo(target.x, target.y);
     context.strokeStyle = attr.color;
-    context.lineWidth = appSettings.edge_size;
+    context.lineWidth = settings.edge_size;
     context.stroke();
     context.closePath();
   });
@@ -157,20 +157,20 @@ export function drawGraph(graph, canvas) {
       graph.setNodeAttribute(node, "label", newLabel)
     }
     if (!attr.color) {
-      graph.setNodeAttribute(node, "color", $("#color").val())
+      graph.setNodeAttribute(node, "color", settings.color)
     }
     context.beginPath();
-    context.arc(attr.x, attr.y, appSettings.node_radius, 0, 2 * Math.PI);
-    context.fillStyle = appSettings.vertexLabel ? "white" : attr.color;
+    context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
+    context.fillStyle = settings.vertexLabel ? "white" : attr.color;
     context.fill();
     context.lineWidth = 3;
     context.strokeStyle = attr.color;
     context.stroke();
     context.closePath();
 
-    if (appSettings.vertexLabel) {
+    if (settings.vertexLabel) {
       context.fillStyle = "black";
-      context.font = `${appSettings.label_size}px sans-serif`;
+      context.font = `${settings.label_size}px sans-serif`;
       context.textAlign = "center";
       context.textBaseline = "middle";
       context.fillText(attr.label, attr.x, attr.y);

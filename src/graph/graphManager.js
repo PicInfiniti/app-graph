@@ -7,7 +7,8 @@ export class GraphManager {
     this.limit = limit;
     this.index = -1;
     this.history = [];
-    this.graph = new Graph();
+    this.graph = caveman(Graph, 5, 5);
+    this.init()
   }
   init() {
     this.history.push(this.graph)
@@ -40,9 +41,9 @@ export class GraphManager {
     this.graph.clear();
   }
 
-  applyLayout(type) {
+  applyLayout(type, canvas) {
     if (type === 'circle') {
-      organizeNodesInCircle(this.graph);
+      organizeNodesInCircle(this.graph, canvas);
     }
     // More layouts can be added here
   }
