@@ -1,5 +1,5 @@
 export const EventBus = {
-  listeners: {},
+  listeners: new Map(), // Using Map for better management
 
   emit(event, detail = {}) {
     document.dispatchEvent(new CustomEvent(event, { detail }));
@@ -10,32 +10,51 @@ export const EventBus = {
       console.warn(`EventBus: Tried to register a non-function listener for event: ${event}`);
       return;
     }
+
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+
+    const callbacks = this.listeners.get(event);
+    if (callbacks.has(callback)) {
+      console.warn(`EventBus: Listener for event "${event}" is already registered.`);
+      return;
+    }
+
     document.addEventListener(event, callback);
-    this.listeners[event] = this.listeners[event] || new Set();
-    this.listeners[event].add(callback);
+    callbacks.add(callback);
   },
 
   off(event, callback) {
-    if (!this.listeners[event] || !this.listeners[event].has(callback)) {
+    if (!this.listeners.has(event)) {
+      console.warn(`EventBus: Attempted to remove a listener from a non-existent event: ${event}`);
+      return;
+    }
+
+    const callbacks = this.listeners.get(event);
+    if (!callbacks.has(callback)) {
       console.warn(`EventBus: Attempted to remove a non-existent listener from event: ${event}`);
       return;
     }
+
     document.removeEventListener(event, callback);
-    this.listeners[event].delete(callback);
-    if (this.listeners[event].size === 0) {
-      delete this.listeners[event]; // Clean up empty event sets
+    callbacks.delete(callback);
+
+    if (callbacks.size === 0) {
+      this.listeners.delete(event); // Clean up empty event sets
     }
   },
 
   removeAll(event) {
-    if (!this.listeners[event]) {
+    if (!this.listeners.has(event)) {
       console.warn(`EventBus: Attempted to remove all listeners from a non-existent event: ${event}`);
       return;
     }
-    this.listeners[event].forEach((callback) => {
+
+    this.listeners.get(event).forEach((callback) => {
       document.removeEventListener(event, callback);
     });
-    delete this.listeners[event];
+
+    this.listeners.delete(event);
   },
 };
-

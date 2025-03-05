@@ -1,6 +1,8 @@
 import { Graph } from '../utils/classes.js';
+import { EventBus } from '../core/eventBus.js';
 import { caveman } from 'graphology-generators/community';
 import { organizeNodesInCircle } from './layouts.js';
+import { getMinAvailableNumber, getAvailableLabel } from '../utils/helperFunctions.js';
 
 export class GraphManager {
   constructor(limit) {

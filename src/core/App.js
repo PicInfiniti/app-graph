@@ -5,15 +5,18 @@ import { KeyHandler } from './keyHandler.js';
 import { caveman } from 'graphology-generators/community';
 import { Graph } from '../utils/classes.js';
 import AppSettings from './state.js';
-import { drawGraph } from '../graph/mutation.js';
 import { createMenu } from '../ui/menu.js';
-import { addNodeAtEvent } from '../graph/mutation.js';
+import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
+
 
 export class App {
   constructor() {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
     this.appSettings = new AppSettings(EventBus);
+    this.simultion = null;
+    this.nodes = [];
+    this.links = [];
     this.init()
   }
 
@@ -21,14 +24,11 @@ export class App {
     createMenu()
     this.appSettings.init()
     this.initCanvas();
-    // Initialize global handlers
     KeyHandler.init();  // Handle global keyboard shortcuts
-
-    // Load initial graph
     this.loadInitialGraph();
-
-    // Set up all event listeners
     this.setupEventListeners();
+    this.initSimulation()
+
 
     d3.select(this.canvas)
       .call(
@@ -39,20 +39,52 @@ export class App {
           .on("drag", this.dragged.bind(this))
           .on("end", this.dragended.bind(this))
       );
+  }
 
+  addNodeAtEvent(event) {
+    event.preventDefault();
+
+    let [x, y] = d3.pointer(event, this.canvas);
+    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
+    const newLabel = getAvailableLabel(newID);
+    this.graphManager.graph.addNode(newID, { x, y, color: this.appSettings.settings.color, label: newLabel });
+    EventBus.emit('graph:updated')
   }
 
   initCanvas() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.canvas.addEventListener("dblclick", (event) => {
-      addNodeAtEvent(event, this.graphManager.graph, this.canvas)
+      this.addNodeAtEvent(event)
     });
   }
 
+  initSimulation() {
+    this.nodes = this.graphManager.graph.getNodesForD3();
+    this.links = this.graphManager.graph.getEdgesForD3();
+
+    this.simulation = d3.forceSimulation(this.nodes)
+      .force("link", d3.forceLink(this.links)
+        .id(d => d.id)
+        .distance(10)       // Increased link distance
+        .strength(0.5))      // Moderate link strength
+      .force("charge", d3.forceManyBody()
+        .strength(-300))     // Stronger negative value for repulsion
+      .force("collide", d3.forceCollide(20)) // Prevents node overlap
+      .force("center", d3.forceCenter(this.canvas.width / 2, this.canvas.height / 2))
+      .force("x", d3.forceX(this.canvas.width / 2).strength(0.05))  // Gentle attraction to center
+      .force("y", d3.forceY(this.canvas.height / 1).strength(0.05)) // Gentle attraction to center
+      .velocityDecay(0.3)     // Slower decay for smoother stabilization
+      .alphaDecay(0.02)       // Slower cooling, better final spread
+      .on("tick", this.ticked.bind(this));
+
+
+    this.startSimulation()
+
+  }
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
-    drawGraph(this.graphManager.graph, this.canvas, this.appSettings.settings);  // Visualize the graph
+    this.drawGraph();  // Visualize the graph
   }
 
   setupEventListeners() {
@@ -65,12 +97,12 @@ export class App {
 
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
-      renderGraph(event.detail.graph);
+      this.drawGraph();  // Visualize the graph
     });
 
     // Toggle simulation based on UI interactions
     EventBus.on('simulation:toggled', (event) => {
-      event.detail.running ? startSimulation() : stopSimulation();
+      event.detail.running ? this.startSimulation() : this.stopSimulation();
     });
 
     // Example: Key event to toggle simulation
@@ -83,10 +115,10 @@ export class App {
   }
 
   dragsubject(event) {
-    const x = event.x;
-    const y = event.y;
+    const [x, y] = d3.pointer(event, this.canvas);
     let subject = null;
     let minDist = Infinity;
+
     this.graphManager.graph.forEachNode((node, attr) => {
       const dx = x - attr.x;
       const dy = y - attr.y;
@@ -117,10 +149,6 @@ export class App {
         y: event.y
       };
     });
-
-    if (!this.appSettings.settings.forceSimulation) {
-      drawGraph(this.graphManager.graph, this.canvas, this.appSettings.settings)
-    }
   }
 
   dragended(event) {
@@ -128,6 +156,87 @@ export class App {
     event.subject.fy = null;
     event.subject.x = event.x;
     event.subject.y = event.y;
+  }
+  // Function to update the graph
+  drawGraph() {
+    const graph = this.graphManager.graph
+    const canvas = this.canvas
+    const settings = this.appSettings.settings
+
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw edges
+    graph.forEachEdge(function (edge, attr, s, t, source, target) {
+      if (!attr.color) {
+        graph.setEdgeAttribute(edge, "color", settings.color)
+      }
+      context.beginPath();
+      context.moveTo(source.x, source.y);
+      context.lineTo(target.x, target.y);
+      context.strokeStyle = attr.color;
+      context.lineWidth = settings.edge_size;
+      context.stroke();
+      context.closePath();
+    });
+
+    // Draw nodes
+    graph.forEachNode(function (node, attr) {
+      if (!attr.label) {
+        const newLabel = getAvailableLabel(node);
+        graph.setNodeAttribute(node, "label", newLabel)
+      }
+      if (!attr.color) {
+        graph.setNodeAttribute(node, "color", settings.color)
+      }
+      context.beginPath();
+      context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
+      context.fillStyle = settings.vertexLabel ? "white" : attr.color;
+      context.fill();
+      context.lineWidth = 3;
+      context.strokeStyle = attr.color;
+      context.stroke();
+      context.closePath();
+
+      if (settings.vertexLabel) {
+        context.fillStyle = "black";
+        context.font = `${settings.label_size}px sans-serif`;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(attr.label, attr.x, attr.y);
+      }
+    });
+  }
+
+  ticked() {
+    // Draw nodes
+    const sNode = this.nodes[0]
+    const gNode = this.graphManager.graph.getNodeAttributes(sNode.id)
+    if (gNode.x != sNode.x) {
+      this.nodes.forEach((d) => {
+        this.graphManager.graph.updateNodeAttributes(d.id, attr => {
+          return {
+            ...attr,
+            x: d.x,
+            y: d.y
+          };
+        });
+      });
+      EventBus.emit('graph:updated')
+    }
+  }
+
+  startSimulation() {
+    this.simulation.alpha(1).restart();
+  }
+
+  stopSimulation() {
+    this.simulation.stop();
+  }
+  updateSimulation() {
+    this.simulation.nodes(this.graphManager.graph.getNodesForD3());
+    this.simulation.force("link").links(this.graphManager.graph.getEdgesForD3());
+    this.startSimulation()
   }
 }
 

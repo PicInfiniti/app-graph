@@ -2,14 +2,7 @@ import $ from "jquery"
 import * as d3 from 'd3';
 import { getMinAvailableNumber, getAvailableLabel } from "../utils/helperFunctions"
 
-export function addNodeAtEvent(event, graph, canvas) {
-  event.preventDefault();
 
-  let [x, y] = event.type === "touchend" ? getTouchPosition(event, canvas) : d3.pointer(event, canvas);
-  const newID = getMinAvailableNumber(graph.nodes());
-  const newLabel = getAvailableLabel(newID);
-  graph.addNode(newID, { x, y, color: $("#color").val(), label: newLabel });
-}
 export function updateHistory(History, status = 'update') {
   switch (status) {
     case "redo":
@@ -131,52 +124,7 @@ export function connectNodes(graph, nodes, color) {
 }
 
 
-// Function to update the graph
-export function drawGraph(graph, canvas, settings) {
-  const context = canvas.getContext("2d");
-  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw edges
-  graph.forEachEdge(function (edge, attr, s, t, source, target) {
-    if (!attr.color) {
-      graph.setEdgeAttribute(edge, "color", $("#color").val())
-    }
-    context.beginPath();
-    context.moveTo(source.x, source.y);
-    context.lineTo(target.x, target.y);
-    context.strokeStyle = attr.color;
-    context.lineWidth = settings.edge_size;
-    context.stroke();
-    context.closePath();
-  });
-
-  // Draw nodes
-  graph.forEachNode(function (node, attr) {
-    if (!attr.label) {
-      const newLabel = getAvailableLabel(node);
-      graph.setNodeAttribute(node, "label", newLabel)
-    }
-    if (!attr.color) {
-      graph.setNodeAttribute(node, "color", settings.color)
-    }
-    context.beginPath();
-    context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
-    context.fillStyle = settings.vertexLabel ? "white" : attr.color;
-    context.fill();
-    context.lineWidth = 3;
-    context.strokeStyle = attr.color;
-    context.stroke();
-    context.closePath();
-
-    if (settings.vertexLabel) {
-      context.fillStyle = "black";
-      context.font = `${settings.label_size}px sans-serif`;
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      context.fillText(attr.label, attr.x, attr.y);
-    }
-  });
-}
 
 export function updateSimulation(simulation, nodes, links) {
   simulation.nodes(nodes);
