@@ -2,8 +2,6 @@ import * as d3 from 'd3';
 import { EventBus } from './eventBus.js';
 import { GraphManager } from '../graph/graphManager.js';
 import { KeyHandler } from './keyHandler.js';
-import { caveman } from 'graphology-generators/community';
-import { Graph } from '../utils/classes.js';
 import AppSettings from './state.js';
 import { createMenu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
@@ -78,9 +76,6 @@ export class App {
       .alphaDecay(0.02)       // Slower cooling, better final spread
       .on("tick", this.ticked.bind(this));
 
-
-    this.startSimulation()
-
   }
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
@@ -114,6 +109,7 @@ export class App {
     });
   }
   dragsubject(event) {
+    console.log(65)
     const x = event.x;
     const y = event.y;
     let subject = null;
@@ -133,6 +129,7 @@ export class App {
   }
 
   dragstarted(event) {
+    this.simulation.alpha(0.5).restart();
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
   }
