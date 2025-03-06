@@ -46,8 +46,7 @@ export class App {
     const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
     this.graphManager.graph.addNode(newID, { x, y, color: this.appSettings.settings.color, label: newLabel });
-    EventBus.emit('graph:updated')
-    this.nodes.push({ id: newID, x: x, y: y })
+    EventBus.emit('graph:updated', { type: 'addNode' })
   }
 
   initCanvas() {
@@ -106,6 +105,10 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
+      console.log(4)
+      if (event.detail.type == 'addNode') {
+        this.updateSimulation()
+      }
     });
 
     // Toggle simulation based on UI interactions
@@ -239,12 +242,12 @@ export class App {
           };
         });
       });
-      EventBus.emit('graph:updated')
+      EventBus.emit('graph:updated', { type: 'position' })
     }
   }
 
   startSimulation() {
-    this.simulation.alpha(1).restart();
+    this.simulation.alpha(.3).restart(); // Reheat simulation after updates
   }
 
   stopSimulation() {
@@ -252,8 +255,14 @@ export class App {
   }
 
   updateSimulation() {
-    this.simulation.nodes(this.graphManager.graph.getNodesForD3());
-    this.simulation.force("link").links(this.graphManager.graph.getEdgesForD3());
+    this.nodes.length = 0;
+    this.nodes = this.graphManager.graph.getNodesForD3()
+
+    this.links.length = 0;
+    this.links = this.graphManager.graph.getEdgesForD3()
+
+    this.simulation.nodes(this.nodes);
+    this.simulation.force("link").links(this.links);
     this.startSimulation()
   }
 
