@@ -263,7 +263,11 @@ export class App {
 
     this.simulation.nodes(this.nodes);
     this.simulation.force("link").links(this.links);
-    this.startSimulation()
+    if (this.appSettings.settings.forceSimulation) {
+      this.startSimulation()
+    } else {
+      this.stopSimulation()
+    }
   }
 
   updateForce() {
