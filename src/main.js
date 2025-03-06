@@ -7,11 +7,11 @@ import { App } from './core/App.js';
 // Bootstrap the application
 document.addEventListener('DOMContentLoaded', () => {
   const app = new App();  // Create the app instance
-  // Redraw on window resize
-  // window.addEventListener("resize", () => {
-  //   app.canvas.width = window.innerWidth;
-  //   app.canvas.height = window.innerHeight;
-  // });
+  window.addEventListener("resize", () => {
+    app.canvas.width = window.innerWidth;
+    app.canvas.height = window.innerHeight;
+    app.drawGraph();
+  });
 });
 
 
