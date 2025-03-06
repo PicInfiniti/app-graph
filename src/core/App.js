@@ -80,14 +80,13 @@ export class App {
     if (!this.appSettings.settings.forceSimulation) {
       this.simulation.stop()
     }
-    EventBus.on('settingsChanged', (event) => {
-      if (!this.appSettings.settings.forceSimulation) {
-        this.simulation.stop()
+    EventBus.on('settingToggled', (event) => {
+      const { key, value } = event.detail
+      if (key == 'forceSimulation' && value) {
+        this.startSimulation()
       } else {
-
-        this.simulation.alphaTarget(0.3).restart()
+        this.stopSimulation()
       }
-
     })
   }
   loadInitialGraph() {
@@ -141,7 +140,7 @@ export class App {
   }
 
   dragstarted(event) {
-    if (this.appSettings.settings.forceSimulation) {
+    if (!event.active && this.appSettings.settings.forceSimulation) {
       this.simulation.alphaTarget(0.3).restart()
     }
     event.subject.fx = event.subject.x;
@@ -166,8 +165,12 @@ export class App {
   }
 
   dragended(event) {
+    if (!event.active) this.simulation.alphaTarget(0);
     event.subject.fx = null;
     event.subject.fy = null;
+    event.subject.x = event.x;
+    event.subject.y = event.y;
+
   }
   // Function to update the graph
   drawGraph() {

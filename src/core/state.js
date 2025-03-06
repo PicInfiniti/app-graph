@@ -34,7 +34,6 @@ class AppSettings {
 
   init() {
     applySettingsToUI(this.settings);
-    this.eventBus.emit("settingsChanged", this.getAllSettings());
   }
 
   registerEventListeners() {
