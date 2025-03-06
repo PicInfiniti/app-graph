@@ -5,7 +5,6 @@ import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
 import { createMenu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
-import { event } from 'jquery';
 
 
 export class App {
@@ -48,6 +47,7 @@ export class App {
     const newLabel = getAvailableLabel(newID);
     this.graphManager.graph.addNode(newID, { x, y, color: this.appSettings.settings.color, label: newLabel });
     EventBus.emit('graph:updated')
+    this.nodes.push({ id: newID, x: x, y: y })
   }
 
   initCanvas() {
@@ -89,6 +89,7 @@ export class App {
       }
     })
   }
+
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
     this.drawGraph();  // Visualize the graph
@@ -120,6 +121,7 @@ export class App {
       }
     });
   }
+
   dragsubject(event) {
     const x = event.x;
     const y = event.y;
@@ -172,7 +174,7 @@ export class App {
     event.subject.y = event.y;
 
   }
-  // Function to update the graph
+
   drawGraph() {
     const graph = this.graphManager.graph
     const canvas = this.canvas
@@ -248,11 +250,38 @@ export class App {
   stopSimulation() {
     this.simulation.stop();
   }
+
   updateSimulation() {
     this.simulation.nodes(this.graphManager.graph.getNodesForD3());
     this.simulation.force("link").links(this.graphManager.graph.getEdgesForD3());
     this.startSimulation()
   }
+
+  updateForce() {
+    const graph = this.graphManager.graph
+
+    this.nodes.length = 0
+    graph.forEachNode((node, attr) => {
+      this.nodes.push(
+        {
+          id: Number(node),
+          x: attr.x,
+          y: attr.y
+        }
+      )
+    })
+
+    this.links.length = 0
+    graph.forEachEdge(function (edge, attr, s, t, source, target) {
+      this.links.push(
+        {
+          source: Number(s),
+          target: Number(t)
+        }
+      )
+    })
+  }
+
 }
 
 

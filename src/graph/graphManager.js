@@ -49,5 +49,18 @@ export class GraphManager {
     }
     // More layouts can be added here
   }
+  updateNodesPostion(positions, center) {
+    // update position of all nodes
+    this.graph.forEachNode((node, attr) => {
+      this.graph.updateNodeAttributes(node, attr => {
+        return {
+          ...attr,
+          x: positions[node].x + center.x,
+          y: positions[node].y + center.y,
+        };
+      });
+    })
+  }
+
 }
 
