@@ -5,6 +5,7 @@ import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
 import { createMenu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
+import { event } from 'jquery';
 
 
 export class App {
@@ -12,7 +13,7 @@ export class App {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
     this.appSettings = new AppSettings(EventBus);
-    this.simultion = null;
+    this.simulation = null;
     this.nodes = [];
     this.links = [];
     this.init()
@@ -74,8 +75,20 @@ export class App {
       .force("y", d3.forceY(this.canvas.height / 1).strength(0.05)) // Gentle attraction to center
       .velocityDecay(0.3)     // Slower decay for smoother stabilization
       .alphaDecay(0.02)       // Slower cooling, better final spread
-      .on("tick", this.ticked.bind(this));
+      .on("tick", this.ticked.bind(this))
 
+    if (!this.appSettings.settings.forceSimulation) {
+      this.simulation.stop()
+    }
+    EventBus.on('settingsChanged', (event) => {
+      if (!this.appSettings.settings.forceSimulation) {
+        this.simulation.stop()
+      } else {
+
+        this.simulation.alphaTarget(0.3).restart()
+      }
+
+    })
   }
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
@@ -109,7 +122,6 @@ export class App {
     });
   }
   dragsubject(event) {
-    console.log(65)
     const x = event.x;
     const y = event.y;
     let subject = null;
@@ -129,7 +141,9 @@ export class App {
   }
 
   dragstarted(event) {
-    this.simulation.alpha(0.5).restart();
+    if (this.appSettings.settings.forceSimulation) {
+      this.simulation.alphaTarget(0.3).restart()
+    }
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
   }
@@ -145,6 +159,10 @@ export class App {
         y: event.y
       };
     });
+
+    if (!this.appSettings.settings.forceSimulation) {
+      this.drawGraph()
+    }
   }
 
   dragended(event) {
