@@ -79,14 +79,8 @@ export class App {
     if (!this.appSettings.settings.forceSimulation) {
       this.simulation.stop()
     }
-    EventBus.on('settingToggled', (event) => {
-      const { key, value } = event.detail
-      if (key == 'forceSimulation' && value) {
-        this.startSimulation()
-      } else {
-        this.stopSimulation()
-      }
-    })
+
+
   }
 
   loadInitialGraph() {
@@ -105,7 +99,6 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
-      console.log(4)
       if (event.detail.type == 'addNode') {
         this.updateSimulation()
       }
@@ -113,16 +106,23 @@ export class App {
 
     // Toggle simulation based on UI interactions
     EventBus.on('simulation:toggled', (event) => {
-      event.detail.running ? this.startSimulation() : this.stopSimulation();
     });
 
     // Example: Key event to toggle simulation
     EventBus.on('key:pressed', (event) => {
-      if (event.detail.key === 's') {
-        this.appSettings.settings.forceSimulation = !this.appSettings.settings.forceSimulation;
-        EventBus.emit('simulation:toggled', { running: this.appSettings.settings.forceSimulation });
-      }
+
     });
+
+    EventBus.on('settingToggled', (event) => {
+      const { key, value } = event.detail
+      if (key == 'forceSimulation') {
+        if (value) {
+          this.startSimulation()
+        } else {
+          this.stopSimulation()
+        }
+      }
+    })
   }
 
   dragsubject(event) {
@@ -156,15 +156,14 @@ export class App {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
 
-    this.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
-      return {
-        ...attr,
-        x: event.x,
-        y: event.y
-      };
-    });
-
     if (!this.appSettings.settings.forceSimulation) {
+      this.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
+        return {
+          ...attr,
+          x: event.x,
+          y: event.y
+        };
+      });
       this.drawGraph()
     }
   }
@@ -175,7 +174,6 @@ export class App {
     event.subject.fy = null;
     event.subject.x = event.x;
     event.subject.y = event.y;
-
   }
 
   drawGraph() {

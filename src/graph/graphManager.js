@@ -1,6 +1,7 @@
 import { Graph } from '../utils/classes.js';
 import { EventBus } from '../core/eventBus.js';
 import { caveman } from 'graphology-generators/community';
+import { ladder } from 'graphology-generators/classic';
 import { organizeNodesInCircle } from './layouts.js';
 import { getMinAvailableNumber, getAvailableLabel } from '../utils/helperFunctions.js';
 
@@ -9,7 +10,7 @@ export class GraphManager {
     this.limit = limit;
     this.index = -1;
     this.history = [];
-    this.graph = caveman(Graph, 5, 5);
+    this.graph = ladder(Graph, 10);
     this.init()
   }
   init() {
@@ -49,6 +50,7 @@ export class GraphManager {
     }
     // More layouts can be added here
   }
+
   updateNodesPostion(positions, center) {
     // update position of all nodes
     this.graph.forEachNode((node, attr) => {
