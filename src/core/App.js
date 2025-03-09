@@ -15,6 +15,16 @@ export class App {
     this.simulation = null;
     this.nodes = [];
     this.links = [];
+
+    // Rectangle properties
+    this.selection = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      active: false
+    };
+
     this.init()
   }
 
@@ -27,16 +37,6 @@ export class App {
     this.setupEventListeners();
     this.initSimulation()
 
-
-    d3.select(this.canvas)
-      .call(
-        d3.drag()
-          .container(this.canvas)
-          .subject(this.dragsubject.bind(this))  // 👈 Bind this
-          .on("start", this.dragstarted.bind(this))
-          .on("drag", this.dragged.bind(this))
-          .on("end", this.dragended.bind(this))
-      );
   }
 
   addNodeAtEvent(event) {
@@ -55,6 +55,22 @@ export class App {
     this.canvas.addEventListener("dblclick", (event) => {
       this.addNodeAtEvent(event)
     });
+
+    d3.select(this.canvas)
+      .call(
+        d3.drag()
+          .container(this.canvas)
+          .subject(this.dragsubject.bind(this))  // 👈 Bind this
+          .on("start", this.dragstarted.bind(this))
+          .on("drag", this.dragged.bind(this))
+          .on("end", this.dragended.bind(this))
+      );
+
+    // Add mouse event listeners for rectangle dragging
+    this.canvas.addEventListener("mousedown", (event) => this.startSelection(event));
+    this.canvas.addEventListener("mousemove", (event) => this.updateSelection(event));
+    this.canvas.addEventListener("mouseup", () => this.endSelection());
+
   }
 
   initSimulation() {
@@ -223,6 +239,10 @@ export class App {
         context.fillText(attr.label, attr.x, attr.y);
       }
     });
+
+
+    // Draw rectangles
+    this.drawRectangles(context);
   }
 
   ticked() {
@@ -286,6 +306,54 @@ export class App {
         }
       )
     })
+  }
+
+  drawRectangles(context) {
+    if (this.selection.active && !this.appSettings.settings.forceSimulation) {
+      context.fillStyle = "rgba(0, 0, 255, 0.2)"; // Semi-transparent blue fill
+      context.fillRect(
+        this.selection.x,
+        this.selection.y,
+        this.selection.width,
+        this.selection.height
+      );
+
+      context.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
+      context.lineWidth = 2;
+      context.setLineDash([5, 5]); // Dashed border effect
+      context.strokeRect(
+        this.selection.x,
+        this.selection.y,
+        this.selection.width,
+        this.selection.height
+      );
+      context.setLineDash([]); // Reset line style
+    }
+  }
+
+  // Dragging logic
+
+  startSelection(event) {
+    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
+    this.selection.x = mouseX;
+    this.selection.y = mouseY;
+    this.selection.width = 0;
+    this.selection.height = 0;
+    this.selection.active = true;
+  }
+
+  updateSelection(event) {
+    if (!this.selection.active) return;
+
+    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
+    this.selection.width = mouseX - this.selection.x;
+    this.selection.height = mouseY - this.selection.y;
+    this.drawGraph();  // Redraw canvas with the selection rectangle
+  }
+
+  endSelection() {
+    this.selection.active = false;
+    this.drawGraph();  // Redraw to remove rectangle
   }
 
 }
