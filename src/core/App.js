@@ -99,7 +99,9 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
-      if (event.detail.type == 'addNode') {
+      if (event.detail.type == 'addNode' ||
+        event.detail.type == "undo" ||
+        event.detail.type == "redo") {
         this.updateSimulation()
       }
     });

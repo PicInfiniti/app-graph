@@ -12,10 +12,12 @@ export class GraphManager {
     this.graph = ladder(Graph, 10);
     this.init()
   }
+
   init() {
     this.history.push(this.graph)
     this.setupEventListeners();
   }
+
   push(value) {
     if (this.history.length >= this.limit) {
       this.history.shift();
@@ -34,8 +36,10 @@ export class GraphManager {
   }
 
   updateIndex(value) {
+    if (value < 0) console.log('Nothing to Undo...');
+    if (value >= this.history.length) console.log("Nothing to redo...")
     if (value >= 0 && value < this.history.length) {
-      this.history = value;
+      this.index = value
       this.graph = this.history[value];
     }
   }
@@ -58,6 +62,18 @@ export class GraphManager {
         this.push(newGraph)
       }
     })
+
+    EventBus.on("redo", (event) => {
+      this.updateIndex(this.index + 1)
+      EventBus.emit("graph:updated", { type: "redo" })
+    })
+
+    EventBus.on("undo", (event) => {
+      console.log(this.index)
+      this.updateIndex(this.index - 1)
+      EventBus.emit("graph:updated", { type: "undo" })
+    })
+
   }
 
   updateNodesPostion(positions, center) {

@@ -251,8 +251,6 @@ export function createMenu() {
 }
 
 export function handleMenuAction(menuId) {
-  console.log(`Triggered: ${menuId}`);
-
   switch (menuId) {
     // File 
     case "new-btn":
@@ -273,6 +271,14 @@ export function handleMenuAction(menuId) {
       break;
 
     // Edit
+    case "redo-btn":
+      EventBus.emit('redo');
+      console.log("Redo...");
+      break;
+    case "undo-btn":
+      EventBus.emit('undo');
+      console.log("Undo...");
+      break;
     // Tools 
     case "panel-btn":
       EventBus.emit("toggleSetting", { key: "info_panel" });
