@@ -79,8 +79,6 @@ export class App {
     if (!this.appSettings.settings.forceSimulation) {
       this.simulation.stop()
     }
-
-
   }
 
   loadInitialGraph() {
@@ -99,10 +97,9 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
-      if (event.detail.type == 'addNode' ||
-        event.detail.type == "undo" ||
-        event.detail.type == "redo") {
-        this.updateSimulation()
+      const updateTypes = ["addNode", "undo", "redo", "clear"];
+      if (updateTypes.includes(event.detail.type)) {
+        this.updateSimulation();
       }
     });
 

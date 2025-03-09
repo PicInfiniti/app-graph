@@ -63,13 +63,19 @@ export class GraphManager {
       }
     })
 
+    EventBus.on("clear", (event) => {
+      const newGraph = this.graph.copy();
+      this.push(newGraph)
+      newGraph.clear()
+      EventBus.emit("graph:updated", { type: "clear" })
+    })
+
     EventBus.on("redo", (event) => {
       this.updateIndex(this.index + 1)
       EventBus.emit("graph:updated", { type: "redo" })
     })
 
     EventBus.on("undo", (event) => {
-      console.log(this.index)
       this.updateIndex(this.index - 1)
       EventBus.emit("graph:updated", { type: "undo" })
     })

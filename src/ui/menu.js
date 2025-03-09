@@ -254,6 +254,7 @@ export function handleMenuAction(menuId) {
   switch (menuId) {
     // File 
     case "new-btn":
+      EventBus.emit('clear');
       console.log("New file created!");
       break;
     case "import-graph":
