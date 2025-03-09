@@ -384,6 +384,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #fff;
 }
 #console-panel .console {
   width: 80%;

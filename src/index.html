@@ -69,7 +69,7 @@
           </div>
         </div>
       </div>
-      <!---->
+
       <!-- <div id="console-panel"> -->
       <!--   <div class="console"> -->
       <!--     <div id="output"></div> -->
@@ -78,4 +78,36 @@
       <!-- </div> -->
     </widgets>
   </body>
+<!--   <script> -->
+<!--         const input = document.getElementById("input"); -->
+<!--         const output = document.getElementById("output"); -->
+<!---->
+<!--         input.addEventListener("keydown", function(event) { -->
+<!--             if (event.key === "Enter") { -->
+<!--                 const command = input.value.trim(); -->
+<!--                 input.value = ""; -->
+<!--                 executeCommand(command); -->
+<!--             } -->
+<!--         }); -->
+<!---->
+<!---->
+<!-- function executeCommand(command) { -->
+<!--     if (!command) return; -->
+<!---->
+<!--     if (command === "clear") { -->
+<!--         output.innerHTML = ""; // Clear the output div -->
+<!--         return; -->
+<!--     } -->
+<!---->
+<!--     try { -->
+<!--         let result = Function('"use strict"; return (' + command + ')')(); -->
+<!--         output.innerHTML += `<div>> ${command}</div>`; -->
+<!--         output.innerHTML += `<div style="color: lightgreen;">${result}</div>`; -->
+<!--     } catch (error) { -->
+<!--         output.innerHTML += `<div style="color: red;">Error: ${error}</div>`; -->
+<!--     } -->
+<!---->
+<!--     output.scrollTop = output.scrollHeight; -->
+<!-- } -->
+<!--     </script> -->
 </html>
