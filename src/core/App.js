@@ -46,7 +46,7 @@ export class App {
     const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
     this.graphManager.graph.addNode(newID, { x, y, color: this.appSettings.settings.color, label: newLabel });
-    EventBus.emit('graph:updated', { type: 'addNode' })
+    EventBus.emit('graph:updated', { type: 'addNode', node: newID })
   }
 
   initCanvas() {
@@ -93,7 +93,7 @@ export class App {
     EventBus.on('layout:changed', (event) => {
       const { layoutType } = event.detail;
       this.graphManager.applyLayout(layoutType);
-      EventBus.emit('graph:updated', { graph: this.graphManager.getGraph() });
+      EventBus.emit('graph:updated', { type: "layout" });
     });
 
     // When graph data updates, re-render visualization

@@ -3,7 +3,6 @@ import { EventBus } from '../core/eventBus.js';
 import { caveman } from 'graphology-generators/community';
 import { ladder } from 'graphology-generators/classic';
 import { organizeNodesInCircle } from './layouts.js';
-import { getMinAvailableNumber, getAvailableLabel } from '../utils/helperFunctions.js';
 
 export class GraphManager {
   constructor(limit) {
@@ -15,6 +14,7 @@ export class GraphManager {
   }
   init() {
     this.history.push(this.graph)
+    this.setupEventListeners();
   }
   push(value) {
     if (this.history.length >= this.limit) {
@@ -49,6 +49,15 @@ export class GraphManager {
       organizeNodesInCircle(this.graph, canvas);
     }
     // More layouts can be added here
+  }
+  setupEventListeners() {
+    EventBus.on("graph:updated", (event) => {
+      if (event.detail.type === "addNode") {
+        const newGraph = this.graph.copy();
+        this.graph.dropNode(event.detail.node)
+        this.push(newGraph)
+      }
+    })
   }
 
   updateNodesPostion(positions, center) {

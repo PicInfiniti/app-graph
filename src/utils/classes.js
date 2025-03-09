@@ -19,7 +19,12 @@ export class Graph extends UndirectedGraph {
       if (!attrs.target) this.setEdgeAttribute(key, 'target', Number(target));
     });
   }
-
+  // Override copy method
+  copy() {
+    const newGraph = new Graph(this.options);
+    newGraph.import(this.export()); // Deep copy of the structure
+    return newGraph;
+  }
   // 🚀 Function 1: Get array of all node attributes (with id)
   getNodesForD3() {
     return this.nodes().map((id) => ({
