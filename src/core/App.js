@@ -228,20 +228,16 @@ export class App {
 
   ticked() {
     // Draw nodes
-    const sNode = this.nodes[0]
-    const gNode = this.graphManager.graph.getNodeAttributes(sNode.id)
-    if (gNode.x != sNode.x) {
-      this.nodes.forEach((d) => {
-        this.graphManager.graph.updateNodeAttributes(d.id, attr => {
-          return {
-            ...attr,
-            x: d.x,
-            y: d.y
-          };
-        });
+    this.nodes.forEach((d) => {
+      this.graphManager.graph.updateNodeAttributes(d.id, attr => {
+        return {
+          ...attr,
+          x: d.x,
+          y: d.y
+        };
       });
-      EventBus.emit('graph:updated', { type: 'position' })
-    }
+    });
+    EventBus.emit('graph:updated', { type: 'position' })
   }
 
   startSimulation() {
