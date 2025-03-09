@@ -310,7 +310,7 @@ export class App {
 
   drawRectangles(context) {
     if (this.selection.active && !this.appSettings.settings.forceSimulation) {
-      context.fillStyle = "rgba(0, 0, 255, 0.2)"; // Semi-transparent blue fill
+      context.fillStyle = "rgba(0, 0, 255, 0.1)"; // Semi-transparent blue fill
       context.fillRect(
         this.selection.x,
         this.selection.y,

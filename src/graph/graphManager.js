@@ -36,12 +36,13 @@ export class GraphManager {
   }
 
   updateIndex(value) {
-    if (value < 0) console.log('Nothing to Undo...');
-    if (value >= this.history.length) console.log("Nothing to redo...")
-    if (value >= 0 && value < this.history.length) {
-      this.index = value
-      this.graph = this.history[value];
+    if (value < 0 || value >= this.history.length) {
+      console.log('Nothing to Undo...');
+      return false
     }
+    this.index = value
+    this.graph = this.history[value];
+    return true;
   }
 
   createEmptyGraph() {
@@ -71,13 +72,13 @@ export class GraphManager {
     })
 
     EventBus.on("redo", (event) => {
-      this.updateIndex(this.index + 1)
-      EventBus.emit("graph:updated", { type: "redo" })
+      if (this.updateIndex(this.index + 1))
+        EventBus.emit("graph:updated", { type: "redo" })
     })
 
     EventBus.on("undo", (event) => {
-      this.updateIndex(this.index - 1)
-      EventBus.emit("graph:updated", { type: "undo" })
+      if (this.updateIndex(this.index - 1))
+        EventBus.emit("graph:updated", { type: "undo" })
     })
 
   }
