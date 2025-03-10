@@ -101,26 +101,4 @@ export class GraphManager {
 
 
 
-// $('#import-graph').on('click', function () {
-//   $('#file-input').click(); // Open file dialog
-// });
-//
-// $('#file-input').on('change', function (event) {
-//   const file = event.target.files[0];
-//   if (file) {
-//     const reader = new FileReader();
-//     reader.onload = function (e) {
-//       const importedData = JSON.parse(e.target.result);
-//
-//       updateHistory(History, "update")
-//       History.graph.clear();
-//       History.graph.import(importedData)
-//
-//       // Re-draw the graph
-//       updateGraph(History.graph);
-//     };
-//     reader.readAsText(file);
-//   }
-// });
-//
 

@@ -15,9 +15,9 @@ $('#export-graph').on('click', function () {
   downloadAnchor[0].click(); // Trigger download
 });
 
-$('#import-graph').on('click', function () {
-  $('#file-input').click(); // Open file dialog
-});
+// $('#import-graph').on('click', function () {
+//   $('#file-input').click(); // Open file dialog
+// });
 
 $('#export-png').on('click', function () {
   downloadCanvasAsPNG()

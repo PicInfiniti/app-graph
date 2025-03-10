@@ -11,9 +11,6 @@ export const KeyHandler = {
         "o": "import-graph",
         "s": "export-graph",
         "p": "export-png",
-        "d": "remove-selection-btn",
-        "c": "color-selection-btn",
-        "e": "add-edge-btn",
         "u": "undo-btn",
         "y": "redo-btn"
       };

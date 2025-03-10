@@ -262,16 +262,19 @@ export function createMenu() {
 }
 
 export function handleMenuAction(menuId) {
+  console.log(menuId)
   switch (menuId) {
     // File 
     case "new-btn":
       EventBus.emit('clear');
       console.log("New file created!");
       break;
+
     case "import-graph":
-      EventBus.emit("import:json");
+      EventBus.emit("import");
       console.log("Importing graph...");
       break;
+
     case "export-graph":
       EventBus.emit("export", { type: "json" });
       console.log("Exporting graph...");
@@ -280,6 +283,7 @@ export function handleMenuAction(menuId) {
       EventBus.emit("export", { type: "png" });
       console.log("Exporting as PNG...");
       break;
+
     case "default-settings-btn":
       EventBus.emit("resetSettings");
       console.log("Resetting to default settings...");
@@ -290,23 +294,28 @@ export function handleMenuAction(menuId) {
       EventBus.emit('redo');
       console.log("Redo...");
       break;
+
     case "undo-btn":
       EventBus.emit('undo');
       console.log("Undo...");
       break;
+
     // Tools 
     case "panel-btn":
       EventBus.emit("toggleSetting", { key: "info_panel" });
       console.log("Toggling Info Panel...");
       break;
+
     case "drag-btn":
       EventBus.emit("toggleSetting", { key: "dragComponent" });
       console.log("Toggling Component...");
       break;
+
     case "scale-btn":
       EventBus.emit("toggleSetting", { key: "scale" });
       console.log("Scaling...");
       break;
+
     case "force-btn":
       EventBus.emit("toggleSetting", { key: "forceSimulation" });
       console.log("Starting Force Simulation...");
@@ -316,15 +325,19 @@ export function handleMenuAction(menuId) {
     case "list-degrees-btn":
       console.log("Calculating Degree Sequence...");
       break;
+
     case "components-btn":
       console.log("Analyzing Components...");
       break;
+
     case "command-btn":
       console.log("Opening Commands Menu...");
       break;
+
     case "organize-circle":
       console.log("organize circle");
       break;
+
     default:
       console.log(`No action defined for: ${menuId}`);
   }
