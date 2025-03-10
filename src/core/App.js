@@ -113,7 +113,7 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
-      const updateTypes = ["addNode", "undo", "redo", "clear"];
+      const updateTypes = ["addNode", "undo", "redo", "clear", "import"];
       if (updateTypes.includes(event.detail.type)) {
         this.updateSimulation();
       }
@@ -169,23 +169,25 @@ export class App {
       }
     });
 
-    document.getElementById("file-input").addEventListener("change", function (event) {
+    document.getElementById("file-input").addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = (e) => {
           const importedData = JSON.parse(e.target.result);
+          console.log("Imported Data:", importedData); // Debugging
 
-          updateHistory(History, "update");
-          History.graph.clear();
-          History.graph.import(importedData);
+          const newGraph = this.graphManager.graph.copy();
+          this.graphManager.push(newGraph); // Make sure `push` is defined
+          newGraph.clear();
+          this.graphManager.graph.import(importedData);
 
-          // Re-draw the graph
-          updateGraph(History.graph);
+          EventBus.emit("graph:updated", { type: "import" });
         };
         reader.readAsText(file);
       }
     });
+
   }
 
   dragsubject(event) {

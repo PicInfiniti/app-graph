@@ -5,11 +5,13 @@ const menuData = [
     title: "File",
     submenu: [
       {
-        title: "🆕 New", id: "new-btn", shortcut: "(n)", input: {
-          id: "file-input", hidden: true
+        title: "🆕 New", id: "new-btn", shortcut: "(n)"
+      },
+      {
+        title: "📂 Import", id: "import-graph", shortcut: "(o)", input: {
+          type: "file", id: "file-input", hidden: true
         }
       },
-      { title: "📂 Import", id: "import-graph", shortcut: "(o)" },
       { title: "💾 Export", id: "export-graph", shortcut: "(s)" },
       { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(p)" },
       { type: "divider" },
@@ -146,11 +148,12 @@ export function createMenu() {
 
         if (sub.input) {
           const input = document.createElement("input")
+          input.type = sub.input.type || "text"; // Default to "text" if missing
           input.id = sub.input.id
           if ("hidden" in sub.input) {
             input.hidden = sub.input.hidden
           }
-          subItem.appendChild(input)
+          submenu.appendChild(input)
         }
 
         if (sub.id) subItem.id = sub.id;
