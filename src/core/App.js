@@ -138,6 +138,36 @@ export class App {
         }
       }
     })
+
+    EventBus.on("import", (event) => {
+
+    })
+
+    EventBus.on("export", (event) => {
+      if (event.detail.type === "json") {
+        const graphJSON = this.graphManager.graph.export();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(graphJSON, null, 2));
+
+        const downloadAnchor = document.createElement("a");
+        downloadAnchor.href = dataStr;
+        downloadAnchor.download = "graph.json";
+
+        document.body.appendChild(downloadAnchor); // Append to the document
+        downloadAnchor.click(); // Trigger download
+        document.body.removeChild(downloadAnchor); // Clean up
+      }
+
+      if (event.detail.type === "png") {
+        this.canvas.toBlob(function (blob) {
+          let link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "d3-canvas-export.png";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }, "image/png");
+      }
+    });
   }
 
   dragsubject(event) {

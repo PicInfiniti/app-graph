@@ -4,11 +4,14 @@ const menuData = [
   {
     title: "File",
     submenu: [
-      { title: "🆕 New", id: "new-btn", shortcut: "(N)" },
-      { title: "📂 Import", id: "import-graph", shortcut: "(O)" },
-      { title: "💾 Export", id: "export-graph", shortcut: "(S)" },
-      { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(P)" },
-      { type: "input", id: "file-input", hidden: true },
+      {
+        title: "🆕 New", id: "new-btn", shortcut: "(n)", input: {
+          id: "file-input", hidden: true
+        }
+      },
+      { title: "📂 Import", id: "import-graph", shortcut: "(o)" },
+      { title: "💾 Export", id: "export-graph", shortcut: "(s)" },
+      { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(p)" },
       { type: "divider" },
       { title: "Default Setting", id: "default-settings-btn" },
     ],
@@ -17,13 +20,13 @@ const menuData = [
     title: "Edit",
     submenu: [
       { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
-      { title: "Complete Graph", name: "make-complete-btn", shortcut: "(C)" },
-      { title: "Delete", name: "remove-selection-btn", shortcut: "(D)" },
+      { title: "Complete Graph", name: "make-complete-btn", shortcut: "(c)" },
+      { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(C)" },
-      { title: "Add Edge", name: "add-edge-btn", shortcut: "(E)" },
+      { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
       { type: "divider" },
-      { title: "Undo", name: "undo-btn", shortcut: "(U)" },
-      { title: "Redo", name: "redo-btn", shortcut: "(Y)" },
+      { title: "Undo", name: "undo-btn", shortcut: "(u)" },
+      { title: "Redo", name: "redo-btn", shortcut: "(r)" },
       { type: "divider" },
       {
         title: "Settings",
@@ -138,8 +141,16 @@ export function createMenu() {
           if (!sub.check) {
             span.classList.add("hidden"); // Correct way to add a class dynamically
           }
-
           subItem.appendChild(span);
+        }
+
+        if (sub.input) {
+          const input = document.createElement("input")
+          input.id = sub.input.id
+          if ("hidden" in sub.input) {
+            input.hidden = sub.input.hidden
+          }
+          subItem.appendChild(input)
         }
 
         if (sub.id) subItem.id = sub.id;
@@ -258,12 +269,15 @@ export function handleMenuAction(menuId) {
       console.log("New file created!");
       break;
     case "import-graph":
+      EventBus.emit("import:json");
       console.log("Importing graph...");
       break;
     case "export-graph":
+      EventBus.emit("export", { type: "json" });
       console.log("Exporting graph...");
       break;
     case "export-png":
+      EventBus.emit("export", { type: "png" });
       console.log("Exporting as PNG...");
       break;
     case "default-settings-btn":
