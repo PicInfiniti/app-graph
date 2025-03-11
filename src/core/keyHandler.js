@@ -12,12 +12,16 @@ export const KeyHandler = {
         "s": "export-graph",
         "p": "export-png",
         "u": "undo-btn",
-        "y": "redo-btn"
+        "r": "redo-btn"
       };
 
       if (shortcuts[event.key]) {
         handleMenuAction(shortcuts[event.key]); // Trigger the corresponding menu item
       }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      EventBus.emit('key:release', { key: event.key });
     });
   },
 };

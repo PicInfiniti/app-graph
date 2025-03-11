@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Canvas Zoom</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <button onclick="resetZoom()">Reset Zoom</button>
+
+    <script>
+        // Get the canvas element and its context
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Function to draw objects on the canvas
+        function draw() {
+            ctx.clearRect(0, 0, width, height); // Clear canvas
+
+            // Draw a rectangle
+            ctx.fillStyle = "green";
+            ctx.fillRect(200, 150, 100, 80);
+
+            // Draw a circle
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 50, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Initial draw
+        draw();
+
+        // Define zoom variables
+        let scale = 1; // Current zoom level
+        let translateX = 0, translateY = 0; // Panning offsets
+
+        // Define zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 5]) // Min and max zoom levels
+            .on("zoom", zoomed); // Attach zoom function
+
+        // Apply zoom behavior to the canvas
+        d3.select(canvas).call(zoom);
+
+        // Zoom function
+        function zoomed(event) {
+            scale = event.transform.k; // Get zoom scale
+            translateX = event.transform.x; // Get x translation
+            translateY = event.transform.y; // Get y translation
+            redraw();
+        }
+
+        // Redraw canvas with new scale and translation
+        function redraw() {
+            ctx.setTransform(scale, 0, 0, scale, translateX, translateY);
+            draw();
+        }
+
+        // Reset zoom function
+        function resetZoom() {
+            d3.select(canvas)
+                .transition()
+                .duration(500)
+                .call(zoom.transform, d3.zoomIdentity); // Reset zoom
+        }
+    </script>
+
+</body>
+</html>
+

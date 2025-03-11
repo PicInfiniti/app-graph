@@ -12,6 +12,7 @@ export class App {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
     this.appSettings = new AppSettings(EventBus);
+    this.ctrl = false;
     this.simulation = null;
     this.nodes = [];
     this.links = [];
@@ -49,11 +50,28 @@ export class App {
     EventBus.emit('graph:updated', { type: 'addNode', node: newID })
   }
 
+  findClickedNode(x, y) {
+    return this.nodes.find(node => {
+      let dx = x - node.x;
+      let dy = y - node.y;
+      return Math.sqrt(dx * dx + dy * dy) < this.appSettings.settings.node_radius; // Adjust radius threshold as needed
+    });
+  }
   initCanvas() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.canvas.addEventListener("dblclick", (event) => {
-      this.addNodeAtEvent(event)
+      let [x, y] = d3.pointer(event, this.canvas);
+      let clickedNode = this.findClickedNode(x, y);
+      let clickedEdge = this.findClickedEdge(x, y);
+
+      if (clickedNode) {
+        this.addNodeConnectedToNode(clickedNode);
+      } else if (clickedEdge) {
+        this.insertNodeInEdge(clickedEdge);
+      } else {
+        this.addNodeAtEvent(event);
+      }
     });
 
     d3.select(this.canvas)
@@ -71,6 +89,73 @@ export class App {
     this.canvas.addEventListener("mousemove", (event) => this.updateSelection(event));
     this.canvas.addEventListener("mouseup", () => this.endSelection());
 
+  }
+
+  findClickedEdge(x, y) {
+    let threshold = 5; // Distance threshold for edge selection
+    return this.links.find(link => {
+      let source = link.source;
+      let target = link.target;
+
+      let dist = this.pointToSegmentDistance(x, y, source.x, source.y, target.x, target.y);
+      return dist < threshold;
+    });
+  }
+
+  // Helper function to calculate distance from a point to a line segment
+  pointToSegmentDistance(px, py, x1, y1, x2, y2) {
+    let A = px - x1;
+    let B = py - y1;
+    let C = x2 - x1;
+    let D = y2 - y1;
+
+    let dot = A * C + B * D;
+    let len_sq = C * C + D * D;
+    let param = len_sq !== 0 ? dot / len_sq : -1;
+
+    let xx, yy;
+    if (param < 0) {
+      xx = x1;
+      yy = y1;
+    } else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    let dx = px - xx;
+    let dy = py - yy;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  insertNodeInEdge(edge) {
+    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
+    const newLabel = getAvailableLabel(newID);
+    let midX = (edge.source.x + edge.target.x) / 2;
+    let midY = (edge.source.y + edge.target.y) / 2;
+
+    this.graphManager.graph.addNode(newID, { x: midX, y: midY, color: this.appSettings.settings.color, label: newLabel });
+
+    // Remove old edge
+    this.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
+
+    // Add two new edges
+    this.graphManager.graph.addEdge(edge.source.id, newID);
+    this.graphManager.graph.addEdge(newID, edge.target.id);
+
+    EventBus.emit('graph:updated', { type: 'addNodeInEdge', node: newID });
+  }
+
+  addNodeConnectedToNode(node) {
+    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
+    const newLabel = getAvailableLabel(newID);
+    const newNode = { x: node.x + 30, y: node.y + 30, color: this.appSettings.settings.color, label: newLabel };
+
+    this.graphManager.graph.addNode(newID, newNode);
+    this.graphManager.graph.addEdge(node.id, newID);
+
+    EventBus.emit('graph:updated', { type: 'addNode', node: newID });
   }
 
   initSimulation() {
@@ -104,6 +189,18 @@ export class App {
 
   setupEventListeners() {
     // When layout changes (e.g., user selects new layout from UI)
+    EventBus.on('keydown', (event) => {
+      if (event.key === "Control") {
+        this.ctrl = true;
+      }
+    })
+
+    EventBus.on('keyup', (event) => {
+      if (event.key === "Control") {
+        this.ctrl = false;
+      }
+    })
+
     EventBus.on('layout:changed', (event) => {
       const { layoutType } = event.detail;
       this.graphManager.applyLayout(layoutType);
@@ -113,7 +210,7 @@ export class App {
     // When graph data updates, re-render visualization
     EventBus.on('graph:updated', (event) => {
       this.drawGraph();  // Visualize the graph
-      const updateTypes = ["addNode", "undo", "redo", "clear", "import"];
+      const updateTypes = ["addNode", "undo", "redo", "clear", "import", "addNodeInEdge"];
       if (updateTypes.includes(event.detail.type)) {
         this.updateSimulation();
       }
