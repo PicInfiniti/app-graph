@@ -5,13 +5,14 @@ import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
 import { createMenu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
-
+import { EventHandlers } from './eventHandlers.js';
 
 export class App {
   constructor() {
     this.graphManager = new GraphManager();  // Handles graph logic
     this.canvas = d3.select("#chart").node();
     this.appSettings = new AppSettings(EventBus);
+    this.eventHanders = new EventHandlers(this, EventBus)
     this.ctrl = false;
     this.simulation = null;
     this.nodes = [];
@@ -35,7 +36,7 @@ export class App {
     this.initCanvas();
     KeyHandler.init();  // Handle global keyboard shortcuts
     this.loadInitialGraph();
-    this.setupEventListeners();
+    this.eventHanders.init();
     this.initSimulation()
 
   }
@@ -185,106 +186,6 @@ export class App {
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
     this.drawGraph();  // Visualize the graph
-  }
-
-  setupEventListeners() {
-    // When layout changes (e.g., user selects new layout from UI)
-    EventBus.on('keydown', (event) => {
-      if (event.key === "Control") {
-        this.ctrl = true;
-      }
-    })
-
-    EventBus.on('keyup', (event) => {
-      if (event.key === "Control") {
-        this.ctrl = false;
-      }
-    })
-
-    EventBus.on('layout:changed', (event) => {
-      const { layoutType } = event.detail;
-      this.graphManager.applyLayout(layoutType);
-      EventBus.emit('graph:updated', { type: "layout" });
-    });
-
-    // When graph data updates, re-render visualization
-    EventBus.on('graph:updated', (event) => {
-      this.drawGraph();  // Visualize the graph
-      const updateTypes = ["addNode", "undo", "redo", "clear", "import", "addNodeInEdge"];
-      if (updateTypes.includes(event.detail.type)) {
-        this.updateSimulation();
-      }
-    });
-
-    // Toggle simulation based on UI interactions
-    EventBus.on('simulation:toggled', (event) => {
-    });
-
-    // Example: Key event to toggle simulation
-    EventBus.on('key:pressed', (event) => {
-
-    });
-
-    EventBus.on('settingToggled', (event) => {
-      const { key, value } = event.detail
-      if (key == 'forceSimulation') {
-        if (value) {
-          this.startSimulation()
-        } else {
-          this.stopSimulation()
-        }
-      }
-    })
-
-    EventBus.on("import", (event) => {
-      document.getElementById("file-input").click(); // Open file dialog
-    })
-
-    EventBus.on("export", (event) => {
-      if (event.detail.type === "json") {
-        const graphJSON = this.graphManager.graph.export();
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(graphJSON, null, 2));
-
-        const downloadAnchor = document.createElement("a");
-        downloadAnchor.href = dataStr;
-        downloadAnchor.download = "graph.json";
-
-        document.body.appendChild(downloadAnchor); // Append to the document
-        downloadAnchor.click(); // Trigger download
-        document.body.removeChild(downloadAnchor); // Clean up
-      }
-
-      if (event.detail.type === "png") {
-        this.canvas.toBlob(function (blob) {
-          let link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = "d3-canvas-export.png";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }, "image/png");
-      }
-    });
-
-    document.getElementById("file-input").addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const importedData = JSON.parse(e.target.result);
-          console.log("Imported Data:", importedData); // Debugging
-
-          const newGraph = this.graphManager.graph.copy();
-          this.graphManager.push(newGraph); // Make sure `push` is defined
-          newGraph.clear();
-          this.graphManager.graph.import(importedData);
-
-          EventBus.emit("graph:updated", { type: "import" });
-        };
-        reader.readAsText(file);
-      }
-    });
-
   }
 
   dragsubject(event) {
