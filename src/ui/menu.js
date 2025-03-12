@@ -48,6 +48,7 @@ const menuData = [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Component", id: "drag-btn", check: false },
       { title: "Scale", id: "scale-btn", check: false },
+      { title: "Tree", id: "tree-btn", check: true },
       { title: "Force Simulation", id: "force-btn", check: false },
       { type: "divider" },
       {
@@ -317,6 +318,11 @@ export function handleMenuAction(menuId) {
     case "scale-btn":
       EventBus.emit("toggleSetting", { key: "scale" });
       console.log("Scaling...");
+      break;
+
+    case "tree-btn":
+      EventBus.emit("toggleSetting", { key: "tree" });
+      console.log("Tree...");
       break;
 
     case "force-btn":

@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import { EventBus } from './eventBus.js';
+import { Canvas } from './canvas.js';
 import { GraphManager } from '../graph/graphManager.js';
 import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
@@ -9,9 +10,12 @@ import { EventHandlers } from './eventHandlers.js';
 
 export class App {
   constructor() {
-    this.graphManager = new GraphManager();  // Handles graph logic
-    this.canvas = d3.select("#chart").node();
     this.appSettings = new AppSettings(EventBus);
+    this.settings = this.appSettings.settings;
+    this.graphManager = new GraphManager();  // Handles graph logic
+    this._canvas = new Canvas(this, EventBus);
+    this.canvas = this._canvas.canvas
+    this.eventBus = EventBus;
     this.eventHanders = new EventHandlers(this, EventBus)
     this.ctrl = false;
     this.simulation = null;
@@ -33,7 +37,7 @@ export class App {
   init() {
     createMenu()
     this.appSettings.init()
-    this.initCanvas();
+    this._canvas.init();
     KeyHandler.init();  // Handle global keyboard shortcuts
     this.loadInitialGraph();
     this.eventHanders.init();
@@ -41,123 +45,7 @@ export class App {
 
   }
 
-  addNodeAtEvent(event) {
-    event.preventDefault();
 
-    let [x, y] = d3.pointer(event, this.canvas);
-    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
-    const newLabel = getAvailableLabel(newID);
-    this.graphManager.graph.addNode(newID, { x, y, color: this.appSettings.settings.color, label: newLabel });
-    EventBus.emit('graph:updated', { type: 'addNode', node: newID })
-  }
-
-  findClickedNode(x, y) {
-    return this.nodes.find(node => {
-      let dx = x - node.x;
-      let dy = y - node.y;
-      return Math.sqrt(dx * dx + dy * dy) < this.appSettings.settings.node_radius; // Adjust radius threshold as needed
-    });
-  }
-  initCanvas() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    this.canvas.addEventListener("dblclick", (event) => {
-      let [x, y] = d3.pointer(event, this.canvas);
-      let clickedNode = this.findClickedNode(x, y);
-      let clickedEdge = this.findClickedEdge(x, y);
-
-      if (clickedNode) {
-        this.addNodeConnectedToNode(clickedNode);
-      } else if (clickedEdge) {
-        this.insertNodeInEdge(clickedEdge);
-      } else {
-        this.addNodeAtEvent(event);
-      }
-    });
-
-    d3.select(this.canvas)
-      .call(
-        d3.drag()
-          .container(this.canvas)
-          .subject(this.dragsubject.bind(this))  // 👈 Bind this
-          .on("start", this.dragstarted.bind(this))
-          .on("drag", this.dragged.bind(this))
-          .on("end", this.dragended.bind(this))
-      );
-
-    // Add mouse event listeners for rectangle dragging
-    this.canvas.addEventListener("mousedown", (event) => this.startSelection(event));
-    this.canvas.addEventListener("mousemove", (event) => this.updateSelection(event));
-    this.canvas.addEventListener("mouseup", () => this.endSelection());
-
-  }
-
-  findClickedEdge(x, y) {
-    let threshold = 5; // Distance threshold for edge selection
-    return this.links.find(link => {
-      let source = link.source;
-      let target = link.target;
-
-      let dist = this.pointToSegmentDistance(x, y, source.x, source.y, target.x, target.y);
-      return dist < threshold;
-    });
-  }
-
-  // Helper function to calculate distance from a point to a line segment
-  pointToSegmentDistance(px, py, x1, y1, x2, y2) {
-    let A = px - x1;
-    let B = py - y1;
-    let C = x2 - x1;
-    let D = y2 - y1;
-
-    let dot = A * C + B * D;
-    let len_sq = C * C + D * D;
-    let param = len_sq !== 0 ? dot / len_sq : -1;
-
-    let xx, yy;
-    if (param < 0) {
-      xx = x1;
-      yy = y1;
-    } else if (param > 1) {
-      xx = x2;
-      yy = y2;
-    } else {
-      xx = x1 + param * C;
-      yy = y1 + param * D;
-    }
-
-    let dx = px - xx;
-    let dy = py - yy;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-  insertNodeInEdge(edge) {
-    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
-    const newLabel = getAvailableLabel(newID);
-    let midX = (edge.source.x + edge.target.x) / 2;
-    let midY = (edge.source.y + edge.target.y) / 2;
-
-    this.graphManager.graph.addNode(newID, { x: midX, y: midY, color: this.appSettings.settings.color, label: newLabel });
-
-    // Remove old edge
-    this.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
-
-    // Add two new edges
-    this.graphManager.graph.addEdge(edge.source.id, newID);
-    this.graphManager.graph.addEdge(newID, edge.target.id);
-
-    EventBus.emit('graph:updated', { type: 'addNodeInEdge', node: newID });
-  }
-
-  addNodeConnectedToNode(node) {
-    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
-    const newLabel = getAvailableLabel(newID);
-    const newNode = { x: node.x + 30, y: node.y + 30, color: this.appSettings.settings.color, label: newLabel };
-
-    this.graphManager.graph.addNode(newID, newNode);
-    this.graphManager.graph.addEdge(node.id, newID);
-
-    EventBus.emit('graph:updated', { type: 'addNode', node: newID });
-  }
 
   initSimulation() {
     this.nodes = this.graphManager.graph.getNodesForD3();
@@ -186,57 +74,6 @@ export class App {
   loadInitialGraph() {
     this.graphManager.applyLayout('circle', this.canvas)
     this.drawGraph();  // Visualize the graph
-  }
-
-  dragsubject(event) {
-    const x = event.x;
-    const y = event.y;
-    let subject = null;
-    let minDist = Infinity;
-
-    this.nodes.forEach((node) => {
-      const dx = x - node.x;
-      const dy = y - node.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 10 && dist < minDist) {
-        minDist = dist;
-        subject = node;
-      }
-    });
-
-    return subject;
-  }
-
-  dragstarted(event) {
-    if (!event.active && this.appSettings.settings.forceSimulation) {
-      this.simulation.alphaTarget(0.3).restart()
-    }
-    event.subject.fx = event.subject.x;
-    event.subject.fy = event.subject.y;
-  }
-
-  dragged(event) {
-    event.subject.fx = event.x;
-    event.subject.fy = event.y;
-
-    if (!this.appSettings.settings.forceSimulation) {
-      this.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
-        return {
-          ...attr,
-          x: event.x,
-          y: event.y
-        };
-      });
-      this.drawGraph()
-    }
-  }
-
-  dragended(event) {
-    if (!event.active) this.simulation.alphaTarget(0);
-    event.subject.fx = null;
-    event.subject.fy = null;
-    event.subject.x = event.x;
-    event.subject.y = event.y;
   }
 
   drawGraph() {

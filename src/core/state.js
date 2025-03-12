@@ -15,6 +15,7 @@ class AppSettings {
       forceSimulation: true,
       dragComponent: false,
       scale: false,
+      tree: true,
       vertexLabel: true,
       node_radius: 10,
       edge_size: 2,
