@@ -1,15 +1,17 @@
 import * as d3 from 'd3';
 import { pointToSegmentDistance } from '../utils/helperFunctions';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
+import { edge } from 'graphology-metrics';
 
 export class Canvas {
-  constructor(app, eventBus) {
+  constructor(app) {
     this.app = app
+    this.eventBus = app.eventBus
     this.settings = app.appSettings.settings
-    this.eventBus = eventBus
     this.graphManager = app.graphManager
     this.canvas = d3.select("#chart").node()
   }
+
   init() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
@@ -18,13 +20,44 @@ export class Canvas {
       let clickedNode = this.findClickedNode(x, y);
       let clickedEdge = this.findClickedEdge(x, y);
 
-      if (clickedNode && this.settings.tree) {
-        this.addNodeConnectedToNode(clickedNode);
-      } else if (clickedEdge && this.settings.tree) {
-
-        this.insertNodeInEdge(clickedEdge);
+      if (clickedNode) {
+        if (this.settings.tree) {
+          this.addNodeConnectedToNode(clickedNode);
+        } else {
+          this.app.selectedNodes.add(clickedNode.id)
+          if (!this.settings.forceSimulation) {
+            this.eventBus.emit("graph:updated", { type: "selected" })
+          }
+        }
+      } else if (clickedEdge) {
+        if (this.settings.tree) {
+          this.insertNodeInEdge(clickedEdge);
+        } else {
+          this.graphManager.graph.findEdge(clickedEdge.source.id, clickedEdge.target.id, (edge) => {
+            this.app.selectedEdges.add(edge)
+            if (!this.settings.forceSimulation) {
+              this.eventBus.emit("graph:updated", { type: "selected" })
+            }
+          })
+        }
       } else {
         this.addNodeAtEvent(event);
+      }
+    });
+
+    this.canvas.addEventListener("click", (event) => {
+      let [x, y] = d3.pointer(event, this.canvas);
+      let clickedNode = this.findClickedNode(x, y);
+      let clickedEdge = this.findClickedEdge(x, y);
+
+      if (clickedNode || clickedEdge) {
+
+      } else {
+        this.app.selectedNodes.clear();
+        this.app.selectedEdges.clear()
+        if (!this.settings.forceSimulation) {
+          this.eventBus.emit("graph:updated", { type: "unselect" })
+        }
       }
     });
 
@@ -51,8 +84,7 @@ export class Canvas {
     let [x, y] = d3.pointer(event, this.canvas);
     const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
-    this.graphManager.graph.addNode(newID, { x, y, color: this.settings.color, label: newLabel });
-    this.eventBus.emit('graph:updated', { type: 'addNode', node: newID })
+    this.graphManager.addNode(newID, { x: x, y: y, color: this.settings.color, label: newLabel });
   }
 
   addNodeConnectedToNode(node) {

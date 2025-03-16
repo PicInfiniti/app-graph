@@ -4,11 +4,13 @@ class AppSettings {
   static instance = null;
   #autoSave = true; // Private property
 
-  constructor(eventBus) {
+  constructor(app) {
+    this.app = app;
+    this.eventBus = app.eventBus; // Store reference to passed EventBus
+
     if (AppSettings.instance) return AppSettings.instance; // Singleton pattern
     AppSettings.instance = this;
 
-    this.eventBus = eventBus; // Store reference to passed EventBus
     this.debounceTimer = null;
 
     this.defaultSettings = {

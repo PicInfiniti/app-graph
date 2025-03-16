@@ -4,23 +4,28 @@ import { Canvas } from './canvas.js';
 import { GraphManager } from '../graph/graphManager.js';
 import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
-import { createMenu } from '../ui/menu.js';
+import { Menu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
 import { EventHandlers } from './eventHandlers.js';
+import { menuData } from '../ui/MenuData.js';
 
 export class App {
   constructor() {
-    this.appSettings = new AppSettings(EventBus);
-    this.settings = this.appSettings.settings;
-    this.graphManager = new GraphManager();  // Handles graph logic
-    this._canvas = new Canvas(this, EventBus);
-    this.canvas = this._canvas.canvas
     this.eventBus = EventBus;
-    this.eventHanders = new EventHandlers(this, EventBus)
+    this.appSettings = new AppSettings(this);
+    this.settings = this.appSettings.settings;
+    this.menu = new Menu(this, menuData)
+    this.graphManager = new GraphManager(this, 100);  // Handles graph logic
+    this._canvas = new Canvas(this);
+    this.canvas = this._canvas.canvas
+    this.eventHanders = new EventHandlers(this)
+    this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
     this.ctrl = false;
     this.simulation = null;
     this.nodes = [];
     this.links = [];
+    this.selectedNodes = new Set();
+    this.selectedEdges = new Set();
 
     // Rectangle properties
     this.selection = {
@@ -35,17 +40,15 @@ export class App {
   }
 
   init() {
-    createMenu()
-    this.appSettings.init()
+    this.menu.init()
+    this.appSettings.init();
     this._canvas.init();
-    KeyHandler.init();  // Handle global keyboard shortcuts
+    this.keyHandler.init();  // Handle global keyboard shortcuts
     this.loadInitialGraph();
     this.eventHanders.init();
     this.initSimulation()
 
   }
-
-
 
   initSimulation() {
     this.nodes = this.graphManager.graph.getNodesForD3();
@@ -85,21 +88,21 @@ export class App {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw edges
-    graph.forEachEdge(function (edge, attr, s, t, source, target) {
+    graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (!attr.color) {
         graph.setEdgeAttribute(edge, "color", settings.color)
       }
       context.beginPath();
       context.moveTo(source.x, source.y);
       context.lineTo(target.x, target.y);
-      context.strokeStyle = attr.color;
+      context.strokeStyle = this.selectedEdges.has(edge) ? "orange" : attr.color;
       context.lineWidth = settings.edge_size;
       context.stroke();
       context.closePath();
     });
 
     // Draw nodes
-    graph.forEachNode(function (node, attr) {
+    graph.forEachNode((node, attr) => {
       if (!attr.label) {
         const newLabel = getAvailableLabel(node);
         graph.setNodeAttribute(node, "label", newLabel)
@@ -107,12 +110,14 @@ export class App {
       if (!attr.color) {
         graph.setNodeAttribute(node, "color", settings.color)
       }
+
+
       context.beginPath();
       context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
       context.fillStyle = settings.vertexLabel ? "white" : attr.color;
       context.fill();
       context.lineWidth = 3;
-      context.strokeStyle = attr.color;
+      context.strokeStyle = this.selectedNodes.has(attr.id) ? "orange" : attr.color;
       context.stroke();
       context.closePath();
 
@@ -141,7 +146,7 @@ export class App {
         };
       });
     });
-    EventBus.emit('graph:updated', { type: 'position' })
+    EventBus.emit('graph:updated', { type: 'tick' })
   }
 
   startSimulation() {

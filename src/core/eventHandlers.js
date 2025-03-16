@@ -1,9 +1,9 @@
 const d = document;
 
 export class EventHandlers {
-  constructor(app, eventBus) {
+  constructor(app) {
     this.app = app;
-    this.eventBus = eventBus;
+    this.eventBus = app.eventBus;
   }
 
   init() {

@@ -1,7 +1,11 @@
 import { EventBus } from "./eventBus";
-import { handleMenuAction } from "../ui/menu";
 
-export const KeyHandler = {
+export class KeyHandler {
+  constructor(app) {
+    this.app = app;
+    this.eventBus = app.eventBus
+  }
+
   init() {
     document.addEventListener('keydown', (event) => {
       EventBus.emit('key:pressed', { key: event.key });
@@ -16,12 +20,12 @@ export const KeyHandler = {
       };
 
       if (shortcuts[event.key]) {
-        handleMenuAction(shortcuts[event.key]); // Trigger the corresponding menu item
+        this.app.menu.handleMenuAction(shortcuts[event.key]); // Trigger the corresponding menu item
       }
     });
 
     document.addEventListener('keyup', (event) => {
-      EventBus.emit('key:release', { key: event.key });
+      this.eventBus.emit('key:release', { key: event.key });
     });
-  },
+  }
 };

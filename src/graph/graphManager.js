@@ -1,11 +1,13 @@
 import { Graph } from '../utils/classes.js';
-import { EventBus } from '../core/eventBus.js';
 import { caveman } from 'graphology-generators/community';
 import { ladder } from 'graphology-generators/classic';
 import { organizeNodesInCircle } from './layouts.js';
 
 export class GraphManager {
-  constructor(limit) {
+  constructor(app, limit) {
+    this.app = app;
+    this.eventBus = app.eventBus
+
     this.limit = limit;
     this.index = -1;
     this.history = [];
@@ -16,6 +18,13 @@ export class GraphManager {
   init() {
     this.history.push(this.graph)
     this.setupEventListeners();
+  }
+
+  addNode(id, attr) {
+    const newGraph = this.graph.copy();
+    this.push(newGraph)
+    this.graph.addNode(id, attr)
+    this.eventBus.emit('graph:updated', { type: 'addNode', node: id })
   }
 
   push(value) {
@@ -36,8 +45,12 @@ export class GraphManager {
   }
 
   updateIndex(value) {
-    if (value < 0 || value >= this.history.length) {
+    if (value < 0) {
       console.log('Nothing to Undo...');
+      return false
+    }
+    if (value >= this.history.length) {
+      console.log('Nothing to Redo...');
       return false
     }
     this.index = value
@@ -45,8 +58,12 @@ export class GraphManager {
     return true;
   }
 
-  createEmptyGraph() {
+  clear() {
+    const newGraph = this.graph.copy();
+    this.push(newGraph)
     this.graph.clear();
+    this.eventBus.emit("graph:updated", { type: "clear" })
+
   }
 
   applyLayout(type, canvas) {
@@ -56,29 +73,19 @@ export class GraphManager {
     // More layouts can be added here
   }
   setupEventListeners() {
-    EventBus.on("graph:updated", (event) => {
-      if (event.detail.type === "addNode") {
-        const newGraph = this.graph.copy();
-        this.graph.dropNode(event.detail.node)
-        this.push(newGraph)
-      }
+
+    this.eventBus.on("clear", (event) => {
+      this.clear()
     })
 
-    EventBus.on("clear", (event) => {
-      const newGraph = this.graph.copy();
-      this.push(newGraph)
-      newGraph.clear()
-      EventBus.emit("graph:updated", { type: "clear" })
-    })
-
-    EventBus.on("redo", (event) => {
+    this.eventBus.on("redo", (event) => {
       if (this.updateIndex(this.index + 1))
-        EventBus.emit("graph:updated", { type: "redo" })
+        this.eventBus.emit("graph:updated", { type: "redo" })
     })
 
-    EventBus.on("undo", (event) => {
+    this.eventBus.on("undo", (event) => {
       if (this.updateIndex(this.index - 1))
-        EventBus.emit("graph:updated", { type: "undo" })
+        this.eventBus.emit("graph:updated", { type: "undo" })
     })
 
 
