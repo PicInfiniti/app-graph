@@ -20,9 +20,9 @@ export const menuData = [
     title: "Edit",
     submenu: [
       { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
-      { title: "Complete Graph", name: "make-complete-btn", shortcut: "(c)" },
+      { title: "Complete Graph", name: "make-complete-btn", shortcut: "(C)" },
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
-      { title: "Assign Color", name: "color-selection-btn", shortcut: "(C)" },
+      { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },

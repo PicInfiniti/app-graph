@@ -17,7 +17,8 @@ export class KeyHandler {
         "p": "export-png",
         "u": "undo-btn",
         "r": "redo-btn",
-        "O": "organize-circle"
+        "O": "organize-circle",
+        "C": "complete-btn"
       };
 
       if (shortcuts[event.key]) {

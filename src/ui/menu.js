@@ -105,6 +105,7 @@ export class Menu {
       "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
       "components-btn": () => console.log("Analyzing Components..."),
       "command-btn": () => console.log("Opening Commands Menu..."),
+      "complete-btn": () => this.graphManager.makeGraphComplete(),
       "organize-circle": () => this.layout.applyLayout("circle"),
     };
 

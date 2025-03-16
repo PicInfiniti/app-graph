@@ -75,13 +75,6 @@ export function updateForce(graph, nodes, links) {
 }
 
 
-export function makeGraphComplete(graph, color = null) {
-  for (let i = 0; i < graph.order; i++) {
-    for (let j = i + 1; j < graph.order; j++) {
-      History.graph.mergeEdge(i, j, { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
-    }
-  }
-}
 
 export function removeNodes(graph, nodes, edges) {
   for (let edge of edges) {

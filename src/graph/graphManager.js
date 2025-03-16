@@ -6,6 +6,7 @@ export class GraphManager {
   constructor(app, limit) {
     this.app = app;
     this.eventBus = app.eventBus
+
     this.layout = app.layout
     this.limit = limit;
     this.index = 0;
@@ -51,6 +52,7 @@ export class GraphManager {
       console.log('Nothing to Redo...');
       return false
     }
+
     this.index = value
     this.graph = this.history[value];
     return true;
@@ -93,6 +95,17 @@ export class GraphManager {
     this.history.length = this.index + 1
     this.push(this.graph.copy())
   }
+
+  makeGraphComplete() {
+    this.saveGraphState();
+    for (let i = 0; i < this.graph.order; i++) {
+      for (let j = i + 1; j < this.graph.order; j++) {
+        this.graph.mergeEdge(i, j); // Add edge if it doesn't exist
+      }
+    }
+    this.eventBus.emit("graph:updated", { type: "addEdge" })
+  }
+
 }
 
 
