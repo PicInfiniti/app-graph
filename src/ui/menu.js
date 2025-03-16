@@ -1,3 +1,5 @@
+const d = document;
+
 export class Menu {
   constructor(app, menuData, containerId = "menu-bar") {
     this.app = app;
@@ -5,7 +7,7 @@ export class Menu {
     this.graphManager = app.graphManager
     this.layout = app.layout
     this.menuData = menuData;
-    this.container = document.getElementById(containerId);
+    this.container = d.getElementById(containerId);
     if (!this.container) {
       console.error("Menu container not found!");
       return;
@@ -20,10 +22,10 @@ export class Menu {
 
   renderMenu() {
     this.container.innerHTML = ""; // Clear previous menu
-    const menuBar = document.createElement("ul");
+    const menuBar = d.createElement("ul");
 
     this.menuData.forEach(item => {
-      const menuItem = document.createElement("li");
+      const menuItem = d.createElement("li");
       menuItem.textContent = item.title;
 
       if (item.submenu) {
@@ -38,41 +40,99 @@ export class Menu {
   }
 
   createSubmenu(submenuData) {
-    const submenu = document.createElement("ul");
+    const submenu = d.createElement("ul");
 
     submenuData.forEach(sub => {
       if (sub.type === "divider") {
-        submenu.appendChild(document.createElement("hr"));
+        submenu.appendChild(d.createElement("hr"));
         return;
       }
+      const subItem = d.createElement("li");
 
-      const subItem = document.createElement("li");
       if (sub.title) {
-        const span = document.createElement("span");
+        const span = d.createElement("span");
         span.textContent = sub.title;
         subItem.appendChild(span);
       }
 
       if (sub.shortcut) {
-        const shortcutSpan = document.createElement("span");
+        const shortcutSpan = d.createElement("span");
         shortcutSpan.textContent = sub.shortcut;
         subItem.appendChild(shortcutSpan);
       }
 
       if ("check" in sub) {
-        const checkSpan = document.createElement("span");
+        const checkSpan = d.createElement("span");
         checkSpan.innerHTML = "&#10004;";
         checkSpan.classList.add("check");
         if (!sub.check) checkSpan.classList.add("hidden");
         subItem.appendChild(checkSpan);
       }
 
+      if (sub.label) {
+        const label = d.createElement("label");
+        const span = d.createElement("span");
+        span.innerHTML = sub.label; // Allows HTML inside <span>
+        label.appendChild(span);
+
+        if (sub.link) {
+          const a = d.createElement("a"); // Fix: Correct string inside createElement
+          a.href = sub.link;
+          a.target = "_blank";
+          a.textContent = "?"; // Fix: Provide a visible clickable text
+          label.appendChild(a);
+        }
+        subItem.appendChild(label);
+      }
+
       if (sub.input) {
-        const input = document.createElement("input");
+        const input = d.createElement("input");
         input.type = sub.input.type || "text";
         input.id = sub.input.id;
         if ("hidden" in sub.input) input.hidden = sub.input.hidden;
         subItem.appendChild(input);
+      }
+
+      if (sub.dec === "input") {
+        const div = d.createElement("div");
+
+        // Function to create an input field
+        const createInput = (idSuffix = "", value = 2) => {
+          const input = d.createElement("input");
+          input.type = sub.type || "text"; // Default to "text" if missing
+
+          if (sub.id) input.id = sub.id + idSuffix; // Ensure unique ID
+          if (sub.name) input.name = sub.name; // Set name
+          if (sub.placeholder) input.placeholder = sub.placeholder; // Set placeholder
+          if (sub.required) input.required = true; // Mark as required
+
+          // Apply min and max only to number, range, and date types
+          if (["number", "range", "date"].includes(input.type)) {
+            if (sub.min !== undefined) input.min = sub.min;
+            if (sub.max !== undefined) input.max = sub.max;
+          }
+
+          // Handle value assignment properly
+          if (value !== undefined) {
+            if (input.type === "checkbox" || input.type === "radio") {
+              input.checked = value;
+            } else {
+              input.value = value;
+            }
+          }
+
+          return input;
+        };
+
+        // If `sub.values` exists, create two inputs; otherwise, create one
+        if (sub.values) {
+          div.appendChild(createInput("-1", sub.values[0]));
+          div.appendChild(createInput("-2", sub.values[1]));
+        } else {
+          div.appendChild(createInput("", sub.value));
+        }
+
+        subItem.appendChild(div);
       }
 
       if (sub.id) subItem.id = sub.id;
@@ -127,7 +187,7 @@ export class Menu {
   }
 
   attachEventListeners() {
-    document.addEventListener("click", (event) => {
+    d.addEventListener("click", (event) => {
       const target = event.target.closest("li");
       if (!target) return;
 
