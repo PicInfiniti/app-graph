@@ -2,6 +2,7 @@ export class Menu {
   constructor(app, menuData, containerId = "menu-bar") {
     this.app = app;
     this.eventBus = app.eventBus
+    this.graphManager = app.graphManager
     this.menuData = menuData;
     this.container = document.getElementById(containerId);
     if (!this.container) {
@@ -87,7 +88,7 @@ export class Menu {
 
   handleMenuAction(menuId) {
     const actions = {
-      "new-btn": () => this.eventBus.emit("clear"),
+      "new-btn": () => this.graphManager.clear(),
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),
       "export-png": () => this.eventBus.emit("export", { type: "png" }),

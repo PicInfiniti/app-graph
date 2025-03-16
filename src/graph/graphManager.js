@@ -73,11 +73,6 @@ export class GraphManager {
     // More layouts can be added here
   }
   setupEventListeners() {
-
-    this.eventBus.on("clear", (event) => {
-      this.clear()
-    })
-
     this.eventBus.on("redo", (event) => {
       if (this.updateIndex(this.index + 1))
         this.eventBus.emit("graph:updated", { type: "redo" })
@@ -87,8 +82,6 @@ export class GraphManager {
       if (this.updateIndex(this.index - 1))
         this.eventBus.emit("graph:updated", { type: "undo" })
     })
-
-
   }
 
   updateNodesPostion(positions, center) {

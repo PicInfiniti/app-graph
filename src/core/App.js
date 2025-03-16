@@ -14,8 +14,8 @@ export class App {
     this.eventBus = EventBus;
     this.appSettings = new AppSettings(this);
     this.settings = this.appSettings.settings;
-    this.menu = new Menu(this, menuData)
     this.graphManager = new GraphManager(this, 100);  // Handles graph logic
+    this.menu = new Menu(this, menuData)
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas
     this.eventHanders = new EventHandlers(this)
