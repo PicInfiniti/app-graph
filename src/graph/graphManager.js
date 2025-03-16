@@ -1,13 +1,12 @@
 import { Graph } from '../utils/classes.js';
 import { caveman } from 'graphology-generators/community';
 import { ladder } from 'graphology-generators/classic';
-import { organizeNodesInCircle } from './layouts.js';
 
 export class GraphManager {
   constructor(app, limit) {
     this.app = app;
     this.eventBus = app.eventBus
-
+    this.layout = app.layout
     this.limit = limit;
     this.index = 0;
     this.history = [];
@@ -64,12 +63,7 @@ export class GraphManager {
 
   }
 
-  applyLayout(type, canvas) {
-    if (type === 'circle') {
-      organizeNodesInCircle(this.graph, canvas);
-    }
-    // More layouts can be added here
-  }
+
   setupEventListeners() {
     this.eventBus.on("redo", (event) => {
       if (this.updateIndex(this.index + 1))

@@ -8,6 +8,7 @@ import { Menu } from '../ui/menu.js';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
 import { EventHandlers } from './eventHandlers.js';
 import { menuData } from '../ui/MenuData.js';
+import { Layout } from '../graph/layouts.js';
 
 export class App {
   constructor() {
@@ -18,6 +19,7 @@ export class App {
     this.menu = new Menu(this, menuData)
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas
+    this.layout = new Layout(this)
     this.eventHanders = new EventHandlers(this)
     this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
     this.ctrl = false;
@@ -75,7 +77,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.applyLayout('circle', this.canvas)
+    this.layout.applyLayout('circle', this.canvas)
     this.drawGraph();  // Visualize the graph
   }
 

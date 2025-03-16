@@ -16,14 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener("wheel", function (event) {
     if (event.ctrlKey) {
       event.preventDefault();
-      console.log(5)
     }
   }, { passive: false });
 
   document.addEventListener("keydown", function (event) {
     if (event.ctrlKey && (event.key === "+" || event.key === "-" || event.key === "0")) {
       event.preventDefault();
-      console.log(4)
     }
   });
 
