@@ -123,6 +123,9 @@ export class Canvas {
     }
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
+    if (!this.settings.forceSimulation) {
+      this.graphManager.saveGraphState();
+    }
   }
 
   dragged(event) {

@@ -103,7 +103,7 @@ export class Menu {
       "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
       "components-btn": () => console.log("Analyzing Components..."),
       "command-btn": () => console.log("Opening Commands Menu..."),
-      "organize-circle": () => console.log("Organizing Circle"),
+      "organize-circle": () => this.graphManager.circular(),
     };
 
     if (actions[menuId]) {

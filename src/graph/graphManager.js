@@ -9,7 +9,7 @@ export class GraphManager {
     this.eventBus = app.eventBus
 
     this.limit = limit;
-    this.index = -1;
+    this.index = 0;
     this.history = [];
     this.graph = ladder(Graph, 10);
     this.init()
@@ -21,9 +21,8 @@ export class GraphManager {
   }
 
   addNode(id, attr) {
-    const newGraph = this.graph.copy();
-    this.push(newGraph)
-    this.graph.addNode(id, attr)
+    this.saveGraphState();
+    this.graph.addNode(id, attr);
     this.eventBus.emit('graph:updated', { type: 'addNode', node: id })
   }
 
@@ -59,8 +58,7 @@ export class GraphManager {
   }
 
   clear() {
-    const newGraph = this.graph.copy();
-    this.push(newGraph)
+    this.saveGraphState()
     this.graph.clear();
     this.eventBus.emit("graph:updated", { type: "clear" })
 
@@ -97,6 +95,10 @@ export class GraphManager {
     })
   }
 
+  saveGraphState() {
+    this.history.length = this.index + 1
+    this.push(this.graph.copy())
+  }
 }
 
 
