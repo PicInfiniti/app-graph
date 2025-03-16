@@ -21,12 +21,5 @@ export function updateColor(selectedNode, selectedEdge) {
 }
 
 
-export function connectNodes(graph, nodes, color) {
-  for (let i = 0; i < nodes.lenght; i++) {
-    for (let j = i + 1; j < nodes.lenght; j++) {
-      graph.mergeEdge(nodes[i], nodes[j], { color: color ? color : $("#color").val() }); // Add edge if it doesn't exist
-    }
-  }
-}
 
 

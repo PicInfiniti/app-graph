@@ -107,9 +107,13 @@ export class Menu {
       "command-btn": () => console.log("Opening Commands Menu..."),
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "organize-circle": () => this.layout.applyLayout("circle"),
+      "add-edge-btn": () => {
+        this.graphManager.addEdges(this.app.selectedNodes)
+      },
       "remove-selection-btn": () => {
         this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges);
-      }
+      },
+      "color-selection-btn": () => console.log("color")
     };
 
     if (actions[menuId]) {

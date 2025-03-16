@@ -18,6 +18,8 @@ export class KeyHandler {
         "u": "undo-btn",
         "r": "redo-btn",
         "d": "remove-selection-btn",
+        "c": "color-selection-btn",
+        "e": "add-edge-btn",
         "O": "organize-circle",
         "C": "complete-btn"
       };
