@@ -62,6 +62,9 @@ class AppSettings {
       const { key } = event.detail;
       if (key) {
         this.toggleSetting(key);
+        if (key == "vertexLabel") {
+          this.eventBus.emit("graph:updated", { type: "vertexLabel" })
+        }
       }
     });
   }

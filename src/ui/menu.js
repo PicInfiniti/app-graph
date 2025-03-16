@@ -12,7 +12,6 @@ export class Menu {
       console.error("Menu container not found!");
       return;
     }
-
   }
 
   init() {
@@ -162,6 +161,7 @@ export class Menu {
       "scale-btn": () => this.eventBus.emit("toggleSetting", { key: "scale" }),
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
       "force-btn": () => this.eventBus.emit("toggleSetting", { key: "forceSimulation" }),
+      "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
       "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
       "components-btn": () => console.log("Analyzing Components..."),
       "command-btn": () => console.log("Opening Commands Menu..."),
