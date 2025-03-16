@@ -42,8 +42,11 @@ class AppSettings {
   registerEventListeners() {
     this.eventBus.on("updateSetting", (event) => {
       const { key, value } = event.detail;
-      if (key && value !== undefined) {
+      if (key == "grid") {
+
+      } else if (key && value !== undefined) {
         this.setSetting(key, value);
+        this.eventBus.emit("graph:updated", { type: key })
       }
     });
 

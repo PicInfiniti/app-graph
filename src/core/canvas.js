@@ -108,7 +108,7 @@ export class Canvas {
       const dx = x - node.x;
       const dy = y - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 10 && dist < minDist) {
+      if (dist < this.settings.node_radius && dist < minDist) {
         minDist = dist;
         subject = node;
       }

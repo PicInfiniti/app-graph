@@ -147,7 +147,7 @@ export class Menu {
     return submenu;
   }
 
-  handleMenuAction(menuId) {
+  handleMenuAction(menuId, val) {
     const actions = {
       "new-btn": () => this.graphManager.clear(),
       "import-graph": () => this.eventBus.emit("import"),
@@ -173,7 +173,11 @@ export class Menu {
       "remove-selection-btn": () => {
         this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges);
       },
-      "color-selection-btn": () => console.log("color")
+      "color-selection-btn": () => console.log("color"),
+      "vertex-size": () => this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
+      "edge-size": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
+      "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
+      "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
     };
 
     if (actions[menuId]) {
@@ -188,12 +192,22 @@ export class Menu {
 
   attachEventListeners() {
     d.addEventListener("click", (event) => {
+      if (event.target.tagName === "INPUT") return;
       const target = event.target.closest("li");
       if (!target) return;
 
       const menuId = target.id || target.getAttribute("name");
       if (menuId) {
         this.handleMenuAction(menuId);
+      }
+    });
+
+    d.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!target) return;
+      const menuId = target.id || target.getAttribute("name");
+      if (menuId) {
+        this.handleMenuAction(menuId, Number(target.value));
       }
     });
   }
