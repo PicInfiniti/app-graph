@@ -107,6 +107,9 @@ export class Menu {
       "command-btn": () => console.log("Opening Commands Menu..."),
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "organize-circle": () => this.layout.applyLayout("circle"),
+      "remove-selection-btn": () => {
+        this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges);
+      }
     };
 
     if (actions[menuId]) {
@@ -115,6 +118,8 @@ export class Menu {
     } else {
       console.log(`No action defined for: ${menuId}`);
     }
+    this.app.selectedNodes.clear()
+    this.app.selectedEdges.clear()
   }
 
   attachEventListeners() {

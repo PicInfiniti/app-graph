@@ -17,6 +17,7 @@ export class KeyHandler {
         "p": "export-png",
         "u": "undo-btn",
         "r": "redo-btn",
+        "d": "remove-selection-btn",
         "O": "organize-circle",
         "C": "complete-btn"
       };

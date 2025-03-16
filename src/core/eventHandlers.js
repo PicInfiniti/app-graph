@@ -29,7 +29,7 @@ export class EventHandlers {
     // When graph data updates, re-render visualization
     this.app.eventBus.on('graph:updated', (event) => {
       this.app.drawGraph();  // Visualize the graph
-      const updateTypes = ["addNode", "undo", "redo", "clear", "import", "addNodeInEdge", "layout", "addEdge"];
+      const updateTypes = ["dropNodesEdges", "addNode", "undo", "redo", "clear", "import", "addNodeInEdge", "layout", "addEdge"];
       if (updateTypes.includes(event.detail.type)) {
         this.app.updateSimulation();
       }

@@ -106,6 +106,16 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "addEdge" })
   }
 
+  dropNodesEdges(nodes, edges) {
+    this.saveGraphState();
+    for (let node of nodes) {
+      this.graph.dropNode(node); // Remove the selected node
+    }
+    for (let edge of edges) {
+      this.graph.dropEdge(edge); // Remove the selected node
+    }
+    this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
+  }
 }
 
 

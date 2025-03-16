@@ -1,5 +1,4 @@
 import { circular } from "graphology-library/layout";
-import { updateNodesPostion, updateForce } from "./mutation";
 
 export class Layout {
   constructor(app) {
