@@ -3,6 +3,7 @@ export class Menu {
     this.app = app;
     this.eventBus = app.eventBus
     this.graphManager = app.graphManager
+    this.layout = app.layout
     this.menuData = menuData;
     this.container = document.getElementById(containerId);
     if (!this.container) {
@@ -11,6 +12,7 @@ export class Menu {
     }
 
   }
+
   init() {
     this.renderMenu();
     this.attachEventListeners();
@@ -103,7 +105,7 @@ export class Menu {
       "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
       "components-btn": () => console.log("Analyzing Components..."),
       "command-btn": () => console.log("Opening Commands Menu..."),
-      "organize-circle": () => this.graphManager.circular(),
+      "organize-circle": () => this.layout.applyLayout("circle"),
     };
 
     if (actions[menuId]) {

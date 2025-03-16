@@ -1,5 +1,5 @@
 import { EventBus } from "./eventBus";
-
+const d = document;
 export class KeyHandler {
   constructor(app) {
     this.app = app;
@@ -7,7 +7,7 @@ export class KeyHandler {
   }
 
   init() {
-    document.addEventListener('keydown', (event) => {
+    d.addEventListener('keydown', (event) => {
       EventBus.emit('key:pressed', { key: event.key });
 
       const shortcuts = {
@@ -16,7 +16,8 @@ export class KeyHandler {
         "s": "export-graph",
         "p": "export-png",
         "u": "undo-btn",
-        "r": "redo-btn"
+        "r": "redo-btn",
+        "O": "organize-circle"
       };
 
       if (shortcuts[event.key]) {
@@ -24,7 +25,7 @@ export class KeyHandler {
       }
     });
 
-    document.addEventListener('keyup', (event) => {
+    d.addEventListener('keyup', (event) => {
       this.eventBus.emit('key:release', { key: event.key });
     });
   }

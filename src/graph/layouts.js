@@ -17,14 +17,18 @@ export class Layout {
     switch (type) {
       case 'circle':
         this.organizeNodesInCircle();
+        this.eventBus.emit("graph:updated", { type: "layout" })
         break;
 
       case 'oneLine':
         this.organizeNodesInLine();
+        this.eventBus.emit("graph:updated", { type: "layout" })
+
         break;
 
       case 'twoLine':
         this.organizeNodesInTwoLines(param.line1Count, param.Y);
+        this.eventBus.emit("graph:updated", { type: "layout" })
         break;
 
       default:

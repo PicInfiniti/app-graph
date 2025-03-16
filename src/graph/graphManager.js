@@ -63,7 +63,6 @@ export class GraphManager {
 
   }
 
-
   setupEventListeners() {
     this.eventBus.on("redo", (event) => {
       if (this.updateIndex(this.index + 1))
@@ -77,6 +76,7 @@ export class GraphManager {
   }
 
   updateNodesPostion(positions, center) {
+    this.saveGraphState();
     // update position of all nodes
     this.graph.forEachNode((node, attr) => {
       this.graph.updateNodeAttributes(node, attr => {
