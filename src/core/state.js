@@ -42,7 +42,6 @@ class AppSettings {
   registerEventListeners() {
     this.eventBus.on("updateSetting", (event) => {
       const { key, value } = event.detail;
-      console.log(value)
       this.setSetting(key, value);
       if (key == "grid") {
         const root = document.documentElement;

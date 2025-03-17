@@ -115,7 +115,6 @@ export class App {
         graph.setNodeAttribute(node, "color", settings.color)
       }
 
-
       context.beginPath();
       context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
       context.fillStyle = settings.vertexLabel ? "white" : attr.color;

@@ -6,6 +6,7 @@ export class GraphManager {
   constructor(app, limit) {
     this.app = app;
     this.eventBus = app.eventBus
+    this.settings = app.settings
 
     this.layout = app.layout
     this.limit = limit;
@@ -135,7 +136,26 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
   }
   updateNodesEdgesColor(nodes, edges) {
+    this.saveGraphState()
+    for (let node of nodes) {
+      this.graph.updateNodeAttributes(node, attr => {
+        return {
+          ...attr,
+          color: this.settings.color,
+        };
+      })
+    }
 
+    for (let edge of edges) {
+      this.graph.updateEdgeAttributes(edge, attr => {
+        return {
+          ...attr,
+          color: this.settings.color,
+        };
+      });
+    }
+
+    this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
   }
 }
 
