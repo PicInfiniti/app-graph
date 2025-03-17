@@ -41,9 +41,15 @@ export const menuData = [
     ],
   },
   {
-    title: "Tools",
+    title: "View",
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
+      { title: "Tools Panel", id: "tools-btn", check: false },
+    ],
+  },
+  {
+    title: "Tools",
+    submenu: [
       { title: "Component", id: "drag-btn", check: false },
       { title: "Scale", id: "scale-btn", check: false },
       { title: "Tree", id: "tree-btn", check: true },

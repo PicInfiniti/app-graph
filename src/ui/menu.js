@@ -157,6 +157,7 @@ export class Menu {
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
       "panel-btn": () => this.eventBus.emit("toggleSetting", { key: "info_panel" }),
+      "tools-btn": () => this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
       "drag-btn": () => this.eventBus.emit("toggleSetting", { key: "dragComponent" }),
       "scale-btn": () => this.eventBus.emit("toggleSetting", { key: "scale" }),
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),

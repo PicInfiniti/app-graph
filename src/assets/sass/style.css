@@ -410,4 +410,71 @@ body {
   font-size: 14px;
 }
 
+#tools-panel {
+  position: fixed;
+  background-color: white;
+  top: 20px;
+  left: 20px;
+  width: 70px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+}
+#tools-panel #tools {
+  width: 100%;
+  padding: 5px;
+  top: 0;
+  background-color: rgba(255, 255, 150, 0.5);
+  user-select: none;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+#tools-panel #tools .close:hover {
+  color: red;
+  cursor: pointer;
+}
+#tools-panel .body-tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+#tools-panel .body-tools * {
+  user-select: none;
+}
+#tools-panel .body-tools div {
+  padding: 5px;
+}
+#tools-panel .body-tools div input {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+#tools-panel .body-tools .scale {
+  cursor: pointer;
+}
+#tools-panel .body-tools .scale img {
+  width: 35px;
+  height: 35px;
+  transition: transform 0.2s ease-in-out;
+}
+#tools-panel .body-tools .scale:hover img {
+  transform: scale(1.1);
+}
+#tools-panel .body-tools .scale:active img {
+  transform: scale(0.9);
+}
+
 /*# sourceMappingURL=style.css.map */

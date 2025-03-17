@@ -9,6 +9,7 @@ import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctio
 import { EventHandlers } from './eventHandlers.js';
 import { menuData } from '../ui/MenuData.js';
 import { Layout } from '../graph/layouts.js';
+import { Widget } from '../ui/wedgets.js';
 
 export class App {
   constructor() {
@@ -20,6 +21,7 @@ export class App {
     this.canvas = this._canvas.canvas
     this.layout = new Layout(this)
     this.menu = new Menu(this, menuData)
+    this.widget = new Widget(this)
     this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
     this.eventHanders = new EventHandlers(this)
 
@@ -45,6 +47,7 @@ export class App {
   init() {
     this.menu.init()
     this.appSettings.init();
+    this.widget.init();
     this._canvas.init();
     this.keyHandler.init();  // Handle global keyboard shortcuts
     this.eventHanders.init();

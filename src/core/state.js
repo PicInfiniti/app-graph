@@ -23,6 +23,7 @@ class AppSettings {
       edge_size: 2,
       label_size: 15,
       info_panel: true,
+      tools_panel: true,
       grid: 20,
       color: "#4682B4"
     };
@@ -156,6 +157,7 @@ class AppSettings {
         this.saveToLocalStorage();
       }
       this.init();
+      this.app.widget.init()
     } else {
       console.warn(`Setting "${key}" does not exist or is not a boolean.`);
     }
