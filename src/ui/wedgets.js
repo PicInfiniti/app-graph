@@ -18,7 +18,7 @@ export class Widget {
 
     this.addEventListeners();
     this.makePanelsDraggable();
-    this.toolsListener();
+    this.listeners();
     this.contexMenu();
   }
 
@@ -28,12 +28,11 @@ export class Widget {
   }
 
   contexMenu() {
-    const contextMenu = document.getElementById("custom-context-menu");
-
-    document.addEventListener("contextmenu", (event) => {
+    const contextMenu = d.getElementById("custom-context-menu");
+    d.addEventListener("contextmenu", (event) => {
       event.preventDefault();
 
-      const menu = document.getElementById("custom-context-menu");
+      const menu = d.getElementById("custom-context-menu");
       const menuWidth = menu.offsetWidth;
       const menuHeight = menu.offsetHeight;
       const screenWidth = window.innerWidth;
@@ -57,8 +56,8 @@ export class Widget {
     });
 
     // Hide menu when clicking elsewhere
-    document.addEventListener("click", () => {
-      document.getElementById("custom-context-menu").style.display = "none";
+    d.addEventListener("click", () => {
+      d.getElementById("custom-context-menu").style.display = "none";
     });
 
   }
@@ -93,6 +92,7 @@ export class Widget {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" });
       });
     }
+
   }
 
 
@@ -160,9 +160,13 @@ export class Widget {
     d.querySelector(handle).addEventListener('touchstart', startDrag, { passive: true });
   }
 
-  toolsListener() {
+  listeners() {
     d.querySelector("widgets #tools-panel .scale").addEventListener("click", (event) => {
       this.eventBus.emit("toggleSetting", { key: "scale" })
+    })
+
+    d.querySelector("widgets #tools-panel .tree").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "tree" })
     })
   }
 }
