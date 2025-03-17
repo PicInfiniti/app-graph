@@ -20,7 +20,7 @@ export const menuData = [
     title: "Edit",
     submenu: [
       { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
-      { title: "Complete Graph", name: "make-complete-btn", shortcut: "(C)" },
+      { title: "Complete Graph", name: "complete-btn", shortcut: "(C)" },
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
@@ -45,6 +45,7 @@ export const menuData = [
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
+      { title: "Console Panel", id: "console-btn", check: false },
     ],
   },
   {

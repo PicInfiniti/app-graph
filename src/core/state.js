@@ -24,6 +24,7 @@ class AppSettings {
       label_size: 15,
       info_panel: true,
       tools_panel: true,
+      console_panel: true,
       grid: 20,
       color: "#4682B4"
     };

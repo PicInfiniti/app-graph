@@ -377,22 +377,50 @@ body {
 }
 
 #console-panel {
-  width: 100%;
   position: fixed;
-  z-index: 3000;
-  bottom: 20px;
+  background-color: white;
+  bottom: 5px;
+  left: 5px;
+  width: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  z-index: 15;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+}
+#console-panel #console {
+  width: 600px;
+  padding: 5px;
+  top: 0;
+  user-select: none;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  color: #fff;
+  touch-action: none;
+  user-select: none;
+}
+#console-panel #console .close:hover {
+  color: red;
+  cursor: pointer;
+}
+#console-panel * {
+  background: #333;
+  color: white;
+}
+#console-panel hr {
+  opacity: 0.7;
+  width: 100%;
+  background: #333;
 }
 #console-panel .console {
-  width: 80%;
-  max-width: 600px;
+  width: 600px;
   border: 1px solid #444;
   background: #333;
   padding: 10px;
-  border-radius: 5px;
 }
 #console-panel .console #output {
   height: 200px;
@@ -407,14 +435,13 @@ body {
   color: #fff;
   border: none;
   outline: none;
-  font-size: 14px;
 }
 
 #tools-panel {
   position: fixed;
   background-color: white;
-  top: 20px;
-  left: 20px;
+  top: 35px;
+  left: 5px;
   width: 70px;
   background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid #ddd;

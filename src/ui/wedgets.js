@@ -18,11 +18,49 @@ export class Widget {
 
     this.addEventListeners();
     this.makePanelsDraggable();
+    this.toolsListener();
+    this.contexMenu();
   }
 
   init() {
     this.togglePanel('info', '#panel-btn .check', this.settings.info_panel);
     this.togglePanel('tools', '#tools-btn .check', this.settings.tools_panel);  // Add event listeners for button clicks
+  }
+
+  contexMenu() {
+    const contextMenu = document.getElementById("custom-context-menu");
+
+    document.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+
+      const menu = document.getElementById("custom-context-menu");
+      const menuWidth = menu.offsetWidth;
+      const menuHeight = menu.offsetHeight;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      let x = event.pageX;
+      let y = event.pageY;
+
+      // Adjust position if menu goes off the right edge
+      if (x + menuWidth > screenWidth) {
+        x -= menuWidth; // Move left
+      }
+
+      // Adjust position if menu goes off the bottom edge
+      if (y + menuHeight > screenHeight) {
+        y -= menuHeight; // Move up
+      }
+
+      menu.style.left = `${x}px`;
+      menu.style.top = `${y}px`;
+      menu.style.display = "block";
+    });
+
+    // Hide menu when clicking elsewhere
+    document.addEventListener("click", () => {
+      document.getElementById("custom-context-menu").style.display = "none";
+    });
+
   }
 
   togglePanel(panelKey, buttonSelector, isVisible) {
@@ -120,6 +158,12 @@ export class Widget {
     };
     d.querySelector(handle).addEventListener('mousedown', startDrag);
     d.querySelector(handle).addEventListener('touchstart', startDrag, { passive: true });
+  }
+
+  toolsListener() {
+    d.querySelector("widgets #tools-panel .scale").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "scale" })
+    })
   }
 }
 
