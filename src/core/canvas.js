@@ -157,7 +157,7 @@ export class Canvas {
     return this.app.nodes.find(node => {
       let dx = x - node.x;
       let dy = y - node.y;
-      return Math.sqrt(dx * dx + dy * dy) < this.settings.node_radius + 10; // Adjust radius threshold as needed
+      return Math.sqrt(dx * dx + dy * dy) < this.settings.node_radius; // Adjust radius threshold as needed
     });
   }
 
