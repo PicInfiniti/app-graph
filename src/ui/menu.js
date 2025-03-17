@@ -134,7 +134,7 @@ export class Menu {
         subItem.appendChild(div);
       }
 
-      if (sub.id) subItem.id = sub.id;
+      if (sub.dec != "input" && sub.id) subItem.id = sub.id;
       if (sub.name) subItem.setAttribute("name", sub.name);
 
       if (sub.submenu) {
@@ -178,6 +178,7 @@ export class Menu {
       "edge-size": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
       "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
       "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
+      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val })
     };
 
     if (actions[menuId]) {
@@ -207,7 +208,7 @@ export class Menu {
       if (!target) return;
       const menuId = target.id || target.getAttribute("name");
       if (menuId) {
-        this.handleMenuAction(menuId, Number(target.value));
+        this.handleMenuAction(menuId, target.value);
       }
     });
   }

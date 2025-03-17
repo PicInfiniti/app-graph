@@ -23,7 +23,7 @@ export class EventHandlers {
     this.app.eventBus.on('layout:changed', (event) => {
       const { layoutType } = event.detail;
       this.app.graphManager.applyLayout(layoutType);
-      EventBus.emit('graph:updated', { type: "layout" });
+      this.eventBus.emit('graph:updated', { type: "layout" });
     });
 
     // When graph data updates, re-render visualization
@@ -103,8 +103,5 @@ export class EventHandlers {
         reader.readAsText(file);
       }
     });
-
   }
-
-
 }

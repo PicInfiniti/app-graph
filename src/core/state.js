@@ -42,10 +42,13 @@ class AppSettings {
   registerEventListeners() {
     this.eventBus.on("updateSetting", (event) => {
       const { key, value } = event.detail;
+      console.log(value)
+      this.setSetting(key, value);
       if (key == "grid") {
-
+        const root = document.documentElement;
+        document.querySelector(".container").classList.toggle('grid-hidden', this.settings.grid <= 2);
+        root.style.setProperty('--grid-size', `${this.settings.grid}px`);
       } else if (key && value !== undefined) {
-        this.setSetting(key, value);
         this.eventBus.emit("graph:updated", { type: key })
       }
     });
@@ -104,6 +107,7 @@ class AppSettings {
       this.saveToLocalStorage();
     }
     this.init();
+    this.eventBus.emit("graph:updated", { type: "resetSettings" })
   }
 
   getSetting(key) {
@@ -123,7 +127,6 @@ class AppSettings {
         if (this.#autoSave) {
           this.saveToLocalStorage();
         }
-        this.init();
       }
     } else {
       console.warn(`Setting "${key}" does not exist.`);
