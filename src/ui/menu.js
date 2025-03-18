@@ -181,6 +181,10 @@ export class Menu {
       "g-cycle": () => this.graphManager.generator.cycle(val),
       "g-path": () => this.graphManager.generator.path(val),
       "g-ladder": () => this.graphManager.generator.ladder(val),
+      "g-complete-bipartite-1": () => this.graphManager.generator.completeBipartite(val, d.getElementById("g-complete-bipartite-2").value),
+      "g-complete-bipartite-2": () => this.graphManager.generator.completeBipartite(d.getElementById("g-complete-bipartite-1").value, val),
+      "g-caveman-1": () => this.graphManager.generator.caveman(val, d.getElementById("g-caveman-2").value),
+      "g-caveman-2": () => this.graphManager.generator.caveman(d.getElementById("g-caveman-1").value, val),
     };
 
     if (actions[menuId]) {

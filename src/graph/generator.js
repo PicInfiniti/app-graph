@@ -29,13 +29,15 @@ export class Generator {
   }
 
   completeBipartite(n1, n2) {
-    const graph = empty(Graph, n1 + n2)
-    for (let i = 0; i < n1; i++) {
-      for (let j = n1; j < n1 + n2; j++) {
+    const graph = empty(Graph, Number(n1) + Number(n2))
+    for (let i = 0; i < Number(n1); i++) {
+      for (let j = Number(n1); j < Number(n1) + Number(n2); j++) {
         graph.addEdge(i, j)
       }
     }
-    return graph
+
+    this.graphManager.push(graph)
+    this.layout.applyLayout('twoLine', { line1Count: Number(n1), Y: 50 })
   }
 
   cycle(n) {
@@ -43,9 +45,14 @@ export class Generator {
     this.graphManager.graph.addEdge(0, Number(n) - 1)
     this.layout.applyLayout('circle')
   }
+
   path(n) {
     this.graphManager.push(path(Graph, Number(n)))
     this.layout.applyLayout('oneLine')
+  }
+  caveman(n1, n2) {
+    this.graphManager.push(caveman(Graph, Number(n1), Number(n2)))
+    this.layout.applyLayout('circle')
   }
 }
 
