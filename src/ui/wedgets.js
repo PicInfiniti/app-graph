@@ -80,6 +80,7 @@ export class Widget {
   addEventListeners() {
     const infoClose = d.querySelector('#floating-panel .close');
     const toolsClose = d.querySelector('#tools-panel .close');
+    const modalClose = d.querySelector(".modal");
 
     if (infoClose) {
       infoClose.addEventListener('click', () => {
@@ -90,6 +91,12 @@ export class Widget {
     if (toolsClose) {
       toolsClose.addEventListener('click', () => {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" });
+      });
+    }
+
+    if (modalClose) {
+      modalClose.addEventListener('click', () => {
+        modalClose.style.display = "none"
       });
     }
 

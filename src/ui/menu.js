@@ -165,7 +165,7 @@ export class Menu {
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
       "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
       "components-btn": () => console.log("Analyzing Components..."),
-      "command-btn": () => console.log("Opening Commands Menu..."),
+      "command-btn": () => d.querySelector(".modal").style.display = "flex",
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "organize-circle": () => this.layout.applyLayout("circle"),
       "add-edge-btn": () => this.graphManager.addEdges(this.app.selectedNodes),

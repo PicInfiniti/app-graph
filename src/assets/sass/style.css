@@ -323,7 +323,7 @@ body {
 }
 .modal .help-panel {
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.7);
   width: 350px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
