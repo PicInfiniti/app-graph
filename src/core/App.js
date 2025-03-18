@@ -81,6 +81,7 @@ export class App {
 
   loadInitialGraph() {
     this.graphManager.generator.ladder(10);
+    this.layout.applyLayout('circle')
   }
 
   drawGraph() {

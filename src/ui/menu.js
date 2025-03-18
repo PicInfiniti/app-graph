@@ -176,7 +176,11 @@ export class Menu {
       "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
       "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
       "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
-      "g-empty": () => console.log(val)
+      "g-empty": () => this.graphManager.generator.empty(val),
+      "g-complete": () => this.graphManager.generator.complete(val),
+      "g-cycle": () => this.graphManager.generator.cycle(val),
+      "g-path": () => this.graphManager.generator.path(val),
+      "g-ladder": () => this.graphManager.generator.ladder(val),
     };
 
     if (actions[menuId]) {

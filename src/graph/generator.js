@@ -14,15 +14,22 @@ export class Generator {
   }
 
   empty(n) {
-    this.graphManager.push(empty(Graph, n))
-  }
-  ladder(n) {
-    this.graphManager.push(ladder(Graph, n))
+    this.graphManager.push(empty(Graph, Number(n)))
     this.layout.applyLayout('circle')
   }
 
-  completeBipartite(GraphClass, n1, n2) {
-    const graph = empty(GraphClass, n1 + n2)
+  complete(n) {
+    this.graphManager.push(complete(Graph, Number(n)))
+    this.layout.applyLayout('circle')
+  }
+
+  ladder(n) {
+    this.graphManager.push(ladder(Graph, Number(n)))
+    this.layout.applyLayout('twoLine', { line1Count: Number(n), Y: 50 })
+  }
+
+  completeBipartite(n1, n2) {
+    const graph = empty(Graph, n1 + n2)
     for (let i = 0; i < n1; i++) {
       for (let j = n1; j < n1 + n2; j++) {
         graph.addEdge(i, j)
@@ -31,25 +38,20 @@ export class Generator {
     return graph
   }
 
-  cycle(GraphClass, n) {
-    const graph = path(GraphClass, n)
-
-    graph.addEdge(0, n - 1)
-    return graph
+  cycle(n) {
+    this.graphManager.push(path(Graph, Number(n)))
+    this.graphManager.graph.addEdge(0, Number(n) - 1)
+    this.layout.applyLayout('circle')
   }
-
+  path(n) {
+    this.graphManager.push(path(Graph, Number(n)))
+    this.layout.applyLayout('oneLine')
+  }
 }
 
 
 
-// $('#g-empty-btn').on('click', function (event) {
-//   event.preventDefault();
-//   let val = parseInt($("#g-empty").val())
-//   const graph = empty(Graph, val);
-//   organizeNodesInCircle(graph, canvas)
-//   drawGraph(graph)
-// });
-//
+
 // $('#g-complete-btn').on('click', function (event) {
 //   event.preventDefault();
 //   let val = parseInt($("#g-complete").val())
