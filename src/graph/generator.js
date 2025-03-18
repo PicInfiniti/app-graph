@@ -54,6 +54,10 @@ export class Generator {
     this.graphManager.push(caveman(Graph, Number(n1), Number(n2)))
     this.layout.applyLayout('circle')
   }
+  connectedCaveman(n1, n2) {
+    this.graphManager.push(connectedCaveman(Graph, Number(n1), Number(n2)))
+    this.layout.applyLayout('circle')
+  }
 }
 
 

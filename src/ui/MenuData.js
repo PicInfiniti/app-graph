@@ -55,9 +55,13 @@ export const menuData = [
       { title: "Scale", id: "scale-btn", check: false },
       { title: "Tree", id: "tree-btn", check: true },
       { title: "Force Simulation", id: "force-btn", check: false },
-      { type: "divider" },
+    ],
+  },
+  {
+    title: "Generator",
+    submenu: [
       {
-        title: "Generator",
+        title: "Classic",
         submenu: [
           { dec: "input", type: "number", label: "Empty", id: "g-empty", min: 1, max: 500, value: 5 },
           { dec: "input", type: "number", label: "Kₙ", id: "g-complete", min: 1, max: 500, value: 5, link: "https://en.wikipedia.org/wiki/Complete_graph" },
@@ -74,6 +78,11 @@ export const menuData = [
           { dec: "input", type: "number", label: "Pₙ", id: "g-path", min: 2, max: 500, value: 5, link: "https://en.wikipedia.org/wiki/Path_graph" },
           { dec: "input", type: "number", label: "Cₙ", id: "g-cycle", min: 3, max: 500, value: 5, link: "https://en.wikipedia.org/wiki/Cycle_graph" },
           { dec: "input", type: "number", label: "Lₙ", id: "g-ladder", min: 2, max: 500, value: 5, link: "https://en.wikipedia.org/wiki/Ladder_graph" },
+        ]
+      },
+      {
+        title: "Community",
+        submenu: [
           {
             dec: "input",
             type: "number",
@@ -84,8 +93,18 @@ export const menuData = [
             values: [5, 5],
             link: "https://mathworld.wolfram.com/CavemanGraph.html"
           },
+          {
+            dec: "input",
+            type: "number",
+            label: "Qₙ,ₙ",
+            id: "g-connected-caveman",
+            min: 1,
+            max: 500,
+            values: [5, 5],
+            link: "https://mathworld.wolfram.com/CavemanGraph.html"
+          },
         ],
-      },
+      }
     ],
   },
   {
