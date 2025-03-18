@@ -4,7 +4,6 @@ export class Layout {
   constructor(app) {
     this.app = app
     this.eventBus = app.eventBus
-    this.graphManager = app.graphManager
     this.canvas = app.canvas
   }
 
@@ -40,12 +39,12 @@ export class Layout {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
     const radius = Math.min(centerX * 0.8, centerY * 0.8);
-    const positions = circular(this.graphManager.graph, { scale: radius, dimensions: ['x', 'y'] });
-    this.graphManager.updateNodesPostion(positions, { x: centerX, y: centerY })
+    const positions = circular(this.app.graphManager.graph, { scale: radius, dimensions: ['x', 'y'] });
+    this.app.graphManager.updateNodesPostion(positions, { x: centerX, y: centerY })
   }
 
   organizeNodesInLine() {
-    const graph = this.graphManager.graph
+    const graph = this.app.graphManager.graph
     const centerY = this.canvas.height / 2; // Middle of the canvas
     const padding = 100; // Space from edges
     const nodeIds = Array.from(graph.nodes()); // Get ordered nodes
@@ -67,7 +66,7 @@ export class Layout {
   }
 
   organizeNodesInTwoLines(line1Count, Y = 50) {
-    const graph = this.graphManager.graph
+    const graph = this.app.graphManager.graph
     const centerY = this.canvas.height / 2;
     const paddingX = 100; // Horizontal padding
     const paddingY = Y; // Vertical spacing between lines

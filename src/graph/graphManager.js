@@ -1,23 +1,23 @@
-import { Graph } from '../utils/classes.js';
-import { caveman } from 'graphology-generators/community';
-import { ladder } from 'graphology-generators/classic';
+import { Graph } from '../utils/classes';
+import { empty } from 'graphology-generators/classic';
+import { Generator } from "./generator";
 
 export class GraphManager {
   constructor(app, limit) {
     this.app = app;
     this.eventBus = app.eventBus
     this.settings = app.settings
-
     this.layout = app.layout
+    this.generator = new Generator(this)
+
     this.limit = limit;
     this.index = 0;
-    this.history = [];
-    this.graph = ladder(Graph, 10);
+    this.history = [empty(Graph, 0)];
+    this.graph = this.history[0]
     this.init()
   }
 
   init() {
-    this.history.push(this.graph)
     this.setupEventListeners();
   }
 

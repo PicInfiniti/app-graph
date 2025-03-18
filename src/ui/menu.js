@@ -175,7 +175,8 @@ export class Menu {
       "edge-size": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
       "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
       "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
-      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val })
+      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
+      "g-empty": () => console.log(val)
     };
 
     if (actions[menuId]) {

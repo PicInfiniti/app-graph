@@ -8,7 +8,6 @@ export class Canvas {
     this.app = app
     this.eventBus = app.eventBus
     this.settings = app.appSettings.settings
-    this.graphManager = app.graphManager
     this.canvas = d3.select("#chart").node()
   }
 
@@ -33,7 +32,7 @@ export class Canvas {
         if (this.settings.tree) {
           this.insertNodeInEdge(clickedEdge);
         } else {
-          this.graphManager.graph.findEdge(clickedEdge.source.id, clickedEdge.target.id, (edge) => {
+          this.app.graphManager.graph.findEdge(clickedEdge.source.id, clickedEdge.target.id, (edge) => {
             this.app.selectedEdges.add(edge)
             if (!this.settings.forceSimulation) {
               this.eventBus.emit("graph:updated", { type: "selected" })
@@ -82,9 +81,9 @@ export class Canvas {
     event.preventDefault();
 
     let [x, y] = d3.pointer(event, this.canvas);
-    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
+    const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
-    this.graphManager.addNode(newID, { x: x, y: y, color: this.settings.color, label: newLabel });
+    this.app.graphManager.addNode(newID, { x: x, y: y, color: this.settings.color, label: newLabel });
   }
 
   addNodeConnectedToNode(node) {
@@ -92,8 +91,8 @@ export class Canvas {
     const newLabel = getAvailableLabel(newID);
     const newNode = { x: node.x + 30, y: node.y + 30, color: this.settings.color, label: newLabel };
 
-    this.graphManager.graph.addNode(newID, newNode);
-    this.graphManager.graph.addEdge(node.id, newID);
+    this.app.graphManager.graph.addNode(newID, newNode);
+    this.app.graphManager.graph.addEdge(node.id, newID);
 
     this.eventBus.emit('graph:updated', { type: 'addNode', node: newID });
   }
@@ -124,7 +123,7 @@ export class Canvas {
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
     if (!this.settings.forceSimulation) {
-      this.graphManager.saveGraphState();
+      this.app.graphManager.saveGraphState();
     }
   }
 
@@ -133,7 +132,7 @@ export class Canvas {
     event.subject.fy = event.y;
 
     if (!this.settings.forceSimulation) {
-      this.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
+      this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
         return {
           ...attr,
           x: event.x,
@@ -174,19 +173,19 @@ export class Canvas {
   }
 
   insertNodeInEdge(edge) {
-    const newID = getMinAvailableNumber(this.graphManager.graph.nodes());
+    const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
     let midX = (edge.source.x + edge.target.x) / 2;
     let midY = (edge.source.y + edge.target.y) / 2;
 
-    this.graphManager.graph.addNode(newID, { x: midX, y: midY, color: this.settings.color, label: newLabel });
+    this.app.graphManager.graph.addNode(newID, { x: midX, y: midY, color: this.settings.color, label: newLabel });
 
     // Remove old edge
-    this.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
+    this.app.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
 
     // Add two new edges
-    this.graphManager.graph.addEdge(edge.source.id, newID);
-    this.graphManager.graph.addEdge(newID, edge.target.id);
+    this.app.graphManager.graph.addEdge(edge.source.id, newID);
+    this.app.graphManager.graph.addEdge(newID, edge.target.id);
 
     this.eventBus.emit('graph:updated', { type: 'addNodeInEdge', node: newID });
   }

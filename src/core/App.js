@@ -16,10 +16,10 @@ export class App {
     this.eventBus = EventBus;
     this.appSettings = new AppSettings(this);
     this.settings = this.appSettings.settings;
-    this.graphManager = new GraphManager(this, 100);  // Handles graph logic
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas
     this.layout = new Layout(this)
+    this.graphManager = new GraphManager(this, 100);  // Handles graph logic
     this.menu = new Menu(this, menuData)
     this.widget = new Widget(this)
     this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
@@ -80,10 +80,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    if (!this.settings.forceSimulation) {
-      this.layout.applyLayout('circle', this.canvas)
-
-    }
+    this.graphManager.generator.ladder(10);
   }
 
   drawGraph() {
