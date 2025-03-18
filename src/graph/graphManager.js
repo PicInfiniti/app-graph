@@ -1,6 +1,7 @@
 import { Graph } from '../utils/classes';
 import { empty } from 'graphology-generators/classic';
 import { Generator } from "./generator";
+import { Metric } from './metrics';
 
 export class GraphManager {
   constructor(app, limit) {
@@ -9,6 +10,7 @@ export class GraphManager {
     this.settings = app.settings
     this.layout = app.layout
     this.generator = new Generator(this)
+    this.metric = new Metric(this)
 
     this.limit = limit;
     this.index = 0;

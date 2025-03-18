@@ -45,7 +45,7 @@ export const menuData = [
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
-      { title: "Console Panel", id: "console-btn", check: false },
+      // { title: "Console Panel", id: "console-btn", check: false },
     ],
   },
   {
@@ -104,6 +104,20 @@ export const menuData = [
             link: "https://mathworld.wolfram.com/CavemanGraph.html"
           },
         ],
+      }, {
+        title: "Random",
+        submenu: [
+          {
+            dec: "input",
+            type: "number",
+            label: "Clusters",
+            id: "clusters-btn",
+            min: 1,
+            max: 500,
+            values: [50, 100, 10],
+          },
+          ,
+        ]
       }
     ],
   },

@@ -1,3 +1,6 @@
+import interact from "interactjs";
+import { Metric } from "../graph/metrics";
+
 const d = document;
 
 export class Widget {
@@ -5,6 +8,7 @@ export class Widget {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
+    this.mettric = new Metric(app)
 
     this.panels = {
       info: d.getElementById('floating-panel'),
@@ -70,21 +74,32 @@ export class Widget {
     panel.style.display = isVisible ? 'flex' : 'none';
 
     if (!isVisible) {
-      panel.style.left = '';
-      panel.style.top = '';
-      panel.setAttribute('data-x', 0);
-      panel.setAttribute('data-y', 0);
+      this.resetPanel(panel)
     }
+  }
+
+  resetPanel(panel) {
+    panel.style.transform = 'translate(0px, 0px)';
+    panel.setAttribute('data-x', 0);
+    panel.setAttribute('data-y', 0);
   }
 
   addEventListeners() {
     const infoClose = d.querySelector('#floating-panel .close');
+    const infoMax = d.querySelector('#floating-panel .max');
     const toolsClose = d.querySelector('#tools-panel .close');
     const modalClose = d.querySelector(".modal");
 
     if (infoClose) {
       infoClose.addEventListener('click', () => {
         this.eventBus.emit("toggleSetting", { key: "info_panel" });
+      });
+    }
+
+    if (infoMax) {
+      infoMax.addEventListener('click', () => {
+        this.resetPanel(this.panels.info)
+        d.querySelector("#floating-panel").classList.toggle("MAX");
       });
     }
 
@@ -111,60 +126,28 @@ export class Widget {
     });
   }
 
-  makeDraggable(panel, handle) {
-    let offsetX = 0, offsetY = 0, isDragging = false;
 
-    const startDrag = (event) => {
-      isDragging = true;
+  makeDraggable(panel, handleSelector) {
+    // Initialize the panel as draggable with Interact.js
+    interact(panel).draggable({
+      // Only allow dragging from the specified handle (a CSS selector)
+      allowFrom: handleSelector,
+      listeners: {
+        move(event) {
+          const target = event.target;
+          // Get current translation values or default to 0
+          let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+          let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-      let clientX, clientY;
-      if (event.touches) {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-      } else {
-        clientX = event.clientX;
-        clientY = event.clientY;
+          // Apply the translation using CSS transform
+          target.style.transform = `translate(${x}px, ${y}px)`;
+
+          // Store the new position in data attributes
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
+        }
       }
-
-      const rect = panel.getBoundingClientRect();
-      offsetX = clientX - rect.left;
-      offsetY = clientY - rect.top;
-
-      panel.style.position = 'absolute';
-      panel.style.zIndex = '1000';
-
-      d.addEventListener('mousemove', onDrag);
-      d.addEventListener('mouseup', stopDrag);
-      d.addEventListener('touchmove', onDrag, { passive: false });
-      d.addEventListener('touchend', stopDrag);
-    };
-
-    const onDrag = (event) => {
-      if (!isDragging) return;
-
-      let clientX, clientY;
-      if (event.touches) {
-        clientX = event.touches[0].clientX;
-        clientY = event.touches[0].clientY;
-        event.preventDefault(); // Prevent scrolling while dragging
-      } else {
-        clientX = event.clientX;
-        clientY = event.clientY;
-      }
-
-      panel.style.left = `${clientX - offsetX}px`;
-      panel.style.top = `${clientY - offsetY}px`;
-    };
-
-    const stopDrag = () => {
-      isDragging = false;
-      d.removeEventListener('mousemove', onDrag);
-      d.removeEventListener('mouseup', stopDrag);
-      d.removeEventListener('touchmove', onDrag);
-      d.removeEventListener('touchend', stopDrag);
-    };
-    d.querySelector(handle).addEventListener('mousedown', startDrag);
-    d.querySelector(handle).addEventListener('touchstart', startDrag, { passive: true });
+    });
   }
 
   listeners() {

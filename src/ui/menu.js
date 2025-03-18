@@ -96,7 +96,7 @@ export class Menu {
         const div = d.createElement("div");
 
         // Function to create an input field
-        const createInput = (idSuffix = "", value = 2) => {
+        const createInput = (idSuffix = "", value = 3) => {
           const input = d.createElement("input");
           input.type = sub.type || "text"; // Default to "text" if missing
 
@@ -125,8 +125,9 @@ export class Menu {
 
         // If `sub.values` exists, create two inputs; otherwise, create one
         if (sub.values) {
-          div.appendChild(createInput("-1", sub.values[0]));
-          div.appendChild(createInput("-2", sub.values[1]));
+          sub.values.forEach((item, index) => {
+            div.appendChild(createInput(`-${index + 1}`, item));
+          });
         } else {
           div.appendChild(createInput("", sub.value));
         }
@@ -163,8 +164,8 @@ export class Menu {
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
       "force-btn": () => this.eventBus.emit("toggleSetting", { key: "forceSimulation" }),
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
-      "list-degrees-btn": () => console.log("Calculating Degree Sequence..."),
-      "components-btn": () => console.log("Analyzing Components..."),
+      "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
+      "components-btn": () => this.graphManager.metric.countComponents(),
       "command-btn": () => d.querySelector(".modal").style.display = "flex",
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "organize-circle": () => this.layout.applyLayout("circle"),
@@ -187,7 +188,11 @@ export class Menu {
       "g-caveman-2": () => this.graphManager.generator.caveman(d.getElementById("g-caveman-1").value, val),
       "g-connected-caveman-1": () => this.graphManager.generator.connectedCaveman(val, d.getElementById("g-connected-caveman-2").value),
       "g-connected-caveman-2": () => this.graphManager.generator.connectedCaveman(d.getElementById("g-connected-caveman-1").value, val),
+      "clusters-btn": () => this.graphManager.generator.clusters(),
 
+      "clusters-btn-1": () => this.graphManager.generator.clusters(val, d.getElementById("clusters-btn-2").value, d.getElementById("clusters-btn-3").value),
+      "clusters-btn-2": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, val, d.getElementById("clusters-btn-3").value),
+      "clusters-btn-3": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, d.getElementById("clusters-btn-2").value, val),
     };
 
     if (actions[menuId]) {

@@ -129,7 +129,7 @@ body {
   position: fixed;
   background-color: white;
   top: 20px;
-  right: 20px;
+  left: calc(100vw - 220px);
   width: 200px;
   height: 400px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -141,6 +141,13 @@ body {
   z-index: 15;
   display: flex;
   flex-direction: column;
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out, left 0.5s ease-in-out, top 0.5s ease-in-out;
+}
+#floating-panel.MAX {
+  width: 90vw;
+  height: 90vh;
+  left: 20px;
+  top: 20px;
 }
 #floating-panel #info {
   width: 100%;
@@ -156,7 +163,17 @@ body {
   touch-action: none;
   user-select: none;
 }
-#floating-panel #info .close:hover {
+#floating-panel #info .cm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+#floating-panel #info .cm .max:hover {
+  color: green;
+  cursor: pointer;
+}
+#floating-panel #info .cm .close:hover {
   color: red;
   cursor: pointer;
 }
@@ -230,11 +247,11 @@ body {
   list-style-type: none;
   padding: 5px;
   margin: 0;
-  min-width: 200px;
+  min-width: 240px;
   z-index: 20;
 }
 #menu-bar > ul > li > ul li > ul li input[type=number] {
-  width: 50px;
+  width: 45px;
 }
 #menu-bar > ul > li > ul li > ul li div {
   display: flex;

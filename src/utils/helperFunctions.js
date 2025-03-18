@@ -34,17 +34,7 @@ export function getAvailableLabel(n, maxLength = 3) {
   return combinations[n] || null;
 }
 
-export function includesById(array, id) {
-  return array.some(obj => obj.id === id);
-}
 
-export function removeStringFromArray(array, str) {
-  for (let i = array.length - 1; i >= 0; i--) {
-    if (array[i] === str) {
-      array.splice(i, 1);
-    }
-  }
-}
 
 export function getTouchPosition(event, canvas) {
   const touch = event.changedTouches[0];
@@ -88,15 +78,6 @@ export function pointInRect(a, b, x1, y1, x2, y2) {
   } else {
     return false
   }
-}
-
-export function infoPanelTemplate(header, id) {
-  return `
-      <div id="${id}" class="info-body">
-        <h4 class="title">${header}</h4>
-        <div class="body"></div> 
-      </div>
-    `
 }
 
 // Helper function to calculate distance from a point to a line segment

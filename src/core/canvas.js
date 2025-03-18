@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
 import { pointToSegmentDistance } from '../utils/helperFunctions';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
-import { edge } from 'graphology-metrics';
 
 export class Canvas {
   constructor(app) {
