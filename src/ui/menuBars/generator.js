@@ -1,13 +1,3 @@
-import $ from "jquery"
-import { UndirectedGraph } from 'graphology';
-import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { connectedCaveman } from 'graphology-generators/community';
-import { canvas, History } from '../init'
-import { appSettings } from "./settings";
-import { organizeNodesInCircle, organizeNodesInLine, organizeNodesInTwoLines } from "../dependency/organizer";
-import { drawGraph, updateForce, updateSimulation } from "../dependency/mutation";
-import { simulation, nodes, links } from "../force_simulation";
-
 $('#g-empty-btn').on('click', function (event) {
   event.preventDefault();
   let val = parseInt($("#g-empty").val())

@@ -31,9 +31,9 @@ export const menuData = [
       {
         title: "Settings",
         submenu: [
-          { dec: "input", type: "range", label: "Grid", id: "grid-size", min: 0, max: 50, value: 20 },
-          { dec: "input", type: "range", label: "VSize", id: "vertex-size", min: 0, max: 50, value: 10 },
-          { dec: "input", type: "range", label: "ESize", id: "edge-size", min: 1, max: 20, value: 2 },
+          { dec: "input", type: "range", label: "Grid", id: "grid-size", min: 0, max: 100, value: 20 },
+          { dec: "input", type: "range", label: "VSize", id: "vertex-size", min: 0, max: 100, value: 10 },
+          { dec: "input", type: "range", label: "ESize", id: "edge-size", min: 1, max: 100, value: 2 },
           { dec: "input", type: "range", label: "LSize", id: "label-size", min: 0, max: 100, value: 15 },
           { title: "Vertex Label", id: "vertex-label", check: true },
         ],

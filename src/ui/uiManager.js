@@ -10,8 +10,11 @@ export function applySettingsToUI(settings) {
   d.getElementById('color').value = settings.color;
   d.querySelector('#drag-btn .check').classList.toggle("hidden", !settings.dragComponent);
   d.querySelector('#scale-btn .check').classList.toggle("hidden", !settings.scale);
+  d.querySelector('#scale').classList.toggle("gray-background", !settings.scale);
   d.querySelector('#tree-btn .check').classList.toggle("hidden", !settings.tree);
+  d.querySelector('#tree').classList.toggle("gray-background", !settings.tree);
   d.querySelector('#force-btn .check').classList.toggle("hidden", !settings.forceSimulation);
+  d.querySelector('#force').classList.toggle("gray-background", !settings.forceSimulation);
 
   const root = d.documentElement;
   d.querySelector(".container").classList.toggle('grid-hidden', settings.grid <= 2);

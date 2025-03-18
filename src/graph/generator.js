@@ -1,20 +1,35 @@
-export function completeBipartite(GraphClass, n1, n2) {
-  const graph = empty(GraphClass, n1 + n2)
+import { complete, empty, path, ladder } from 'graphology-generators/classic';
+import { connectedCaveman } from 'graphology-generators/community';
 
-  for (let i = 0; i < n1; i++) {
-    for (let j = n1; j < n1 + n2; j++) {
-      graph.addEdge(i, j)
-    }
+export class Generator {
+  constructor() {
+
   }
-  return graph
+
+  init() {
+
+  }
+
+  completeBipartite(GraphClass, n1, n2) {
+    const graph = empty(GraphClass, n1 + n2)
+
+    for (let i = 0; i < n1; i++) {
+      for (let j = n1; j < n1 + n2; j++) {
+        graph.addEdge(i, j)
+      }
+    }
+    return graph
+  }
+
+  cycle(GraphClass, n) {
+    const graph = path(GraphClass, n)
+
+    graph.addEdge(0, n - 1)
+    return graph
+  }
+
 }
 
-export function cycle(GraphClass, n) {
-  const graph = path(GraphClass, n)
-
-  graph.addEdge(0, n - 1)
-  return graph
-}
 
 
 

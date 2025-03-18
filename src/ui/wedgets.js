@@ -168,6 +168,10 @@ export class Widget {
     d.querySelector("widgets #tools-panel .tree").addEventListener("click", (event) => {
       this.eventBus.emit("toggleSetting", { key: "tree" })
     })
+
+    d.querySelector("widgets #tools-panel .force").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "forceSimulation" })
+    })
   }
 }
 

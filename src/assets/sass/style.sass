@@ -412,30 +412,19 @@ body
     padding: 10px
     *
       user-select: none
+
     div
       padding: 5px
       input
-        width: 40px
-        height: 40px
+        width: 50px
+        height: 50px
         cursor: pointer
 
-    .scale
+    .scale, .tree, .force
       cursor: pointer
 
       img
-        width: 35px
-        height: 35px
-        transition: transform 0.2s ease-in-out
-
-      &:hover img 
-        transform: scale(1.1)
-
-      &:active img 
-        transform: scale(0.9)
-    .tree
-      cursor: pointer
-
-      img
+        border-radius: 5px
         width: 50px
         height: 50px
         transition: transform 0.2s ease-in-out
@@ -445,3 +434,6 @@ body
 
       &:active img 
         transform: scale(0.9)
+
+.gray-background
+  opacity: .5
