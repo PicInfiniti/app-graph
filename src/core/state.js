@@ -26,7 +26,7 @@ class AppSettings {
       tools_panel: true,
       console_panel: true,
       grid: 20,
-      color: "#4682B4"
+      color: "#4682B4",
     };
 
     // Load validated settings from localStorage or use defaults

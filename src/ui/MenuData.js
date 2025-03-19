@@ -45,6 +45,7 @@ export const menuData = [
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
+      { title: "Reset Zoom", id: "reset-zoom-btn" },
       // { title: "Console Panel", id: "console-btn", check: false },
     ],
   },
