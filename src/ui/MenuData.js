@@ -45,8 +45,6 @@ export const menuData = [
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
-      { title: "Reset Zoom", id: "reset-zoom-btn" },
-      // { title: "Console Panel", id: "console-btn", check: false },
     ],
   },
   {
@@ -113,9 +111,9 @@ export const menuData = [
             type: "number",
             label: "Clusters",
             id: "clusters-btn",
-            min: 1,
+            min: 2,
             max: 500,
-            values: [50, 100, 10],
+            values: [20, 20, 10],
           },
           ,
         ]

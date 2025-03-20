@@ -193,7 +193,6 @@ export class Menu {
       "clusters-btn-1": () => this.graphManager.generator.clusters(val, d.getElementById("clusters-btn-2").value, d.getElementById("clusters-btn-3").value),
       "clusters-btn-2": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, val, d.getElementById("clusters-btn-3").value),
       "clusters-btn-3": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, d.getElementById("clusters-btn-2").value, val),
-      "reset-zoom-btn": () => this.app._canvas.resetZoom()
     };
 
     if (actions[menuId]) {

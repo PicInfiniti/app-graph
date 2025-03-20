@@ -9,15 +9,6 @@ export class Canvas {
     this.settings = app.appSettings.settings
     this.canvas = d3.select("#chart").node()
     this.ctx = this.canvas.getContext("2d")
-
-    this.scale = 1
-    this.zoom = d3.zoom()
-      .scaleExtent([0.5, 5]) // Min and max zoom levels
-      .on("zoom", this.zoomed.bind(this)); // Attach zoom function
-
-    this.translateX = 0
-    this.translateY = 0
-
   }
 
   init() {
@@ -41,7 +32,6 @@ export class Canvas {
     this.canvas.addEventListener("mousedown", (event) => this.app.startSelection(event));
     this.canvas.addEventListener("mousemove", (event) => this.app.updateSelection(event));
     this.canvas.addEventListener("mouseup", () => this.app.endSelection());
-    // this.handleZoom()
   }
 
   addNodeAtEvent(event) {
@@ -157,31 +147,9 @@ export class Canvas {
     this.eventBus.emit('graph:updated', { type: 'addNodeInEdge', node: newID });
   }
 
-  handleZoom() {
-    d3.select(this.canvas).call(this.zoom);
-  }
-
-  zoomed(event) {
-    this.scale = event.transform.k; // Get zoom scale
-    this.translateX = event.transform.x; // Get x translation
-    this.translateY = event.transform.y; // Get y translation
-    this.redraw();
-  }
-
-  redraw() {
-    this.ctx.setTransform(this.scale, 0, 0, this.scale, this.translateX, this.translateY);
-    this.app.drawGraph();
-  }
-
-  resetZoom() {
-    d3.select(this.canvas)
-      .transition()
-      .duration(300)
-      .call(this.zoom.transform, d3.zoomIdentity); // Reset zoom
-  }
-
   handleDbclick(event) {
     let [x, y] = d3.pointer(event, this.canvas);
+
     let clickedNode = this.findClickedNode(x, y);
     let clickedEdge = this.findClickedEdge(x, y);
 

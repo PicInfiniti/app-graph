@@ -68,7 +68,7 @@
 
         // Redraw canvas with new scale and translation
         function redraw() {
-            ctx.setTransform(scale, 0, 0, scale, translateX, translateY);
+            this.ctx.setTransform(scale, 0, 0, scale, translateX, translateY);
             draw();
         }
 
