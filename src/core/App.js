@@ -25,7 +25,6 @@ export class App {
     this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
     this.eventHanders = new EventHandlers(this)
 
-    this.ctrl = false;
     this.simulation = null;
     this.nodes = [];
     this.links = [];
@@ -89,21 +88,22 @@ export class App {
     const canvas = this.canvas
     const settings = this.appSettings.settings
 
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
+    const ctx = this._canvas.ctx;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save(); // Save original state
+    ctx.translate(this._canvas.panning.xOffset, this._canvas.panning.yOffset); // Apply translation
     // Draw edges
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (!attr.color) {
         graph.setEdgeAttribute(edge, "color", settings.color)
       }
-      context.beginPath();
-      context.moveTo(source.x, source.y);
-      context.lineTo(target.x, target.y);
-      context.strokeStyle = this.selectedEdges.has(edge) ? "orange" : attr.color;
-      context.lineWidth = settings.edge_size;
-      context.stroke();
-      context.closePath();
+      ctx.beginPath();
+      ctx.moveTo(source.x, source.y);
+      ctx.lineTo(target.x, target.y);
+      ctx.strokeStyle = this.selectedEdges.has(edge) ? "orange" : attr.color;
+      ctx.lineWidth = settings.edge_size;
+      ctx.stroke();
+      ctx.closePath();
     });
 
     // Draw nodes
@@ -116,27 +116,25 @@ export class App {
         graph.setNodeAttribute(node, "color", settings.color)
       }
 
-      context.beginPath();
-      context.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
-      context.fillStyle = settings.vertexLabel ? "white" : attr.color;
-      context.fill();
-      context.lineWidth = 3;
-      context.strokeStyle = this.selectedNodes.has(attr.id) ? "orange" : attr.color;
-      context.stroke();
-      context.closePath();
+      ctx.beginPath();
+      ctx.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
+      ctx.fillStyle = settings.vertexLabel ? "white" : attr.color;
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = this.selectedNodes.has(attr.id) ? "orange" : attr.color;
+      ctx.stroke();
+      ctx.closePath();
 
       if (settings.vertexLabel) {
-        context.fillStyle = "black";
-        context.font = `${settings.label_size}px sans-serif`;
-        context.textAlign = "center";
-        context.textBaseline = "middle";
-        context.fillText(attr.label, attr.x, attr.y);
+        ctx.fillStyle = "black";
+        ctx.font = `${settings.label_size}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(attr.label, attr.x, attr.y);
       }
     });
 
-
-    // Draw rectangles
-    this.drawRectangles(context);
+    ctx.restore()
   }
 
   ticked() {
@@ -202,26 +200,26 @@ export class App {
     })
   }
 
-  drawRectangles(context) {
+  drawRectangles(ctx) {
     if (this.selection.active && !this.appSettings.settings.forceSimulation) {
-      context.fillStyle = "rgba(0, 0, 255, 0.1)"; // Semi-transparent blue fill
-      context.fillRect(
+      ctx.fillStyle = "rgba(0, 0, 255, 0.1)"; // Semi-transparent blue fill
+      ctx.fillRect(
         this.selection.x,
         this.selection.y,
         this.selection.width,
         this.selection.height
       );
 
-      context.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
-      context.lineWidth = 2;
-      context.setLineDash([5, 5]); // Dashed border effect
-      context.strokeRect(
+      ctx.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]); // Dashed border effect
+      ctx.strokeRect(
         this.selection.x,
         this.selection.y,
         this.selection.width,
         this.selection.height
       );
-      context.setLineDash([]); // Reset line style
+      ctx.setLineDash([]); // Reset line style
     }
   }
 

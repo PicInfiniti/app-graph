@@ -162,6 +162,10 @@ export class Widget {
     d.querySelector("widgets #tools-panel .force").addEventListener("click", (event) => {
       this.eventBus.emit("toggleSetting", { key: "forceSimulation" })
     })
+
+    d.querySelector("widgets #tools-panel .panning").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "panning" })
+    })
   }
 }
 

@@ -27,16 +27,10 @@ export class KeyHandler {
       if (shortcuts[event.key]) {
         this.app.menu.handleMenuAction(shortcuts[event.key]); // Trigger the corresponding menu item
       }
-      if (event.key == "Control") {
-        this.ctrl = true
-      }
     });
 
     d.addEventListener('keyup', (event) => {
       this.eventBus.emit('key:release', { key: event.key });
-      if (event.key == "Control") {
-        this.ctrl = false
-      }
     });
   }
 };

@@ -25,6 +25,7 @@ class AppSettings {
       info_panel: true,
       tools_panel: true,
       console_panel: true,
+      panning: false,
       grid: 20,
       color: "#4682B4",
     };

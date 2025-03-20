@@ -5,18 +5,18 @@ export class EventHandlers {
     this.app = app;
     this.eventBus = app.eventBus;
   }
-
+  e
   init() {
     // When layout changes (e.g., user selects new layout from UI)
     this.app.eventBus.on('keydown', (event) => {
-      if (event.key === "Control") {
-        this.app.ctrl = true;
+      if (event.ctrlKey) {
+        d.body.style.cursor = "move";
       }
     })
 
     this.app.eventBus.on('keyup', (event) => {
-      if (event.key === "Control") {
-        this.app.ctrl = false;
+      if (!event.ctrlKey) {
+        document.body.style.cursor = "default";
       }
     })
 

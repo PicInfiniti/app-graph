@@ -54,6 +54,8 @@ export const menuData = [
       { title: "Scale", id: "scale-btn", check: false },
       { title: "Tree", id: "tree-btn", check: true },
       { title: "Force Simulation", id: "force-btn", check: false },
+      { type: "divider" },
+      { title: "Panning", id: "panning-btn", check: false },
     ],
   },
   {

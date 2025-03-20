@@ -15,6 +15,9 @@ export function applySettingsToUI(settings) {
   d.querySelector('#tree').classList.toggle("gray-background", !settings.tree);
   d.querySelector('#force-btn .check').classList.toggle("hidden", !settings.forceSimulation);
   d.querySelector('#force').classList.toggle("gray-background", !settings.forceSimulation);
+  d.querySelector('#panning-btn .check').classList.toggle("hidden", !settings.panning);
+  d.querySelector('#panning').classList.toggle("gray-background", !settings.panning);
+  d.body.style.cursor = settings.panning ? "move" : "default";
 
   const root = d.documentElement;
   d.querySelector(".container").classList.toggle('grid-hidden', settings.grid <= 2);

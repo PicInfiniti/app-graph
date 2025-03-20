@@ -151,33 +151,47 @@ export class Menu {
 
   handleMenuAction(menuId, val) {
     const actions = {
+      // File 
       "new-btn": () => this.graphManager.clear(),
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),
       "export-png": () => this.eventBus.emit("export", { type: "png" }),
       "default-settings-btn": () => this.eventBus.emit("resetSettings"),
+
+      // Edit
+      "add-edge-btn": () => this.graphManager.addEdges(this.app.selectedNodes),
+      "remove-selection-btn": () => this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges),
+      "color-selection-btn": () => this.graphManager.updateNodesEdgesColor(this.app.selectedNodes, this.app.selectedEdges),
+      "organize-circle": () => this.layout.applyLayout("circle"),
+      "complete-btn": () => this.graphManager.makeGraphComplete(),
+      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
+
+      //View
       "panel-btn": () => this.eventBus.emit("toggleSetting", { key: "info_panel" }),
       "tools-btn": () => this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
+
+      //Tools
+      "components-btn": () => this.graphManager.metric.countComponents(),
       "drag-btn": () => this.eventBus.emit("toggleSetting", { key: "dragComponent" }),
       "scale-btn": () => this.eventBus.emit("toggleSetting", { key: "scale" }),
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
       "force-btn": () => this.eventBus.emit("toggleSetting", { key: "forceSimulation" }),
+      "panning-btn": () => this.eventBus.emit("toggleSetting", { key: "panning" }),
+
+      //Setting
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
-      "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
-      "components-btn": () => this.graphManager.metric.countComponents(),
-      "command-btn": () => d.querySelector(".modal").style.display = "flex",
-      "complete-btn": () => this.graphManager.makeGraphComplete(),
-      "organize-circle": () => this.layout.applyLayout("circle"),
-      "add-edge-btn": () => this.graphManager.addEdges(this.app.selectedNodes),
-      "remove-selection-btn": () => this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges),
-      "color-selection-btn": () => this.graphManager.updateNodesEdgesColor(this.app.selectedNodes, this.app.selectedEdges),
       "vertex-size": () => this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
       "edge-size": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
       "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
       "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
-      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
+
+      //Metrics
+      "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
+      "command-btn": () => d.querySelector(".modal").style.display = "flex",
+
+      //Generator
       "g-empty": () => this.graphManager.generator.empty(val),
       "g-complete": () => this.graphManager.generator.complete(val),
       "g-cycle": () => this.graphManager.generator.cycle(val),
