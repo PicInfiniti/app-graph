@@ -12,12 +12,15 @@ export class Widget {
 
     this.panels = {
       info: d.getElementById('floating-panel'),
-      tools: d.getElementById('tools-panel')
+      tools: d.getElementById('tools-panel'),
+      console: d.getElementById('console-panel')
+
     };
 
     this.handels = {
       info: "#info",
-      tools: "#tools"
+      tools: "#tools",
+      console: "#console"
     }
 
     this.addEventListeners();

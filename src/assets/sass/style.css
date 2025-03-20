@@ -159,7 +159,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: grab;
   touch-action: none;
   user-select: none;
 }
@@ -480,7 +479,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: grab;
   touch-action: none;
   user-select: none;
 }
