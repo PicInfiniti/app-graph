@@ -193,6 +193,10 @@ export class Menu {
       "clusters-btn-1": () => this.graphManager.generator.clusters(val, d.getElementById("clusters-btn-2").value, d.getElementById("clusters-btn-3").value),
       "clusters-btn-2": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, val, d.getElementById("clusters-btn-3").value),
       "clusters-btn-3": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, d.getElementById("clusters-btn-2").value, val),
+
+      "erdosRenyi-1": () => this.graphManager.generator.erdosRenyi(val, d.getElementById("erdosRenyi-2").value),
+      "erdosRenyi-2": () => this.graphManager.generator.erdosRenyi(d.getElementById("erdosRenyi-1").value, val),
+
     };
 
     if (actions[menuId]) {

@@ -1,8 +1,7 @@
 import { Graph } from '../utils/classes';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
-import { caveman } from 'graphology-generators/community';
-import { connectedCaveman } from 'graphology-generators/community';
-import { clusters } from 'graphology-generators/random';
+import { caveman, connectedCaveman } from 'graphology-generators/community';
+import { clusters, erdosRenyi } from 'graphology-generators/random';
 
 export class Generator {
   constructor(graphManager) {
@@ -65,6 +64,15 @@ export class Generator {
       order: Number(o),
       size: Number(s),
       clusters: Number(c)
+    });
+    this.graphManager.push(graph)
+    this.layout.applyLayout('circle')
+  }
+
+  erdosRenyi(o, p) {
+    const graph = erdosRenyi(Graph, {
+      order: Number(o),
+      probability: Number(p)
     });
     this.graphManager.push(graph)
     this.layout.applyLayout('circle')

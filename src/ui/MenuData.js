@@ -115,7 +115,17 @@ export const menuData = [
             max: 500,
             values: [20, 20, 10],
           },
-          ,
+          {
+            dec: "input",
+            type: "number",
+            label: "Erdos Renyi",
+            id: "erdosRenyi",
+            min: 1,
+            max: 500,
+            values: [10, .5],
+            link: "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model"
+          },
+
         ]
       }
     ],
