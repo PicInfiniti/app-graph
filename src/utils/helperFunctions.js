@@ -1,3 +1,4 @@
+
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
   let minNumber = 0;

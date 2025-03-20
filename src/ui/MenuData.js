@@ -125,9 +125,42 @@ export const menuData = [
             values: [10, .5],
             link: "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model"
           },
-
+          {
+            dec: "input",
+            type: "number",
+            label: "Girvan Newman",
+            id: "girvanNewman",
+            min: 1,
+            max: 500,
+            value: 5,
+            link: "https://www.pnas.org/doi/pdf/10.1073/pnas.122653799"
+          },
         ]
-      }
+      },
+      {
+        title: "Small",
+        submenu: [
+          {
+            title: "Krackhardt kite",
+            id: "krackhardtkite",
+            link: "https://en.wikipedia.org/wiki/Krackhardt_kite_graph"
+          },
+        ]
+      },
+      {
+        title: "Social",
+        submenu: [
+          {
+            title: "Florentine families",
+            id: "florentineFamilies",
+          },
+          {
+            title: "Zachary’s karate club",
+            id: "karateClub",
+            link: "https://en.wikipedia.org/wiki/Zachary%27s_karate_club"
+          },
+        ]
+      },
     ],
   },
   {

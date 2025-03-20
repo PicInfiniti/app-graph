@@ -1,8 +1,8 @@
 import { Graph } from '../utils/classes';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { caveman, connectedCaveman } from 'graphology-generators/community';
-import { clusters, erdosRenyi } from 'graphology-generators/random';
-
+import { clusters, erdosRenyi, girvanNewman } from 'graphology-generators/random';
+import { florentineFamilies, krackhardtKite, karateClub } from '../utils/generatorFunctions';
 export class Generator {
   constructor(graphManager) {
     this.graphManager = graphManager
@@ -74,6 +74,29 @@ export class Generator {
       order: Number(o),
       probability: Number(p)
     });
+    this.graphManager.push(graph)
+    this.layout.applyLayout('circle')
+  }
+
+  girvanNewman(n) {
+    const graph = girvanNewman(Graph, { zOut: 4 });
+    this.graphManager.push(graph)
+    this.layout.applyLayout('circle')
+  }
+
+  krackhardtkite() {
+    const graph = krackhardtKite(Graph);
+    this.graphManager.push(graph)
+    this.layout.applyLayout('oneLine')
+  }
+
+  florentineFamilies() {
+    const graph = florentineFamilies(Graph);
+    this.graphManager.push(graph)
+    this.layout.applyLayout('circle')
+  }
+  karateClub() {
+    const graph = karateClub(Graph);
     this.graphManager.push(graph)
     this.layout.applyLayout('circle')
   }
