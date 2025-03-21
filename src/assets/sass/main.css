@@ -1,0 +1,17 @@
+/* Error: Can't find stylesheet to import.
+ *   ,
+ * 9 | @use 'components/floating-panel'
+ *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *   '
+ *   src/assets/sass/main.sass 9:1  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a   \2577 \a 9 \2502  @use 'components/floating-panel'\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   src/assets/sass/main.sass 9:1  root stylesheet";
+}

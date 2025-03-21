@@ -1,0 +1,34 @@
+#custom-context-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid gray;
+  padding: 5px;
+  z-index: 20;
+}
+#custom-context-menu * {
+  user-select: none;
+}
+#custom-context-menu ul {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  min-width: 200px;
+  z-index: 20;
+}
+#custom-context-menu ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+#custom-context-menu ul li span:nth-child(2) {
+  color: rgb(100, 100, 100);
+}
+#custom-context-menu ul li:hover {
+  background-color: #f4f4f4;
+}
+
+/*# sourceMappingURL=_context-menu.css.map */

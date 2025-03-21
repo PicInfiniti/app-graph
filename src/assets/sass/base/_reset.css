@@ -1,0 +1,16 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+}
+html *, body * {
+  box-sizing: border-box;
+  text-decoration: none;
+}
+html * a:visited, body * a:visited {
+  color: black;
+}
+
+/*# sourceMappingURL=_reset.css.map */

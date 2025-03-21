@@ -1,0 +1,104 @@
+#menu-bar {
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  margin: 0;
+}
+#menu-bar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+#menu-bar > ul hr {
+  opacity: 0.5;
+  width: 90%;
+}
+#menu-bar > ul > li {
+  position: relative;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+#menu-bar > ul > li:hover {
+  background-color: #e0e0e0;
+}
+#menu-bar > ul > li:hover > ul {
+  display: block;
+}
+#menu-bar > ul > li > ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  list-style-type: none;
+  padding: 5px;
+  margin: 0;
+  min-width: 200px;
+  z-index: 20;
+}
+#menu-bar > ul > li > ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+#menu-bar > ul > li > ul li span:nth-child(2) {
+  color: rgb(100, 100, 100);
+}
+#menu-bar > ul > li > ul li > ul {
+  display: none;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  list-style-type: none;
+  padding: 5px;
+  margin: 0;
+  min-width: 240px;
+  z-index: 20;
+}
+#menu-bar > ul > li > ul li > ul li input[type=number] {
+  width: 45px;
+}
+#menu-bar > ul > li > ul li > ul li div {
+  display: flex;
+  gap: 5px;
+}
+#menu-bar > ul > li > ul li > ul li label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+#menu-bar > ul > li > ul li > ul li label span:first-child {
+  width: 30px;
+}
+#menu-bar > ul > li > ul li > ul li label a {
+  border: 1px solid gray;
+  width: 12px;
+  height: 12px;
+  font-size: 10px;
+  display: flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+}
+#menu-bar > ul > li > ul li > ul li label a:hover {
+  cursor: help;
+}
+#menu-bar > ul > li > ul li:hover {
+  background-color: #f4f4f4;
+}
+#menu-bar > ul > li > ul li:hover ul {
+  display: block;
+}
+#menu-bar > ul > li > ul #panel-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*# sourceMappingURL=_menu.css.map */

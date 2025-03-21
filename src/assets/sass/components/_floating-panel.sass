@@ -1,0 +1,58 @@
+#floating-panel 
+  position: fixed
+  background-color: white
+  top: 20px
+  left: calc(100vw - 220px)
+  width: 200px
+  height: 400px
+  background-color: rgba(255, 255, 255, 0.5)
+  border: 1px solid #ddd
+  border-radius: 5px
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+  font-family: Arial, sans-serif
+  font-size: 14px
+  z-index: 16
+  display: flex 
+  flex-direction: column
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out, left 0.5s ease-in-out, top 0.5s ease-in-out
+
+  &.MAX 
+    width: 90vw
+    height: 90vh
+    left: 20px
+    top: 20px
+
+  #info
+    width: 100%
+    padding: 10px
+    top: 0
+    background-color: rgba(255, 255, 150, .5)
+    user-select: none
+    margin: 0
+    display: flex
+    justify-content: space-between
+    align-items: center
+    touch-action: none
+
+    .cm
+      display: flex
+      justify-content: center
+      align-items: center
+      gap: 5px
+
+      .max:hover 
+        color: green
+        cursor: pointer 
+
+      .close:hover 
+        color: red
+        cursor: pointer 
+
+  .body-info
+    padding: 0 10px 10px 10px
+    overflow: auto
+    scrollbar-width: thin
+    cursor: text
+
+    .body div
+      padding: 1px

@@ -1,0 +1,67 @@
+#tools-panel {
+  position: fixed;
+  background-color: white;
+  top: 35px;
+  left: 5px;
+  width: 70px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+}
+#tools-panel #tools {
+  width: 100%;
+  padding: 5px;
+  top: 0;
+  background-color: rgba(255, 255, 150, 0.5);
+  user-select: none;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  touch-action: none;
+}
+#tools-panel #tools .close:hover {
+  color: red;
+  cursor: pointer;
+}
+#tools-panel .body-tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+#tools-panel .body-tools * {
+  user-select: none;
+}
+#tools-panel .body-tools div {
+  padding: 5px;
+}
+#tools-panel .body-tools div input {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+#tools-panel .body-tools .scale, #tools-panel .body-tools .tree, #tools-panel .body-tools .force, #tools-panel .body-tools .panning {
+  cursor: pointer;
+}
+#tools-panel .body-tools .scale img, #tools-panel .body-tools .tree img, #tools-panel .body-tools .force img, #tools-panel .body-tools .panning img {
+  border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  transition: transform 0.2s ease-in-out;
+}
+#tools-panel .body-tools .scale:hover img, #tools-panel .body-tools .tree:hover img, #tools-panel .body-tools .force:hover img, #tools-panel .body-tools .panning:hover img {
+  transform: scale(1.1);
+}
+#tools-panel .body-tools .scale:active img, #tools-panel .body-tools .tree:active img, #tools-panel .body-tools .force:active img, #tools-panel .body-tools .panning:active img {
+  transform: scale(0.9);
+}
+
+/*# sourceMappingURL=_tools-panel.css.map */
