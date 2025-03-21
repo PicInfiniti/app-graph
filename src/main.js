@@ -1,5 +1,5 @@
 // Import global styles
-import './assets/sass/style.sass';
+import './assets/sass/main.sass';
 
 // Import and initialize the main App controller
 import { App } from './core/App.js';

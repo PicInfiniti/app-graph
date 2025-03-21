@@ -1,6 +1,7 @@
 export const menuData = [
   {
     title: "File",
+    id: "file",
     submenu: [
       {
         title: "🆕 New", id: "new-btn", shortcut: "(n)"
@@ -18,6 +19,7 @@ export const menuData = [
   },
   {
     title: "Edit",
+    id: "edit",
     submenu: [
       { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
       { title: "Complete Graph", name: "complete-btn", shortcut: "(C)" },
@@ -30,6 +32,7 @@ export const menuData = [
       { type: "divider" },
       {
         title: "Settings",
+        id: "settings",
         submenu: [
           { dec: "input", type: "range", label: "Grid", id: "grid-size", min: 0, max: 100, value: 20 },
           { dec: "input", type: "range", label: "VSize", id: "vertex-size", min: 0, max: 100, value: 10 },
@@ -42,6 +45,7 @@ export const menuData = [
   },
   {
     title: "View",
+    id: "view",
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
@@ -49,6 +53,7 @@ export const menuData = [
   },
   {
     title: "Tools",
+    id: "tools",
     submenu: [
       { title: "Component", id: "drag-btn", check: false },
       { title: "Scale", id: "scale-btn", check: false },
@@ -60,9 +65,11 @@ export const menuData = [
   },
   {
     title: "Generator",
+    id: "generator",
     submenu: [
       {
         title: "Classic",
+        id: "classic",
         submenu: [
           { dec: "input", type: "number", label: "Empty", id: "g-empty", min: 1, max: 500, value: 5 },
           { dec: "input", type: "number", label: "Kₙ", id: "g-complete", min: 1, max: 500, value: 5, link: "https://en.wikipedia.org/wiki/Complete_graph" },
@@ -83,6 +90,7 @@ export const menuData = [
       },
       {
         title: "Community",
+        id: "community",
         submenu: [
           {
             dec: "input",
@@ -107,6 +115,7 @@ export const menuData = [
         ],
       }, {
         title: "Random",
+        id: "random",
         submenu: [
           {
             dec: "input",
@@ -141,6 +150,7 @@ export const menuData = [
       },
       {
         title: "Small",
+        id: "small",
         submenu: [
           {
             title: "Krackhardt kite",
@@ -151,6 +161,7 @@ export const menuData = [
       },
       {
         title: "Social",
+        id: "social",
         submenu: [
           {
             title: "Florentine families",
@@ -167,6 +178,7 @@ export const menuData = [
   },
   {
     title: "Metrics",
+    id: "metrics",
     submenu: [
       { title: "Degree Sequence", id: "list-degrees-btn" },
       { title: "Components", id: "components-btn" },
@@ -174,6 +186,7 @@ export const menuData = [
   },
   {
     title: "Help",
+    id: "help",
     submenu: [
       { title: "How to use", link: "https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3" },
       { title: "Commands", name: "command-btn" },
