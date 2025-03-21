@@ -1,0 +1,13 @@
+.grid-hidden {
+  background-image: none !important;
+}
+
+.hidden {
+  opacity: 0 !important;
+}
+
+.gray-background {
+  opacity: 0.5;
+}
+
+/*# sourceMappingURL=_helpers.css.map */
