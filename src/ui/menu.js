@@ -146,9 +146,9 @@ export class Menu {
       "default-settings-btn": () => this.eventBus.emit("resetSettings"),
 
       // Edit
-      "add-edge-btn": () => this.graphManager.addEdges(this.app.selectedNodes),
-      "remove-selection-btn": () => this.graphManager.dropNodesEdges(this.app.selectedNodes, this.app.selectedEdges),
-      "color-selection-btn": () => this.graphManager.updateNodesEdgesColor(this.app.selectedNodes, this.app.selectedEdges),
+      "add-edge-btn": () => this.graphManager.addEdgeForSelectedNodes(),
+      "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
+      "color-selection-btn": () => this.graphManager.updateSelectedNodesEdgesColor(),
       "organize-circle": () => this.layout.applyLayout("circle"),
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
@@ -218,9 +218,7 @@ export class Menu {
     } else {
       console.log(`No action defined for: ${menuId}`);
     }
-    this.app.selectedNodes.clear()
-    this.app.selectedEdges.clear()
-
+    this.app.graphManager.graph.deselectAll()
   }
 
   attachEventListeners() {

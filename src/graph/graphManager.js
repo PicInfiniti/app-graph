@@ -127,38 +127,33 @@ export class GraphManager {
   }
 
 
-  dropNodesEdges(nodes, edges) {
+  dropSelectedNodesEdges() {
     this.saveGraphState();
-    for (let node of nodes) {
-      this.graph.dropNode(node); // Remove the selected node
-    }
-    for (let edge of edges) {
-      this.graph.dropEdge(edge); // Remove the selected node
-    }
+    this.graph.deleteSelected();
     this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
   }
 
-  updateNodesEdgesColor(nodes, edges) {
+  updateSelectedNodesEdgesColor() {
+    const color = this.settings.color;
     this.saveGraphState()
-    for (let node of nodes) {
-      this.graph.updateNodeAttributes(node, attr => {
-        return {
-          ...attr,
-          color: this.settings.color,
-        };
-      })
-    }
-
-    for (let edge of edges) {
-      this.graph.updateEdgeAttributes(edge, attr => {
-        return {
-          ...attr,
-          color: this.settings.color,
-        };
-      });
-    }
-
+    this.graph.updateSelectedNodesColor(color)
+    this.graph.updateSelectedEdgesColor(color)
     this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
+  }
+
+  deselectAll() {
+    this.graph.updateEachNodeAttributes((node, attrs) => ({
+      ...attrs,
+      selected: false
+    }));
+
+    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+      ...attrs,
+      selected: false
+    }));
+  }
+  selectNode(node) {
+    this.setNodeAttribute(node, 'selected', true);
   }
 }
 

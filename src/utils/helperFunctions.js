@@ -71,14 +71,6 @@ function lineIntersectsLine(line1, line2) {
   }
 };
 
-export function pointInRect(a, b, x1, y1, x2, y2) {
-  if (a >= x1 && a <= x2 && b >= y1 && b <= y2) {
-    return true
-  } else {
-    return false
-  }
-}
-
 // Helper function to calculate distance from a point to a line segment
 export function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
   let A = px - x1;

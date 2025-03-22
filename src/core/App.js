@@ -5,12 +5,11 @@ import { GraphManager } from '../graph/graphManager.js';
 import { KeyHandler } from './keyHandler.js';
 import AppSettings from './state.js';
 import { Menu } from '../ui/menu.js';
-import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
+import { getAvailableLabel } from '../utils/helperFunctions.js';
 import { EventHandlers } from './eventHandlers.js';
 import { menuData } from '../ui/MenuData.js';
 import { Layout } from '../graph/layouts.js';
 import { Widget } from '../ui/wedgets.js';
-
 export class App {
   constructor() {
     this.eventBus = EventBus;
@@ -28,8 +27,6 @@ export class App {
     this.simulation = null;
     this.nodes = [];
     this.links = [];
-    this.selectedNodes = new Set();
-    this.selectedEdges = new Set();
 
     // Rectangle properties
     this.selection = {
@@ -100,7 +97,7 @@ export class App {
       ctx.beginPath();
       ctx.moveTo(source.x, source.y);
       ctx.lineTo(target.x, target.y);
-      ctx.strokeStyle = this.selectedEdges.has(edge) ? "orange" : attr.color;
+      ctx.strokeStyle = attr.selected ? "orange" : attr.color;
       ctx.lineWidth = settings.edge_size;
       ctx.stroke();
       ctx.closePath();
@@ -121,7 +118,7 @@ export class App {
       ctx.fillStyle = settings.vertexLabel ? "white" : attr.color;
       ctx.fill();
       ctx.lineWidth = 3;
-      ctx.strokeStyle = this.selectedNodes.has(attr.id) ? "orange" : attr.color;
+      ctx.strokeStyle = attr.selected ? "orange" : attr.color;
       ctx.stroke();
       ctx.closePath();
 
@@ -248,10 +245,43 @@ export class App {
     this.drawGraph()
   }
 
-  endSelection() {
+
+  endSelection(event) {
     this.selection.active = false;
-    this.drawGraph()
+    const selected = this.pointsInRect();
+
+    selected.forEach(node => {
+      this.graphManager.graph.toggleNodeSelection(node);
+    });
+
+    this.drawGraph();
   }
+
+  pointsInRect() {
+    const { x1, y1, x2, y2 } = getSelectionBounds(this.selection);
+    const selectedNodes = [];
+
+    this.graphManager.graph.forEachNode((node, attrs) => {
+      const x = attrs.x;
+      const y = attrs.y;
+
+      if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+        selectedNodes.push(node);
+      }
+    });
+
+    return selectedNodes;
+  }
+
+}
+
+function getSelectionBounds(sel) {
+  const x1 = Math.min(sel.x, sel.x + sel.width);
+  const y1 = Math.min(sel.y, sel.y + sel.height);
+  const x2 = Math.max(sel.x, sel.x + sel.width);
+  const y2 = Math.max(sel.y, sel.y + sel.height);
+
+  return { x1, y1, x2, y2 };
 }
 
 

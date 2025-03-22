@@ -186,7 +186,7 @@ export class Canvas {
       if (this.settings.tree) {
         this.addNodeConnectedToNode(clickedNode);
       } else {
-        this.app.selectedNodes.add(clickedNode.id)
+        this.app.graphManager.graph.toggleNodeSelection(clickedNode.id);
         if (!this.settings.forceSimulation) {
           this.eventBus.emit("graph:updated", { type: "selected" })
         }
@@ -196,7 +196,7 @@ export class Canvas {
         this.insertNodeInEdge(clickedEdge);
       } else {
         this.app.graphManager.graph.findEdge(clickedEdge.source.id, clickedEdge.target.id, (edge) => {
-          this.app.selectedEdges.add(edge)
+          this.app.graphManager.graph.toggleEdgeSelection(edge);
           if (!this.settings.forceSimulation) {
             this.eventBus.emit("graph:updated", { type: "selected" })
           }
@@ -215,8 +215,7 @@ export class Canvas {
     if (clickedNode || clickedEdge) {
 
     } else {
-      this.app.selectedNodes.clear();
-      this.app.selectedEdges.clear()
+      this.app.graphManager.deselectAll();
       this.eventBus.emit("graph:updated", { type: "unselect" })
     }
   }
