@@ -248,10 +248,15 @@ export class App {
 
   endSelection(event) {
     this.selection.active = false;
-    const selected = this.pointsInRect();
+    const selectedNodes = this.pointsInRect();
+    const selectedEdges = this.lineIntersectsRect();
 
-    selected.forEach(node => {
+    selectedNodes.forEach(node => {
       this.graphManager.graph.toggleNodeSelection(node);
+    });
+
+    selectedEdges.forEach(edge => {
+      this.graphManager.graph.toggleEdgeSelection(edge);
     });
 
     this.drawGraph();
@@ -262,6 +267,21 @@ export class App {
     return this.graphManager.graph.filterNodes(
       (node, attrs) => attrs.x >= x1 && attrs.x <= x2 && attrs.y >= y1 && attrs.y <= y2);
   }
+  lineIntersectsRect(line) {
+    let [x1, y1, x2, y2] = line;  // Line segment coordinates
+    const { a, b, c, d } = getRectAxis(this.selection);
+
+    // Check if the line intersects any of the rectangle's edges
+    if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) {
+      return true;  // Intersection found
+    }
+    if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) {
+      return true;  // Intersection found
+    }
+    return false;  // No intersection
+  }
+
+
 }
 
 function getRectAxis(sel) {
@@ -274,19 +294,6 @@ function getRectAxis(sel) {
 }
 
 
-export function lineIntersectsRect(line, rect) {
-  let [x1, y1, x2, y2] = line;  // Line segment coordinates
-  let [a, b, c, d] = rect;  // Rectangle properties
-
-  // Check if the line intersects any of the rectangle's edges
-  if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) {
-    return true;  // Intersection found
-  }
-  if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) {
-    return true;  // Intersection found
-  }
-  return false;  // No intersection
-}
 
 // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
 function lineIntersectsLine(line1, line2) {
