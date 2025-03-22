@@ -109,27 +109,15 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "addEdge" })
   }
 
-
-  addEdges(nodes) {
-    this.saveGraphState();
-
-    if (nodes instanceof Set) {
-      nodes = Array.from(nodes);
-    }
-
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        this.graph.mergeEdge(nodes[i], nodes[j]); // Add edge if it doesn't exist
-      }
-    }
-
-    this.eventBus.emit("graph:updated", { type: "addEdges" });
-  }
-
-
   dropSelectedNodesEdges() {
     this.saveGraphState();
     this.graph.deleteSelected();
+    this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
+  }
+
+  connectSelectedNodes() {
+    this.saveGraphState();
+    this.graph.connectSelectedNodes();
     this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
   }
 

@@ -146,7 +146,7 @@ export class Menu {
       "default-settings-btn": () => this.eventBus.emit("resetSettings"),
 
       // Edit
-      "add-edge-btn": () => this.graphManager.addEdgeForSelectedNodes(),
+      "add-edge-btn": () => this.graphManager.connectSelectedNodes(),
       "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
       "color-selection-btn": () => this.graphManager.updateSelectedNodesEdgesColor(),
       "organize-circle": () => this.layout.applyLayout("circle"),

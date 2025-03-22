@@ -127,4 +127,19 @@ export class Graph extends UndirectedGraph {
       this.mergeEdgeAttributes(edge, updates);
     });
   }
+
+  // 🔗 Connect all selected nodes (fully connected using merge)
+  connectSelectedNodes() {
+    const selected = this.getSelectedNodes();
+    if (selected.length < 2) return;
+    for (let i = 0; i < selected.length; i++) {
+      for (let j = i + 1; j < selected.length; j++) {
+        const source = selected[i];
+        const target = selected[j];
+        // This creates the edge if it doesn't exist, or merges attributes if it does
+        this.mergeUndirectedEdge(source, target, { selected: false });
+      }
+    }
+  }
+
 }
