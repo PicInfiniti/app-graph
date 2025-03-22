@@ -65,7 +65,7 @@ export class Menu {
           a.href = sub.link;
           a.target = "_blank";
           a.textContent = "?"; // Fix: Provide a visible clickable text
-          label.appendChild(a);
+          label.insertBefore(a, label.firstChild);
         }
         subItem.appendChild(label);
       }
