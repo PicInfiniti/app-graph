@@ -4,45 +4,127 @@ export class Graph extends UndirectedGraph {
   constructor(options) {
     super(options);
 
-    // Automatically add 'id' to node attributes for D3 compatibility
-    this.on('nodeAdded', (data) => {
-      const { key } = data;
+    // Automatically add 'id' and 'selected' to nodes
+    this.on('nodeAdded', ({ key }) => {
       const attrs = this.getNodeAttributes(key);
+
       if (!attrs.id) this.setNodeAttribute(key, 'id', Number(key));
+      if (attrs.selected === undefined) this.setNodeAttribute(key, 'selected', false);
     });
 
-    // Automatically add 'source' and 'target' to edge attributes for D3
-    this.on('edgeAdded', (data) => {
-      const { key, source, target } = data;
+    // Automatically add 'source', 'target', and 'selected' to edges
+    this.on('edgeAdded', ({ key, source, target }) => {
       const attrs = this.getEdgeAttributes(key);
+
       if (!attrs.source) this.setEdgeAttribute(key, 'source', Number(source));
       if (!attrs.target) this.setEdgeAttribute(key, 'target', Number(target));
+      if (attrs.selected === undefined) this.setEdgeAttribute(key, 'selected', false);
     });
   }
-  // Override copy method
+
+  // 🧬 Deep copy with structure and attributes
   copy() {
     const newGraph = new Graph(this.options);
-    newGraph.import(this.export()); // Deep copy of the structure
+    newGraph.import(this.export());
     return newGraph;
   }
-  // 🚀 Function 1: Get array of all node attributes (with id)
+
+  // 🚀 Prepare nodes for D3
   getNodesForD3() {
     return this.nodes().map((id) => ({
       ...this.getNodeAttributes(id),
-      id: Number(id) // Ensure 'id' is numeric for D3
+      id: Number(id)
     }));
   }
 
-  // 🚀 Function 2: Get array of all edge attributes (with source and target)
+  // 🚀 Prepare edges for D3
   getEdgesForD3() {
     return this.edges().map((edgeKey) => {
       const { source, target, ...attributes } = this.getEdgeAttributes(edgeKey);
       return {
-        source: Number(source), // Ensure 'source' is numeric for D3
-        target: Number(target), // Ensure 'target' is numeric for D3
+        source: Number(source),
+        target: Number(target),
         ...attributes
       };
     });
   }
-}
 
+  // ❌ Clear selection on all nodes and edges
+  deselectAll() {
+    this.updateEachNodeAttributes((_, attrs) => ({
+      ...attrs,
+      selected: false
+    }));
+
+    this.updateEachEdgeAttributes((_, attrs) => ({
+      ...attrs,
+      selected: false
+    }));
+  }
+
+  // ✅ Select node/edge
+  selectNode(node) {
+    this.setNodeAttribute(node, 'selected', true);
+  }
+
+  selectEdge(edge) {
+    this.setEdgeAttribute(edge, 'selected', true);
+  }
+
+  // ❌ Deselect node/edge
+  deselectNode(node) {
+    this.setNodeAttribute(node, 'selected', false);
+  }
+
+  deselectEdge(edge) {
+    this.setEdgeAttribute(edge, 'selected', false);
+  }
+
+  // 🔁 Toggle selection
+  toggleNodeSelection(node) {
+    this.updateNodeAttribute(node, 'selected', v => !v);
+  }
+
+  toggleEdgeSelection(edge) {
+    this.updateEdgeAttribute(edge, 'selected', v => !v);
+  }
+
+  // 📦 Get selected node/edge keys
+  getSelectedNodes() {
+    return this.filterNodes((_, attrs) => attrs.selected);
+  }
+
+  getSelectedEdges() {
+    return this.filterEdges((_, attrs) => attrs.selected);
+  }
+
+  // 🧹 Delete all selected nodes and edges
+  deleteSelected() {
+    this.getSelectedEdges().forEach(edge => this.dropEdge(edge));
+    this.getSelectedNodes().forEach(node => this.dropNode(node));
+  }
+
+  // 🎨 Update a specific attribute (like color) for all selected nodes
+  updateSelectedNodesColor(color) {
+    this.updateSelectedNodesAttributes({ color });
+  }
+
+  // 🎨 Update a specific attribute (like color) for all selected edges
+  updateSelectedEdgesColor(color) {
+    this.updateSelectedEdgesAttributes({ color });
+  }
+
+  // 🛠️ Update multiple attributes for selected nodes
+  updateSelectedNodesAttributes(updates) {
+    this.getSelectedNodes().forEach((node) => {
+      this.mergeNodeAttributes(node, updates);
+    });
+  }
+
+  // 🛠️ Update multiple attributes for selected edges
+  updateSelectedEdgesAttributes(updates) {
+    this.getSelectedEdges().forEach((edge) => {
+      this.mergeEdgeAttributes(edge, updates);
+    });
+  }
+}
