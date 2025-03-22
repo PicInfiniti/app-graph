@@ -105,12 +105,13 @@ export const menuData = [
     title: "Tools",
     id: "tools",
     submenu: [
-      { title: "Component", id: "drag-btn", check: false },
       { title: "Scale", id: "scale-btn", check: false },
+      { title: "Panning", id: "panning-btn", check: false },
+      { title: "Selecting", id: "select-btn", check: false },
+      { title: "Component", id: "component-btn", check: false },
+      { type: "divider" },
       { title: "Tree", id: "tree-btn", check: true },
       { title: "Force Simulation", id: "force-btn", check: false },
-      { type: "divider" },
-      { title: "Panning", id: "panning-btn", check: false },
     ],
   },
   {

@@ -11,15 +11,14 @@ export class Metric {
 
   }
 
-  getComponents(node) {
+  getComponent(node) {
     const graph = this.graphManager.graph
     const components = connectedComponents(graph);
     for (let component of components) {
-      if (component.includes(node)) {
+      if (component.includes(String(node))) {
         return component;
       }
     }
-
     return null;
   }
 

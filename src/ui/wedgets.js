@@ -166,6 +166,14 @@ export class Widget {
     d.querySelector("widgets #tools-panel .panning").addEventListener("click", (event) => {
       this.eventBus.emit("toggleSetting", { key: "panning" })
     })
+
+    d.querySelector("widgets #tools-panel .select").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "select" })
+    })
+
+    d.querySelector("widgets #tools-panel .component").addEventListener("click", (event) => {
+      this.eventBus.emit("toggleSetting", { key: "component" })
+    })
   }
 }
 

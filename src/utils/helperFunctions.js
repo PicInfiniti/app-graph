@@ -35,8 +35,6 @@ export function getAvailableLabel(n, maxLength = 3) {
   return combinations[n] || null;
 }
 
-
-
 export function getTouchPosition(event, canvas) {
   const touch = event.changedTouches[0];
   const rect = canvas.node().getBoundingClientRect();

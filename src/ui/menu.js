@@ -160,11 +160,12 @@ export class Menu {
       "tools-btn": () => this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
 
       //Tools
-      "drag-btn": () => this.eventBus.emit("toggleSetting", { key: "dragComponent" }),
+      "component-btn": () => this.eventBus.emit("toggleSetting", { key: "component" }),
       "scale-btn": () => this.eventBus.emit("toggleSetting", { key: "scale" }),
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
       "force-btn": () => this.eventBus.emit("toggleSetting", { key: "forceSimulation" }),
       "panning-btn": () => this.eventBus.emit("toggleSetting", { key: "panning" }),
+      "select-btn": () => this.eventBus.emit("toggleSetting", { key: "select" }),
 
       //Setting
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),

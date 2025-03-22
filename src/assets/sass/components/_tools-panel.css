@@ -48,19 +48,18 @@
   height: 50px;
   cursor: pointer;
 }
-#tools-panel .body-tools .scale, #tools-panel .body-tools .tree, #tools-panel .body-tools .force, #tools-panel .body-tools .panning {
+#tools-panel .body-tools .scale, #tools-panel .body-tools .tree, #tools-panel .body-tools .force, #tools-panel .body-tools .panning, #tools-panel .body-tools .select, #tools-panel .body-tools .component {
   cursor: pointer;
 }
-#tools-panel .body-tools .scale img, #tools-panel .body-tools .tree img, #tools-panel .body-tools .force img, #tools-panel .body-tools .panning img {
-  border-radius: 5px;
+#tools-panel .body-tools .scale img, #tools-panel .body-tools .tree img, #tools-panel .body-tools .force img, #tools-panel .body-tools .panning img, #tools-panel .body-tools .select img, #tools-panel .body-tools .component img {
   width: 50px;
   height: 50px;
   transition: transform 0.2s ease-in-out;
 }
-#tools-panel .body-tools .scale:hover img, #tools-panel .body-tools .tree:hover img, #tools-panel .body-tools .force:hover img, #tools-panel .body-tools .panning:hover img {
+#tools-panel .body-tools .scale:hover img, #tools-panel .body-tools .tree:hover img, #tools-panel .body-tools .force:hover img, #tools-panel .body-tools .panning:hover img, #tools-panel .body-tools .select:hover img, #tools-panel .body-tools .component:hover img {
   transform: scale(1.1);
 }
-#tools-panel .body-tools .scale:active img, #tools-panel .body-tools .tree:active img, #tools-panel .body-tools .force:active img, #tools-panel .body-tools .panning:active img {
+#tools-panel .body-tools .scale:active img, #tools-panel .body-tools .tree:active img, #tools-panel .body-tools .force:active img, #tools-panel .body-tools .panning:active img, #tools-panel .body-tools .select:active img, #tools-panel .body-tools .component:active img {
   transform: scale(0.9);
 }
 

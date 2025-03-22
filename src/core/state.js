@@ -15,7 +15,7 @@ class AppSettings {
 
     this.defaultSettings = {
       forceSimulation: true,
-      dragComponent: false,
+      component: false,
       scale: false,
       tree: true,
       vertexLabel: true,
@@ -26,13 +26,13 @@ class AppSettings {
       tools_panel: true,
       console_panel: true,
       panning: false,
+      select: false,
       grid: 20,
       color: "#4682B4",
     };
 
     // Load validated settings from localStorage or use defaults
     this.settings = this.loadFromLocalStorage();
-
 
     // Listen for external setting updates
     this.registerEventListeners();
@@ -151,8 +151,16 @@ class AppSettings {
   }
 
   toggleSetting(key) {
+    const one = ["panning", "scale", "select", "component"]
+
     if (key in this.settings && typeof this.settings[key] === "boolean") {
       this.settings[key] = !this.settings[key];
+      if (one.includes(key)) {
+        one.forEach(val => {
+          if (val != key && this.settings[key]) this.settings[val] = false
+        })
+      }
+
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
 
       if (this.#autoSave) {

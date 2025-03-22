@@ -83,7 +83,11 @@ export class Canvas {
 
     if (this.settings.panning) return;
 
+    if (subject && this.settings.component) {
+      console.log(this.app.graphManager.metric.getComponent(subject.id))
+    }
     return subject;
+
   }
 
   dragstarted(event) {
@@ -212,7 +216,7 @@ export class Canvas {
   initialPanning() {
     // Event Listeners for Dragging
     this.canvas.addEventListener("mousedown", (event) => {
-      if (event.ctrlKey || this.settings.panning) {
+      if (this.settings.panning) {
         this.panning.isDragging = true;
         this.panning.startX = event.clientX - this.panning.xOffset;
         this.panning.startY = event.clientY - this.panning.yOffset;
@@ -220,7 +224,7 @@ export class Canvas {
     });
 
     this.canvas.addEventListener("mousemove", (event) => {
-      if ((event.ctrlKey || this.settings.panning) && this.panning.isDragging) {
+      if (this.settings.panning && this.panning.isDragging) {
         this.panning.xOffset = event.clientX - this.panning.startX;
         this.panning.yOffset = event.clientY - this.panning.startY;
         this.app.drawGraph(); // Redraw with new offset
