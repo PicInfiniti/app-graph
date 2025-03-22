@@ -10,7 +10,7 @@ import { EventHandlers } from './eventHandlers.js';
 import { menuData } from '../ui/MenuData.js';
 import { Layout } from '../graph/layouts.js';
 import { Widget } from '../ui/wedgets.js';
-import { edge } from 'graphology-metrics';
+
 export class App {
   constructor() {
     this.eventBus = EventBus;

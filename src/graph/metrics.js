@@ -36,6 +36,7 @@ export class Metric {
     const graph = this.graphManager.graph
     return graph.mapNodes((node, attr) => graph.degree(node));
   }
+
   appendToInfoPanel() {
 
   }
