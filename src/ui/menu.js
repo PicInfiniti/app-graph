@@ -160,7 +160,6 @@ export class Menu {
       "tools-btn": () => this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
 
       //Tools
-      "components-btn": () => this.graphManager.metric.countComponents(),
       "drag-btn": () => this.eventBus.emit("toggleSetting", { key: "dragComponent" }),
       "scale-btn": () => this.eventBus.emit("toggleSetting", { key: "scale" }),
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
@@ -176,7 +175,7 @@ export class Menu {
 
       //Metrics
       "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
-      "command-btn": () => d.querySelector(".modal").style.display = "flex",
+      "components-btn": () => this.graphManager.metric.countComponents(),
 
       //Generator
       "g-empty-1": () => this.graphManager.generator.empty(val),
@@ -204,7 +203,13 @@ export class Menu {
       "g-girvan-newman-1": () => this.graphManager.generator.girvanNewman(val),
       "krackhardt-kite": () => this.graphManager.generator.krackhardtkite(),
       "florentine-families": () => this.graphManager.generator.florentineFamilies(),
-      "karate-club": () => this.graphManager.generator.karateClub()
+      "karate-club": () => this.graphManager.generator.karateClub(),
+
+      //Help
+      "how-to-use": () => window.open('https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3', '_blank'),
+      "command": () => d.querySelector(".modal").style.display = "flex",
+      "about": () => window.open('http://picinfiniti.net/', '_blank')
+
     };
 
     if (actions[menuId]) {

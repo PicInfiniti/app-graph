@@ -370,9 +370,12 @@ export const menuData = [
     title: "Help",
     id: "help",
     submenu: [
-      { title: "How to use", link: "https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3" },
-      { title: "Commands", name: "command-btn" },
-      { title: "About", link: "http://picinfiniti.net/" },
+      {
+        title: "How to use",
+        id: "how-to-use",
+      },
+      { title: "Commands", id: "command", name: "command-btn" },
+      { title: "About", id: "about" },
     ],
   },
 ];
