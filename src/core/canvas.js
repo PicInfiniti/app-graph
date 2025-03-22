@@ -10,6 +10,11 @@ export class Canvas {
     this.canvas = d3.select("#chart").node()
     this.ctx = this.canvas.getContext("2d")
 
+    this.mouse = {
+      x: 0,
+      y: 0,
+      dragging: false
+    }
     this.panning = {
       xOffset: 0,
       yOffset: 0,
@@ -21,8 +26,24 @@ export class Canvas {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.canvas.addEventListener("dblclick", this.handleDbclick.bind(this));
-
     this.canvas.addEventListener("click", this.handleclick.bind(this));
+
+    d3.select('canvas')
+      .on('mousedown', (event) => {
+        this.mouse.dragging = false;
+        [this.mouse.x, this.mouse.y] = d3.pointer(event);
+      })
+      .on('mousemove', (event) => {
+        const [x, y] = d3.pointer(event);
+        if (Math.abs(x - this.mouse.x) > 2 || Math.abs(y - this.mouse.y) > 2) {
+          this.mouse.dragging = true;
+        }
+      })
+      .on('mouseup', (event) => {
+        if (!this.mouse.dragging) {
+          [this.mouse.x, this.mouse.y] = d3.pointer(event);
+        }
+      });
 
     d3.select(this.canvas)
       .call(
@@ -215,6 +236,7 @@ export class Canvas {
   }
 
   handleclick(event) {
+    if (this.mouse.dragging) return;
     let [x, y] = d3.pointer(event, this.canvas);
     let clickedNode = this.findClickedNode(x, y);
     let clickedEdge = this.findClickedEdge(x, y);
