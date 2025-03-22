@@ -39,6 +39,7 @@
   z-index: 20;
 }
 #menu-bar > ul > li > ul li {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,8 +52,8 @@
 #menu-bar > ul > li > ul li > ul {
   display: none;
   position: absolute;
-  top: 45%;
-  left: 50%;
+  top: 40%;
+  left: 70%;
   background-color: #ffffff;
   border: 1px solid #ddd;
   list-style-type: none;
@@ -61,20 +62,26 @@
   min-width: 240px;
   z-index: 20;
 }
-#menu-bar > ul > li > ul li > ul li input[type=number] {
-  width: 45px;
+#menu-bar > ul > li > ul li > ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 #menu-bar > ul > li > ul li > ul li div {
+  min-width: 135px;
   display: flex;
+  justify-content: end;
   gap: 5px;
+}
+#menu-bar > ul > li > ul li > ul li div input[type=number] {
+  width: 45px;
 }
 #menu-bar > ul > li > ul li > ul li label {
   display: flex;
+  flex: 1;
+  gap: 20px;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
-}
-#menu-bar > ul > li > ul li > ul li label span:first-child {
-  width: 30px;
 }
 #menu-bar > ul > li > ul li > ul li label a {
   border: 1px solid gray;

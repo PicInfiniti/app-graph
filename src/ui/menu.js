@@ -24,18 +24,24 @@ export class Menu {
     const menuBar = d.createElement("ul");
 
     this.menuData.forEach(item => {
-      const menuItem = d.createElement("li");
-      menuItem.textContent = item.title;
-
-      if (item.submenu) {
-        const submenu = this.createSubmenu(item.submenu);
-        menuItem.appendChild(submenu);
-      }
-
+      const menuItem = this.createMenu(item)
       menuBar.appendChild(menuItem);
     });
 
     this.container.appendChild(menuBar);
+  }
+
+  createMenu(item) {
+    const menuItem = d.createElement("li");
+    if (item.id) menuItem.id = item.id
+    if (item.title) menuItem.textContent = item.title;
+
+    if (item.submenu) {
+      const submenu = this.createSubmenu(item.submenu);
+      menuItem.appendChild(submenu);
+    }
+
+    return menuItem;
   }
 
   createSubmenu(submenuData) {
@@ -46,13 +52,22 @@ export class Menu {
         submenu.appendChild(d.createElement("hr"));
         return;
       }
+
       const subItem = d.createElement("li");
+      if (sub.id) subItem.id = sub.id;
 
       if (sub.title) {
-        const span = d.createElement("span");
-        span.textContent = sub.title;
-        subItem.appendChild(span);
+        const label = d.createElement("label");
+        label.textContent = sub.title
 
+        if (sub.link) {
+          const a = d.createElement("a"); // Fix: Correct string inside createElement
+          a.href = sub.link;
+          a.target = "_blank";
+          a.textContent = "?"; // Fix: Provide a visible clickable text
+          label.appendChild(a);
+        }
+        subItem.appendChild(label);
       }
 
       if (sub.shortcut) {
@@ -69,74 +84,19 @@ export class Menu {
         subItem.appendChild(checkSpan);
       }
 
-      if (sub.label) {
-        const label = d.createElement("label");
-        const span = d.createElement("span");
-        span.innerHTML = sub.label; // Allows HTML inside <span>
-        label.appendChild(span);
-
-        if (sub.link) {
-          const a = d.createElement("a"); // Fix: Correct string inside createElement
-          a.href = sub.link;
-          a.target = "_blank";
-          a.textContent = "?"; // Fix: Provide a visible clickable text
-          label.appendChild(a);
-        }
-        subItem.appendChild(label);
-      }
-
       if (sub.input) {
-        const input = d.createElement("input");
-        input.type = sub.input.type || "text";
-        input.id = sub.input.id;
-        if ("hidden" in sub.input) input.hidden = sub.input.hidden;
-        subItem.appendChild(input);
-      }
-
-      if (sub.dec === "input") {
-        const div = d.createElement("div");
-
-        // Function to create an input field
-        const createInput = (idSuffix = "", value = 3) => {
-          const input = d.createElement("input");
-          input.type = sub.type || "text"; // Default to "text" if missing
-
-          if (sub.id) input.id = sub.id + idSuffix; // Ensure unique ID
-          if (sub.name) input.name = sub.name; // Set name
-          if (sub.placeholder) input.placeholder = sub.placeholder; // Set placeholder
-          if (sub.required) input.required = true; // Mark as required
-
-          // Apply min and max only to number, range, and date types
-          if (["number", "range", "date"].includes(input.type)) {
-            if (sub.min !== undefined) input.min = sub.min;
-            if (sub.max !== undefined) input.max = sub.max;
-          }
-
-          // Handle value assignment properly
-          if (value !== undefined) {
-            if (input.type === "checkbox" || input.type === "radio") {
-              input.checked = value;
-            } else {
-              input.value = value;
-            }
-          }
-
-          return input;
-        };
-
-        // If `sub.values` exists, create two inputs; otherwise, create one
-        if (sub.values) {
-          sub.values.forEach((item, index) => {
-            div.appendChild(createInput(`-${index + 1}`, item));
-          });
+        if (sub.id === "import-graph") {
+          subItem.appendChild(this.createInput(sub.input[0]));
         } else {
-          div.appendChild(createInput("", sub.value));
+          const div = d.createElement("div");
+          sub.input.forEach(INPUT => {
+            div.appendChild(this.createInput(INPUT));
+          })
+          subItem.appendChild(div);
         }
-
-        subItem.appendChild(div);
       }
 
-      if (sub.dec != "input" && sub.id) subItem.id = sub.id;
+
       if (sub.name) subItem.setAttribute("name", sub.name);
 
       if (sub.submenu) {
@@ -147,6 +107,33 @@ export class Menu {
     });
 
     return submenu;
+  }
+
+  createInput(INPUT) {
+    const input = d.createElement("input");
+    input.type = INPUT.type || "text";
+    input.id = INPUT.id;
+    if ("hidden" in INPUT) input.hidden = INPUT.hidden;
+
+    if (INPUT.name) input.name = INPUT.name; // Set name
+    if (INPUT.placeholder) input.placeholder = INPUT.placeholder; // Set placeholder
+    if (INPUT.required) input.required = true; // Mark as required
+
+    // Apply min and max only to number, range, and date types
+    if (["number", "range", "date"].includes(input.type)) {
+      if (INPUT.min !== undefined) input.min = INPUT.min;
+      if (INPUT.max !== undefined) input.max = INPUT.max;
+      if (INPUT.step !== undefined) input.step = INPUT.step;
+    }
+
+    if (INPUT.value !== undefined) {
+      if (INPUT.type === "checkbox" || INPUT.type === "radio") {
+        input.checked = INPUT.value;
+      } else {
+        input.value = INPUT.value;
+      }
+    }
+    return input
   }
 
   handleMenuAction(menuId, val) {
@@ -182,38 +169,42 @@ export class Menu {
 
       //Setting
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
-      "vertex-size": () => this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
-      "edge-size": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
-      "label-size": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
-      "grid-size": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
+      "vertex-size-1": () => this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
+      "edge-size-1": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
+      "label-size-1": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
+      "grid-size-1": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
 
       //Metrics
       "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
       "command-btn": () => d.querySelector(".modal").style.display = "flex",
 
       //Generator
-      "g-empty": () => this.graphManager.generator.empty(val),
-      "g-complete": () => this.graphManager.generator.complete(val),
-      "g-cycle": () => this.graphManager.generator.cycle(val),
-      "g-path": () => this.graphManager.generator.path(val),
-      "g-ladder": () => this.graphManager.generator.ladder(val),
+      "g-empty-1": () => this.graphManager.generator.empty(val),
+      "g-cycle-1": () => this.graphManager.generator.cycle(val),
+      "g-path-1": () => this.graphManager.generator.path(val),
+      "g-ladder-1": () => this.graphManager.generator.ladder(val),
+      "g-complete-1": () => this.graphManager.generator.complete(val),
+
       "g-complete-bipartite-1": () => this.graphManager.generator.completeBipartite(val, d.getElementById("g-complete-bipartite-2").value),
       "g-complete-bipartite-2": () => this.graphManager.generator.completeBipartite(d.getElementById("g-complete-bipartite-1").value, val),
+
       "g-caveman-1": () => this.graphManager.generator.caveman(val, d.getElementById("g-caveman-2").value),
       "g-caveman-2": () => this.graphManager.generator.caveman(d.getElementById("g-caveman-1").value, val),
+
       "g-connected-caveman-1": () => this.graphManager.generator.connectedCaveman(val, d.getElementById("g-connected-caveman-2").value),
       "g-connected-caveman-2": () => this.graphManager.generator.connectedCaveman(d.getElementById("g-connected-caveman-1").value, val),
 
-      "clusters-btn-1": () => this.graphManager.generator.clusters(val, d.getElementById("clusters-btn-2").value, d.getElementById("clusters-btn-3").value),
-      "clusters-btn-2": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, val, d.getElementById("clusters-btn-3").value),
-      "clusters-btn-3": () => this.graphManager.generator.clusters(d.getElementById("clusters-btn-1").value, d.getElementById("clusters-btn-2").value, val),
+      "g-clusters-1": () => this.graphManager.generator.clusters(val, d.getElementById("g-clusters-2").value, d.getElementById("g-clusters-3").value),
+      "g-clusters-2": () => this.graphManager.generator.clusters(d.getElementById("g-clusters-1").value, val, d.getElementById("g-clusters-3").value),
+      "g-clusters-3": () => this.graphManager.generator.clusters(d.getElementById("g-clusters-1").value, d.getElementById("g-clusters-2").value, val),
 
-      "erdosRenyi-1": () => this.graphManager.generator.erdosRenyi(val, d.getElementById("erdosRenyi-2").value),
-      "erdosRenyi-2": () => this.graphManager.generator.erdosRenyi(d.getElementById("erdosRenyi-1").value, val),
-      "girvanNewman": () => this.graphManager.generator.girvanNewman(val),
-      "krackhardtkite": () => this.graphManager.generator.krackhardtkite(),
-      "florentineFamilies": () => this.graphManager.generator.florentineFamilies(),
-      "karateClub": () => this.graphManager.generator.karateClub()
+      "g-erdos-renyi-1": () => this.graphManager.generator.erdosRenyi(val, d.getElementById("g-erdos-renyi-2").value),
+      "g-erdos-renyi-2": () => this.graphManager.generator.erdosRenyi(d.getElementById("g-erdos-renyi-1").value, val),
+
+      "g-girvan-newman-1": () => this.graphManager.generator.girvanNewman(val),
+      "krackhardt-kite": () => this.graphManager.generator.krackhardtkite(),
+      "florentine-families": () => this.graphManager.generator.florentineFamilies(),
+      "karate-club": () => this.graphManager.generator.karateClub()
     };
 
     if (actions[menuId]) {

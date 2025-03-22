@@ -2,10 +2,10 @@ const d = document;
 
 export function applySettingsToUI(settings) {
   d.querySelector(".container").classList.toggle('grid-hidden', settings.grid <= 2);
-  d.getElementById('grid-size').value = settings.node_radius;
-  d.getElementById('vertex-size').value = settings.node_radius;
-  d.getElementById('edge-size').value = settings.edge_size;
-  d.getElementById('label-size').value = settings.label_size;
+  d.getElementById('grid-size-1').value = settings.node_radius;
+  d.getElementById('vertex-size-1').value = settings.node_radius;
+  d.getElementById('edge-size-1').value = settings.edge_size;
+  d.getElementById('label-size-1').value = settings.label_size;
   d.querySelector('#vertex-label .check').classList.toggle("hidden", !settings.vertexLabel);
   d.getElementById('color').value = settings.color;
   d.querySelector('#drag-btn .check').classList.toggle("hidden", !settings.dragComponent);
