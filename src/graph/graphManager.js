@@ -152,6 +152,7 @@ export class GraphManager {
       selected: false
     }));
   }
+
   selectNode(node) {
     this.setNodeAttribute(node, 'selected', true);
   }

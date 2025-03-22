@@ -87,8 +87,7 @@ export class Canvas {
       if (this.settings.component) {
         subject.component = this.app.graphManager.metric.getComponent(subject.id)
       } else {
-        subject.component = new Set(this.app.selectedNodes)
-        subject.component.add(subject.id)
+        subject.component = this.app.graphManager.graph.getSelectedNodes()
       }
     }
 
@@ -109,6 +108,8 @@ export class Canvas {
   dragged(event) {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
+    event.subject.x = event.x;
+    event.subject.y = event.y
 
     if (!this.settings.forceSimulation) {
       for (let node of event.subject.component) {
