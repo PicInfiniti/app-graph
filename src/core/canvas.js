@@ -35,9 +35,9 @@ export class Canvas {
       );
 
     // Add mouse event listeners for rectangle dragging
-    // this.canvas.addEventListener("mousedown", (event) => this.app.startSelection(event));
-    // this.canvas.addEventListener("mousemove", (event) => this.app.updateSelection(event));
-    // this.canvas.addEventListener("mouseup", () => this.app.endSelection());
+    this.canvas.addEventListener("mousedown", (event) => this.app.startSelection(event));
+    this.canvas.addEventListener("mousemove", (event) => this.app.updateSelection(event));
+    this.canvas.addEventListener("mouseup", () => this.app.endSelection());
 
     this.initialPanning()
   }

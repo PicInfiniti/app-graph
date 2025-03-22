@@ -135,6 +135,11 @@ export class App {
     });
 
     ctx.restore()
+
+    if (this.settings.select) {
+      this.drawRectangles(ctx);  // Redraw to remove rectangle
+    };
+
   }
 
   ticked() {
@@ -201,7 +206,7 @@ export class App {
   }
 
   drawRectangles(ctx) {
-    if (this.selection.active && !this.appSettings.settings.forceSimulation) {
+    if (this.selection.active) {
       ctx.fillStyle = "rgba(0, 0, 255, 0.1)"; // Semi-transparent blue fill
       ctx.fillRect(
         this.selection.x,
@@ -231,7 +236,7 @@ export class App {
     this.selection.y = mouseY;
     this.selection.width = 0;
     this.selection.height = 0;
-    this.selection.active = true;
+    this.selection.active = this.settings.select;
   }
 
   updateSelection(event) {
@@ -240,14 +245,13 @@ export class App {
     const [mouseX, mouseY] = d3.pointer(event, this.canvas);
     this.selection.width = mouseX - this.selection.x;
     this.selection.height = mouseY - this.selection.y;
-    this.drawGraph();  // Redraw canvas with the selection rectangle
+    this.drawGraph()
   }
 
   endSelection() {
     this.selection.active = false;
-    this.drawGraph();  // Redraw to remove rectangle
+    this.drawGraph()
   }
-
 }
 
 
