@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     app.drawGraph();
   });
 
+  document.querySelectorAll('img').forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
   // document.addEventListener("wheel", function (event) {
   //   if (event.ctrlKey) {
   //     event.preventDefault();

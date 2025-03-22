@@ -83,11 +83,16 @@ export class Canvas {
 
     if (this.settings.panning) return;
 
-    if (subject && this.settings.component) {
-      console.log(this.app.graphManager.metric.getComponent(subject.id))
+    if (subject) {
+      if (this.settings.component) {
+        subject.component = this.app.graphManager.metric.getComponent(subject.id)
+      } else {
+        subject.component = new Set(this.app.selectedNodes)
+        subject.component.add(subject.id)
+      }
     }
-    return subject;
 
+    return subject;
   }
 
   dragstarted(event) {
@@ -106,13 +111,15 @@ export class Canvas {
     event.subject.fy = event.y;
 
     if (!this.settings.forceSimulation) {
-      this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
-        return {
-          ...attr,
-          x: event.x,
-          y: event.y
-        };
-      });
+      for (let node of event.subject.component) {
+        this.app.graphManager.graph.updateNodeAttributes(node, attr => {
+          return {
+            ...attr,
+            x: attr.x + event.dx,
+            y: attr.y + event.dy
+          };
+        });
+      }
       this.app.drawGraph()
     }
   }
@@ -123,6 +130,7 @@ export class Canvas {
     event.subject.fy = null;
     event.subject.x = event.x;
     event.subject.y = event.y;
+    if (!this.settings.forceSimulation) this.app.updateSimulation()
   }
 
 

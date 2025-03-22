@@ -151,16 +151,25 @@ class AppSettings {
   }
 
   toggleSetting(key) {
+    console.log(key)
     const one = ["panning", "scale", "select", "component"]
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
       this.settings[key] = !this.settings[key];
+
+
       if (one.includes(key)) {
         one.forEach(val => {
           if (val != key && this.settings[key]) this.settings[val] = false
         })
       }
 
+
+      if (key === "component" && this.settings.component) {
+        this.settings.forceSimulation = false
+        this.eventBus.emit("settingToggled", { key: "forceSimulation", value: this.settings.forceSimulation });
+      }
+      if (key === "forceSimulation" && this.settings.forceSimulation) this.settings.component = false
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
 
       if (this.#autoSave) {

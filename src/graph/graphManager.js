@@ -137,6 +137,7 @@ export class GraphManager {
     }
     this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
   }
+
   updateNodesEdgesColor(nodes, edges) {
     this.saveGraphState()
     for (let node of nodes) {
