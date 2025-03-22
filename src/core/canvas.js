@@ -90,7 +90,6 @@ export class Canvas {
         subject.component = this.app.graphManager.graph.getSelectedNodes()
       }
     }
-
     return subject;
   }
 
@@ -108,8 +107,6 @@ export class Canvas {
   dragged(event) {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
-    event.subject.x = event.x;
-    event.subject.y = event.y
 
     if (!this.settings.forceSimulation) {
       for (let node of event.subject.component) {
@@ -121,6 +118,15 @@ export class Canvas {
           };
         });
       }
+
+      this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
+        return {
+          ...attr,
+          x: event.x,
+          y: event.y
+        };
+      });
+      this.app.drawGraph()
       this.app.drawGraph()
     }
   }
