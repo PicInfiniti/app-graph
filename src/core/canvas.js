@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
 import { pointToSegmentDistance } from '../utils/helperFunctions';
 import { getAvailableLabel, getMinAvailableNumber } from '../utils/helperFunctions.js';
-
 export class Canvas {
   constructor(app) {
     this.app = app
@@ -54,11 +53,6 @@ export class Canvas {
           .on("drag", this.dragged.bind(this))
           .on("end", this.dragended.bind(this))
       );
-
-    // Add mouse event listeners for rectangle dragging
-    this.canvas.addEventListener("mousedown", (event) => this.app.startSelection(event));
-    this.canvas.addEventListener("mousemove", (event) => this.app.updateSelection(event));
-    this.canvas.addEventListener("mouseup", () => this.app.endSelection());
 
     this.initialPanning()
   }

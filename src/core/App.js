@@ -10,7 +10,7 @@ import { EventHandlers } from './eventHandlers.js';
 import { menuData } from '../ui/MenuData.js';
 import { Layout } from '../graph/layouts.js';
 import { Widget } from '../ui/wedgets.js';
-
+import { Rect } from './rect.js';
 export class App {
   constructor() {
     this.eventBus = EventBus;
@@ -20,6 +20,7 @@ export class App {
     this.canvas = this._canvas.canvas
     this.layout = new Layout(this)
     this.graphManager = new GraphManager(this, 100);  // Handles graph logic
+    this.rect = new Rect(this)
     this.menu = new Menu(this, menuData)
     this.widget = new Widget(this)
     this.keyHandler = new KeyHandler(this);  // Handle global keyboard shortcuts
@@ -46,6 +47,7 @@ export class App {
     this.appSettings.init();
     this.widget.init();
     this._canvas.init();
+    this.rect.init();
     this.keyHandler.init();  // Handle global keyboard shortcuts
     this.eventHanders.init();
     this.initSimulation()
@@ -135,7 +137,7 @@ export class App {
     ctx.restore()
 
     if (this.settings.select) {
-      this.drawRectangles(ctx);  // Redraw to remove rectangle
+      this.rect.draw();  // Redraw to remove rectangle
     };
 
   }
@@ -202,115 +204,6 @@ export class App {
       )
     })
   }
-
-  drawRectangles(ctx) {
-    if (this.selection.active) {
-      ctx.fillStyle = "rgba(0, 0, 255, 0.1)"; // Semi-transparent blue fill
-      ctx.fillRect(
-        this.selection.x,
-        this.selection.y,
-        this.selection.width,
-        this.selection.height
-      );
-
-      ctx.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // Dashed border effect
-      ctx.strokeRect(
-        this.selection.x,
-        this.selection.y,
-        this.selection.width,
-        this.selection.height
-      );
-      ctx.setLineDash([]); // Reset line style
-    }
-  }
-
-  // Dragging logic
-
-  startSelection(event) {
-    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-    this.selection.x = mouseX;
-    this.selection.y = mouseY;
-    this.selection.width = 0;
-    this.selection.height = 0;
-    this.selection.active = this.settings.select;
-  }
-
-  updateSelection(event) {
-    if (!this.selection.active) return;
-
-    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-    this.selection.width = mouseX - this.selection.x;
-    this.selection.height = mouseY - this.selection.y;
-    this.drawGraph()
-  }
-
-
-  endSelection(event) {
-    this.selection.active = false;
-    const selectedNodes = this.pointsInRect();
-    const selectedEdges = this.linesInRect();
-
-    selectedNodes.forEach(node => {
-      this.graphManager.graph.toggleNodeSelection(node);
-    });
-    selectedEdges.forEach(edge => {
-      this.graphManager.graph.toggleEdgeSelection(edge);
-    });
-
-    this.drawGraph();
-  }
-
-  pointsInRect() {
-    const [x1, y1, x2, y2] = getRectAxis(this.selection);
-    return this.graphManager.graph.filterNodes(
-      (node, attrs) => attrs.x >= x1 && attrs.x <= x2 && attrs.y >= y1 && attrs.y <= y2);
-  }
-
-  linesInRect() {
-    const rect = getRectAxis(this.selection);
-    return this.graphManager.graph.filterEdges(
-      (edge, attr, s, t, source, target) => this.lineIntersectsRect([source.x, source.y, target.x, target.y], rect))
-  }
-
-  lineIntersectsRect(line, rect) {
-    let [x1, y1, x2, y2] = line;  // Line segment coordinates
-    let [a, b, c, d] = rect;  // Rectangle properties
-    const treshHold = this.settings.node_radius + 5
-    // Check if the line intersects any of the rectangle's edges
-    if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) return true
-    if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) return true
-    if (x1 >= a + treshHold && x1 <= c - treshHold && y1 >= b + treshHold && y1 <= d - treshHold) return true
-    if (x2 >= a + treshHold && x2 <= c - treshHold && y2 >= b + treshHold && y2 <= d - treshHold) return true
-
-    return false;  // No intersection
-  }
-
 }
-
-function getRectAxis(sel) {
-  const x1 = Math.min(sel.x, sel.x + sel.width);
-  const y1 = Math.min(sel.y, sel.y + sel.height);
-  const x2 = Math.max(sel.x, sel.x + sel.width);
-  const y2 = Math.max(sel.y, sel.y + sel.height);
-
-  return [x1, y1, x2, y2];
-}
-
-// returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
-function lineIntersectsLine(line1, line2) {
-  var det, gamma, lambda;
-  const [a, b, c, d] = line1
-  const [p, q, r, s] = line2
-  det = (c - a) * (s - q) - (r - p) * (d - b);
-  if (det === 0) {
-    return false;
-  } else {
-    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
-    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
-  }
-};
 
 
