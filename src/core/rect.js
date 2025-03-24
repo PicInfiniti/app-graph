@@ -128,6 +128,8 @@ export class Rect {
 
   updateSelection(event) {
     const selection = this.selection
+    const rect = this.scale.rect
+    const selectedNodes = this.app.graphManager.graph.getSelectedNodes()
 
     if (selection.active && !this.scale.active) {
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
@@ -142,6 +144,15 @@ export class Rect {
 
       if (this.scale.activeHandle) {
         this.resizeRect(this.scale.activeHandle, mx, my);
+        for (let node of selectedNodes) {
+          this.app.graphManager.graph.updateNodeAttributes(node, attr => {
+            return {
+              ...attr,
+              x: rect.x + rect.width * this.scale.scaleData[node].x,
+              y: rect.y + rect.height * this.scale.scaleData[node].y
+            };
+          });
+        }
         this.app.drawGraph()
         return;
       }
@@ -150,7 +161,6 @@ export class Rect {
         this.scale.rect.x = mx - this.scale.offsetX;
         this.scale.rect.y = my - this.scale.offsetY;
 
-        const selectedNodes = this.app.graphManager.graph.getSelectedNodes()
 
         const dx = mx - this.scale.prevMouse.x;
         const dy = my - this.scale.prevMouse.y;
@@ -199,9 +209,18 @@ export class Rect {
       this.app.graphManager.graph.toggleEdgeSelection(edge);
     });
 
-    if (this.settings.scale && selectedNodes.length > 0) {
+    if (this.settings.scale && selectedNodes.length > 0 && !this.scale.active) {
       this.scale.active = true;
       this.scale.rect = getBoundingBox(this.app.graphManager.graph, selectedNodes, this.settings.node_radius);
+      this.scaleData = {}
+      selectedNodes.forEach(
+        nodeId => {
+          const node = this.app.graphManager.graph.getNodeAttributes(nodeId)
+          this.scale.scaleData[nodeId] =
+            { id: nodeId, x: (node.x - this.scale.rect.x) / this.scale.rect.width, y: (node.y - this.scale.rect.y) / this.scale.rect.height }
+        }
+      )
+
     }
 
     this.app.drawGraph();
