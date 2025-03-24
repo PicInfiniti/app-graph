@@ -51,7 +51,7 @@ export class App {
     this.keyHandler.init();  // Handle global keyboard shortcuts
     this.eventHanders.init();
     this.initSimulation()
-    this.loadInitialGraph();
+    // this.loadInitialGraph();
   }
 
   initSimulation() {
@@ -79,7 +79,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.ladder(10);
+    this.graphManager.generator.complete(5);
     this.layout.applyLayout('circle')
   }
 
@@ -136,9 +136,7 @@ export class App {
 
     ctx.restore()
 
-    if (this.settings.select) {
-      this.rect.draw();  // Redraw to remove rectangle
-    };
+    this.rect.draw();  // Redraw to remove rectangle
 
   }
 

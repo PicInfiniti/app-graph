@@ -38,7 +38,7 @@ export class Layout {
   organizeNodesInCircle() {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
-    const radius = Math.min(centerX * 0.8, centerY * 0.8);
+    const radius = Math.min(centerX * 0.5, centerY * 0.5);
     const positions = circular(this.app.graphManager.graph, { scale: radius, dimensions: ['x', 'y'] });
     this.app.graphManager.updateNodesPostion(positions, { x: centerX, y: centerY })
   }

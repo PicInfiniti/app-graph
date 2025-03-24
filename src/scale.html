@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas Resizable Draggable Rectangle</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    canvas {
+      border: 1px solid #aaa;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const rect = { x: 200, y: 150, width: 200, height: 150 };
+    const handleSize = 10;
+    let activeHandle = null;
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+
+    let prevMouse = { x: 0, y: 0 };
+    const handles = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
+
+    const cursorMap = {
+      'nw': 'nwse-resize',
+      'n':  'ns-resize',
+      'ne': 'nesw-resize',
+      'e':  'ew-resize',
+      'se': 'nwse-resize',
+      's':  'ns-resize',
+      'sw': 'nesw-resize',
+      'w':  'ew-resize',
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw main rect
+      ctx.fillStyle = "#cce5ff";
+      ctx.strokeStyle = "#3399ff";
+      ctx.lineWidth = 2;
+      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+      ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+
+      // Draw handles
+      ctx.fillStyle = "#fff";
+      ctx.strokeStyle = "#000";
+      handles.forEach(dir => {
+        const [hx, hy] = getHandlePosition(dir);
+        ctx.fillRect(hx, hy, handleSize, handleSize);
+        ctx.strokeRect(hx, hy, handleSize, handleSize);
+      });
+    }
+
+    function getHandlePosition(dir) {
+      const { x, y, width: w, height: h } = rect;
+      const s = handleSize / 2;
+      switch (dir) {
+        case 'nw': return [x - s, y - s];
+        case 'n':  return [x + w/2 - s, y - s];
+        case 'ne': return [x + w - s, y - s];
+        case 'e':  return [x + w - s, y + h/2 - s];
+        case 'se': return [x + w - s, y + h - s];
+        case 's':  return [x + w/2 - s, y + h - s];
+        case 'sw': return [x - s, y + h - s];
+        case 'w':  return [x - s, y + h/2 - s];
+      }
+    }
+
+    function hitTestHandle(mx, my) {
+      return handles.find(dir => {
+        const [hx, hy] = getHandlePosition(dir);
+        return mx >= hx && mx <= hx + handleSize && my >= hy && my <= hy + handleSize;
+      });
+    }
+
+
+function onMouseDown(event) {
+  const [mx, my] = d3.pointer(event);
+  prevMouse = { x: mx, y: my };
+  activeHandle = hitTestHandle(mx, my);
+
+  if (activeHandle) return;
+
+  if (
+    mx >= rect.x && mx <= rect.x + rect.width &&
+    my >= rect.y && my <= rect.y + rect.height
+  ) {
+    isDragging = true;
+    offsetX = mx - rect.x;
+    offsetY = my - rect.y;
+  }
+}
+
+
+    function onMouseMove(event) {
+      const [mx, my] = d3.pointer(event);
+
+      if (activeHandle) {
+        resizeRect(activeHandle, mx, my);
+        draw();
+        return;
+      }
+
+      if (isDragging) {
+        rect.x = mx - offsetX;
+        rect.y = my - offsetY;
+        draw();
+        return;
+      }
+
+      // Set cursor based on position
+      const handle = hitTestHandle(mx, my);
+      if (handle) {
+        canvas.style.cursor = cursorMap[handle];
+      } else if (
+        mx >= rect.x && mx <= rect.x + rect.width &&
+        my >= rect.y && my <= rect.y + rect.height
+      ) {
+        canvas.style.cursor = 'move';
+      } else {
+        canvas.style.cursor = 'default';
+      }
+    }
+
+    function onMouseUp() {
+      isDragging = false;
+      activeHandle = null;
+    }
+
+    
+
+function resizeRect(handle, mx, my) {
+  const minSize = 20;
+  const rectCopy = { ...rect }; // Copy current state
+  const dx = mx - prevMouse.x;
+  const dy = my - prevMouse.y;
+
+  let newX = rect.x, newY = rect.y, newW = rect.width, newH = rect.height;
+
+  switch (handle) {
+    case "nw":
+      newX += dx;
+      newY += dy;
+      newW -= dx;
+      newH -= dy;
+      break;
+    case "n":
+      newY += dy;
+      newH -= dy;
+      break;
+    case "ne":
+      newY += dy;
+      newW += dx;
+      newH -= dy;
+      break;
+    case "e":
+      newW += dx;
+      break;
+    case "se":
+      newW += dx;
+      newH += dy;
+      break;
+    case "s":
+      newH += dy;
+      break;
+    case "sw":
+      newX += dx;
+      newW -= dx;
+      newH += dy;
+      break;
+    case "w":
+      newX += dx;
+      newW -= dx;
+      break;
+  }
+
+  // Enforce min size and prevent creeping
+  if (newW >= minSize && newH >= minSize) {
+    rect.x = newX;
+    rect.y = newY;
+    rect.width = newW;
+    rect.height = newH;
+  } else {
+    if (newW < minSize) {
+      if (handle.includes("w")) rect.x = rect.x + rect.width - minSize;
+      rect.width = minSize;
+    }
+    if (newH < minSize) {
+      if (handle.includes("n")) rect.y = rect.y + rect.height - minSize;
+      rect.height = minSize;
+    }
+  }
+
+  prevMouse = { x: mx, y: my };
+}
+
+    d3.select(canvas)
+      .on("mousedown", onMouseDown)
+      .on("mousemove", onMouseMove)
+      .on("mouseup", onMouseUp);
+
+    draw();
+  </script>
+</body>
+</html>
