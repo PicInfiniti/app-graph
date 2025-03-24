@@ -6,6 +6,14 @@ export class Rect {
     this.canvas = app.canvas
     this.ctx = app._canvas.ctx
 
+    this.selection = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      active: false
+    };
+
     this.scale = {
       isDragging: false,
       activeHandle: null,
@@ -35,19 +43,19 @@ export class Rect {
     this.canvas.addEventListener("mousedown", (event) => this.startSelection(event));
     this.canvas.addEventListener("mousemove", (event) => this.updateSelection(event));
     this.canvas.addEventListener("mouseup", () => this.endSelection());
-    d3.select(this.canvas)
-      .on("mousedown", this.onMouseDown.bind(this))
-      .on("mousemove", this.onMouseMove.bind(this))
-      .on("mouseup", this.onMouseUp.bind(this));
-
+    // d3.select(this.canvas)
+    //   .on("mousedown", this.onMouseDown.bind(this))
+    //   .on("mousemove", this.onMouseMove.bind(this))
+    //   .on("mouseup", this.onMouseUp.bind(this));
+    //
     this.app.drawGraph()
   }
 
   draw() {
-    const selection = this.app.selection
+    const selection = this.selection
     if (this.settings.select || this.settings.scale) {
       if (selection.active) {
-        this.drawSelect(this.app.selection)
+        this.drawSelect(this.selection)
       }
 
       if (this.settings.scale) {
@@ -89,7 +97,7 @@ export class Rect {
 
   // Dragging logic
   startSelection(event) {
-    const selection = this.app.selection
+    const selection = this.selection
     const [mouseX, mouseY] = d3.pointer(event, this.canvas);
     selection.x = mouseX;
     selection.y = mouseY;
@@ -99,7 +107,7 @@ export class Rect {
   }
 
   updateSelection(event) {
-    const selection = this.app.selection
+    const selection = this.selection
 
     if (!selection.active) return;
 
@@ -111,7 +119,7 @@ export class Rect {
 
 
   endSelection(event) {
-    const selection = this.app.selection
+    const selection = this.selection
     selection.active = false;
 
     const selectedNodes = this.pointsInRect(selection);
@@ -134,7 +142,7 @@ export class Rect {
   }
 
   linesInRect() {
-    const selection = this.app.selection
+    const selection = this.selection
     const rect = getRectAxis(selection);
     return this.app.graphManager.graph.filterEdges(
       (edge, attr, s, t, source, target) => this.lineIntersectsRect([source.x, source.y, target.x, target.y], rect))
@@ -143,12 +151,12 @@ export class Rect {
   lineIntersectsRect(line, rect) {
     let [x1, y1, x2, y2] = line;  // Line segment coordinates
     let [a, b, c, d] = rect;  // Rectangle properties
-    const treshHold = this.settings.node_radius + 5
+    const treshHold = this.settings.node_radius / 2 + 20
     // Check if the line intersects any of the rectangle's edges
     if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) return true
     if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) return true
-    if (x1 >= a + treshHold && x1 <= c - treshHold && y1 >= b + treshHold && y1 <= d - treshHold) return true
-    if (x2 >= a + treshHold && x2 <= c - treshHold && y2 >= b + treshHold && y2 <= d - treshHold) return true
+    if (pointInRect(x1, y1, a + treshHold, b + treshHold, c - treshHold, d - treshHold)) return true
+    if (pointInRect(x2, y2, a + treshHold, b + treshHold, c - treshHold, d - treshHold)) return true
 
     return false;  // No intersection
   }

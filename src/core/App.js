@@ -31,14 +31,6 @@ export class App {
     this.links = [];
 
     // Rectangle properties
-    this.selection = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-      active: false
-    };
-
     this.init()
   }
 
