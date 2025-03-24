@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { scale } from 'sigma/utils';
 export class Rect {
   constructor(app, canvas) {
     this.app = app
@@ -16,9 +17,10 @@ export class Rect {
 
     this.scale = {
       isDragging: false,
+      active: false,
       activeHandle: null,
       scaleData: {},
-      rect: { x: 0, y: 0, width: 0, height: 0 },
+      rect: { x: 100, y: 100, width: 200, height: 150 },
       prevMouse: { x: 0, y: 0 },
       offsetX: 0,
       offsetY: 0,
@@ -43,10 +45,6 @@ export class Rect {
     this.canvas.addEventListener("mousedown", this.startSelection.bind(this));
     this.canvas.addEventListener("mousemove", this.updateSelection.bind(this));
     this.canvas.addEventListener("mouseup", this.endSelection.bind(this));
-
-    this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
-    this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this));
-    this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
 
     this.app.drawGraph()
   }
@@ -88,49 +86,107 @@ export class Rect {
   }
 
   drawScale() {
-    const graph = this.app.graphManager.graph;
-    const selectedNodes = graph.getSelectedNodes()
-    const rect = getBoundingBox(graph, selectedNodes, this.settings.node_radius);
-
-    this.drawScaleBox(rect, this.ctx)
+    if (this.scale.active) {
+      this.drawScaleBox(this.scale.rect, this.ctx)
+    }
   }
 
   // Dragging logic
   startSelection(event) {
-    const selection = this.selection
-    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-    selection.x = mouseX;
-    selection.y = mouseY;
-    selection.width = 0;
-    selection.height = 0;
-    selection.active = this.settings.select || this.settings.scale;
+    if (this.settings.select || this.settings.scale) {
+      // selection rect
+      const selection = this.selection
+      const [mouseX, mouseY] = d3.pointer(event, this.canvas);
+      selection.x = mouseX;
+      selection.y = mouseY;
+      selection.width = 0;
+      selection.height = 0;
+      selection.active = !this.scale.active;
+
+      //Scale rect
+      if (this.settings.scale && this.scale.active) {
+        const [mx, my] = d3.pointer(event);
+        this.scale.prevMouse = { x: mx, y: my };
+        this.scale.activeHandle = this.hitTestHandle(mx, my);
+
+        if (this.scale.activeHandle) return;
+
+        if (
+          mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
+          my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
+        ) {
+          this.scale.isDragging = true;
+          this.scale.offsetX = mx - this.scale.rect.x;
+          this.scale.offsetY = my - this.scale.rect.y;
+        }
+      }
+    } else {
+      this.selection.active = false;
+      this.scale.active = false;
+    }
   }
 
   updateSelection(event) {
     const selection = this.selection
+    if (selection.active && !this.scale.active) {
+      const [mouseX, mouseY] = d3.pointer(event, this.canvas);
+      selection.width = mouseX - selection.x;
+      selection.height = mouseY - selection.y;
+      this.app.drawGraph()
+      return;
+    }
 
-    if (!selection.active) return;
+    if (this.scale.active) {
+      const [mx, my] = d3.pointer(event);
 
-    const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-    selection.width = mouseX - selection.x;
-    selection.height = mouseY - selection.y;
-    this.app.drawGraph()
+      if (this.scale.activeHandle) {
+        this.resizeRect(this.scale.activeHandle, mx, my);
+        this.app.drawGraph()
+        return;
+      }
+
+      if (this.scale.isDragging) {
+        this.scale.rect.x = mx - this.scale.offsetX;
+        this.scale.rect.y = my - this.scale.offsetY;
+        this.app.drawGraph()
+        return;
+      }
+
+      // Set cursor based on position
+      const handle = this.hitTestHandle(mx, my);
+      if (handle) {
+        this.canvas.style.cursor = this.scale.cursorMap[handle];
+      } else if (
+        mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
+        my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
+      ) {
+        this.canvas.style.cursor = 'move';
+      } else {
+        this.canvas.style.cursor = 'default';
+      }
+    }
   }
 
 
   endSelection(event) {
-    const selection = this.selection
-    selection.active = false;
+    this.selection.active = false;
+    this.scale.isDragging = false;
+    this.scale.activeHandle = null;
 
-    const selectedNodes = this.pointsInRect(selection);
+    const selectedNodes = this.pointsInRect(this.selection);
     selectedNodes.forEach(node => {
       this.app.graphManager.graph.toggleNodeSelection(node);
     });
 
-    const selectedEdges = this.linesInRect();
+    const selectedEdges = this.linesInRect(this.selection);
     selectedEdges.forEach(edge => {
       this.app.graphManager.graph.toggleEdgeSelection(edge);
     });
+
+    if (this.settings.scale && selectedNodes.length > 0) {
+      this.scale.active = true;
+      this.scale.rect = getBoundingBox(this.app.graphManager.graph, selectedNodes, this.settings.node_radius);
+    }
 
     this.app.drawGraph();
   }
@@ -141,8 +197,7 @@ export class Rect {
       (node, attrs) => pointInRect(attrs.x, attrs.y, x1, y1, x2, y2));
   }
 
-  linesInRect() {
-    const selection = this.selection
+  linesInRect(selection) {
     const rect = getRectAxis(selection);
     return this.app.graphManager.graph.filterEdges(
       (edge, attr, s, t, source, target) => this.lineIntersectsRect([source.x, source.y, target.x, target.y], rect))
@@ -191,59 +246,6 @@ export class Rect {
       case 'sw': return [x - s, y + h - s];
       case 'w': return [x - s, y + h / 2 - s];
     }
-  }
-
-  onMouseDown(event) {
-    const [mx, my] = d3.pointer(event);
-    this.scale.prevMouse = { x: mx, y: my };
-    this.scale.activeHandle = this.hitTestHandle(mx, my);
-
-    if (this.scale.activeHandle) return;
-
-    if (
-      mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
-      my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
-    ) {
-      this.scale.isDragging = true;
-      this.scale.offsetX = mx - this.scale.rect.x;
-      this.scale.offsetY = my - this.scale.rect.y;
-    }
-  }
-
-
-  onMouseMove(event) {
-    const [mx, my] = d3.pointer(event);
-
-    if (this.scale.activeHandle) {
-      this.resizeRect(this.scale.activeHandle, mx, my);
-      this.draw();
-      return;
-    }
-
-    if (this.scale.isDragging) {
-      this.scale.rect.x = mx - this.scale.offsetX;
-      this.scale.rect.y = my - this.scale.offsetY;
-      this.draw();
-      return;
-    }
-
-    // Set cursor based on position
-    const handle = this.hitTestHandle(mx, my);
-    if (handle) {
-      this.canvas.style.cursor = this.scale.cursorMap[handle];
-    } else if (
-      mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
-      my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
-    ) {
-      this.canvas.style.cursor = 'move';
-    } else {
-      this.canvas.style.cursor = 'default';
-    }
-  }
-
-  onMouseUp() {
-    this.scale.isDragging = false;
-    this.scale.activeHandle = null;
   }
 
   hitTestHandle(mx, my) {
@@ -373,7 +375,8 @@ function getBoundingBox(graph, nodeIds, node_radius) {
   const treshHold = node_radius * 1.5
 
   return {
-    x: minX - treshHold, y: minY - treshHold,
+    x: minX - treshHold,
+    y: minY - treshHold,
     width: maxX - minX + 2 * treshHold,
     height: maxY - minY + 2 * treshHold
   };

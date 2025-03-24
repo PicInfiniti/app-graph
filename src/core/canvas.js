@@ -239,6 +239,7 @@ export class Canvas {
 
     } else {
       this.app.graphManager.deselectAll();
+      this.app.rect.scale.active = false;
       this.eventBus.emit("graph:updated", { type: "unselect" })
     }
   }
