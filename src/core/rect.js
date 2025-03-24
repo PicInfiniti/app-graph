@@ -149,6 +149,21 @@ export class Rect {
       if (this.scale.isDragging) {
         this.scale.rect.x = mx - this.scale.offsetX;
         this.scale.rect.y = my - this.scale.offsetY;
+
+        const selectedNodes = this.app.graphManager.graph.getSelectedNodes()
+
+        const dx = mx - this.scale.prevMouse.x;
+        const dy = my - this.scale.prevMouse.y;
+        for (let node of selectedNodes) {
+          this.app.graphManager.graph.updateNodeAttributes(node, attr => {
+            return {
+              ...attr,
+              x: attr.x + dx,
+              y: attr.y + dy
+            };
+          });
+        }
+        this.scale.prevMouse = { x: mx, y: my };
         this.app.drawGraph()
         return;
       }
