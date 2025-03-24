@@ -93,7 +93,6 @@ export class Rect {
 
   // Dragging logic
   startSelection(event) {
-    console.log(5)
     if (this.settings.select || this.settings.scale) {
       // selection rect
       const selection = this.selection
@@ -128,8 +127,6 @@ export class Rect {
   }
 
   updateSelection(event) {
-    console.log(6)
-
     const selection = this.selection
 
     if (selection.active && !this.scale.active) {
@@ -173,7 +170,6 @@ export class Rect {
 
 
   endSelection(event) {
-    console.log(7)
     this.selection.active = false;
     this.scale.isDragging = false;
     this.scale.activeHandle = null;

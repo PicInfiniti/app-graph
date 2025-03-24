@@ -44,6 +44,9 @@ export class Canvas {
         d3.drag()
           .container(this.canvas)
           .subject(this.dragsubject.bind(this))  // 👈 Bind this
+          .filter((event) => {
+            return !(this.settings.scale || this.settings.select);
+          })
           .on("start", this.dragstarted.bind(this))
           .on("drag", this.dragged.bind(this))
           .on("end", this.dragended.bind(this))
@@ -96,6 +99,7 @@ export class Canvas {
     if (this.settings.panning) {
       subject.component = this.app.graphManager.graph.nodes();
     }
+
     return subject;
   }
 
@@ -125,7 +129,7 @@ export class Canvas {
         });
       }
 
-      if (event.subject.id) {
+      if (event.subject.id !== null) {
         this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
           return {
             ...attr,
