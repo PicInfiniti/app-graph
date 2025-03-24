@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import { graph } from 'graphology-library/metrics';
 export class Rect {
   constructor(app, canvas) {
     this.app = app
@@ -11,7 +10,7 @@ export class Rect {
       isDragging: false,
       activeHandle: null,
       scaleData: {},
-      rect: { x: 200, y: 150, width: 200, height: 150 },
+      rect: { x: 0, y: 0, width: 0, height: 0 },
       prevMouse: { x: 0, y: 0 },
       offsetX: 0,
       offsetY: 0,
@@ -30,6 +29,7 @@ export class Rect {
     }
 
   }
+
   init() {
     // Add mouse event listeners for rectangle dragging
     this.canvas.addEventListener("mousedown", (event) => this.startSelection(event));
@@ -39,6 +39,7 @@ export class Rect {
       .on("mousedown", this.onMouseDown.bind(this))
       .on("mousemove", this.onMouseMove.bind(this))
       .on("mouseup", this.onMouseUp.bind(this));
+
     this.app.drawGraph()
   }
 
@@ -46,7 +47,7 @@ export class Rect {
     const selection = this.app.selection
     if (this.settings.select || this.settings.scale) {
       if (selection.active) {
-        // this.drawSelect(this.app.selection)
+        this.drawSelect(this.app.selection)
       }
 
       if (this.settings.scale) {
@@ -83,7 +84,7 @@ export class Rect {
     const selectedNodes = graph.getSelectedNodes()
     const rect = getBoundingBox(graph, selectedNodes, this.settings.node_radius);
 
-    this.drawScaleBox(this.scale.rect, this.ctx)
+    this.drawScaleBox(rect, this.ctx)
   }
 
   // Dragging logic
@@ -154,9 +155,8 @@ export class Rect {
 
   drawScaleBox(rect, ctx) {
     if (!rect) return;
-
     // Draw main rect
-    ctx.fillStyle = "#cce5ff";
+    ctx.fillStyle = "#cce5ff20";
     ctx.strokeStyle = "#3399ff";
     ctx.lineWidth = 2;
     ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
@@ -348,55 +348,6 @@ function lineIntersectsLine(line1, line2) {
   }
 };
 
-// ----- Bounding Box -----
-function salma() {
-  const rect = getBoundingBox(History.graph, selectedNode);
-  if (!rect) return;
-  common.rect = rect;
-  common.scaleData = {};
-  selectedNode.forEach((id) => {
-    const n = History.graph.getNodeAttributes(id);
-    common.scaleData[id] = {
-      x: (n.x - rect.x) / rect.width,
-      y: (n.y - rect.y) / rect.height,
-    };
-  });
-  update(rect);
-}
-
-
-function getHandles(rect, size) {
-  const half = size / 2;
-  return [
-    { x: rect.x - half, y: rect.y - half, action: "top-left" },
-    { x: rect.x + rect.width / 2 - half, y: rect.y - half, action: "top" },
-    { x: rect.x + rect.width - half, y: rect.y - half, action: "top-right" },
-    { x: rect.x + rect.width - half, y: rect.y + rect.height / 2 - half, action: "right" },
-    { x: rect.x + rect.width - half, y: rect.y + rect.height - half, action: "bottom-right" },
-    { x: rect.x + rect.width / 2 - half, y: rect.y + rect.height - half, action: "bottom" },
-    { x: rect.x - half, y: rect.y + rect.height - half, action: "bottom-left" },
-    { x: rect.x - half, y: rect.y + rect.height / 2 - half, action: "left" }
-  ];
-}
-
-// ----- Box Resize -----
-function resizeBox(action, dx, dy) {
-  const rect = common.rect;
-  const minSize = 10;
-  switch (action) {
-    case "top-left": rect.x += dx; rect.y += dy; rect.width -= dx; rect.height -= dy; break;
-    case "top": rect.y += dy; rect.height -= dy; break;
-    case "top-right": rect.y += dy; rect.width += dx; rect.height -= dy; break;
-    case "right": rect.width += dx; break;
-    case "bottom-right": rect.width += dx; rect.height += dy; break;
-    case "bottom": rect.height += dy; break;
-    case "bottom-left": rect.x += dx; rect.width -= dx; rect.height += dy; break;
-    case "left": rect.x += dx; rect.width -= dx; break;
-  }
-  rect.width = Math.max(minSize, rect.width);
-  rect.height = Math.max(minSize, rect.height);
-}
-
 
 function getBoundingBox(graph, nodeIds, node_radius) {
   if (!nodeIds.length) return null;
@@ -420,15 +371,3 @@ function getBoundingBox(graph, nodeIds, node_radius) {
   };
 }
 
-function update(rect) {
-  moveNodes(selectedNode, rect);
-}
-
-function moveNodes(nodes, rect) {
-  nodes.forEach(id => {
-    History.graph.updateNodeAttributes(id, () => ({
-      x: rect.x + rect.width * common.scaleData[id].x,
-      y: rect.y + rect.height * common.scaleData[id].y,
-    }));
-  });
-}
