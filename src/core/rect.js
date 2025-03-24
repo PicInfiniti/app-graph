@@ -40,14 +40,14 @@ export class Rect {
 
   init() {
     // Add mouse event listeners for rectangle dragging
-    this.canvas.addEventListener("mousedown", (event) => this.startSelection(event));
-    this.canvas.addEventListener("mousemove", (event) => this.updateSelection(event));
-    this.canvas.addEventListener("mouseup", () => this.endSelection());
-    // d3.select(this.canvas)
-    //   .on("mousedown", this.onMouseDown.bind(this))
-    //   .on("mousemove", this.onMouseMove.bind(this))
-    //   .on("mouseup", this.onMouseUp.bind(this));
-    //
+    this.canvas.addEventListener("mousedown", this.startSelection.bind(this));
+    this.canvas.addEventListener("mousemove", this.updateSelection.bind(this));
+    this.canvas.addEventListener("mouseup", this.endSelection.bind(this));
+
+    this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
+    this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this));
+    this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
+
     this.app.drawGraph()
   }
 
