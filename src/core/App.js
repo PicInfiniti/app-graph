@@ -82,8 +82,6 @@ export class App {
 
     const ctx = this._canvas.ctx;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save(); // Save original state
-    ctx.translate(this._canvas.panning.xOffset, this._canvas.panning.yOffset); // Apply translation
     // Draw edges
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (!attr.color) {
@@ -126,10 +124,7 @@ export class App {
       }
     });
 
-    ctx.restore()
-
     this.rect.draw();  // Redraw to remove rectangle
-
   }
 
   ticked() {

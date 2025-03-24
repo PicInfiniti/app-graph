@@ -14,11 +14,6 @@ export class Canvas {
       y: 0,
       dragging: false
     }
-    this.panning = {
-      xOffset: 0,
-      yOffset: 0,
-      isDragging: false
-    }
   }
 
   init() {
@@ -53,16 +48,12 @@ export class Canvas {
           .on("drag", this.dragged.bind(this))
           .on("end", this.dragended.bind(this))
       );
-
-    this.initialPanning()
   }
 
   addNodeAtEvent(event) {
     event.preventDefault();
 
     let [x, y] = d3.pointer(event, this.canvas);
-    x = x - this.panning.xOffset
-    y = y - this.panning.yOffset
 
     const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
@@ -81,14 +72,12 @@ export class Canvas {
   }
 
   dragsubject(event) {
-    const x = event.x - this.panning.xOffset;
-    const y = event.y - this.panning.yOffset;
-    let subject = null;
+    let subject = { id: null };
     let minDist = Infinity;
 
     this.app.nodes.forEach((node) => {
-      const dx = x - node.x;
-      const dy = y - node.y;
+      const dx = event.x - node.x;
+      const dy = event.y - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < this.settings.node_radius && dist < minDist) {
         minDist = dist;
@@ -96,14 +85,16 @@ export class Canvas {
       }
     });
 
-    if (this.settings.panning) return;
-
     if (subject) {
       if (this.settings.component) {
         subject.component = this.app.graphManager.metric.getComponent(subject.id)
       } else {
         subject.component = this.app.graphManager.graph.getSelectedNodes()
       }
+    }
+
+    if (this.settings.panning) {
+      subject.component = this.app.graphManager.graph.nodes();
     }
     return subject;
   }
@@ -134,14 +125,16 @@ export class Canvas {
         });
       }
 
-      this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
-        return {
-          ...attr,
-          x: event.x,
-          y: event.y
-        };
-      });
-      this.app.drawGraph()
+      if (event.subject.id) {
+        this.app.graphManager.graph.updateNodeAttributes(event.subject.id, attr => {
+          return {
+            ...attr,
+            x: event.x,
+            y: event.y
+          };
+        });
+      }
+
       this.app.drawGraph()
     }
   }
@@ -157,8 +150,6 @@ export class Canvas {
 
 
   findClickedNode(x, y) {
-    x = x - this.panning.xOffset
-    y = y - this.panning.yOffset
     return this.app.nodes.find(node => {
       let dx = x - node.x;
       let dy = y - node.y;
@@ -168,8 +159,6 @@ export class Canvas {
 
 
   findClickedEdge(x, y) {
-    x = x - this.panning.xOffset
-    y = y - this.panning.yOffset
     let threshold = 10; // Distance threshold for edge selection
     return this.app.links.find(link => {
       let source = link.source;
@@ -242,29 +231,5 @@ export class Canvas {
       this.app.rect.scale.active = false;
       this.eventBus.emit("graph:updated", { type: "unselect" })
     }
-  }
-
-  initialPanning() {
-    // Event Listeners for Dragging
-    this.canvas.addEventListener("mousedown", (event) => {
-      if (this.settings.panning) {
-        this.panning.isDragging = true;
-        this.panning.startX = event.clientX - this.panning.xOffset;
-        this.panning.startY = event.clientY - this.panning.yOffset;
-      }
-    });
-
-    this.canvas.addEventListener("mousemove", (event) => {
-      if (this.settings.panning && this.panning.isDragging) {
-        this.panning.xOffset = event.clientX - this.panning.startX;
-        this.panning.yOffset = event.clientY - this.panning.startY;
-        this.app.drawGraph(); // Redraw with new offset
-      }
-    });
-
-    this.canvas.addEventListener("mouseup", () => this.panning.isDragging = false);
-    this.canvas.addEventListener("mouseleave", () => this.panning.isDragging = false);
-
-    this.app.drawGraph(); // Redraw with new offset
   }
 }
