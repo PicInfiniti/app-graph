@@ -142,4 +142,25 @@ export class Graph extends UndirectedGraph {
     }
   }
 
+  // ✅ Select a path of nodes and connecting edges
+  selectPath(path) {
+    this.deselectAll(); // Clear previous selections
+
+    // Select all nodes in the path
+    path.forEach((node) => {
+      if (this.hasNode(node)) {
+        this.selectNode(node);
+      }
+    });
+
+    // Select edges between consecutive nodes in the path
+    for (let i = 0; i < path.length - 1; i++) {
+      const source = path[i];
+      const target = path[i + 1];
+      if (this.hasEdge(source, target)) {
+        const edgeKey = this.edge(source, target);
+        this.selectEdge(edgeKey);
+      }
+    }
+  }
 }

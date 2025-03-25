@@ -175,9 +175,9 @@ export class Menu {
       "grid-size-1": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
 
       //Metrics
-      "list-degrees-btn": () => this.graphManager.metric.appendAndListNodeDegrees(),
+      "list-degrees-btn": () => this.graphManager.metric.degreeSequesnce(),
       "components-btn": () => this.graphManager.metric.countComponents(),
-
+      "shortest-path-btn": () => this.graphManager.metric.shortestPath(),
       //Generator
       //Classic
       "empty": () => this.graphManager.generator.empty(d.getElementById("g-empty-1").value),
@@ -240,8 +240,8 @@ export class Menu {
     } else {
       console.log(`No action defined for: ${menuId}`);
     }
-    this.app.graphManager.graph.deselectAll()
-    this.app.drawGraph()
+    // this.app.graphManager.graph.deselectAll()
+    // this.app.drawGraph()
   }
 
   attachEventListeners() {

@@ -365,6 +365,7 @@ export const menuData = [
     submenu: [
       { title: "Degree Sequence", id: "list-degrees-btn" },
       { title: "Components", id: "components-btn" },
+      { title: "Shortest Path", id: "shortest-path-btn" },
     ],
   },
   {
