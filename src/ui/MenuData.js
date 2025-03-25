@@ -366,6 +366,7 @@ export const menuData = [
       { title: "Degree Sequence", id: "list-degrees-btn" },
       { title: "Components", id: "components-btn" },
       { title: "Shortest Path", id: "shortest-path-btn" },
+      { title: "Basic Information", id: "basic-info-btn" },
     ],
   },
   {

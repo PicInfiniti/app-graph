@@ -54,8 +54,12 @@
   scrollbar-width: thin;
   cursor: text;
 }
-#floating-panel .body-info .body div {
+#floating-panel .body-info div {
   padding: 1px;
+}
+#floating-panel .body-info hr {
+  opacity: 0.5;
+  margin: 10px;
 }
 
 /*# sourceMappingURL=_floating-panel.css.map */

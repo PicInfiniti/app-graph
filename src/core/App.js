@@ -71,7 +71,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.complete(5);
+    this.graphManager.generator.clusters(20, 20, 10)
     this.layout.applyLayout('circle')
   }
 

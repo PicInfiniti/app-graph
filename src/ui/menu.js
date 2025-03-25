@@ -178,6 +178,7 @@ export class Menu {
       "list-degrees-btn": () => this.graphManager.metric.degreeSequesnce(),
       "components-btn": () => this.graphManager.metric.countComponents(),
       "shortest-path-btn": () => this.graphManager.metric.shortestPath(),
+      "basic-info-btn": () => this.graphManager.metric.basicInfo(),
       //Generator
       //Classic
       "empty": () => this.graphManager.generator.empty(d.getElementById("g-empty-1").value),

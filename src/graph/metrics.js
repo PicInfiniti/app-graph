@@ -8,13 +8,8 @@ export class Metric {
     this.pannel = d.querySelector('#floating-panel .body-info')
   }
 
-  init() {
-
-  }
-
   addHeader(h) {
     const header = d.createElement("h4");
-    header.classList.add("title");
     header.textContent = h;
     this.pannel.appendChild(header);
     console.log(h)
@@ -23,7 +18,6 @@ export class Metric {
   addInfo(info) {
     const div = d.createElement("div");
     div.insertAdjacentHTML("beforeend", info);
-    div.classList.add("info");
     this.pannel.appendChild(div);
     console.log(info)
   }
@@ -46,13 +40,13 @@ export class Metric {
   }
 
 
-  getElementryMetrics() {
+  basicInfo() {
     const graph = this.graphManager.graph
-    return {
-      order: graph.order,
-      size: graph.size,
-      type: graph.type
-    }
+    this.addHeader("Basic Informattion")
+    this.addInfo(`|V|: ${graph.order}`)
+    this.addInfo(`|E|: ${graph.size}`)
+    this.addInfo(`Type: ${graph.type}`)
+    this.addLine();
   }
 
   degreeSequesnce() {
