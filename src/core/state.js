@@ -163,19 +163,22 @@ class AppSettings {
       }
 
 
-      if (key === "component" && this.settings.component) {
-        this.settings.forceSimulation = false
-        this.eventBus.emit("settingToggled", { key: "forceSimulation", value: this.settings.forceSimulation });
-      }
-
-      if (key === "scale" && this.settings.scale) {
-        this.settings.forceSimulation = false
-        this.eventBus.emit("settingToggled", { key: "forceSimulation", value: this.settings.forceSimulation });
+      if (
+        (key === "component" && this.settings.component) ||
+        (key === "scale" && this.settings.scale) ||
+        (key === "panning" && this.settings.panning)
+      ) {
+        this.settings.forceSimulation = false;
+        this.eventBus.emit("settingToggled", {
+          key: "forceSimulation",
+          value: this.settings.forceSimulation,
+        });
       }
 
       if (key === "forceSimulation" && this.settings.forceSimulation) {
         this.settings.component = false
         this.settings.scale = false
+        this.settings.panning = false
       }
 
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });

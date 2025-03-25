@@ -225,6 +225,7 @@ export class Rect {
     }
 
     this.app.drawGraph();
+
   }
 
   pointsInRect(selection) {

@@ -219,6 +219,7 @@ export class Menu {
       console.log(`No action defined for: ${menuId}`);
     }
     this.app.graphManager.graph.deselectAll()
+    this.app.drawGraph()
   }
 
   attachEventListeners() {
