@@ -179,30 +179,52 @@ export class Menu {
       "components-btn": () => this.graphManager.metric.countComponents(),
 
       //Generator
+      //Classic
+      "empty": () => this.graphManager.generator.empty(d.getElementById("g-empty-1").value),
       "g-empty-1": () => this.graphManager.generator.empty(val),
+
+      "cycle": () => this.graphManager.generator.cycle(d.getElementById("g-cycle-1").value),
       "g-cycle-1": () => this.graphManager.generator.cycle(val),
+
+      "path": () => this.graphManager.generator.path(d.getElementById("g-path-1").value),
       "g-path-1": () => this.graphManager.generator.path(val),
+
+      "ladder": () => this.graphManager.generator.ladder(d.getElementById("g-ladder-1").value),
       "g-ladder-1": () => this.graphManager.generator.ladder(val),
+
+      "complete": () => this.graphManager.generator.complete(d.getElementById("g-complete-1").value),
       "g-complete-1": () => this.graphManager.generator.complete(val),
 
+      "complete-bipartite": () => this.graphManager.generator.completeBipartite(d.getElementById("g-complete-bipartite-1").value, d.getElementById("g-complete-bipartite-2").value),
       "g-complete-bipartite-1": () => this.graphManager.generator.completeBipartite(val, d.getElementById("g-complete-bipartite-2").value),
       "g-complete-bipartite-2": () => this.graphManager.generator.completeBipartite(d.getElementById("g-complete-bipartite-1").value, val),
 
+      //Cummunity
+      "caveman": () => this.graphManager.generator.caveman(d.getElementById("g-caveman-1").value, d.getElementById("g-caveman-2").value),
       "g-caveman-1": () => this.graphManager.generator.caveman(val, d.getElementById("g-caveman-2").value),
       "g-caveman-2": () => this.graphManager.generator.caveman(d.getElementById("g-caveman-1").value, val),
 
+      "connected-caveman": () => this.graphManager.generator.connectedCaveman(d.getElementById("g-connected-caveman-1").value, d.getElementById("g-connected-caveman-2").value),
       "g-connected-caveman-1": () => this.graphManager.generator.connectedCaveman(val, d.getElementById("g-connected-caveman-2").value),
       "g-connected-caveman-2": () => this.graphManager.generator.connectedCaveman(d.getElementById("g-connected-caveman-1").value, val),
 
+      //random
+      "clusters": () => this.graphManager.generator.clusters(d.getElementById("g-clusters-1").value, d.getElementById("g-clusters-2").value, d.getElementById("g-clusters-3").value),
       "g-clusters-1": () => this.graphManager.generator.clusters(val, d.getElementById("g-clusters-2").value, d.getElementById("g-clusters-3").value),
       "g-clusters-2": () => this.graphManager.generator.clusters(d.getElementById("g-clusters-1").value, val, d.getElementById("g-clusters-3").value),
       "g-clusters-3": () => this.graphManager.generator.clusters(d.getElementById("g-clusters-1").value, d.getElementById("g-clusters-2").value, val),
 
+      "erdos-renyi": () => this.graphManager.generator.erdosRenyi(d.getElementById("g-erdos-renyi-1").value, d.getElementById("g-erdos-renyi-2").value),
       "g-erdos-renyi-1": () => this.graphManager.generator.erdosRenyi(val, d.getElementById("g-erdos-renyi-2").value),
       "g-erdos-renyi-2": () => this.graphManager.generator.erdosRenyi(d.getElementById("g-erdos-renyi-1").value, val),
 
+      "griven-newmn": () => this.graphManager.generator.girvanNewman(d.getElementById("g-girvan-newman-1").value),
       "g-girvan-newman-1": () => this.graphManager.generator.girvanNewman(val),
+
+      //small
       "krackhardt-kite": () => this.graphManager.generator.krackhardtkite(),
+
+      //Social
       "florentine-families": () => this.graphManager.generator.florentineFamilies(),
       "karate-club": () => this.graphManager.generator.karateClub(),
 
