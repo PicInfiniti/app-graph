@@ -39,7 +39,7 @@ class AppSettings {
   }
 
   init() {
-    applySettingsToUI(this.settings);
+    applySettingsToUI(this.settings, this.app.canvas);
   }
 
   registerEventListeners() {

@@ -1,6 +1,6 @@
 const d = document;
 
-export function applySettingsToUI(settings) {
+export function applySettingsToUI(settings, canvas) {
   d.querySelector(".container").classList.toggle('grid-hidden', settings.grid <= 2);
   d.getElementById('grid-size-1').value = settings.node_radius;
   d.getElementById('vertex-size-1').value = settings.node_radius;
@@ -20,7 +20,10 @@ export function applySettingsToUI(settings) {
   d.querySelector('#panning').classList.toggle("gray-background", !settings.panning);
   d.querySelector('#select-btn .check').classList.toggle("hidden", !settings.select);
   d.querySelector('#select').classList.toggle("gray-background", !settings.select);
-  d.body.style.cursor = settings.panning ? "move" : "default";
+
+
+  canvas.style.cursor = settings.panning ? "move" : "default";
+
 
   const root = d.documentElement;
   d.querySelector(".container").classList.toggle('grid-hidden', settings.grid <= 2);

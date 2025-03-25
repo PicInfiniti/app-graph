@@ -209,11 +209,12 @@ export class Rect {
       this.app.graphManager.graph.toggleEdgeSelection(edge);
     });
 
-    if (this.settings.scale && selectedNodes.length > 0 && !this.scale.active) {
+    const SELECTED = this.app.graphManager.graph.getSelectedNodes();
+    if (this.settings.scale && SELECTED.length > 0 && !this.scale.active) {
       this.scale.active = true;
-      this.scale.rect = getBoundingBox(this.app.graphManager.graph, selectedNodes, this.settings.node_radius);
+      this.scale.rect = getBoundingBox(this.app.graphManager.graph, SELECTED, this.settings.node_radius);
       this.scaleData = {}
-      selectedNodes.forEach(
+      SELECTED.forEach(
         nodeId => {
           const node = this.app.graphManager.graph.getNodeAttributes(nodeId)
           this.scale.scaleData[nodeId] =
