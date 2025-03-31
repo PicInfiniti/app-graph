@@ -64,7 +64,12 @@ export class Menu {
           const a = d.createElement("a"); // Fix: Correct string inside createElement
           a.href = sub.link;
           a.target = "_blank";
-          a.textContent = "?"; // Fix: Provide a visible clickable text
+          if (sub.label) {
+            a.textContent = sub.label; // Fix: Provide a visible clickable text
+          } else {
+            a.textContent = "?"; // Fix: Provide a visible clickable text
+            a.classList.add("border")
+          }
           label.insertBefore(a, label.firstChild);
         }
         subItem.appendChild(label);
@@ -179,6 +184,7 @@ export class Menu {
       "components-btn": () => this.graphManager.metric.countComponents(),
       "shortest-path-btn": () => this.graphManager.metric.shortestPath(),
       "basic-info-btn": () => this.graphManager.metric.basicInfo(),
+
       //Generator
       //Classic
       "empty": () => this.graphManager.generator.empty(d.getElementById("g-empty-1").value),
@@ -228,6 +234,20 @@ export class Menu {
       //Social
       "florentine-families": () => this.graphManager.generator.florentineFamilies(),
       "karate-club": () => this.graphManager.generator.karateClub(),
+
+      //Constellation
+      "aries": () => this.graphManager.generator.zodiac.aries(),
+      "taurus": () => this.graphManager.generator.zodiac.taurus(),
+      "gemini": () => this.graphManager.generator.zodiac.gemini(),
+      "cancer": () => this.graphManager.generator.zodiac.cancer(),
+      "leo": () => this.graphManager.generator.zodiac.leo(),
+      "virgo": () => this.graphManager.generator.zodiac.virgo(),
+      "libra": () => this.graphManager.generator.zodiac.libra(),
+      "scorpio": () => this.graphManager.generator.zodiac.scorpio(),
+      "sagittarius": () => this.graphManager.generator.zodiac.sagittarius(),
+      "capricorn": () => this.graphManager.generator.zodiac.capricorn(),
+      "aquarius": () => this.graphManager.generator.zodiac.aquarius(),
+      "pisces": () => this.graphManager.generator.zodiac.pisces(),
 
       //Help
       "how-to-use": () => window.open('https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3', '_blank'),

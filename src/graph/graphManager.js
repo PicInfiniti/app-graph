@@ -1,7 +1,7 @@
 import { Graph } from '../utils/classes';
 import { empty } from 'graphology-generators/classic';
-import { Generator } from "./generator";
 import { Metric } from './metrics';
+import { Generator } from '../generator/main';
 
 export class GraphManager {
   constructor(app, limit) {

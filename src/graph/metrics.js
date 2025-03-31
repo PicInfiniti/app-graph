@@ -77,7 +77,6 @@ export class Metric {
 
     const graph = this.graphManager.graph
     const selectedNodes = this.graphManager.graph.getSelectedNodes()
-    console.log(selectedNodes)
     if (selectedNodes.length !== 2) {
       this.addInfo("Select two nodes")
       this.addLine()
@@ -85,7 +84,6 @@ export class Metric {
     }
     const [source, target] = selectedNodes
     const path = bidirectional(graph, source, target);
-    console.log(path)
     if (path) {
       this.addInfo(path.map(node => graph.getNodeAttribute(node, "label")).join(' -> '))
       this.addLine()

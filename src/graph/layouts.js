@@ -13,6 +13,11 @@ export class Layout {
 
   applyLayout(type, param) {
     switch (type) {
+      case 'keep':
+        this.scaleAndCenterGraph();
+        this.eventBus.emit("graph:updated", { type: "layout" })
+        break;
+
       case 'circle':
         this.organizeNodesInCircle();
         this.eventBus.emit("graph:updated", { type: "layout" })
@@ -112,5 +117,52 @@ export class Layout {
       }));
     });
   }
+
+  scaleAndCenterGraph() {
+    const graph = this.app.graphManager.graph;
+    const canvasWidth = this.canvas.width;
+    const canvasHeight = this.canvas.height;
+    const padding = 200;
+
+    const nodeIds = Array.from(graph.nodes());
+    if (nodeIds.length === 0) return;
+
+    // Get bounding box of the current layout
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+    nodeIds.forEach(id => {
+      const { x, y } = graph.getNodeAttributes(id);
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    });
+
+    const layoutWidth = maxX - minX;
+    const layoutHeight = maxY - minY;
+
+    // Calculate scaling factor to fit layout inside canvas with padding
+    const scaleX = (canvasWidth - 2 * padding) / layoutWidth;
+    const scaleY = (canvasHeight - 2 * padding) / layoutHeight;
+    const scale = Math.min(scaleX, scaleY);
+
+    // Calculate center offset
+    const offsetX = (canvasWidth - layoutWidth * scale) / 2;
+    const offsetY = (canvasHeight - layoutHeight * scale) / 2;
+
+    // Apply scaling and centering
+    nodeIds.forEach(id => {
+      const { x, y } = graph.getNodeAttributes(id);
+      const newX = (x - minX) * scale + offsetX;
+      const newY = (y - minY) * scale + offsetY;
+
+      graph.updateNodeAttributes(id, attr => ({
+        ...attr,
+        x: newX,
+        y: newY,
+      }));
+    });
+  }
+
 
 }
