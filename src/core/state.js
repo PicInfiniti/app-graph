@@ -19,7 +19,7 @@ class AppSettings {
       scale: false,
       tree: true,
       vertexLabel: true,
-      node_radius: 10,
+      node_radius: 40,
       edge_size: 2,
       label_size: 15,
       info_panel: true,

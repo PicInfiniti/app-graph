@@ -59,7 +59,8 @@ export const menuData = [
                 id: "vertex-size-1",
                 min: 0,
                 max: 100,
-                value: 10
+                value: 10,
+                step: .1
               }
             ]
           },
@@ -156,7 +157,6 @@ export const menuData = [
             input: [
               {
                 type: "number",
-                label: "",
                 id: "g-complete-bipartite-1",
                 min: 1,
                 max: 500,
@@ -358,6 +358,90 @@ export const menuData = [
         ]
       },
     ],
+  },
+  {
+    title: "Constellation",
+    id: "constellation",
+    submenu: [
+      {
+        title: "Zodiac",
+        id: "social",
+        submenu: [
+          {
+            title: "Aries",
+            id: "aries",
+            label: "♈",
+            link: "https://en.wikipedia.org/wiki/Aries_(astrology)"
+          },
+          {
+            title: "Taurus",
+            id: "taurus",
+            label: "♉",
+            link: "https://en.wikipedia.org/wiki/Taurus_(astrology)"
+          },
+          {
+            title: "Gemini",
+            id: "gemini",
+            label: "♊",
+            link: "https://en.wikipedia.org/wiki/Gemini_(astrology)"
+          },
+          {
+            title: "Cancer",
+            id: "cancer",
+            label: "♋",
+            link: "https://en.wikipedia.org/wiki/Cancer_(astrology)"
+          },
+          {
+            title: "Leo",
+            id: "leo",
+            label: "♌",
+            link: "https://en.wikipedia.org/wiki/Leo_(astrology)"
+          },
+          {
+            title: "Virgo",
+            id: "virgo",
+            label: "♍",
+            link: "https://en.wikipedia.org/wiki/Virgo_(astrology)"
+          },
+          {
+            title: "Libra",
+            id: "libra",
+            label: "♎",
+            link: "https://en.wikipedia.org/wiki/Libra_(astrology)"
+          },
+          {
+            title: "Scorpio",
+            id: "scorpio",
+            label: "♏",
+            link: "https://en.wikipedia.org/wiki/Scorpio_(astrology)"
+          },
+          {
+            title: "Sagittarius",
+            id: "sagittarius",
+            label: "♐",
+            link: "https://en.wikipedia.org/wiki/Sagittarius_(astrology)"
+          },
+          {
+            title: "Capricorn",
+            id: "capricorn",
+            label: "♑",
+            link: "https://en.wikipedia.org/wiki/Capricorn_(astrology)"
+          },
+          {
+            title: "Aquarius",
+            id: "aquarius",
+            label: "♒",
+            link: "https://en.wikipedia.org/wiki/Aquarius_(astrology)"
+          },
+          {
+            title: "Pisces",
+            id: "pisces",
+            label: "♓",
+            link: "https://en.wikipedia.org/wiki/Pisces_(astrology)"
+          }
+        ]
+      }
+    ]
   },
   {
     title: "Metrics",

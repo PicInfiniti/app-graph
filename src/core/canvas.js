@@ -82,7 +82,7 @@ export class Canvas {
       const dx = event.x - node.x;
       const dy = event.y - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < this.settings.node_radius && dist < minDist) {
+      if (dist < node.size && dist < minDist) {
         minDist = dist;
         subject = node;
       }
@@ -157,7 +157,7 @@ export class Canvas {
     return this.app.nodes.find(node => {
       let dx = x - node.x;
       let dy = y - node.y;
-      return Math.sqrt(dx * dx + dy * dy) < this.settings.node_radius; // Adjust radius threshold as needed
+      return Math.sqrt(dx * dx + dy * dy) < node.size; // Adjust radius threshold as needed
     });
   }
 

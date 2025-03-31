@@ -11,6 +11,8 @@ import { menuData } from '../ui/MenuData.js';
 import { Layout } from '../graph/layouts.js';
 import { Widget } from '../ui/wedgets.js';
 import { Rect } from './rect.js';
+
+
 export class App {
   constructor() {
     this.eventBus = EventBus;
@@ -71,8 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.clusters(20, 20, 10)
-    this.layout.applyLayout('circle')
+    this.graphManager.generator.zodiac.aries();
   }
 
   drawGraph() {
@@ -107,7 +108,7 @@ export class App {
       }
 
       ctx.beginPath();
-      ctx.arc(attr.x, attr.y, settings.node_radius, 0, 2 * Math.PI);
+      ctx.arc(attr.x, attr.y, attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = settings.vertexLabel ? "white" : attr.color;
       ctx.fill();
       ctx.lineWidth = 3;

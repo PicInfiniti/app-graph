@@ -2,39 +2,23 @@ import { isGraphConstructor } from "graphology-library/assertions";
 import { mergeStar } from "graphology-library/utils";
 
 
-var NODE_MAP_krackhardtKite = {
-  'Andre': 0,
-  'Beverley': 1,
-  'Carol': 2,
-  'Diane': 3,
-  'Fernando': 4,
-  'Ed': 5,
-  'Garth': 6,
-  'Heather': 7,
-  'Ike': 8,
-  'Jane': 9
-};
-
-/**
- * Convert adjacency list to numeric nodes
- */
 var ADJACENCY_NUMERIC = [
-  [0, 1, 2, 3, 4], // Andre -> [Beverley, Carol, Diane, Fernando]
-  [1, 0, 5, 6],    // Beverley -> [Andre, Ed, Garth]
-  [2, 0, 3, 4],    // Carol -> [Andre, Diane, Fernando]
-  [3, 0, 1, 2, 5, 4, 6], // Diane -> [Andre, Beverley, Carol, Ed, Fernando, Garth]
-  [5, 1, 3, 6],    // Ed -> [Beverley, Diane, Garth]
-  [4, 0, 2, 3, 6, 7], // Fernando -> [Andre, Carol, Diane, Garth, Heather]
-  [6, 1, 3, 5, 4, 7], // Garth -> [Beverley, Diane, Ed, Fernando, Heather]
-  [7, 4, 6, 8],    // Heather -> [Fernando, Garth, Ike]
-  [8, 7, 9],       // Ike -> [Heather, Jane]
-  [9, 8]           // Jane -> [Ike]
+  [0, 1, 2, 3, 4],
+  [1, 0, 5, 6],
+  [2, 0, 3, 4],
+  [3, 0, 1, 2, 5, 4, 6],
+  [5, 1, 3, 6],
+  [4, 0, 2, 3, 6, 7],
+  [6, 1, 3, 5, 4, 7],
+  [7, 4, 6, 8],
+  [8, 7, 9],
+  [9, 8]
 ];
 
 export function krackhardtKite(GraphClass) {
   if (!isGraphConstructor(GraphClass))
     throw new Error(
-      'graphology-generators/social/krackhardt-kite: invalid Graph constructor.'
+      'invalid Graph constructor.'
     );
 
   var graph = new GraphClass(),
@@ -47,48 +31,27 @@ export function krackhardtKite(GraphClass) {
 };
 
 
-var NODE_MAP_florentineFamilies = {
-  'Acciaiuoli': 0,
-  'Medici': 1,
-  'Castellani': 2,
-  'Peruzzi': 3,
-  'Strozzi': 4,
-  'Barbadori': 5,
-  'Ridolfi': 6,
-  'Tornabuoni': 7,
-  'Albizzi': 8,
-  'Salviati': 9,
-  'Pazzi': 10,
-  'Bischeri': 11,
-  'Guadagni': 12,
-  'Ginori': 13,
-  'Lamberteschi': 14
-};
-
-/**
- * Numeric edges based on NODE_MAP.
- */
 var EDGES_NUMERIC = [
-  [0, 1],   // Acciaiuoli - Medici
-  [2, 3],   // Castellani - Peruzzi
-  [2, 4],   // Castellani - Strozzi
-  [2, 5],   // Castellani - Barbadori
-  [1, 5],   // Medici - Barbadori
-  [1, 6],   // Medici - Ridolfi
-  [1, 7],   // Medici - Tornabuoni
-  [1, 8],   // Medici - Albizzi
-  [1, 9],   // Medici - Salviati
-  [9, 10],  // Salviati - Pazzi
-  [3, 4],   // Peruzzi - Strozzi
-  [3, 11],  // Peruzzi - Bischeri
-  [4, 6],   // Strozzi - Ridolfi
-  [4, 11],  // Strozzi - Bischeri
-  [6, 7],   // Ridolfi - Tornabuoni
-  [7, 12],  // Tornabuoni - Guadagni
-  [8, 13],  // Albizzi - Ginori
-  [8, 12],  // Albizzi - Guadagni
-  [11, 12], // Bischeri - Guadagni
-  [12, 14]  // Guadagni - Lamberteschi
+  [0, 1],
+  [2, 3],
+  [2, 4],
+  [2, 5],
+  [1, 5],
+  [1, 6],
+  [1, 7],
+  [1, 8],
+  [1, 9],
+  [9, 10],
+  [3, 4],
+  [3, 11],
+  [4, 6],
+  [4, 11],
+  [6, 7],
+  [7, 12],
+  [8, 13],
+  [8, 12],
+  [11, 12],
+  [12, 14]
 ];
 
 export function florentineFamilies(GraphClass) {
