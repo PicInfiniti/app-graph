@@ -105,6 +105,7 @@ export class Rect {
 
       //Scale rect
       if (this.settings.scale && this.scale.active) {
+        this.app.graphManager.saveGraphState();
         const [mx, my] = d3.pointer(event);
         this.scale.prevMouse = { x: mx, y: my };
         this.scale.activeHandle = this.hitTestHandle(mx, my);
@@ -223,9 +224,7 @@ export class Rect {
       )
 
     }
-
     this.app.drawGraph();
-
   }
 
   pointsInRect(selection) {
