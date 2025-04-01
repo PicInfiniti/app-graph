@@ -13,8 +13,8 @@ export class Layout {
 
   applyLayout(type, param) {
     switch (type) {
-      case 'keep':
-        this.scaleAndCenterGraph();
+      case 'rotate180':
+        this.rotate180();
         this.eventBus.emit("graph:updated", { type: "layout" })
         break;
 
@@ -118,7 +118,7 @@ export class Layout {
     });
   }
 
-  scaleAndCenterGraph() {
+  rotate180() {
     const graph = this.app.graphManager.graph;
     const canvasWidth = this.canvas.width;
     const canvasHeight = this.canvas.height;
@@ -153,8 +153,9 @@ export class Layout {
     // Apply scaling and centering
     nodeIds.forEach(id => {
       const { x, y } = graph.getNodeAttributes(id);
-      const newX = (x - minX) * scale + offsetX;
-      const newY = (y - minY) * scale + offsetY;
+
+      const newX = canvasWidth - ((x - minX) * scale + offsetX);
+      const newY = canvasHeight - ((y - minY) * scale + offsetY);
 
       graph.updateNodeAttributes(id, attr => ({
         ...attr,

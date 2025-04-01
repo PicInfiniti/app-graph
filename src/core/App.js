@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.aries();
+    this.graphManager.generator.zodiac.ophiuchus();
   }
 
   drawGraph() {
@@ -108,7 +108,7 @@ export class App {
       }
 
       ctx.beginPath();
-      ctx.arc(attr.x, attr.y, attr.size, 0, 2 * Math.PI);
+      ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = settings.vertexLabel ? "white" : attr.color;
       ctx.fill();
       ctx.lineWidth = 3;

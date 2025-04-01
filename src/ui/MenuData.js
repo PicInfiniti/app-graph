@@ -357,12 +357,7 @@ export const menuData = [
           },
         ]
       },
-    ],
-  },
-  {
-    title: "Constellation",
-    id: "constellation",
-    submenu: [
+      { type: "divider" },
       {
         title: "Zodiac",
         id: "social",
@@ -410,10 +405,16 @@ export const menuData = [
             link: "https://en.wikipedia.org/wiki/Libra_(astrology)"
           },
           {
-            title: "Scorpio",
-            id: "scorpio",
+            title: "Scorpius",
+            id: "scorpius",
             label: "♏",
             link: "https://en.wikipedia.org/wiki/Scorpio_(astrology)"
+          },
+          {
+            title: "Ophiuchus",
+            id: "ophiuchus",
+            label: "⛎",
+            link: "https://en.wikipedia.org/wiki/Ophiuchus_(astrology)"
           },
           {
             title: "Sagittarius",
@@ -422,8 +423,8 @@ export const menuData = [
             link: "https://en.wikipedia.org/wiki/Sagittarius_(astrology)"
           },
           {
-            title: "Capricorn",
-            id: "capricorn",
+            title: "Capricornus",
+            id: "capricornus",
             label: "♑",
             link: "https://en.wikipedia.org/wiki/Capricorn_(astrology)"
           },
@@ -441,7 +442,7 @@ export const menuData = [
           }
         ]
       }
-    ]
+    ],
   },
   {
     title: "Metrics",

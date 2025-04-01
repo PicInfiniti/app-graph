@@ -10,7 +10,8 @@ export class Graph extends UndirectedGraph {
 
       if (!attrs.id) this.setNodeAttribute(key, 'id', Number(key));
       if (attrs.selected === undefined) this.setNodeAttribute(key, 'selected', false);
-      if (attrs.size === undefined) this.setNodeAttribute(key, 'size', 10);
+      if (attrs.size === undefined) this.setNodeAttribute(key, 'size', .25);
+      if (attrs.magnitude === undefined) this.setNodeAttribute(key, 'magnitude', 1);
     });
 
     // Automatically add 'source', 'target', and 'selected' to edges

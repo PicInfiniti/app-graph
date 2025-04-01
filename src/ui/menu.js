@@ -243,9 +243,10 @@ export class Menu {
       "leo": () => this.graphManager.generator.zodiac.leo(),
       "virgo": () => this.graphManager.generator.zodiac.virgo(),
       "libra": () => this.graphManager.generator.zodiac.libra(),
-      "scorpio": () => this.graphManager.generator.zodiac.scorpio(),
+      "scorpius": () => this.graphManager.generator.zodiac.scorpius(),
+      "ophiuchus": () => this.graphManager.generator.zodiac.ophiuchus(),
       "sagittarius": () => this.graphManager.generator.zodiac.sagittarius(),
-      "capricorn": () => this.graphManager.generator.zodiac.capricorn(),
+      "capricornus": () => this.graphManager.generator.zodiac.capricornus(),
       "aquarius": () => this.graphManager.generator.zodiac.aquarius(),
       "pisces": () => this.graphManager.generator.zodiac.pisces(),
 
