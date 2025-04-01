@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.scorpius();
+    this.graphManager.generator.clusters(20, 20, 10);
   }
 
   drawGraph() {
@@ -115,6 +115,7 @@ export class App {
       ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = attr.selected ? "orange" : attr.color;
       ctx.fill();
+      ctx.lineWidth = this.settings.stroke_size
       ctx.strokeStyle = attr.selected ? "orange" : attr.stroke;
       ctx.stroke();
       ctx.closePath();
