@@ -33,6 +33,7 @@ class AppSettings {
       node_color: "#D22B2B",
       edge_color: "#4682b4",
       label_color: "#000000",
+      label_pos: { x: 0, y: 0 },
       grid_color: "#00000020"
     };
 
@@ -42,7 +43,8 @@ class AppSettings {
       node_color: '#ffffff',         // crisp white stars
       label_color: '#d1d5db',        // soft gray labels (like Tailwind's text-gray-300)
       edge_color: '#60a5fa', // light blue lines (Tailwind's blue-400)
-      gird_color: "red",
+      grid_color: "#ffffff10",
+      label_pos: { x: -20, y: -20 },
     };
 
 
@@ -118,14 +120,7 @@ class AppSettings {
   }
 
   resetToDefault() {
-    this.settings = { ...this.defaultSettings };
-    this.eventBus.emit("settingsReset", this.settings);
-
-    if (this.#autoSave) {
-      this.saveToLocalStorage();
-    }
-    this.init();
-    this.eventBus.emit("graph:updated", { type: "resetSettings" })
+    this.setAllSettings(this.defaultSettings)
   }
 
   getSetting(key) {
@@ -164,6 +159,7 @@ class AppSettings {
       this.saveToLocalStorage();
     }
     this.init();
+    this.app.drawGraph();
   }
 
   toggleSetting(key) {

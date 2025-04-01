@@ -43,11 +43,6 @@
 #tools-panel .body-tools div {
   padding: 5px;
 }
-#tools-panel .body-tools div input {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-}
 #tools-panel .body-tools .scale, #tools-panel .body-tools .tree, #tools-panel .body-tools .force, #tools-panel .body-tools .panning, #tools-panel .body-tools .select, #tools-panel .body-tools .component {
   cursor: pointer;
 }
@@ -61,6 +56,67 @@
 }
 #tools-panel .body-tools .scale:active img, #tools-panel .body-tools .tree:active img, #tools-panel .body-tools .force:active img, #tools-panel .body-tools .panning:active img, #tools-panel .body-tools .select:active img, #tools-panel .body-tools .component:active img {
   transform: scale(0.9);
+}
+#tools-panel .body-tools #color {
+  height: 60px;
+  width: 50px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+#tools-panel .body-tools #color:hover div {
+  transform: translateX(var(--hover-x));
+  padding: 3px 3px 0px 3px;
+}
+#tools-panel .body-tools #color:hover div label {
+  display: block;
+}
+#tools-panel .body-tools #color > div {
+  padding: 0;
+  position: absolute;
+  transition: transform 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#tools-panel .body-tools #color > div label {
+  display: none;
+}
+#tools-panel .body-tools #color > div input {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+#tools-panel .body-tools #color .color-1 {
+  z-index: 1;
+  --hover-x: 0px;
+}
+#tools-panel .body-tools #color .color-2 {
+  z-index: 2;
+  --hover-x: 50px;
+}
+#tools-panel .body-tools #color .color-3 {
+  z-index: 3;
+  --hover-x: 100px;
+}
+#tools-panel .body-tools #color .color-4 {
+  z-index: 4;
+  --hover-x: 150px;
+}
+#tools-panel .body-tools #color .color-5 {
+  z-index: 5;
+  --hover-x: 200px;
+}
+#tools-panel .body-tools #color .color-6 {
+  z-index: 6;
+  --hover-x: 250px;
 }
 
 /*# sourceMappingURL=_tools-panel.css.map */

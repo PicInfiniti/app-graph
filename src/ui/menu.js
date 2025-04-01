@@ -149,7 +149,7 @@ export class Menu {
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),
       "export-png": () => this.eventBus.emit("export", { type: "png" }),
-      "default-settings-btn": () => this.eventBus.emit("resetSettings"),
+      "default-settings-btn": () => this.appSettings.resetToDefault(),
       "sky-night-theme-btn": () => this.appSettings.loadNightSkyTheme(),
 
       // Edit

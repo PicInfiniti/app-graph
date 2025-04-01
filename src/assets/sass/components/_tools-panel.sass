@@ -43,11 +43,6 @@
     div
       padding: 5px
 
-      input
-        width: 50px
-        height: 50px
-        cursor: pointer
-
     .scale, .tree, .force, .panning, .select, .component
       cursor: pointer
 
@@ -61,3 +56,109 @@
 
       &:active img 
         transform: scale(0.9)
+
+    
+    #color 
+      height: 60px
+      width: 50px
+      padding: 0
+      margin: 0
+      display: flex
+      justify-content: center
+      align-items: center
+      display: flex
+      &:hover div
+        transform: translateX(var(--hover-x))
+        padding: 3px 3px 0px 3px
+        label
+          display: block
+
+      > div 
+        padding: 0
+        position: absolute
+        transition: transform 0.3s ease
+        background-color: rgba(255,255,255,.7) 
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        label
+          display: none
+
+        input
+          width: 45px
+          height: 45px
+          cursor: pointer
+          border: none
+          background-color: #00000000
+
+      .color-1
+        z-index: 1
+        --hover-x: 0px
+
+      .color-2        
+        z-index: 2
+        --hover-x: 50px
+
+      .color-3
+        z-index: 3
+        --hover-x: 100px
+
+      .color-4 
+        z-index: 4
+        --hover-x: 150px
+      
+      .color-5 
+        z-index: 5
+        --hover-x: 200px
+      
+      .color-6 
+        z-index: 6
+        --hover-x: 250px
+
+
+    // #color
+    //   position: relative
+    //   width: 60px
+    //   height: 60px 
+    //   padding: 0
+    //   margin-left: -5px
+    //   input 
+    //     position: absolute
+    //     width: 35px
+    //     height: 35px
+    //     padding: 0
+    //     border: none 
+    //     cursor: pointer
+    //
+    // .color-1
+    //   top: 0
+    //   left: 0
+    //   z-index: 1
+    //
+    // .color-2
+    //   top: 15px 
+    //   left: 15px
+    //   z-index: 2
+    //
+    // .color-3
+    //   top: 30px
+    //   left: 30px
+    //   z-index: 3 
+    //
+    // .color-4
+    //   top: 45px
+    //   left: 45px
+    //   z-index: 4
+    //
+    // .color-5
+    //   top: 60px
+    //   left: 60px
+    //   z-index: 5
+    //
+    // .color-6
+    //   top: 75px
+    //   left: 75px
+    //   z-index: 6
+    //
+

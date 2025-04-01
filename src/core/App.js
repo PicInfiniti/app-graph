@@ -107,11 +107,14 @@ export class App {
         graph.setNodeAttribute(node, "color", settings.node_color)
       }
 
+      if (!attr.stroke) {
+        graph.setNodeAttribute(node, "stroke", settings.node_color)
+      }
+
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
-      ctx.fillStyle = settings.vertexLabel ? "white" : attr.color;
+      ctx.fillStyle = attr.selected ? "orange" : attr.color;
       ctx.fill();
-      ctx.lineWidth = 3;
       ctx.strokeStyle = attr.selected ? "orange" : attr.color;
       ctx.stroke();
       ctx.closePath();
@@ -121,7 +124,7 @@ export class App {
         ctx.font = `${settings.label_size}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(attr.label, attr.x, attr.y);
+        ctx.fillText(attr.label, attr.x + settings.label_pos.x, attr.y + settings.label_pos.y);
       }
     });
 
