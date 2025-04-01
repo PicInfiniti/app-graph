@@ -108,14 +108,14 @@ export class App {
       }
 
       if (!attr.stroke) {
-        graph.setNodeAttribute(node, "stroke", settings.node_color)
+        graph.setNodeAttribute(node, "stroke", settings.stroke_color)
       }
 
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = attr.selected ? "orange" : attr.color;
       ctx.fill();
-      ctx.strokeStyle = attr.selected ? "orange" : attr.color;
+      ctx.strokeStyle = attr.selected ? "orange" : attr.stroke;
       ctx.stroke();
       ctx.closePath();
 

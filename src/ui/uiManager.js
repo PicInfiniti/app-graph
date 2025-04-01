@@ -10,8 +10,8 @@ export function applySettingsToUI(settings, canvas) {
   d.getElementById('node-color').value = settings.node_color;
   d.getElementById('edge-color').value = settings.edge_color;
   d.getElementById('label-color').value = settings.label_color;
-  d.getElementById('grid-color').value = settings.label_grid;
-  d.getElementById('background-color').value = settings.background_color;
+  // d.getElementById('grid-color').value = settings.grid_color;
+  // d.getElementById('background-color').value = settings.background_color;
   d.getElementById('stroke-color').value = settings.stroke_color;
   d.querySelector('#component-btn .check').classList.toggle("hidden", !settings.component);
   d.querySelector('#component').classList.toggle("gray-background", !settings.component);

@@ -161,6 +161,10 @@ export class Menu {
       "node-color": () => this.eventBus.emit("updateSetting", { key: "node_color", value: val }),
       "edge-color": () => this.eventBus.emit("updateSetting", { key: "edge_color", value: val }),
       "label-color": () => this.eventBus.emit("updateSetting", { key: "label_color", value: val }),
+      "stroke-color": () => this.eventBus.emit("updateSetting", { key: "stroke_color", value: val }),
+      "background-color": () => this.eventBus.emit("updateSetting", { key: "background_color", value: val }),
+      "grid-color": () => this.eventBus.emit("updateSetting", { key: "grid_color", value: val }),
+
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
 

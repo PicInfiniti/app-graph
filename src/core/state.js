@@ -29,7 +29,7 @@ class AppSettings {
       panning: false,
       select: false,
       grid: 20,
-      color: "#4682b4",
+      stroke_color: "#4682b4",
       node_color: "#D22B2B",
       edge_color: "#4682b4",
       label_color: "#000000",
@@ -37,17 +37,17 @@ class AppSettings {
       grid_color: "#00000020"
     };
 
-
     this.nightSkyTheme = {
       background_color: '#0d1b2a',   // deep midnight blue
+      stroke_color: '#ffffff',
       node_color: '#ffffff',         // crisp white stars
       label_color: '#d1d5db',        // soft gray labels (like Tailwind's text-gray-300)
       edge_color: '#60a5fa', // light blue lines (Tailwind's blue-400)
       grid_color: "#ffffff10",
       label_pos: { x: -20, y: -20 },
+      node_radius: 10,
+      edge_size: 1,
     };
-
-
 
     // Load validated settings from localStorage or use defaults
     this.settings = this.loadFromLocalStorage();
