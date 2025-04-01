@@ -5,6 +5,7 @@ export class Menu {
     this.app = app;
     this.eventBus = app.eventBus
     this.graphManager = app.graphManager
+    this.appSettings = app.appSettings
     this.layout = app.layout
     this.menuData = menuData;
     this.container = d.getElementById(containerId);
@@ -149,6 +150,7 @@ export class Menu {
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),
       "export-png": () => this.eventBus.emit("export", { type: "png" }),
       "default-settings-btn": () => this.eventBus.emit("resetSettings"),
+      "sky-night-theme-btn": () => this.appSettings.loadNightSkyTheme(),
 
       // Edit
       "add-edge-btn": () => this.graphManager.connectSelectedNodes(),
@@ -156,7 +158,9 @@ export class Menu {
       "color-selection-btn": () => this.graphManager.updateSelectedNodesEdgesColor(),
       "organize-circle": () => this.layout.applyLayout("circle"),
       "complete-btn": () => this.graphManager.makeGraphComplete(),
-      "color": () => this.eventBus.emit("updateSetting", { key: "color", value: val }),
+      "node-color": () => this.eventBus.emit("updateSetting", { key: "node_color", value: val }),
+      "edge-color": () => this.eventBus.emit("updateSetting", { key: "edge_color", value: val }),
+      "label-color": () => this.eventBus.emit("updateSetting", { key: "label_color", value: val }),
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
 

@@ -131,7 +131,7 @@ export class Graph extends UndirectedGraph {
   }
 
   // 🔗 Connect all selected nodes (fully connected using merge)
-  connectSelectedNodes() {
+  connectSelectedNodes(color) {
     const selected = this.getSelectedNodes();
     if (selected.length < 2) return;
     for (let i = 0; i < selected.length; i++) {
@@ -139,7 +139,7 @@ export class Graph extends UndirectedGraph {
         const source = selected[i];
         const target = selected[j];
         // This creates the edge if it doesn't exist, or merges attributes if it does
-        this.mergeUndirectedEdge(source, target, { selected: false });
+        this.mergeUndirectedEdge(source, target, { color: color, selected: false });
       }
     }
   }

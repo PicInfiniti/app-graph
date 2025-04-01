@@ -60,13 +60,13 @@ export class Canvas {
 
     const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
-    this.app.graphManager.addNode(newID, { x: x, y: y, color: this.settings.color, label: newLabel });
+    this.app.graphManager.addNode(newID, { x: x, y: y, color: this.settings.node_color, label: newLabel });
   }
 
   addNodeConnectedToNode(node) {
     const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
-    const newNode = { x: node.x + 30, y: node.y + 30, color: this.settings.color, label: newLabel };
+    const newNode = { x: node.x + 30, y: node.y + 30, color: this.settings.node_color, label: newLabel };
 
     this.app.graphManager.graph.addNode(newID, newNode);
     this.app.graphManager.graph.addEdge(node.id, newID);

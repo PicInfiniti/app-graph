@@ -14,7 +14,8 @@ class AppSettings {
     this.debounceTimer = null;
 
     this.defaultSettings = {
-      forceSimulation: true,
+      background_color: "white",
+      forceSimulation: false,
       component: false,
       scale: false,
       tree: true,
@@ -28,8 +29,23 @@ class AppSettings {
       panning: false,
       select: false,
       grid: 20,
-      color: "#4682B4",
+      color: "#4682b4",
+      node_color: "#D22B2B",
+      edge_color: "#4682b4",
+      label_color: "#000000",
+      grid_color: "#00000020"
     };
+
+
+    this.nightSkyTheme = {
+      background_color: '#0d1b2a',   // deep midnight blue
+      node_color: '#ffffff',         // crisp white stars
+      label_color: '#d1d5db',        // soft gray labels (like Tailwind's text-gray-300)
+      edge_color: '#60a5fa', // light blue lines (Tailwind's blue-400)
+      gird_color: "red",
+    };
+
+
 
     // Load validated settings from localStorage or use defaults
     this.settings = this.loadFromLocalStorage();
@@ -202,6 +218,10 @@ class AppSettings {
       acc[key] = saved && saved.hasOwnProperty(key) ? saved[key] : this.defaultSettings[key];
       return acc;
     }, {});
+  }
+
+  loadNightSkyTheme() {
+    this.setAllSettings(this.nightSkyTheme)
   }
 }
 

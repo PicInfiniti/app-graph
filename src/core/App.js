@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.ophiuchus();
+    this.graphManager.generator.clusters(20, 20, 10);
   }
 
   drawGraph() {
@@ -86,7 +86,7 @@ export class App {
     // Draw edges
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (!attr.color) {
-        graph.setEdgeAttribute(edge, "color", settings.color)
+        graph.setEdgeAttribute(edge, "color", settings.edge_color)
       }
       ctx.beginPath();
       ctx.moveTo(source.x, source.y);
@@ -104,7 +104,7 @@ export class App {
         graph.setNodeAttribute(node, "label", newLabel)
       }
       if (!attr.color) {
-        graph.setNodeAttribute(node, "color", settings.color)
+        graph.setNodeAttribute(node, "color", settings.node_color)
       }
 
       ctx.beginPath();
@@ -117,7 +117,7 @@ export class App {
       ctx.closePath();
 
       if (settings.vertexLabel) {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = this.settings.label_color;
         ctx.font = `${settings.label_size}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";

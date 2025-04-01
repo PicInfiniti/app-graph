@@ -10,9 +10,11 @@ body
   height: 100%
   display: flex
   flex-direction: column
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2) 1%, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1%, transparent 1px)
-  background-size: var(--grid-size) var(--grid-size)
 
+  background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px)
+  background-color: white
+  background-size: var(--grid-size) var(--grid-size)
+  background-repeat: repeat
   *
     user-select: none
 
