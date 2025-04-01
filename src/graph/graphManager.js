@@ -123,7 +123,7 @@ export class GraphManager {
 
   updateSelectedNodesEdgesColor() {
     this.saveGraphState()
-    this.graph.updateSelectedNodesColor(this.settings.node_color)
+    this.graph.updateSelectedNodesColor(this.settings.node_color, this.settings.stroke_color)
     this.graph.updateSelectedEdgesColor(this.settings.edge_color)
     this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
   }
