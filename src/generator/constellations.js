@@ -242,30 +242,43 @@ export function libra() {
   return createConstellation('Libra', stars, edges);
 }
 
+
 export function scorpius() {
   const stars = [
-    { id: 0, label: 'Antares', ra: 16.49 * 15, dec: -26.43, magnitude: 1.06 },
-    { id: 1, label: 'Graffias', ra: 16.09 * 15, dec: -19.80, magnitude: 2.62 },
-    { id: 2, label: 'Dschubba', ra: 16.00 * 15, dec: -22.62, magnitude: 2.29 },
-    { id: 3, label: 'Pi', ra: 16.37 * 15, dec: -26.71, magnitude: 2.89 },
-    { id: 4, label: 'Rho', ra: 16.59 * 15, dec: -29.82, magnitude: 3.87 },
-    { id: 5, label: 'Shaula', ra: 17.56 * 15, dec: -37.10, magnitude: 1.62 },
-    { id: 6, label: 'Lesath', ra: 17.62 * 15, dec: -37.29, magnitude: 2.70 },
-    { id: 7, label: 'Sargas', ra: 17.62 * 15, dec: -42.99, magnitude: 1.86 },
-    { id: 8, label: 'Epsilon', ra: 16.84 * 15, dec: -34.30, magnitude: 2.29 },
-    { id: 9, label: 'Zeta1', ra: 16.91 * 15, dec: -42.36, magnitude: 4.70 },
-    { id: 10, label: 'Kappa', ra: 17.19 * 15, dec: -39.02, magnitude: 2.39 },
-    { id: 11, label: 'Mu1', ra: 16.88 * 15, dec: -38.02, magnitude: 3.08 }
+    { id: 0, label: 'Acrab', ra: 16.09 * 15, dec: -19.80, magnitude: 2.62 },
+    { id: 1, label: 'Dschubba', ra: 16.00 * 15, dec: -22.62, magnitude: 2.29 },
+    { id: 2, label: 'Pi', ra: 16.25 * 15, dec: -26.10, magnitude: 2.89 },
+    { id: 3, label: 'Antares', ra: 16.49 * 15, dec: -26.43, magnitude: 1.06 },
+    { id: 4, label: 'Tau Scorpii', ra: 16.60 * 15, dec: -28.22, magnitude: 2.82 },
+    { id: 5, label: 'Epsilon Scorpii', ra: 16.84 * 15, dec: -34.30, magnitude: 2.29 },
+    { id: 6, label: 'Mu1 Scorpii', ra: 16.88 * 15, dec: -38.02, magnitude: 3.08 },
+    { id: 7, label: 'Zeta2 Scorpii', ra: 16.89 * 15, dec: -42.36, magnitude: 3.62 },
+    { id: 8, label: 'Eta Scorpii', ra: 17.20 * 15, dec: -43.00, magnitude: 3.33 },
+    { id: 9, label: 'Sargas', ra: 17.62 * 15, dec: -42.99, magnitude: 1.86 },
+    { id: 10, label: 'Iota1 Scorpii', ra: 17.37 * 15, dec: -40.65, magnitude: 3.03 },
+    { id: 11, label: 'Kappa Scorpii', ra: 17.19 * 15, dec: -39.02, magnitude: 2.39 },
+    { id: 12, label: 'Shaula', ra: 17.56 * 15, dec: -37.10, magnitude: 1.62 },
+    { id: 13, label: 'Lesath', ra: 17.56 * 15, dec: -37.29, magnitude: 2.70 },
   ];
 
   const edges = [
-    // Body and claws
-    [1, 2], [2, 0], [0, 3], [3, 4], [4, 8], [8, 11], [11, 10], [10, 5], [5, 6], [6, 7],
-    [8, 9], [9, 7]
+    [12, 11],
+    [11, 10],
+    [10, 9],
+    [9, 8],
+    [8, 7],
+    [7, 6],
+    [6, 5],
+    [5, 4],
+    [4, 3],
+    [3, 2],
+    [3, 1],
+    [3, 0],
   ];
 
   return createConstellation('Scorpius', stars, edges);
 }
+
 
 export function ophiuchus() {
   const stars = [
