@@ -60,6 +60,7 @@ export class Canvas {
 
     const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
+    console.log(this.settings.node)
     this.app.graphManager.addNode(newID, { x: x, y: y, color: this.settings.node_color, label: newLabel });
   }
 
