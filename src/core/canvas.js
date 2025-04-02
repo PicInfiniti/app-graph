@@ -22,6 +22,19 @@ export class Canvas {
     this.canvas.addEventListener("dblclick", this.handleDbclick.bind(this));
     this.canvas.addEventListener("click", this.handleclick.bind(this));
 
+    // 👇 Double-tap detection for touchscreens
+    let lastTap = 0;
+
+    this.canvas.addEventListener("touchend", (event) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 300 && tapLength > 0) {
+        this.handleDbclick(event)
+      }
+      lastTap = currentTime;
+    });
+
+
     d3.select('canvas')
       .on('mousedown', (event) => {
         this.mouse.dragging = false;
@@ -55,12 +68,10 @@ export class Canvas {
 
   addNodeAtEvent(event) {
     event.preventDefault();
-
-    let [x, y] = d3.pointer(event, this.canvas);
+    const [x, y] = event.type == "touchend" ? getTouchPosition(event, this.canvas) : d3.pointer(event, this.canvas);
 
     const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
     const newLabel = getAvailableLabel(newID);
-    console.log(this.settings.node)
     this.app.graphManager.addNode(newID, { x: x, y: y, color: this.settings.node_color, label: newLabel });
   }
 
@@ -193,8 +204,7 @@ export class Canvas {
   }
 
   handleDbclick(event) {
-    let [x, y] = d3.pointer(event, this.canvas);
-
+    const [x, y] = event.type == "touchend" ? getTouchPosition(event, this.canvas) : d3.pointer(event, this.canvas);
     let clickedNode = this.findClickedNode(x, y);
     let clickedEdge = this.findClickedEdge(x, y);
 
@@ -237,4 +247,10 @@ export class Canvas {
       this.eventBus.emit("graph:updated", { type: "unselect" })
     }
   }
+}
+
+export function getTouchPosition(event, canvas) {
+  const touch = event.changedTouches[0];
+  const rect = canvas.getBoundingClientRect();
+  return [touch.clientX - rect.left, touch.clientY - rect.top];
 }
