@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.cancer();
+    this.graphManager.generator.zodiac.scorpius();
   }
 
   drawGraph() {

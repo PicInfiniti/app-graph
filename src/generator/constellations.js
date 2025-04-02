@@ -86,35 +86,6 @@ export function taurus() {
 }
 
 
-export function gemini() {
-  const stars = [
-    { id: 0, label: 'Pollux', ra: 7.755 * 15, dec: 28.03, magnitude: 1.14 },
-    { id: 1, label: 'Castor', ra: 7.576 * 15, dec: 31.89, magnitude: 1.58 },
-    { id: 2, label: 'Alhena', ra: 6.628 * 15, dec: 16.39, magnitude: 1.93 },
-    { id: 3, label: 'Wasat', ra: 7.336 * 15, dec: 21.98, magnitude: 3.53 },
-    { id: 4, label: 'Mebsuta', ra: 6.753 * 15, dec: 25.13, magnitude: 3.06 },
-    { id: 5, label: 'Zetam', ra: 7.034 * 15, dec: 20.57, magnitude: 3.93 },
-    { id: 6, label: 'Kappam', ra: 7.739 * 15, dec: 24.4, magnitude: 3.57 },
-    { id: 7, label: 'Mum', ra: 6.377 * 15, dec: 22.51, magnitude: 2.88 },
-    { id: 8, label: 'Etam', ra: 6.482 * 15, dec: 22.51, magnitude: 3.28 },
-    { id: 9, label: 'Num', ra: 6.23 * 15, dec: 20.42, magnitude: 4.14 },
-    { id: 10, label: 'Xim', ra: 6.94 * 15, dec: 12.57, magnitude: 3.35 },
-    { id: 11, label: 'Taum', ra: 7.185 * 15, dec: 30.24, magnitude: 4.42 },
-    { id: 12, label: '1m', ra: 6.364 * 15, dec: 25.13, magnitude: 4.15 },
-    { id: 13, label: 'Thetam', ra: 6.523 * 15, dec: 33.96, magnitude: 3.59 }
-  ];
-
-  const edges = [
-    // Twin lines from heads to feet
-    [1, 4], [4, 5], [5, 3], [3, 2], [2, 10], [4, 12], [12, 7], [7, 8], [8, 9],
-    [0, 6], [6, 3], [0, 11], [1, 13],
-
-    // Cross-links between twins
-    [1, 0], [3, 6], [2, 3]
-  ];
-
-  return createConstellation('Gemini', stars, edges);
-}
 
 
 export function cancer() {
@@ -222,21 +193,22 @@ export function libra() {
 
 export function scorpius() {
   const stars = [
-    { id: 0, label: 'Acrab (Beta)', ra: 16.0906, dec: -19.8019, magnitude: 2.62 },
-    { id: 1, label: 'Dschubba (Delta)', ra: 16.0056, dec: -22.6217, magnitude: 2.29 },
-    { id: 2, label: 'Pi', ra: 15.7378, dec: -26.1141, magnitude: 2.89 },
-    { id: 3, label: 'Antares (Alpha)', ra: 16.4901, dec: -26.4320, magnitude: 0.96 },
-    { id: 4, label: 'Tau', ra: 16.5980, dec: -28.2160, magnitude: 2.82 },
-    { id: 5, label: 'Epsilon', ra: 16.8361, dec: -34.2932, magnitude: 2.29 },
-    { id: 6, label: 'Mu1', ra: 16.8643, dec: -38.0474, magnitude: 3.00 },
-    { id: 7, label: 'Zeta2', ra: 16.9190, dec: -42.3621, magnitude: 3.62 },
-    { id: 8, label: 'Eta', ra: 17.2026, dec: -43.2392, magnitude: 3.33 },
-    { id: 9, label: 'Sargas (Theta)', ra: 17.4274, dec: -42.9978, magnitude: 1.84 },
-    { id: 10, label: 'Iota1', ra: 17.7930, dec: -40.1260, magnitude: 3.03 },
-    { id: 11, label: 'Kappa', ra: 17.9307, dec: -39.0134, magnitude: 2.39 },
-    { id: 12, label: 'Shaula (Lambda)', ra: 17.5601, dec: -37.1038, magnitude: 1.62 },
-    { id: 13, label: 'Lesath (Upsilon)', ra: 17.6293, dec: -37.2958, magnitude: 2.70 },
+    { id: 0, label: 'Acrab', ra: "16 06 55.3", dec: "-19 52 32.6", magnitude: 2.59 },
+    { id: 1, label: 'Dschubba', ra: "16 01 50.6", dec: "-22 41 40.4", magnitude: 2.25 },
+    { id: 2, label: 'Pi', ra: "16 00 23.8", dec: "-26 11 14.7", magnitude: 2.81 },
+    { id: 3, label: 'Antares', ra: "16 30 58.3", dec: "-26 29 18.3", magnitude: 0.97 },
+    { id: 4, label: 'Tau', ra: "16 37 28.1", dec: "-28 16 06.8", magnitude: 2.73 },
+    { id: 5, label: 'Epsilon', ra: "16 51 48.9", dec: "-34 20 18.8", magnitude: 2.45 },
+    { id: 6, label: 'Mu1', ra: "16 53 35.8", dec: "-38 05 23.0", magnitude: 2.92 },
+    { id: 7, label: 'Zeta2', ra: "16 56 22.6", dec: "-42 24 11.1", magnitude: 3.75 },
+    { id: 8, label: 'Eta', ra: "17 13 58.6", dec: "-43 16 14.8", magnitude: 3.41 },
+    { id: 9, label: 'Sargas', ra: "17 39 08.6", dec: "-43 00 43.4", magnitude: 1.92 },
+    { id: 10, label: 'Iota1', ra: "17 49 21.5", dec: "-40 08 06.6", magnitude: 3.09 },
+    { id: 11, label: 'Kappa', ra: "17 44 14.6", dec: "-39 02 29.6", magnitude: 2.31 },
+    { id: 12, label: 'Shaula', ra: "17 35 19.9", dec: "-37 07 15.9", magnitude: 1.52 },
+    { id: 13, label: 'Lesath', ra: "17 32 29.4", dec: "-37 18 53.3", magnitude: 2.59 },
   ];
+
 
   const edges = [
     [0, 3], // Acrab to Dschubba
@@ -251,7 +223,6 @@ export function scorpius() {
     [9, 10], // Sargas to Iota1
     [10, 11], // Iota1 to Kappa Scorpii
     [11, 12], // Kappa to Shaula
-    [12, 13], // Shaula to Lesath
   ];
 
   return createConstellation('Scorpius', stars, edges);
