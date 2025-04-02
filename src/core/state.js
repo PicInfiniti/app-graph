@@ -15,7 +15,7 @@ class AppSettings {
 
     this.defaultSettings = {
       background_color: "white",
-      forceSimulation: false,
+      forceSimulation: true,
       component: false,
       scale: false,
       tree: true,
@@ -48,6 +48,7 @@ class AppSettings {
       label_pos: { x: -20, y: -20 },
       node_radius: 10,
       edge_size: 1,
+      forceSimulation: false,
     };
 
     // Load validated settings from localStorage or use defaults

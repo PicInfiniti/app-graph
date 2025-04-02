@@ -248,7 +248,7 @@ export class Metric {
     const graph = this.graphManager.graph
     const strengths = disparity(graph);
     for (const key in strengths) {
-      const [source, target] = graph.edge(key);
+      const [source, target] = graph.getEdgeSourcetarget(key);
       this.addInfo(`${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${strengths[key]}`)
     }
     this.addLine()
