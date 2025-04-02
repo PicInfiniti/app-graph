@@ -51,6 +51,9 @@ export class Graph extends UndirectedGraph {
     });
   }
 
+  edge(e) {
+    return [this.source(e), this.target(e)]
+  }
   // ❌ Clear selection on all nodes and edges
   deselectAll() {
     this.updateEachNodeAttributes((_, attrs) => ({

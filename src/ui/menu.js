@@ -188,11 +188,24 @@ export class Menu {
       "grid-size-1": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
 
       //Metrics
+      "basic-info-btn": () => this.graphManager.metric.basicInfo(),
       "list-degrees-btn": () => this.graphManager.metric.degreeSequesnce(),
       "components-btn": () => this.graphManager.metric.countComponents(),
+      "neighbors-btn": () => this.graphManager.metric.neighbors(),
       "shortest-path-btn": () => this.graphManager.metric.shortestPath(),
-      "basic-info-btn": () => this.graphManager.metric.basicInfo(),
-
+      "density-btn": () => this.graphManager.metric.density(),
+      "diameter-btn": () => this.graphManager.metric.diameter(),
+      "eccentricity-btn": () => this.graphManager.metric.eccentricity(),
+      "simmelian-strength-btn": () => this.graphManager.metric.simmelianStrength(),
+      "betweenness-centrality-btn": () => this.graphManager.metric.betweennessCentrality(),
+      "closeness-centrality-btn": () => this.graphManager.metric.closenessCentrality(),
+      "degree-centrality-btn": () => this.graphManager.metric.degreeCentrality(),
+      "eigenvector-centrality-btn": () => this.graphManager.metric.eigenvectorCentrality(),
+      "pagerank-btn": () => this.graphManager.metric.pagerank(),
+      "edge-uniformity-btn": () => this.graphManager.metric.edgeUniformity(),
+      "neighborhood-preservation-btn": () => this.graphManager.metric.neighborhoodPreservation(),
+      "stress-btn": () => this.graphManager.metric.stress(),
+      "clear-info-panel-btn": () => d.querySelector("#floating-panel .body-info").innerHTML = "",
       //Generator
       //Classic
       "empty": () => this.graphManager.generator.empty(d.getElementById("g-empty-1").value),

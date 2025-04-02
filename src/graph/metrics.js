@@ -1,5 +1,17 @@
-import { connectedComponents, countConnectedComponents, forEachConnectedComponent } from 'graphology-components';
+import { connectedComponents, forEachConnectedComponent } from 'graphology-components';
 import { bidirectional } from 'graphology-shortest-path';
+import { density, diameter } from 'graphology-metrics/graph';
+import { simmelianStrength } from 'graphology-metrics/edge';
+import closenessCentrality from 'graphology-metrics/centrality/closeness';
+import { degreeCentrality } from 'graphology-metrics/centrality/degree';
+import betweennessCentrality from 'graphology-metrics/centrality/betweenness';
+import eigenvectorCentrality from 'graphology-metrics/centrality/eigenvector';
+import { edgeUniformity } from 'graphology-metrics/layout-quality';
+import stress from 'graphology-metrics/layout-quality/stress';
+import eccentricity from 'graphology-metrics/node/eccentricity';
+import pagerank from 'graphology-metrics/centrality/pagerank';
+import neighborhoodPreservation from 'graphology-metrics/layout-quality/neighborhood-preservation';
+
 const d = document;
 
 export class Metric {
@@ -25,6 +37,7 @@ export class Metric {
   addLine() {
     const line = d.createElement("hr");
     this.pannel.appendChild(line);
+    this.pannel.scrollTop = this.pannel.scrollHeight;
   }
 
 
@@ -72,6 +85,24 @@ export class Metric {
     this.addLine();
   }
 
+  neighbors() {
+    const graph = this.graphManager.graph
+    this.addHeader("Neighbors")
+
+    const selectedNodes = this.graphManager.graph.getSelectedNodes()
+    if (selectedNodes.length !== 1) {
+      this.addInfo("Select one node")
+      this.addLine()
+      return
+    }
+
+    const [node] = selectedNodes
+    const n = graph.neighbors(node);
+
+    this.addInfo(n.map(node => graph.getNodeAttribute(node, "label")).join(', '))
+    this.addLine();
+  }
+
   shortestPath() {
     this.addHeader("Shortest Path")
 
@@ -92,6 +123,123 @@ export class Metric {
       this.addInfo("They are not connected")
       this.addLine()
     }
+  }
+
+  density() {
+    this.addHeader("Density")
+    const graph = this.graphManager.graph
+    const d = density(graph);
+    this.addInfo(d)
+    this.addLine()
+  }
+
+  diameter() {
+    this.addHeader("Diameter")
+    const graph = this.graphManager.graph
+    const d = diameter(graph);
+    this.addInfo(d)
+    this.addLine()
+  }
+
+  eccentricity() {
+    this.addHeader("Eccentricity")
+
+    const graph = this.graphManager.graph
+    const selectedNodes = this.graphManager.graph.getSelectedNodes()
+    if (selectedNodes.length !== 1) {
+      this.addInfo("Select one node")
+      this.addLine()
+      return
+    }
+    const [node] = selectedNodes
+    const e = eccentricity(graph, node);
+    this.addInfo(e)
+    this.addLine()
+  }
+
+  simmelianStrength() {
+    this.addHeader("Simmelian strength")
+    const graph = this.graphManager.graph
+    const strengths = simmelianStrength(graph);
+    for (const key in strengths) {
+      const [source, target] = graph.edge(key);
+      this.addInfo(`${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  betweennessCentrality() {
+    this.addHeader("Betweenness centrality")
+    const graph = this.graphManager.graph
+    const strengths = betweennessCentrality(graph);
+    for (const key in strengths) {
+      this.addInfo(`${graph.getNodeAttribute(key, "label")}: ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  closenessCentrality() {
+    this.addHeader("Closeness centrality")
+    const graph = this.graphManager.graph
+    const strengths = closenessCentrality(graph);
+    for (const key in strengths) {
+      this.addInfo(`${graph.getNodeAttribute(key, "label")}: ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  degreeCentrality() {
+    this.addHeader("Degree centrality")
+    const graph = this.graphManager.graph
+    const strengths = degreeCentrality(graph);
+    for (const key in strengths) {
+      this.addInfo(`${graph.getNodeAttribute(key, "label")}: ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  eigenvectorCentrality() {
+    this.addHeader("Eigenvector centrality")
+    const graph = this.graphManager.graph
+    const strengths = eigenvectorCentrality(graph);
+    for (const key in strengths) {
+      this.addInfo(`${graph.getNodeAttribute(key, "label")}: ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  pagerank() {
+    this.addHeader("Pagerank")
+    const graph = this.graphManager.graph
+    const strengths = pagerank(graph);
+    for (const key in strengths) {
+      this.addInfo(`${graph.getNodeAttribute(key, "label")}: ${strengths[key]}`)
+    }
+    this.addLine()
+  }
+
+  edgeUniformity() {
+    this.addHeader("Edge Uniformity")
+    const graph = this.graphManager.graph
+    const strengths = edgeUniformity(graph);
+    this.addInfo(strengths)
+    this.addLine()
+  }
+
+  neighborhoodPreservation() {
+    this.addHeader("Neighborhood preservation")
+    const graph = this.graphManager.graph
+    const strengths = neighborhoodPreservation(graph);
+    this.addInfo(strengths)
+    this.addLine()
+  }
+
+  stress() {
+    this.addHeader("Stress")
+    const graph = this.graphManager.graph
+    const strengths = stress(graph);
+    this.addInfo(strengths)
+    this.addLine()
   }
 }
 
