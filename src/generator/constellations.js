@@ -46,21 +46,20 @@ function convertDECtoDecimal(decStr) {
 // ---------------- Constellations ----------------
 export function aries() {
   const stars = [
-    { id: 0, label: 'Mesarthim (Gamma Arietis)', ra: 1.8885, dec: 19.2903, magnitude: 3.86 },
-    { id: 1, label: 'Sheratan (Beta Arietis)', ra: 1.9107, dec: 20.8080, magnitude: 2.64 },
-    { id: 2, label: 'Hamal (Alpha Arietis)', ra: 2.1195, dec: 23.4624, magnitude: 2.00 },
-    { id: 3, label: '41 Arietis', ra: 2.9452, dec: 27.0812, magnitude: 3.63 },
+    { id: 0, label: 'Hamal', ra: "02 08 34.7", dec: "23 34 50.5", magnitude: 2.17 },
+    { id: 1, label: 'Sheratan', ra: "01 56 01.0", dec: "20 55 48.5", magnitude: 2.70 },
+    { id: 2, label: 'Gamma', ra: "01 54 53.8", dec: "19 24 58.7", magnitude: 3.84 },
+    { id: 3, label: '41 Arietis', ra: "02 51 27.2", dec: "27 21 50.6", magnitude: 3.58 },
   ];
 
   const edges = [
-    [0, 1], // Mesarthim to Sheratan
-    [1, 2], // Sheratan to Hamal
-    [2, 3], // Hamal to 41 Arietis
+    [0, 1], // Hamal to Sheratan
+    [1, 2], // Sheratan to Mesarthim
+    [0, 3], // Hamal to 41 Arietis
   ];
 
-  return createConstellation('Aries', stars, edges);
+  return createConstellation("Aries", stars, edges);
 }
-
 
 export function taurus() {
   const stars = [
