@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.aries();
+    this.graphManager.generator.zodiac.leo();
   }
 
   drawGraph() {

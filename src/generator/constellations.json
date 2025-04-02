@@ -13,7 +13,7 @@
         "label": "Sheratan",
         "ra": "01 56 01.0",
         "dec": "20 55 48.5",
-        "magnitude": 2.7
+        "magnitude": 2.70
       },
       {
         "id": 2,
@@ -45,56 +45,282 @@
       ]
     ]
   },
-  "taurus": {
+  "cancer": {
     "stars": [
       {
         "id": 0,
-        "label": "Aldebaran (Alpha Tauri)",
-        "ra": 4.5987,
-        "dec": 16.5093,
-        "magnitude": 0.87
+        "label": "Acubens",
+        "ra": "08 59 52.7",
+        "dec": "11 45 32.4",
+        "magnitude": 4.28
       },
       {
         "id": 1,
-        "label": "Elnath (Beta Tauri)",
-        "ra": 5.4382,
-        "dec": 28.6075,
-        "magnitude": 1.65
+        "label": "Beta",
+        "ra": "08 17 53.5",
+        "dec": "09 06 24.1",
+        "magnitude": 3.66
       },
       {
         "id": 2,
-        "label": "Alcyone (Eta Tauri)",
-        "ra": 3.7914,
-        "dec": 24.1051,
-        "magnitude": 2.87
+        "label": "Asellus Australis",
+        "ra": "08 46 07.7",
+        "dec": "18 03 39.9",
+        "magnitude": 4.09
       },
       {
         "id": 3,
-        "label": "Hyadum I (Gamma Tauri)",
-        "ra": 4.431,
-        "dec": 15.627,
-        "magnitude": 3.65
+        "label": "Asellus Borealis",
+        "ra": "08 44 45.4",
+        "dec": "21 22 39.2",
+        "magnitude": 4.66
       },
       {
         "id": 4,
-        "label": "Theta Tauri A",
-        "ra": 4.4767,
-        "dec": 15.8709,
-        "magnitude": 3.4
+        "label": "Chi",
+        "ra": "08 21 36.4",
+        "dec": "27 08 10.9",
+        "magnitude": 5.22
       },
       {
         "id": 5,
-        "label": "Zeta Tauri",
-        "ra": 5.6275,
-        "dec": 21.1425,
-        "magnitude": 2.97
+        "label": "Iota",
+        "ra": "08 48 14.1",
+        "dec": "28 40 04.4",
+        "magnitude": 4.19
+      }
+    ],
+    "edges": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ]
+  },
+  "leo": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Regulus",
+        "ra": "10 09 44.0",
+        "dec": "11 50 33.1",
+        "magnitude": 1.32
+      },
+      {
+        "id": 1,
+        "label": "Algieba",
+        "ra": "10 21 22.9",
+        "dec": "19 42 46.3",
+        "magnitude": 2.16
+      },
+      {
+        "id": 2,
+        "label": "Zosma",
+        "ra": "11 15 28.3",
+        "dec": "20 23 02.6",
+        "magnitude": 2.58
+      },
+      {
+        "id": 3,
+        "label": "Adhafera",
+        "ra": "10 18 06.7",
+        "dec": "23 17 27.1",
+        "magnitude": 3.50
+      },
+      {
+        "id": 4,
+        "label": "Denebola",
+        "ra": "11 50 22.2",
+        "dec": "14 25 44.7",
+        "magnitude": 2.16
+      },
+      {
+        "id": 5,
+        "label": "Chertan",
+        "ra": "11 15 35.1",
+        "dec": "15 17 24.1",
+        "magnitude": 3.33
       },
       {
         "id": 6,
-        "label": "T Tauri",
-        "ra": 4.254,
-        "dec": 19.534,
-        "magnitude": 4.22
+        "label": "Eta",
+        "ra": "10 08 43.5",
+        "dec": "16 38 18.8",
+        "magnitude": 3.50
+      },
+      {
+        "id": 7,
+        "label": "Rasalas",
+        "ra": "09 54 12.9",
+        "dec": "25 53 16.1",
+        "magnitude": 4.03
+      },
+      {
+        "id": 8,
+        "label": "Epsilon",
+        "ra": "09 47 18.0",
+        "dec": "23 39 27.6",
+        "magnitude": 3.11
+      }
+    ],
+    "edges": [
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        6,
+        0
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        2,
+        4
+      ]
+    ]
+  },
+  "scorpius": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Acrab",
+        "ra": "16 06 55.3",
+        "dec": "-19 52 32.6",
+        "magnitude": 2.59
+      },
+      {
+        "id": 1,
+        "label": "Dschubba",
+        "ra": "16 01 50.6",
+        "dec": "-22 41 40.4",
+        "magnitude": 2.25
+      },
+      {
+        "id": 2,
+        "label": "Pi",
+        "ra": "16 00 23.8",
+        "dec": "-26 11 14.7",
+        "magnitude": 2.81
+      },
+      {
+        "id": 3,
+        "label": "Antares",
+        "ra": "16 30 58.3",
+        "dec": "-26 29 18.3",
+        "magnitude": 0.97
+      },
+      {
+        "id": 4,
+        "label": "Tau",
+        "ra": "16 37 28.1",
+        "dec": "-28 16 06.8",
+        "magnitude": 2.73
+      },
+      {
+        "id": 5,
+        "label": "Epsilon",
+        "ra": "16 51 48.9",
+        "dec": "-34 20 18.8",
+        "magnitude": 2.45
+      },
+      {
+        "id": 6,
+        "label": "Mu1",
+        "ra": "16 53 35.8",
+        "dec": "-38 05 23.0",
+        "magnitude": 2.92
+      },
+      {
+        "id": 7,
+        "label": "Zeta2",
+        "ra": "16 56 22.6",
+        "dec": "-42 24 11.1",
+        "magnitude": 3.75
+      },
+      {
+        "id": 8,
+        "label": "Eta",
+        "ra": "17 13 58.6",
+        "dec": "-43 16 14.8",
+        "magnitude": 3.41
+      },
+      {
+        "id": 9,
+        "label": "Sargas",
+        "ra": "17 39 08.6",
+        "dec": "-43 00 43.4",
+        "magnitude": 1.92
+      },
+      {
+        "id": 10,
+        "label": "Iota1",
+        "ra": "17 49 21.5",
+        "dec": "-40 08 06.6",
+        "magnitude": 3.09
+      },
+      {
+        "id": 11,
+        "label": "Kappa",
+        "ra": "17 44 14.6",
+        "dec": "-39 02 29.6",
+        "magnitude": 2.31
+      },
+      {
+        "id": 12,
+        "label": "Shaula",
+        "ra": "17 35 19.9",
+        "dec": "-37 07 15.9",
+        "magnitude": 1.52
+      },
+      {
+        "id": 13,
+        "label": "Lesath",
+        "ra": "17 32 29.4",
+        "dec": "-37 18 53.3",
+        "magnitude": 2.59
       }
     ],
     "edges": [
@@ -103,24 +329,48 @@
         3
       ],
       [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
         3,
         4
       ],
       [
-        0,
-        4
-      ],
-      [
-        0,
-        1
-      ],
-      [
-        0,
-        2
-      ],
-      [
-        1,
+        4,
         5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        11,
+        12
       ]
     ]
   }
