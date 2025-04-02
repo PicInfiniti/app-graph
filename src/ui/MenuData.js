@@ -472,7 +472,6 @@ export const menuData = [
           { title: "Degree Sequence", id: "list-degrees-btn" },
           { title: "Density", id: "density-btn" },
           { title: "Diameter", id: "diameter-btn" },
-          { title: "Neighbors", id: "neighbors-btn" },
         ],
       },
       {
@@ -506,6 +505,7 @@ export const menuData = [
       },
 
       { type: "divider" },
+      { title: "Neighbors", id: "neighbors-btn" },
       { title: "Shortest Path", id: "shortest-path-btn" },
       { type: "divider" },
       { title: "Clear Panel", id: "clear-info-panel-btn" }
