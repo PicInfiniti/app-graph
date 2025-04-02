@@ -1,16 +1,12 @@
 import { Graph } from "../utils/classes";
 
-// Helper
-function size(magnitude = 3) {
-  return Math.pow(0.8, magnitude);
-}
 
 function createConstellation(name, stars, edges) {
   const graph = new Graph();
 
   stars.forEach(star => {
-    const x = (star.ra ?? star.x) * 15;
-    const y = star.dec ?? star.y;
+    const x = convertRAtoDecimal(star.ra ?? star.x) * 15;
+    const y = convertDECtoDecimal(star.dec ?? star.y);
 
     graph.addNode(star.id, {
       label: star.label,
@@ -27,6 +23,25 @@ function createConstellation(name, stars, edges) {
 
   return graph;
 }
+
+// Helper
+function size(magnitude = 3) {
+  return Math.pow(0.8, magnitude);
+}
+// Convert RA string "HH MM SS.S" to decimal hours
+function convertRAtoDecimal(raStr) {
+  const [h, m, s] = raStr.split(" ").map(parseFloat);
+  return h + m / 60 + s / 3600;
+}
+
+// Convert Dec string "±DD MM SS.S" to decimal degrees
+function convertDECtoDecimal(decStr) {
+  const sign = decStr.trim().startsWith("-") ? -1 : 1;
+  const parts = decStr.trim().replace("+", "").replace("-", "").split(" ").map(parseFloat);
+  const [d, m, s] = parts;
+  return sign * (d + m / 60 + s / 3600);
+}
+
 
 // ---------------- Constellations ----------------
 export function aries() {
@@ -46,37 +61,30 @@ export function aries() {
   return createConstellation('Aries', stars, edges);
 }
 
+
 export function taurus() {
   const stars = [
-    { id: 0, label: 'Omicron Tauri', ra: 4.4767, dec: 19.1803, magnitude: 3.61 },
-    { id: 1, label: 'Lambda Tauri', ra: 4.2030, dec: 12.9419, magnitude: 3.47 },
-    { id: 2, label: 'Gamma Tauri', ra: 4.3305, dec: 15.6270, magnitude: 3.65 },
-    { id: 3, label: 'Delta Tauri', ra: 4.3518, dec: 17.5425, magnitude: 3.77 },
-    { id: 4, label: 'Delta-3 Tauri', ra: 4.3960, dec: 17.9280, magnitude: 4.25 },
-    { id: 5, label: 'Theta-1 Tauri', ra: 4.4760, dec: 15.6070, magnitude: 3.84 },
-    { id: 6, label: 'Theta-2 Tauri', ra: 4.4849, dec: 15.9645, magnitude: 3.40 },
-    { id: 7, label: 'Ain (Epsilon Tauri)', ra: 4.5987, dec: 19.1803, magnitude: 3.53 },
-    { id: 8, label: 'Aldebaran (Alpha Tauri)', ra: 4.5987, dec: 16.5093, magnitude: 0.85 },
-    { id: 9, label: 'Tau Tauri', ra: 4.6963, dec: 22.3711, magnitude: 4.28 },
-    { id: 10, label: 'Elnath (Beta Tauri)', ra: 5.4382, dec: 28.6075, magnitude: 1.65 },
-    { id: 11, label: 'Zeta Tauri', ra: 5.6275, dec: 21.1425, magnitude: 2.99 },
+    { id: 0, label: 'Aldebaran (Alpha Tauri)', ra: 4.5987, dec: 16.5093, magnitude: 0.87 },
+    { id: 1, label: 'Elnath (Beta Tauri)', ra: 5.4382, dec: 28.6075, magnitude: 1.65 },
+    { id: 2, label: 'Alcyone (Eta Tauri)', ra: 3.7914, dec: 24.1051, magnitude: 2.87 }, // brightest in Pleiades
+    { id: 3, label: 'Hyadum I (Gamma Tauri)', ra: 4.4310, dec: 15.6270, magnitude: 3.65 },
+    { id: 4, label: 'Theta Tauri A', ra: 4.4767, dec: 15.8709, magnitude: 3.40 },
+    { id: 5, label: 'Zeta Tauri', ra: 5.6275, dec: 21.1425, magnitude: 2.97 },
+    { id: 6, label: 'T Tauri', ra: 4.2540, dec: 19.5340, magnitude: 4.22 },
   ];
 
   const edges = [
-    [0, 2],  // Omicron to Gamma
-    [2, 3],  // Gamma to Delta
-    [3, 4],  // Delta to Delta3
-    [4, 5],  // Delta3 to Theta1
-    [5, 6],  // Theta1 to Theta2
-    [6, 7],  // Theta2 to Ain
-    [7, 8],  // Ain to Aldebaran
-    [8, 9],  // Aldebaran to Tau
-    [9, 10], // Tau to Elnath
-    [10, 11],// Elnath to Zeta
+    [0, 3], // Aldebaran to Hyadum I (Hyades cluster start)
+    [3, 4], // Hyadum I to Theta Tauri
+    [0, 4], // Aldebaran to Theta Tauri (cluster center)
+    [0, 1], // Aldebaran to Elnath (horn tip)
+    [0, 2], // Aldebaran to Alcyone (toward Pleiades)
+    [1, 5], // Elnath to Zeta Tauri (other horn tip)
   ];
 
   return createConstellation('Taurus', stars, edges);
 }
+
 
 export function gemini() {
   const stars = [
@@ -111,33 +119,25 @@ export function gemini() {
 
 export function cancer() {
   const stars = [
-    { id: 0, label: 'Tarf', ra: 8.775 * 15, dec: 9.19, magnitude: 3.53 },
-    { id: 1, label: 'Asellus Australis', ra: 8.744 * 15, dec: 18.15, magnitude: 3.94 },
-    { id: 2, label: 'Asellus Borealis', ra: 8.634 * 15, dec: 21.47, magnitude: 4.67 },
-    { id: 3, label: 'Iota', ra: 8.988 * 15, dec: 28.76, magnitude: 4.02 },
-    { id: 4, label: 'Theta', ra: 8.932 * 15, dec: 18.15, magnitude: 5.33 },
-    { id: 5, label: 'Eta', ra: 8.846 * 15, dec: 20.07, magnitude: 5.33 },
-
-    // Beehive Cluster (Praesepe, M44)
-    { id: 6, label: 'M44 A', ra: 8.666 * 15, dec: 19.6, magnitude: 6.0 },
-    { id: 7, label: 'M44 B', ra: 8.666 * 15, dec: 19.9, magnitude: 6.0 },
-    { id: 8, label: 'M44 C', ra: 8.663 * 15, dec: 19.8, magnitude: 6.0 },
-    { id: 9, label: 'M44 D', ra: 8.667 * 15, dec: 19.7, magnitude: 6.0 }
+    { id: 0, label: 'Acubens', ra: "08 59 52.7", dec: "11 45 32.4", magnitude: 4.28 },
+    { id: 1, label: 'Beta', ra: "08 17 53.5", dec: "09 06 24.1", magnitude: 3.66 },
+    { id: 2, label: 'Asellus Australis', ra: "08 46 07.7", dec: "18 03 39.9", magnitude: 4.09 },
+    { id: 3, label: 'Asellus Borealis', ra: "08 44 45.4", dec: "21 22 39.2", magnitude: 4.66 },
+    { id: 4, label: 'Chi', ra: "08 21 36.4", dec: "27 08 10.9", magnitude: 5.22 },
+    { id: 5, label: 'Iota', ra: "08 48 14.1", dec: "28 40 04.4", magnitude: 4.19 },
   ];
 
   const edges = [
-    [0, 1],  // Tarf → Asellus Australis
-    [1, 2],  // Asellus Australis → Asellus Borealis
-    [2, 5],  // Asellus Borealis → Eta Cnc
-    [5, 4],  // Eta Cnc → Theta Cnc
-    [4, 3],  // Theta Cnc → Iota Cnc
-
-    // Beehive cluster connections (visual cluster only)
-    [6, 7], [7, 8], [8, 9], [9, 6]
+    [0, 2], // Acubens to Beta Cancri
+    [1, 2], // Beta to Asellus Australis
+    [2, 3], // Australis to Borealis
+    [3, 4], // Borealis to Chi Cancri
+    [3, 5], // Chi Cancri to Iota Cancri
   ];
 
-  return createConstellation('Cancer', stars, edges);
+  return createConstellation("Cancer", stars, edges);
 }
+
 
 export function leo() {
   const stars = [
