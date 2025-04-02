@@ -59,7 +59,7 @@ export const menuData = [
                 type: "range",
                 id: "vertex-size-1",
                 min: 0,
-                max: 100,
+                max: 200,
                 value: 10,
                 step: .1
               }
@@ -88,6 +88,20 @@ export const menuData = [
                 min: 0,
                 max: 100,
                 value: 15
+              }
+            ]
+          },
+          {
+            title: "Stroke",
+            id: "stroke-size",
+            input: [
+              {
+                type: "range",
+                id: "stroke-size-1",
+                min: 0,
+                max: 50,
+                value: 5,
+                step: .1
               }
             ]
           },

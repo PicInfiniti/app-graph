@@ -186,6 +186,7 @@ export class Menu {
       "edge-size-1": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
       "label-size-1": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),
       "grid-size-1": () => this.eventBus.emit("updateSetting", { key: "grid", value: val }),
+      "stroke-size-1": () => this.eventBus.emit("updateSetting", { key: "stroke_size", value: val }),
 
       //Metrics
       "basic-info-btn": () => this.graphManager.metric.basicInfo(),
