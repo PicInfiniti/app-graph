@@ -80,7 +80,7 @@ export class Canvas {
     const newLabel = getAvailableLabel(newID);
     const newNode = { x: node.x + 30, y: node.y + 30, color: this.settings.node_color, label: newLabel };
 
-    this.app.graphManager.graph.addNode(newID, newNode);
+    this.app.graphManager.addNode(newID, newNode);
     this.app.graphManager.graph.addEdge(node.id, newID);
 
     this.eventBus.emit('graph:updated', { type: 'addNode', node: newID });
