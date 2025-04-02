@@ -11,6 +11,7 @@ import stress from 'graphology-metrics/layout-quality/stress';
 import eccentricity from 'graphology-metrics/node/eccentricity';
 import pagerank from 'graphology-metrics/centrality/pagerank';
 import neighborhoodPreservation from 'graphology-metrics/layout-quality/neighborhood-preservation';
+import disparity from 'graphology-metrics/edge/disparity';
 
 const d = document;
 
@@ -239,6 +240,17 @@ export class Metric {
     const graph = this.graphManager.graph
     const strengths = stress(graph);
     this.addInfo(strengths)
+    this.addLine()
+  }
+
+  disparity() {
+    this.addHeader("disparity")
+    const graph = this.graphManager.graph
+    const strengths = disparity(graph);
+    for (const key in strengths) {
+      const [source, target] = graph.edge(key);
+      this.addInfo(`${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${strengths[key]}`)
+    }
     this.addLine()
   }
 }

@@ -205,6 +205,7 @@ export class Menu {
       "edge-uniformity-btn": () => this.graphManager.metric.edgeUniformity(),
       "neighborhood-preservation-btn": () => this.graphManager.metric.neighborhoodPreservation(),
       "stress-btn": () => this.graphManager.metric.stress(),
+      "disparity-btn": () => this.graphManager.metric.disparity(),
       "clear-info-panel-btn": () => d.querySelector("#floating-panel .body-info").innerHTML = "",
       //Generator
       //Classic
