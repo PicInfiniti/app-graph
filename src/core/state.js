@@ -31,7 +31,7 @@ class AppSettings {
       select: false,
       grid: 20,
       stroke_color: "#4682b4",
-      node_color: "#ffffffff",
+      node_color: "#ffffff",
       edge_color: "#4682b4",
       label_color: "#000000",
       label_pos: { x: 0, y: 0 },
