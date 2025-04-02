@@ -1,0 +1,127 @@
+{
+  "aries": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Hamal",
+        "ra": "02 08 34.7",
+        "dec": "23 34 50.5",
+        "magnitude": 2.17
+      },
+      {
+        "id": 1,
+        "label": "Sheratan",
+        "ra": "01 56 01.0",
+        "dec": "20 55 48.5",
+        "magnitude": 2.7
+      },
+      {
+        "id": 2,
+        "label": "Gamma",
+        "ra": "01 54 53.8",
+        "dec": "19 24 58.7",
+        "magnitude": 3.84
+      },
+      {
+        "id": 3,
+        "label": "41 Arietis",
+        "ra": "02 51 27.2",
+        "dec": "27 21 50.6",
+        "magnitude": 3.58
+      }
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ]
+  },
+  "taurus": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Aldebaran (Alpha Tauri)",
+        "ra": 4.5987,
+        "dec": 16.5093,
+        "magnitude": 0.87
+      },
+      {
+        "id": 1,
+        "label": "Elnath (Beta Tauri)",
+        "ra": 5.4382,
+        "dec": 28.6075,
+        "magnitude": 1.65
+      },
+      {
+        "id": 2,
+        "label": "Alcyone (Eta Tauri)",
+        "ra": 3.7914,
+        "dec": 24.1051,
+        "magnitude": 2.87
+      },
+      {
+        "id": 3,
+        "label": "Hyadum I (Gamma Tauri)",
+        "ra": 4.431,
+        "dec": 15.627,
+        "magnitude": 3.65
+      },
+      {
+        "id": 4,
+        "label": "Theta Tauri A",
+        "ra": 4.4767,
+        "dec": 15.8709,
+        "magnitude": 3.4
+      },
+      {
+        "id": 5,
+        "label": "Zeta Tauri",
+        "ra": 5.6275,
+        "dec": 21.1425,
+        "magnitude": 2.97
+      },
+      {
+        "id": 6,
+        "label": "T Tauri",
+        "ra": 4.254,
+        "dec": 19.534,
+        "magnitude": 4.22
+      }
+    ],
+    "edges": [
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        5
+      ]
+    ]
+  }
+}

@@ -1,4 +1,5 @@
-import * as constellations from './constellations'; // adjust path if needed
+import { Graph } from '../utils/classes';
+import constellationData from './constellations.json';
 
 export class Zodiac {
   constructor(graphManager) {
@@ -7,15 +8,16 @@ export class Zodiac {
   }
 
   load(name) {
-    const generator = constellations[name.toLowerCase()];
-    if (generator) {
-      const graph = generator();
+    const data = constellationData[name.toLowerCase()];
+    if (data) {
+      const graph = createConstellation(name, data.stars, data.edges);
       this.graphManager.push(graph);
       this.layout.applyLayout('rotate180');
     } else {
       console.warn(`Constellation "${name}" not found.`);
     }
   }
+
 
   // Named convenience methods for each zodiac sign
   aries() {
@@ -74,4 +76,44 @@ export class Zodiac {
   orion() {
     this.load('orion');
   }
+}
+
+// Helper
+function size(magnitude = 3) {
+  return Math.pow(0.8, magnitude);
+}
+
+function convertRAtoDecimal(raStr) {
+  const [h, m, s] = raStr.split(" ").map(parseFloat);
+  return h + m / 60 + s / 3600;
+}
+
+function convertDECtoDecimal(decStr) {
+  const sign = decStr.trim().startsWith("-") ? -1 : 1;
+  const parts = decStr.trim().replace("+", "").replace("-", "").split(" ").map(parseFloat);
+  const [d, m, s] = parts;
+  return sign * (d + m / 60 + s / 3600);
+}
+
+function createConstellation(name, stars, edges) {
+  const graph = new Graph();
+
+  stars.forEach(star => {
+    const ra = typeof star.ra === "string" ? convertRAtoDecimal(star.ra) * 15 : star.ra * 15;
+    const dec = typeof star.dec === "string" ? convertDECtoDecimal(star.dec) : star.dec;
+
+    graph.addNode(star.id, {
+      label: star.label,
+      x: ra,
+      y: dec,
+      magnitude: star.magnitude,
+      size: size(star.magnitude),
+    });
+  });
+
+  edges.forEach(([source, target]) => {
+    graph.mergeEdge(source, target);
+  });
+
+  return graph;
 }
