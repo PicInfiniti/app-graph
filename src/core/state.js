@@ -48,6 +48,7 @@ class AppSettings {
       label_pos: { x: -20, y: -20 },
       node_radius: 10,
       edge_size: 1,
+      stroke_size: 0,
       forceSimulation: false,
     };
 

@@ -114,12 +114,15 @@ export class Metric {
       this.addLine()
       return
     }
+
     const [source, target] = selectedNodes
     const path = bidirectional(graph, source, target);
+
     if (path) {
       this.addInfo(path.map(node => graph.getNodeAttribute(node, "label")).join(' -> '))
       this.addLine()
       graph.selectPath(path)
+      this.graphManager.app.drawGraph()
     } else {
       this.addInfo("They are not connected")
       this.addLine()
