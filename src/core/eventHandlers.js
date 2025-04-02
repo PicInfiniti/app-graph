@@ -28,7 +28,6 @@ export class EventHandlers {
 
     // When graph data updates, re-render visualization
     this.app.eventBus.on('graph:updated', (event) => {
-      this.app.graphManager.deselectAll();
       this.app.rect.scale.active = false;
       this.app.drawGraph();  // Visualize the graph
       const updateTypes = ["addEdges", "dropNodesEdges", "addNode", "undo", "redo", "clear", "import", "addNodeInEdge", "layout", "addEdge"];
