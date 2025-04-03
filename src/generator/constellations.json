@@ -687,6 +687,67 @@
       ]
     ]
   },
+  "libra": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Zubenelgenubi II",
+        "ra": "14 52 17.9",
+        "dec": "-16 08 54.7",
+        "magnitude": 2.78
+      },
+      {
+        "id": 1,
+        "label": "Sigma",
+        "ra": "15 05 34.3",
+        "dec": "-25 22 56.3",
+        "magnitude": 3.30
+      },
+      {
+        "id": 2,
+        "label": "Zubeneschamali",
+        "ra": "15 18 23.1",
+        "dec": "-09 28 41.6",
+        "magnitude": 2.56
+      },
+      {
+        "id": 3,
+        "label": "Gamma",
+        "ra": "15 36 57.5",
+        "dec": "-14 52 31.6",
+        "magnitude": 4.06
+      },
+      {
+        "id": 4,
+        "label": "Theta",
+        "ra": "15 55 16.9",
+        "dec": "-16 48 17.5",
+        "magnitude": 4.28
+      }
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ]
+  },
   "scorpius": {
     "stars": [
       {
