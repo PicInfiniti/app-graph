@@ -85,7 +85,7 @@ function size(magnitude = 3) {
 
 function convertRAtoDecimal(raStr) {
   const [h, m, s] = raStr.split(" ").map(parseFloat);
-  return h + m / 60 + s / 3600;
+  return (h + m / 60 + s / 3600) * 15;
 }
 
 function convertDECtoDecimal(decStr) {
@@ -99,8 +99,8 @@ function createConstellation(name, stars, edges) {
   const graph = new Graph();
 
   stars.forEach(star => {
-    const ra = typeof star.ra === "string" ? convertRAtoDecimal(star.ra) * 15 : star.ra * 15;
-    const dec = typeof star.dec === "string" ? convertDECtoDecimal(star.dec) : star.dec;
+    const ra = convertRAtoDecimal(star.ra);
+    const dec = convertDECtoDecimal(star.dec);
 
     graph.addNode(star.id, {
       label: star.label,
