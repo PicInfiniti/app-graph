@@ -73,7 +73,7 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.zodiac.pisces();
+    this.graphManager.generator.clusters(20, 20, 10);
   }
 
   drawGraph() {
