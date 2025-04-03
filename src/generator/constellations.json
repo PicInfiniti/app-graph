@@ -1382,15 +1382,138 @@
       ]
     ]
   },
-  "Capricornus": {
+  "capricornus": {
+    "stars": [
+      {
+        "id": 0,
+        "label": "Algedi",
+        "ra": "20 19 26.8",
+        "dec": "-12 28 05.0",
+        "magnitude": 3.73
+      },
+      {
+        "id": 1,
+        "label": "Dabih",
+        "ra": "20 22 25.3",
+        "dec": "-14 42 10.1",
+        "magnitude": 3.20
+      },
+      {
+        "id": 2,
+        "label": "Psi",
+        "ra": "20 47 34.8",
+        "dec": "-25 10 49.4",
+        "magnitude": 4.22
+      },
+      {
+        "id": 3,
+        "label": "Omga",
+        "ra": "20 53 18.9",
+        "dec": "-26 49 29.2",
+        "magnitude": 4.22
+      },
+      {
+        "id": 4,
+        "label": "Theta",
+        "ra": "21 07 21.2",
+        "dec": "-17 08 01.0",
+        "magnitude": 4.06
+      },
+      {
+        "id": 5,
+        "label": "Zeta",
+        "ra": "21 28 05.7",
+        "dec": "-22 18 09.6",
+        "magnitude": 3.92
+      },
+      {
+        "id": 6,
+        "label": "Iota",
+        "ra": "21 23 38.3",
+        "dec": "-16 43 41.4",
+        "magnitude": 4.44
+      },
+      {
+        "id": 7,
+        "label": "Nashira",
+        "ra": "21 41 28.5",
+        "dec": "-16 32 58.0",
+        "magnitude": 3.77
+      },
+      {
+        "id": 8,
+        "label": "Deneb",
+        "ra": "21 48 25.1",
+        "dec": "-16 00 50.3",
+        "magnitude": 2.94
+      },
+      {
+        "id": 9,
+        "label": "Nu",
+        "ra": "20 22 03.4",
+        "dec": "-12 40 51.8",
+        "magnitude": 4.72
+      },
+      {
+        "id": 10,
+        "label": "Sigma",
+        "ra": "20 20 50.5",
+        "dec": "-19 02 25.9",
+        "magnitude": 5.41
+      }
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        1,
+        9
+      ],
+      [
+        1,
+        10
+      ]
+    ]
+  },
+  "aquarius": {
     "stars": [],
     "edges": []
   },
-  "Aquarius": {
-    "stars": [],
-    "edges": []
-  },
-  "Pisces": {
+  "pisces": {
     "stars": [],
     "edges": []
   }
