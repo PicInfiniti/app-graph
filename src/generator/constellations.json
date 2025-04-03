@@ -1524,125 +1524,168 @@
     "stars": [
       {
         "id": 0,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "c2",
+        "ra": "23 10 46.4",
+        "dec": "-21 02 11.8",
+        "magnitude": 3.84
       },
       {
         "id": 1,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Skat",
+        "ra": "22 55 58.3",
+        "dec": "-15 41 17.0",
+        "magnitude": 3.28
       },
       {
         "id": 2,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Tua",
+        "ra": "22 50 54.6",
+        "dec": "-13 27 39.6",
+        "magnitude": 4.13
       },
       {
         "id": 3,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Sigma",
+        "ra": "22 31 57.9",
+        "dec": "-10 33 01.7",
+        "magnitude": 4.81
       },
       {
         "id": 4,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Ancha",
+        "ra": "22 18 09.0",
+        "dec": "-07 39 34.2",
+        "magnitude": 4.31
       },
       {
         "id": 5,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Sadalmelik",
+        "ra": "22 07 03.9",
+        "dec": "-00 11 58.6",
+        "magnitude": 3.09
       },
       {
         "id": 6,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Sadachbia",
+        "ra": "22 22 56.6",
+        "dec": "-01 15 44.7",
+        "magnitude": 3.83
       },
       {
         "id": 7,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Zeta",
+        "ra": "22 30 06.8",
+        "dec": "00 06 25.3",
+        "magnitude": 3.73
       },
       {
         "id": 8,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Eta",
+        "ra": "22 36 38.2",
+        "dec": "00 00 37.0",
+        "magnitude": 4.00
       },
       {
         "id": 9,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Lambda",
+        "ra": "22 53 54.9",
+        "dec": "-07 26 50.0",
+        "magnitude": 3.80
       },
       {
         "id": 10,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Psi1",
+        "ra": "23 17 11.7",
+        "dec": "-08 57 07.4",
+        "magnitude": 4.41
       },
       {
         "id": 11,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "b1",
+        "ra": "23 24 16.6",
+        "dec": "-19 57 51.0",
+        "magnitude": 4.09
       },
       {
         "id": 12,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Iota",
+        "ra": "22 07 47.0",
+        "dec": "-13 44 55.3",
+        "magnitude": 4.25
       },
       {
         "id": 13,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Sadalsuud",
+        "ra": "21 32 52.4",
+        "dec": "-05 27 43.9",
+        "magnitude": 3.03
       },
       {
         "id": 14,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
-      },
-      {
-        "id": 15,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
-      },
-      {
-        "id": 16,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Albali",
+        "ra": "20 49 01.9",
+        "dec": "-09 24 18.4",
+        "magnitude": 3.78
       }
     ],
-    "edges": []
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        4,
+        12
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        5,
+        13
+      ]
+    ]
   },
   "pisces": {
     "stars": [
