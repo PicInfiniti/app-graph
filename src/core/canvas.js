@@ -240,7 +240,11 @@ export class Canvas {
     let clickedEdge = this.findClickedEdge(x, y);
 
     if (clickedNode || clickedEdge) {
-
+      if (clickedNode && clickedNode.desc) {
+        for (let key in clickedNode.desc) {
+          this.app.graphManager.metric.addInfo(`${key}: ${clickedNode.desc[key]}`)
+        } this.app.graphManager.metric.addLine()
+      }
     } else {
       this.app.graphManager.deselectAll();
       this.app.rect.scale.active = false;

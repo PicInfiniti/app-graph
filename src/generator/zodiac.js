@@ -108,6 +108,12 @@ function createConstellation(name, stars, edges) {
       y: dec,
       magnitude: star.magnitude,
       size: size(star.magnitude),
+      desc: {
+        name: star.label,
+        magnitude: star.magnitude,
+        RA: wrapTimeString(star.ra),
+        DEC: star.dec
+      }
     });
   });
 
@@ -117,3 +123,18 @@ function createConstellation(name, stars, edges) {
 
   return graph;
 }
+
+function wrapTimeString(timeStr) {
+  let [h = 0, m = 0, s = 0] = timeStr.split(" ").map(Number);
+  s = s % 60;
+  m = m % 60;
+  h = h % 24;
+
+  // Format with leading zeros
+  const hh = String(h).padStart(2, '0');
+  const mm = String(m).padStart(2, '0');
+  const ss = s.toFixed(1).padStart(4, '0'); // e.g., "04.3"
+
+  return [hh, mm, ss].join(' ');
+}
+
