@@ -1418,7 +1418,7 @@
       },
       {
         "id": 3,
-        "label": "Omga",
+        "label": "Omega",
         "ra": "20 53 18.9",
         "dec": "-26 49 29.2",
         "magnitude": 4.22
@@ -1691,138 +1691,184 @@
     "stars": [
       {
         "id": 0,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Upsilon",
+        "ra": "01 20 50.0",
+        "dec": "27 23 43.0",
+        "magnitude": 4.75
       },
       {
         "id": 1,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Sigma",
+        "ra": "01 04 10.7",
+        "dec": "31 56 17.7",
+        "magnitude": 5.47
       },
       {
         "id": 2,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Phi",
+        "ra": "01 15 06.0",
+        "dec": "24 42 57.1",
+        "magnitude": 4.81
       },
       {
         "id": 3,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Eta",
+        "ra": "01 32 49.0",
+        "dec": "15 28 27.7",
+        "magnitude": 3.78
       },
       {
         "id": 4,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Omicron",
+        "ra": "01 46 42.6",
+        "dec": "09 16 58.9",
+        "magnitude": 4.41
       },
       {
         "id": 5,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Alrescha",
+        "ra": "02 03 20.2",
+        "dec": "20 53 02.2",
+        "magnitude": 3.81
       },
       {
         "id": 6,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Xi",
+        "ra": "01 54 50.8",
+        "dec": "03 18 37.5",
+        "magnitude": 4.75
       },
       {
         "id": 7,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Nu",
+        "ra": "01 42 43.7",
+        "dec": "05 36 49.0",
+        "magnitude": 4.56
       },
       {
         "id": 8,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Mu",
+        "ra": "01 31 29.4",
+        "dec": "06 16 19.8",
+        "magnitude": 4.97
       },
       {
         "id": 9,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Epsilon",
+        "ra": "01 04 14.1",
+        "dec": "08 01 26.9",
+        "magnitude": 4.41
       },
       {
         "id": 10,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Delta",
+        "ra": "00 49 58.4",
+        "dec": "07 43 13.8",
+        "magnitude": 4.53
       },
       {
         "id": 11,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "41",
+        "ra": "00 21 52.7",
+        "dec": "08 19 42.0",
+        "magnitude": 5.53
       },
       {
         "id": 12,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Omega",
+        "ra": "00 00 35.3",
+        "dec": "07 00 03.0",
+        "magnitude": 4.09
       },
       {
         "id": 13,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Iota",
+        "ra": "23 41 13.8",
+        "dec": "05 45 38.8",
+        "magnitude": 4.22
       },
       {
         "id": 14,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Theta",
+        "ra": "23 29 13.8",
+        "dec": "06 30 54.9",
+        "magnitude": 4.44
       },
       {
         "id": 15,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Gamma",
+        "ra": "23 18 27.4",
+        "dec": "03 25 04.4",
+        "magnitude": 3.84
       },
       {
         "id": 16,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Kappa",
+        "ra": "23 28 12.5",
+        "dec": "01 23 29.7",
+        "magnitude": 4.94
       },
       {
         "id": 17,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
-      },
-      {
-        "id": 18,
-        "label": "",
-        "ra": "",
-        "dec": "",
-        "magnitude": 0
+        "label": "Lambda",
+        "ra": "23 43 18.9",
+        "dec": "01 55 00.3",
+        "magnitude": 4.53
       }
     ],
-    "edges": []
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        11,
+        12
+      ]
+    ]
   }
 }
