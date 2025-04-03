@@ -723,6 +723,13 @@
         "ra": "15 55 16.9",
         "dec": "-16 48 17.5",
         "magnitude": 4.28
+      },
+      {
+        "id": 5,
+        "label": "Upsilon",
+        "ra": "15 38 34.7",
+        "dec": "-28 13 09.8",
+        "magnitude": 3.73
       }
     ],
     "edges": [
@@ -739,12 +746,16 @@
         3
       ],
       [
-        1,
-        3
-      ],
-      [
         3,
         4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        5
       ]
     ]
   },
@@ -1510,11 +1521,265 @@
     ]
   },
   "aquarius": {
-    "stars": [],
+    "stars": [
+      {
+        "id": 0,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 1,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 2,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 3,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 4,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 5,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 6,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 7,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 8,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 9,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 10,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 11,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 12,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 13,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 14,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 15,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 16,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      }
+    ],
     "edges": []
   },
   "pisces": {
-    "stars": [],
+    "stars": [
+      {
+        "id": 0,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 1,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 2,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 3,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 4,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 5,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 6,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 7,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 8,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 9,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 10,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 11,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 12,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 13,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 14,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 15,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 16,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 17,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      },
+      {
+        "id": 18,
+        "label": "",
+        "ra": "",
+        "dec": "",
+        "magnitude": 0
+      }
+    ],
     "edges": []
   }
 }
