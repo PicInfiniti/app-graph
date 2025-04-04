@@ -7,151 +7,102 @@
     <title>Graph Studio</title>
 
     <link rel="icon" href="./favicon.svg" type="image/gif">
-    <script type="module" crossorigin src="/assets/main-Dvxkj0z9.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/main-DyqJLnu8.css">
+    <style>
+
+    </style>
+    <script type="module" crossorigin src="/assets/main-DKRzAU5e.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/main-3pE6rEy6.css">
   </head>
   <body>
     <div class="container">
-      <nav class="menu-bar">
-        <ul>
-          <li class="menu-item">File
-            <ul class="dropdown">
-              <li id="new-btn"><span>New</span><span>(n)</span></li>
-              <li id="import-graph"><span>Open</span><span>(o)</span></li>
-              <li id="export-graph"><span>Save</span><span>(s)</span></li>
-              <li id="export-png"><span>Export as PNG</span><span>(p)</span></li>
-              <input type="file" id="file-input" hidden>
-              <hr>
-              <li id="default-settings-btn">Default Setting</li>
-            </ul>
-          </li>
-          <li class="menu-item">Edit
-            <ul class="dropdown">
-              <li name="organize-circle"><span>Organize Nodes</span><span>(O)</span></li>
-              <li name="make-complete-btn"><span>Complete Graph</span><span>(C)</span></li>
-              <li name="remove-selection-btn"><span>Delete</span><span>(d)</span></li>
-              <li name="color-selection-btn"><span>Assign Color</span><span>(c)</span></li>
-              <li name="add-edge-btn"><span>Add Edge</span><span>(e)</span></li>
-              <hr>
-              <li name="undo-btn"><span>Undo</span><span>(u)</span></li>
-              <li name="redo-btn"><span>Redo</span><span>(y)</span></li>
-              <hr>
-              <li><span>Settings</span><span>></span>
-                <ul>
-                  <li id="grid-btn">
-                    <label for="grid-size">Grid</label>
-                    <input type="range" id="grid-size" min="0" max="50" value="20">
-                  </li>
-                  <li id="vertex-btn">
-                    <label for="vertex-size">VSize</label>
-                    <input type="range" id="vertex-size" min="0" max="50" value="10">
-                  </li>
-                  <li>
-                    <label for="edge-size">ESize</label>
-                    <input type="range" id="edge-size" min="1" max="20" value="2">
-                  </li>
-                  <li>
-                    <label for="label-size">LSize</label>
-                    <input type="range" id="label-size" min="0" max="100" value="15">
-                  </li>
-                  <li id="vertex-label">
-                    <span>Veterx Label</span>
-                    <span class="check">&#10004;</span>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">Tools
-            <ul class="dropdown">
-              <li id="panel-btn">
-                <span>Info Panel</span>
-                <span class="check">&#10004;</span>
-              </li>
-              <li id="drag-btn">
-                <span>Component</span>
-                <span class="check hidden">&#10004;</span>
-              </li>
-              <li id="scale-btn">
-                <span>Scale</span>
-                <span class="check hidden">&#10004;</span>
-              </li>
-              <hr>
-              <li><span>Generator</span><span>></span>
-                <ul>
-                  <li id="g-empty-btn">
-                    <label for="g-empty">Empty</label>
-                    <input type="number" id="g-empty" min="1" max="500" value="5">
-                  </li>
-                  <li id="g-complete-btn">
-                    <label for="g-complete"><span>K<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_graph" target="_blank">?</a></label>
-                    <input type="number" id="g-complete" min="1" max="500" value="5">
-                  </li>
-                  <li id="g-complete-bipartite-btn">
-                    <label for="g-complete-bipartie"><span>K<sub>n,n</sub></span><a href="https://en.wikipedia.org/wiki/Complete_bipartite_graph" target="_blank">?</a></label>
-                  <div>
-                    <input type="number" id="g-complete-bipartite-1" min="1" max="500" value="5">
-                    <input type="number" id="g-complete-bipartite-2" min="1" max="500" value="5">
-                  </div>
-                  </li>
-                  <li id="g-path-btn">
-                    <label for="g-path"><span>P<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Path_graph" target="_blank">?</a></label>
-                    <input type="number" id="g-path" min="2" max="500" value="5">
-                  </li>
-                  <li id="g-cycle-btn">
-                    <label for="g-cycle"><span>C<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Cycle_graph" target="_blank">?</a></label>
-                    <input type="number" id="g-cycle" min="3" max="500" value="5">
-                  </li>
-                  <li id="g-ladder-btn">
-                    <label for="g-ladder"><span>L<sub>n</sub></span><a href="https://en.wikipedia.org/wiki/Ladder_graph" target="_blank">?</a></label>
-                    <input type="number" id="g-ladder" min="2" max="500" value="5">
-                  </li>
-
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li class="menu-item">Analyze
-            <ul class="dropdown">
-              <li id="list-degrees-btn">Node Degrees</li>
-              <li id="components-btn">Components</li>
-            </ul>
-          </li>
-
-          <li class="menu-item">Help
-            <ul class="dropdown">
-              <a href="https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3" target="_blank"><li>How to use</li></a>
-              <li name="command-btn">Commands</li>
-              <a href="http://picinfiniti.net/" target="_blank"><li>About</li></a>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div id="menu-bar"></div>
 
       <div class="main">
-        <div id="chart" class="render"></div>
+        <canvas id="chart" width="3840px" height="2160px"></canvas>
       </div>
 
       <footer>
         <div>
           <p>.Powered by <a href="http://picinfiniti.net/" target="_blank">PicInfiniti.</a></p>
         </div>
-        <div class="color">
-          <input type="color" id="color" name="color" value="#4682B4">
-        </div>
+
       </footer>
     </div>
 
     <widgets>
       <div id="floating-panel">
-        <h3 id="info"><span>Info</span><span class="close">x</span></h3>
+        <h3 id="info">
+          <div>Info</div>
+          <div class="cm">
+            <div class="max">
+              ▢
+            </div>
+             <div class="close">
+              x
+             </div>           
+          </div>
+        </h3>
         <div class="body-info"></div>
       </div>
+
+      <div id="tools-panel">
+        <h4 id="tools"><span>Tools</span><span class="close">x</span></h4>
+        <div class="body-tools">
+          <div class="scale" title="Scale">
+            <img src="/assets/scale-DjHINVsZ.png" id="scale" name="scale" alt="scale">
+          </div>
+
+          <div class="panning" title="Panning">
+            <img src="/assets/move-YRgzCPgD.png" id="panning" name="panning" alt="panning">
+          </div>
+          <div class="select" title="Select">
+            <img src="/assets/select-D7l4H9g_.png" id="select" name="select" alt="select">
+          </div>
+          <div class="component" title="Component">
+            <img src="/assets/component-Bze1LeDH.png" id="component" name="component" alt="component">
+          </div>
+          <div class="tree" title="Tree">
+            <img src="/assets/tree-DF0NigLa.png" id="tree" name="tree" alt="tree">
+          </div>
+          <div class="force" title="Force Simulation">
+            <img src="/assets/force-C18uMJwY.png" id="force" name="force" alt="force">
+          </div>
+
+          <div id='color'>
+            <div class="color-1">
+              <label for="node-color">Node</label>
+              <input type="color" id="node-color" name="node-color" value="#000000">
+            </div>
+            <div class="color-2">
+              <label for="stroke-color">Stroke</label>
+              <input type="color" id="stroke-color" name="stroke-color" value="#000000">
+            </div>
+            <div class="color-3">
+              <label for="edge-color">Edge</label>
+              <input type="color" id="edge-color" name="edge-color" value="#4682B4">
+            </div>
+            <div class="color-4">
+              <label for="label-color">Label</label>
+              <input type="color" id="label-color" name="label-color" value="#4682B4">
+            </div>
+            <!-- <div class="color-5"> -->
+            <!--   <label for="background-color">BG</label> -->
+            <!--   <input type="color" id="background-color" name="background-color" value="#408aB4"> -->
+            <!-- </div> -->
+            <!-- <div class="color-6"> -->
+            <!--   <label for="grid-color">Grid</label> -->
+            <!--   <input type="color" id="grid-color" name="grid-color" value="#408aB4"> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
       <div id="custom-context-menu">
         <ul>
           <li name="organize-circle"><span>Organize Nodes</span><span>(O)</span></li>
-          <li name="make-complete-btn"><span>Complete Graph</span><span>(C)</span></li>
+          <li name="complete-btn"><span>Complete Graph</span><span>(C)</span></li>
           <li name="remove-selection-btn"><span>Delete</span><span>(d)</span></li>
           <li name="color-selection-btn"><span>Assign Color</span><span>(c)</span></li>
           <li name="add-edge-btn"><span>Add Edge</span><span>(e)</span></li>
@@ -159,18 +110,17 @@
           <li name="redo-btn"><span>Redo</span><span>(r)</span></li>
         </ul>
       </div>
+
       <div class="modal">
         <div id="help-panel" class="help-panel">
-          <div class="help-title">Command Help</div>
+          <div class="help-title">Mouse Commnads</div>
           <hr>
           <div class="help-content">
             <table class="help-table">
               <tr><td class="key">dblclick</td><td class="command">add node</td></tr>
               <tr><td class="key">dbltap</td><td class="command">add node</td></tr>
               <tr><td class="key">dblclick on node</td><td class="command">select node</td></tr>
-              <tr><td class="key">tap on node</td><td class="command">select node</td></tr>
               <tr><td class="key">dblclick on edge</td><td class="command">select edge</td></tr>
-              <tr><td class="key">tap on edge</td><td class="command">select edge</td></tr>
               <tr><td class="key">right click</td><td class="command">context menu</td></tr>
               <tr><td class="key">hold (touchscreen)</td><td class="command">context menu</td></tr>
               <tr><td class="key">drag</td><td class="command">move node</td></tr>
@@ -178,6 +128,8 @@
           </div>
         </div>
       </div>
+
+
     </widgets>
   </body>
 </html>
