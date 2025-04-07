@@ -103,6 +103,8 @@ export class EventHandlers {
         };
         reader.readAsText(file);
       }
+      event.target.value = '';
     });
+    // Reset the input value to allow re-selecting the same file
   }
 }
