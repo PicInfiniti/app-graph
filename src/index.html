@@ -6,15 +6,17 @@
     <meta name="theme-color" content="#FFFFFF">
     <title>Graph Studio</title>
 
-    <link rel="icon" href="./favicon.svg" type="image/gif">
+    <link rel="icon" href="./favicon.png" type="image/gif">
     <script type="module" src="./main.js" defer></script>
-    <style>
-
-    </style>
   </head>
   <body>
     <div class="container">
-      <div id="menu-bar"></div>
+      <div class="header">
+        <div id="menu-bar"></div>
+        <a href="https://github.com/PicInfiniti/app.graph"  target="_blank">
+          <img src="./assets/img/github.png" class="black">
+        </a>
+      </div>
 
       <div class="main">
         <canvas id="chart" width="3840px" height="2160px"></canvas>
@@ -22,7 +24,7 @@
 
       <footer>
         <div>
-          <p>.Powered by <a href="http://picinfiniti.net/" target="_blank">PicInfiniti.</a></p>
+          <p>.Powered by <span href="http://picinfiniti.net/">PicInfiniti.</span></p>
         </div>
 
       </footer>
@@ -64,7 +66,7 @@
             <img src="./assets/icon/tree.png" id="tree" name="tree" alt="tree">
           </div>
           <div class="force" title="Force Simulation">
-            <img src="./assets/icon/force.png" id="force" name="force" alt="force">
+            <img src="./favicon.png" id="force" name="force" alt="force">
           </div>
 
           <div id='color'>

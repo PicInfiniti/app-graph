@@ -40,9 +40,9 @@
 ### 🧰 Tools Menu
 
 - Force Simulation
-- Tree Layout
+- Tree Maker
 - Panning, Selecting, Scaling
-- View Components
+- Drag Components
 
 ### ⚙️ Generator Menu
 

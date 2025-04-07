@@ -11,7 +11,7 @@ footer div:first-child {
   pointer-events: none;
   color: #cf8c00;
 }
-footer div:first-child a {
+footer div:first-child span {
   color: #009e9e;
 }
 footer .color {

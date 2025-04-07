@@ -1,5 +1,23 @@
-#menu-bar 
+.header
+  display: flex
+  justify-content: space-between
+  align-items: center
   background-color: #f4f4f4
+    
+  a 
+    padding: 2px 
+    padding-right: 5px 
+    img
+      width: 25px
+      transition: transform 0.2s ease-in-out
+    &:hover img 
+      transform: scale(1.1)
+
+    &:active img 
+      transform: scale(0.9)
+
+
+#menu-bar 
   border-bottom: 1px solid #ddd
   padding: 0
   margin: 0
