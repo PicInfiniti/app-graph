@@ -1,4 +1,4 @@
-import { connectedComponents, forEachConnectedComponent } from 'graphology-components';
+import { connectedComponents, forEachConnectedComponent, countConnectedComponents } from 'graphology-components';
 import { bidirectional } from 'graphology-shortest-path';
 import { density, diameter } from 'graphology-metrics/graph';
 import { simmelianStrength } from 'graphology-metrics/edge';
@@ -78,7 +78,8 @@ export class Metric {
   countComponents() {
     const graph = this.graphManager.graph
     this.addHeader("Connected Components")
-
+    const count = countConnectedComponents(graph)
+    this.addInfo(`Count: ${count}`)
     forEachConnectedComponent(graph, component => {
       this.addInfo(component.map(node => graph.getNodeAttribute(node, "label")).join(', '))
     });
