@@ -17,6 +17,10 @@
   min-width: 200px;
   z-index: 20;
 }
+#custom-context-menu ul hr {
+  opacity: 0.5;
+  width: 90%;
+}
 #custom-context-menu ul li {
   display: flex;
   justify-content: space-between;

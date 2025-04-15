@@ -82,7 +82,7 @@ export class Menu {
         subItem.appendChild(shortcutSpan);
       }
 
-      if ("check" in sub) {
+      if ("check" in sub && !sub.shortcut) {
         const checkSpan = d.createElement("span");
         checkSpan.innerHTML = "&#10004;";
         checkSpan.classList.add("check");

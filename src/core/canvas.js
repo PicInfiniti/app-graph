@@ -130,7 +130,7 @@ export class Canvas {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
 
-    if (!this.settings.forceSimulation) {
+    if (!this.settings.forceSimulation && event.subject.component) {
       for (let node of event.subject.component) {
         this.app.graphManager.graph.updateNodeAttributes(node, attr => {
           return {

@@ -9,14 +9,26 @@ export class EventHandlers {
   init() {
     // When layout changes (e.g., user selects new layout from UI)
     this.app.eventBus.on('keydown', (event) => {
-      if (event.ctrlKey) {
-        d.body.style.cursor = "move";
+      if (event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
+        this.eventBus.emit("toggleSetting", { key: "select", value: true })
+      }
+      if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
+        this.eventBus.emit("toggleSetting", { key: "panning", value: true })
+      }
+      if (event.code == 'AltLeft' || event.code == 'AltRight') {
+        this.eventBus.emit("toggleSetting", { key: "component", value: true })
       }
     })
 
     this.app.eventBus.on('keyup', (event) => {
-      if (!event.ctrlKey) {
-        document.body.style.cursor = "default";
+      if (event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
+        this.eventBus.emit("toggleSetting", { key: "select", value: false })
+      }
+      if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
+        this.eventBus.emit("toggleSetting", { key: "panning", value: false })
+      }
+      if (event.code == 'AltLeft' || event.code == 'AltRight') {
+        this.eventBus.emit("toggleSetting", { key: "component", value: false })
       }
     })
 

@@ -88,9 +88,9 @@ class AppSettings {
     });
 
     this.eventBus.on("toggleSetting", (event) => {
-      const { key } = event.detail;
+      const { key, value } = event.detail;
       if (key) {
-        this.toggleSetting(key);
+        this.toggleSetting(key, value);
         if (key == "vertexLabel") {
           this.eventBus.emit("graph:updated", { type: "vertexLabel" })
         }
@@ -165,11 +165,14 @@ class AppSettings {
     this.app.drawGraph();
   }
 
-  toggleSetting(key) {
+  toggleSetting(key, value = null) {
     const one = ["panning", "scale", "select", "component"]
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
-      this.settings[key] = !this.settings[key];
+      if (value === null)
+        this.settings[key] = !this.settings[key];
+      else
+        this.settings[key] = value;
 
       if (one.includes(key)) {
         one.forEach(val => {
@@ -198,9 +201,9 @@ class AppSettings {
 
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
 
-      if (this.#autoSave) {
+      if (this.#autoSave && value === null)
         this.saveToLocalStorage();
-      }
+
       this.init();
       this.app.widget.init()
     } else {

@@ -13,7 +13,6 @@ export function applySettingsToUI(settings, canvas) {
   // d.getElementById('grid-color').value = settings.grid_color;
   // d.getElementById('background-color').value = settings.background_color;
   d.getElementById('stroke-color').value = settings.stroke_color;
-  d.querySelector('#component-btn .check').classList.toggle("hidden", !settings.component);
   d.querySelector('#component').classList.toggle("gray-background", !settings.component);
   d.querySelector('#scale-btn .check').classList.toggle("hidden", !settings.scale);
   d.querySelector('#scale').classList.toggle("gray-background", !settings.scale);
@@ -21,9 +20,7 @@ export function applySettingsToUI(settings, canvas) {
   d.querySelector('#tree').classList.toggle("gray-background", !settings.tree);
   d.querySelector('#force-btn .check').classList.toggle("hidden", !settings.forceSimulation);
   d.querySelector('#force').classList.toggle("gray-background", !settings.forceSimulation);
-  d.querySelector('#panning-btn .check').classList.toggle("hidden", !settings.panning);
   d.querySelector('#panning').classList.toggle("gray-background", !settings.panning);
-  d.querySelector('#select-btn .check').classList.toggle("hidden", !settings.select);
   d.querySelector('#select').classList.toggle("gray-background", !settings.select);
 
   canvas.style.cursor = settings.panning ? "move" : "default";

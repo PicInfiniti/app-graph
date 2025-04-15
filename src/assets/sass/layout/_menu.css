@@ -106,8 +106,8 @@
   white-space: nowrap;
 }
 #menu-bar > ul > li > ul li > ul li label a {
+  padding: 4px;
   color: gray;
-  width: 16px;
   height: 16px;
   font-size: 12px;
   font-weight: bold;

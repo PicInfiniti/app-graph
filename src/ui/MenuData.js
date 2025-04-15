@@ -122,9 +122,9 @@ export const menuData = [
     id: "tools",
     submenu: [
       { title: "Scale", id: "scale-btn", check: false },
-      { title: "Panning", id: "panning-btn", check: false },
-      { title: "Selecting", id: "select-btn", check: false },
-      { title: "Component", id: "component-btn", check: false },
+      { title: "Panning", id: "panning-btn", check: false, shortcut: "Ctrl" },
+      { title: "Selecting", id: "select-btn", check: false, shortcut: "Shift" },
+      { title: "Component", id: "component-btn", check: false, shortcut: "Alt" },
       { type: "divider" },
       { title: "Tree", id: "tree-btn", check: true },
       { title: "Force Simulation", id: "force-btn", check: false },
@@ -375,7 +375,7 @@ export const menuData = [
       { type: "divider" },
       {
         title: "Zodiac",
-        id: "social",
+        id: "zodiac",
         submenu: [
           {
             title: "Aries",
@@ -517,7 +517,7 @@ export const menuData = [
     submenu: [
       { title: "Mouse Commnads", id: "command", name: "command-btn" },
       { title: "How to use", id: "how-to-use" },
-      { title: "About", id: "about", shortcut: "version: 1.0.0" },
+      { title: "About", id: "about", shortcut: "version: 1.0.3" },
     ],
   },
 ];
