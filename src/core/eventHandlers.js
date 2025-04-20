@@ -4,33 +4,52 @@ export class EventHandlers {
   constructor(app) {
     this.app = app;
     this.eventBus = app.eventBus;
+
+    this.pressedKeys = new Set();
+    this.keySettingsMap = {
+      Shift: "select",
+      Control: "panning",
+      Alt: "component",
+      Meta: 'scale',
+      f: "forceSimulation",
+      t: "tree",
+    };
+
   }
-  e
+
+  isCombo(...keys) {
+    return keys.every(key => this.pressedKeys.has(key));
+  }
+
   init() {
-    // When layout changes (e.g., user selects new layout from UI)
     this.app.eventBus.on('keydown', (event) => {
-      if (event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
-        this.eventBus.emit("toggleSetting", { key: "select", value: true })
+      this.pressedKeys.add(event.key);
+
+      // Shift + Alt combo triggers "scale"
+      if (this.isCombo('Shift', 'Alt')) {
+        this.eventBus.emit("toggleSetting", { key: "scale", value: true });
+        return;
       }
-      if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
-        this.eventBus.emit("toggleSetting", { key: "panning", value: true })
+
+      const key = this.keySettingsMap[event.key];
+      if (key) {
+        this.eventBus.emit("toggleSetting", { key, value: true });
       }
-      if (event.code == 'AltLeft' || event.code == 'AltRight') {
-        this.eventBus.emit("toggleSetting", { key: "component", value: true })
-      }
-    })
+    });
 
     this.app.eventBus.on('keyup', (event) => {
-      if (event.code == 'ShiftLeft' || event.code == 'ShiftRight') {
-        this.eventBus.emit("toggleSetting", { key: "select", value: false })
+      this.pressedKeys.delete(event.key);
+
+      // Disable "scale" if either Shift or Alt is released
+      if (event.key === 'Shift' || event.key === 'Alt') {
+        this.eventBus.emit("toggleSetting", { key: "scale", value: false });
       }
-      if (event.code == 'ControlLeft' || event.code == 'ControlRight') {
-        this.eventBus.emit("toggleSetting", { key: "panning", value: false })
+
+      const key = this.keySettingsMap[event.key === 'AltLeft' ? 'Alt' : event.key];
+      if (key) {
+        this.eventBus.emit("toggleSetting", { key, value: false });
       }
-      if (event.code == 'AltLeft' || event.code == 'AltRight') {
-        this.eventBus.emit("toggleSetting", { key: "component", value: false })
-      }
-    })
+    });
 
     this.app.eventBus.on('layout:changed', (event) => {
       const { layoutType } = event.detail;

@@ -13,12 +13,10 @@ export function applySettingsToUI(settings, canvas) {
   // d.getElementById('grid-color').value = settings.grid_color;
   // d.getElementById('background-color').value = settings.background_color;
   d.getElementById('stroke-color').value = settings.stroke_color;
+
   d.querySelector('#component').classList.toggle("gray-background", !settings.component);
-  d.querySelector('#scale-btn .check').classList.toggle("hidden", !settings.scale);
   d.querySelector('#scale').classList.toggle("gray-background", !settings.scale);
-  d.querySelector('#tree-btn .check').classList.toggle("hidden", !settings.tree);
   d.querySelector('#tree').classList.toggle("gray-background", !settings.tree);
-  d.querySelector('#force-btn .check').classList.toggle("hidden", !settings.forceSimulation);
   d.querySelector('#force').classList.toggle("gray-background", !settings.forceSimulation);
   d.querySelector('#panning').classList.toggle("gray-background", !settings.panning);
   d.querySelector('#select').classList.toggle("gray-background", !settings.select);

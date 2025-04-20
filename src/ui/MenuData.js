@@ -121,13 +121,13 @@ export const menuData = [
     title: "Tools",
     id: "tools",
     submenu: [
-      { title: "Scale", id: "scale-btn", check: false },
+      { title: "Scale", id: "scale-btn", check: false, shortcut: "Alt+Shift" },
       { title: "Panning", id: "panning-btn", check: false, shortcut: "Ctrl" },
       { title: "Selecting", id: "select-btn", check: false, shortcut: "Shift" },
       { title: "Component", id: "component-btn", check: false, shortcut: "Alt" },
       { type: "divider" },
-      { title: "Tree", id: "tree-btn", check: true },
-      { title: "Force Simulation", id: "force-btn", check: false },
+      { title: "Tree", id: "tree-btn", check: false, shortcut: "t" },
+      { title: "Force Simulation", id: "force-btn", check: false, shortcut: "f" },
     ],
   },
   {
