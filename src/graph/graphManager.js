@@ -118,7 +118,13 @@ export class GraphManager {
   connectSelectedNodes() {
     this.saveGraphState();
     this.graph.connectSelectedNodes(this.settings.edge_color);
-    this.eventBus.emit("graph:updated", { type: "dropNodesEdges" })
+    this.eventBus.emit("graph:updated", { type: "addNodesEdges" })
+  }
+
+  connectSelectedNodesInOrder() {
+    this.saveGraphState();
+    this.graph.connectSelectedNodesInOrder(this.settings.edge_color);
+    this.eventBus.emit("graph:updated", { type: "addNodesEdges" })
   }
 
   updateSelectedNodesEdgesColor() {

@@ -123,6 +123,20 @@ Or try it online:
 
 ---
 
+## 🧭 Directed Graphs
+
+Graph Studio now supports **directed graphs (digraphs)**!
+
+- Use the selection order system to define direction:
+  - The first selected node becomes the source
+  - The next becomes the target
+- Add directed paths, chains, and DAG structures interactively
+- Export, visualize, and analyze directed edges alongside your graph
+
+This makes Graph Studio even more powerful for modeling workflows, hierarchies, and network flows.
+
+---
+
 ## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).  

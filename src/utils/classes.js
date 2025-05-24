@@ -58,7 +58,7 @@ export class Graph extends DirectedGraph {
   deselectAll() {
     this.updateEachNodeAttributes((_, attrs) => ({
       ...attrs,
-      selected: false
+      selected: 0
     }));
 
     this.updateEachEdgeAttributes((_, attrs) => ({
@@ -87,7 +87,21 @@ export class Graph extends DirectedGraph {
 
   // 🔁 Toggle selection
   toggleNodeSelection(node) {
-    this.updateNodeAttribute(node, 'selected', v => !v);
+    const current = this.getNodeAttribute(node, 'selected') || 0;
+
+    if (current > 0) {
+      // Deselect
+      this.setNodeAttribute(node, 'selected', 0);
+    } else {
+      // Assign next available number
+      let max = 0;
+      this.forEachNode((_, attrs) => {
+        if (typeof attrs.selected === 'number' && attrs.selected > max) {
+          max = attrs.selected;
+        }
+      });
+      this.setNodeAttribute(node, 'selected', max + 1);
+    }
   }
 
   toggleEdgeSelection(edge) {
@@ -96,7 +110,8 @@ export class Graph extends DirectedGraph {
 
   // 📦 Get selected node/edge keys
   getSelectedNodes() {
-    return this.filterNodes((_, attrs) => attrs.selected);
+    return this.filterNodes((_, attrs) => typeof attrs.selected === 'number' && attrs.selected > 0)
+           .sort((a, b) => this.getNodeAttribute(a, 'selected') - this.getNodeAttribute(b, 'selected'));
   }
 
   getSelectedEdges() {
@@ -144,6 +159,15 @@ export class Graph extends DirectedGraph {
         // This creates the edge if it doesn't exist, or merges attributes if it does
         this.mergeEdge(source, target, { color: color, selected: false });
       }
+    }
+  }
+
+  connectSelectedNodesInOrder(color) {
+    const ordered = this.getSelectedNodes();
+    for (let i = 0; i < ordered.length - 1; i++) {
+      const source = ordered[i];
+      const target = ordered[i + 1];
+      this.mergeEdge(source, target, { color: color, selected: false });
     }
   }
 

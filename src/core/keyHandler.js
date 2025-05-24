@@ -20,6 +20,7 @@ export class KeyHandler {
         "d": "remove-selection-btn",
         "c": "color-selection-btn",
         "e": "add-edge-btn",
+        "E": "add-directed-edge-btn",
         "O": "organize-circle",
         "C": "complete-btn"
       };
