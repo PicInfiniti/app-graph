@@ -1,6 +1,8 @@
 # 🌌 Graph Studio
 
-**Graph Studio** is an interactive web application built with **D3 Canvas** and **Graphology.js**, designed for creating, visualizing, and analyzing **simple undirected graphs**. It is touchscreen-friendly, intuitive, and packed with powerful tools for students, developers, researchers, or anyone interested in graph theory.
+![GitHub release](https://img.shields.io/github/v/release/PicInfiniti/app-graph?sort=semver)
+
+**Graph Studio** is an interactive web application built with **D3 Canvas** and **Graphology.js**, designed for creating, visualizing, and analyzing **simple undirected and directed graphs**. It is touchscreen-friendly, intuitive, and packed with powerful tools for students, developers, researchers, or anyone interested in graph theory.
 
 👉 [Live Demo](https://graph.picinfiniti.net/)
 
