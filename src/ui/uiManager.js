@@ -7,6 +7,7 @@ export function applySettingsToUI(settings, canvas) {
   d.getElementById('edge-size-1').value = settings.edge_size;
   d.getElementById('label-size-1').value = settings.label_size;
   d.querySelector('#vertex-label .check').classList.toggle("hidden", !settings.vertexLabel);
+  d.querySelector('#directed-edge .check').classList.toggle("hidden", !settings.directed_edge);
   d.getElementById('node-color').value = settings.node_color;
   d.getElementById('edge-color').value = settings.edge_color;
   d.getElementById('label-color').value = settings.label_color;

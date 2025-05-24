@@ -1,6 +1,6 @@
-import { UndirectedGraph } from "graphology";
+import { DirectedGraph } from "graphology";
 
-export class Graph extends UndirectedGraph {
+export class Graph extends DirectedGraph {
   constructor(options) {
     super(options);
 
@@ -142,7 +142,7 @@ export class Graph extends UndirectedGraph {
         const source = selected[i];
         const target = selected[j];
         // This creates the edge if it doesn't exist, or merges attributes if it does
-        this.mergeUndirectedEdge(source, target, { color: color, selected: false });
+        this.mergeEdge(source, target, { color: color, selected: false });
       }
     }
   }

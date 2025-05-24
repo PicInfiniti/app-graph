@@ -20,6 +20,7 @@ class AppSettings {
       scale: false,
       tree: true,
       vertexLabel: true,
+      directed_edge: true,
       node_radius: 40,
       edge_size: 2,
       label_size: 15,
@@ -91,7 +92,7 @@ class AppSettings {
       const { key, value } = event.detail;
       if (key) {
         this.toggleSetting(key, value);
-        if (key == "vertexLabel") {
+        if (key == "vertexLabel" || key == 'directed_edge') {
           this.eventBus.emit("graph:updated", { type: "vertexLabel" })
         }
       }

@@ -29,6 +29,7 @@ export const menuData = [
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
+      { title: "Directed Edge", name: "add-directed-edge-btn", shortcut: "(E)" },
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
       { title: "Redo", name: "redo-btn", shortcut: "(r)" },
@@ -38,6 +39,7 @@ export const menuData = [
         id: "settings",
         submenu: [
           { title: "Vertex Label", id: "vertex-label", check: true },
+          { title: "Directed Edge", id: "directed-edge", check: true },
           {
             title: "Grid",
             id: "gride-size",

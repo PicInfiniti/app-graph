@@ -84,10 +84,13 @@ export class App {
     const ctx = this._canvas.ctx;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Draw edges
+
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (!attr.color) {
-        graph.setEdgeAttribute(edge, "color", settings.edge_color)
+        graph.setEdgeAttribute(edge, "color", settings.edge_color);
       }
+
+      // Draw the edge line
       ctx.beginPath();
       ctx.moveTo(source.x, source.y);
       ctx.lineTo(target.x, target.y);
@@ -95,7 +98,32 @@ export class App {
       ctx.lineWidth = settings.edge_size;
       ctx.stroke();
       ctx.closePath();
+
+      if(settings.directed_edge){
+        // Draw arrowhead for directed edge
+        const arrowSize = 15; // size of the arrowhead
+        const angle = Math.atan2(target.y - source.y, target.x - source.x);
+
+        const arrowX = target.x - Math.cos(angle) * settings.node_radius/4; // slightly back from node center
+        const arrowY = target.y - Math.sin(angle) * settings.node_radius/4;
+
+        ctx.beginPath();
+        ctx.moveTo(arrowX, arrowY);
+        ctx.lineTo(
+          arrowX - arrowSize * Math.cos(angle - Math.PI / 6),
+          arrowY - arrowSize * Math.sin(angle - Math.PI / 6)
+        );
+        ctx.lineTo(
+          arrowX - arrowSize * Math.cos(angle + Math.PI / 6),
+          arrowY - arrowSize * Math.sin(angle + Math.PI / 6)
+        );
+        ctx.closePath();
+        ctx.fillStyle = attr.selected ? "orange" : attr.color;
+        ctx.fill();
+      }
+
     });
+
 
     // Draw nodes
     graph.forEachNode((node, attr) => {
