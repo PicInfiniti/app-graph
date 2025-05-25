@@ -75,7 +75,7 @@ Each generator includes documentation and Wikipedia links to learn more.
 
 - Mouse/Touch Commands
 - How to Use
-- About (version: 1.0.0)
+- About (version: 1.x.x)
 
 ---
 
@@ -136,6 +136,23 @@ Graph Studio now supports **directed graphs (digraphs)**!
 - Export, visualize, and analyze directed edges alongside your graph
 
 This makes Graph Studio even more powerful for modeling workflows, hierarchies, and network flows.
+
+---
+
+## 📚 Cite This Tool
+
+If you use **Graph Studio** in academic work, please consider citing it:
+
+PicInfiniti. *Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs*. <https://graph.picinfiniti.net/>
+
+## BibTeX
+
+@misc{graphstudio2025,
+  author       = {PicInfiniti},
+  title        = {Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs},
+  year         = {2025},
+  howpublished = {\url{<https://graph.picinfiniti.net}}>,
+}
 
 ---
 
