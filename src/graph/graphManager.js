@@ -14,7 +14,7 @@ export class GraphManager {
       ? Digraph
       : Graph;
 
-    this.generator = new Generator(this, this.graphClass)
+    this.generator = new Generator(this)
     this.metric = new Metric(this)
 
     this.limit = limit;
@@ -70,12 +70,15 @@ export class GraphManager {
     this.saveGraphState()
     this.graph = empty(Graph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" })
+    this.graphClass = Graph
+    console.log()
   }
   
   clearToDigraph() {
     this.saveGraphState()
     this.graph = empty(Digraph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" })
+    this.graphClass = Digraph
   }
 
   setupEventListeners() {

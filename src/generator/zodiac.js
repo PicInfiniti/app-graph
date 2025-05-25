@@ -10,7 +10,7 @@ export class Zodiac {
   load(name) {
     const data = constellationData[name.toLowerCase()];
     if (data) {
-      const graph = createConstellation(name, data.stars, data.edges);
+      const graph = createConstellation(name, data.stars, data.edges, this.graphManager.graphClass);
       this.graphManager.push(graph);
       this.layout.applyLayout('rotate180');
     } else {
@@ -95,8 +95,8 @@ function convertDECtoDecimal(decStr) {
   return sign * (d + m / 60 + s / 3600);
 }
 
-function createConstellation(name, stars, edges) {
-  const graph = new Graph();
+function createConstellation(name, stars, edges, graphClass) {
+  const graph = new graphClass();
 
   stars.forEach(star => {
     const ra = convertRAtoDecimal(star.ra);
