@@ -1,4 +1,4 @@
-import { Graph } from '../utils/classes';
+import { Graph } from '../utils/graph';
 import constellationData from './constellations.json';
 
 export class Zodiac {

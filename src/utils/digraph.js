@@ -1,6 +1,6 @@
 import { DirectedGraph } from "graphology";
 
-export class Graph extends DirectedGraph {
+export class Digraph extends DirectedGraph {
   constructor(options) {
     super(options);
 
@@ -26,7 +26,7 @@ export class Graph extends DirectedGraph {
 
   // 🧬 Deep copy with structure and attributes
   copy() {
-    const newGraph = new Graph(this.options);
+    const newGraph = new Digraph(this.options);
     newGraph.import(this.export());
     return newGraph;
   }

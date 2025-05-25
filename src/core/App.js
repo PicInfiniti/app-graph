@@ -99,7 +99,7 @@ export class App {
       ctx.stroke();
       ctx.closePath();
 
-      if(settings.directed_edge){
+      if(settings.directed){
         // Draw arrowhead for directed edge
         const arrowSize = 15; // size of the arrowhead
         const angle = Math.atan2(target.y - source.y, target.x - source.x);

@@ -8,6 +8,7 @@ export class KeyHandler {
     this.rename = d.querySelector(".rename-panel");
     this.shortcuts = {
         "n": "new-btn",
+        "N": "new-digraph-btn",
         "o": "import-graph",
         "s": "export-graph",
         "p": "export-png",

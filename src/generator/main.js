@@ -1,4 +1,3 @@
-import { Graph } from '../utils/classes';
 import { complete, empty, path, ladder } from 'graphology-generators/classic';
 import { caveman, connectedCaveman } from 'graphology-generators/community';
 import { clusters, erdosRenyi, girvanNewman } from 'graphology-generators/random';
@@ -6,29 +5,30 @@ import { florentineFamilies, krackhardtKite, karateClub } from '../utils/generat
 import { Zodiac } from './zodiac';
 
 export class Generator {
-  constructor(graphManager) {
+  constructor(graphManager, graphClass) {
     this.graphManager = graphManager
     this.layout = graphManager.layout
     this.zodiac = new Zodiac(graphManager)
+    this.graphClass = graphClass
   }
 
   empty(n) {
-    this.graphManager.push(empty(Graph, Number(n)))
+    this.graphManager.push(empty(this.graphClass, Number(n)))
     this.layout.applyLayout('circle')
   }
 
   complete(n) {
-    this.graphManager.push(complete(Graph, Number(n)))
+    this.graphManager.push(complete(this.graphClass, Number(n)))
     this.layout.applyLayout('circle')
   }
 
   ladder(n) {
-    this.graphManager.push(ladder(Graph, Number(n)))
+    this.graphManager.push(ladder(this.graphClass, Number(n)))
     this.layout.applyLayout('twoLine', { line1Count: Number(n), Y: 50 })
   }
 
   completeBipartite(n1, n2) {
-    const graph = empty(Graph, Number(n1) + Number(n2))
+    const graph = empty(this.graphClass, Number(n1) + Number(n2))
     for (let i = 0; i < Number(n1); i++) {
       for (let j = Number(n1); j < Number(n1) + Number(n2); j++) {
         graph.addEdge(i, j)
@@ -40,26 +40,26 @@ export class Generator {
   }
 
   cycle(n) {
-    this.graphManager.push(path(Graph, Number(n)))
+    this.graphManager.push(path(this.graphClass, Number(n)))
     this.graphManager.graph.addEdge(0, Number(n) - 1)
     this.layout.applyLayout('circle')
   }
 
   path(n) {
-    this.graphManager.push(path(Graph, Number(n)))
+    this.graphManager.push(path(this.graphClass, Number(n)))
     this.layout.applyLayout('oneLine')
   }
   caveman(n1, n2) {
-    this.graphManager.push(caveman(Graph, Number(n1), Number(n2)))
+    this.graphManager.push(caveman(this.graphClass, Number(n1), Number(n2)))
     this.layout.applyLayout('circle')
   }
   connectedCaveman(n1, n2) {
-    this.graphManager.push(connectedCaveman(Graph, Number(n1), Number(n2)))
+    this.graphManager.push(connectedCaveman(this.graphClass, Number(n1), Number(n2)))
     this.layout.applyLayout('circle')
   }
 
   clusters(o, s, c) {
-    const graph = clusters(Graph, {
+    const graph = clusters(this.graphClass, {
       order: Number(o),
       size: Number(s),
       clusters: Number(c)
@@ -69,7 +69,7 @@ export class Generator {
   }
 
   erdosRenyi(o, p) {
-    const graph = erdosRenyi(Graph, {
+    const graph = erdosRenyi(this.graphClass, {
       order: Number(o),
       probability: Number(p)
     });
@@ -78,25 +78,25 @@ export class Generator {
   }
 
   girvanNewman(n) {
-    const graph = girvanNewman(Graph, { zOut: 4 });
+    const graph = girvanNewman(this.graphClass, { zOut: 4 });
     this.graphManager.push(graph)
     this.layout.applyLayout('circle')
   }
 
   krackhardtkite() {
-    const graph = krackhardtKite(Graph);
+    const graph = krackhardtKite(this.graphClass);
     this.graphManager.push(graph)
     this.layout.applyLayout('oneLine')
   }
 
   florentineFamilies() {
-    const graph = florentineFamilies(Graph);
+    const graph = florentineFamilies(this.graphClass);
     this.graphManager.push(graph)
     this.layout.applyLayout('circle')
   }
 
   karateClub() {
-    const graph = karateClub(Graph);
+    const graph = karateClub(this.graphClass);
     this.graphManager.push(graph)
     this.layout.applyLayout('circle')
   }

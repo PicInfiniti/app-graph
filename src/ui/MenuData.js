@@ -4,7 +4,10 @@ export const menuData = [
     id: "file",
     submenu: [
       {
-        title: "🆕 New", id: "new-btn", shortcut: "(n)"
+        title: "🆕 New Graph", id: "new-btn", shortcut: "(n)",
+      },
+      {
+        title: "➡️ New Digraph", id: "new-digraph-btn", shortcut: "(N)"
       },
       {
         title: "📂 Import", id: "import-graph", shortcut: "(o)", input: [

@@ -145,7 +145,14 @@ export class Menu {
   handleMenuAction(menuId, val) {
     const actions = {
       // File 
-      "new-btn": () => this.graphManager.clear(),
+      "new-btn": () => {
+        this.graphManager.clear()
+        this.eventBus.emit("updateSetting", { key: "directed", value: false })
+      },
+      "new-digraph-btn": () => {
+        this.graphManager.clearToDigraph()
+        this.eventBus.emit("updateSetting", { key: "directed", value: true })
+      },
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),
       "export-png": () => this.eventBus.emit("export", { type: "png" }),
@@ -199,7 +206,6 @@ export class Menu {
 
       //Setting
       "vertex-label": () => this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
-      "directed-edge": () => this.eventBus.emit("toggleSetting", { key: "directed_edge" }),
       "vertex-size-1": () => this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
       "edge-size-1": () => this.eventBus.emit("updateSetting", { key: "edge_size", value: val }),
       "label-size-1": () => this.eventBus.emit("updateSetting", { key: "label_size", value: val }),

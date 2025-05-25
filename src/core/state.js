@@ -21,6 +21,7 @@ class AppSettings {
       tree: true,
       vertexLabel: true,
       directed_edge: true,
+      directed: true,
       node_radius: 40,
       edge_size: 2,
       label_size: 15,

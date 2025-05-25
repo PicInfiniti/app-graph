@@ -1,4 +1,5 @@
-import { Graph } from '../utils/classes';
+import { Digraph } from '../utils/digraph';
+import { Graph } from '../utils/graph';
 import { empty } from 'graphology-generators/classic';
 import { Metric } from './metrics';
 import { Generator } from '../generator/main';
@@ -9,12 +10,16 @@ export class GraphManager {
     this.eventBus = app.eventBus
     this.settings = app.settings
     this.layout = app.layout
-    this.generator = new Generator(this)
+    this.graphClass = this.settings.directed
+      ? Digraph
+      : Graph;
+
+    this.generator = new Generator(this, this.graphClass)
     this.metric = new Metric(this)
 
     this.limit = limit;
     this.index = 0;
-    this.history = [empty(Graph, 0)];
+    this.history = [empty(this.graphClass, 0)];
     this.graph = this.history[0]
     this.init()
   }
@@ -63,9 +68,14 @@ export class GraphManager {
 
   clear() {
     this.saveGraphState()
-    this.graph.clear();
+    this.graph = empty(Graph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" })
-
+  }
+  
+  clearToDigraph() {
+    this.saveGraphState()
+    this.graph = empty(Digraph, 0);
+    this.eventBus.emit("graph:updated", { type: "clear" })
   }
 
   setupEventListeners() {
