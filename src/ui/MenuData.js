@@ -31,8 +31,10 @@ export const menuData = [
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
       { title: "Directed Edge", name: "add-directed-edge-btn", shortcut: "(E)" },
       { type: "divider" },
+      { title: "Rename Nodes", name: "rename-btn", shortcut: "(r)" },
+      { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
-      { title: "Redo", name: "redo-btn", shortcut: "(r)" },
+      { title: "Redo", name: "redo-btn", shortcut: "(R)" },
       { type: "divider" },
       {
         title: "Settings",

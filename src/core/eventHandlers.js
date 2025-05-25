@@ -5,6 +5,9 @@ export class EventHandlers {
     this.app = app;
     this.eventBus = app.eventBus;
 
+    this.modal = d.querySelector(".modal");
+    this.rename = d.querySelector(".rename-panel");
+
     this.pressedKeys = new Set();
     this.keySettingsMap = {
       Shift: "select",
@@ -32,7 +35,7 @@ export class EventHandlers {
       }
 
       const key = this.keySettingsMap[event.key];
-      if (key) {
+      if (key && this.rename.style.display != "flex") {
         this.eventBus.emit("toggleSetting", { key, value: true });
       }
     });

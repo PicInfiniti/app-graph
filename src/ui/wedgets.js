@@ -110,8 +110,12 @@ export class Widget {
     }
 
     if (modalClose) {
-      modalClose.addEventListener('click', () => {
-        modalClose.style.display = "none"
+      modalClose.addEventListener('click', (e) => {
+        if (e.target.classList.contains("modal")) {
+          modalClose.style.display = "none";
+          d.querySelector(".modal .help-panel").style.display = "none"
+          d.querySelector(".modal .rename-panel").style.display = "none"
+        }
       });
     }
 

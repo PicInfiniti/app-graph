@@ -165,6 +165,22 @@ export class Menu {
       "stroke-color": () => this.eventBus.emit("updateSetting", { key: "stroke_color", value: val }),
       "background-color": () => this.eventBus.emit("updateSetting", { key: "background_color", value: val }),
       "grid-color": () => this.eventBus.emit("updateSetting", { key: "grid_color", value: val }),
+      "rename": () => this.graphManager.updateSelectedNodesName(val),
+      "rename-btn": () => {
+        const modal = d.querySelector(".modal");
+        if (modal.style.display === "flex") {
+          modal.style.display = "none";
+        } else {
+          modal.style.display = "flex";
+        }
+        
+        d.querySelector(".modal .help-panel").style.display = "none"
+        d.querySelector(".modal .rename-panel").style.display = "flex"
+        d.getElementById("rename").focus();
+        setTimeout(() => {
+          d.getElementById("rename").value = "";
+        }, 10);
+      },
 
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
@@ -277,7 +293,11 @@ export class Menu {
 
       //Help
       "how-to-use": () => window.open('https://www.youtube.com/playlist?list=PLaa8UNGS4QED9DUhAZt7O963qkScAWah3', '_blank'),
-      "command": () => d.querySelector(".modal").style.display = "flex",
+      "command": () => {
+        d.querySelector(".modal").style.display = "flex"
+        d.querySelector(".modal .rename-panel").style.display = "none"
+        d.querySelector(".modal .help-panel").style.display = "block"
+      },
       "about": () => window.open('http://picinfiniti.net/', '_blank')
 
     };
@@ -305,7 +325,7 @@ export class Menu {
 
     d.addEventListener("input", (event) => {
       const target = event.target;
-      if (!target) return;
+      if (!target || target.id=='rename') return;
       const menuId = target.id || target.getAttribute("name");
       if (menuId) {
         this.handleMenuAction(menuId, target.value);

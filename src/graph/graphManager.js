@@ -134,6 +134,12 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
   }
 
+  updateSelectedNodesName(name) {
+    this.saveGraphState()
+    this.graph.updateSelectedNodesName(name)
+    this.eventBus.emit("graph:updated", { type: "updateNodesNames" });
+  }
+
   deselectAll() {
     this.graph.updateEachNodeAttributes((node, attrs) => ({
       ...attrs,

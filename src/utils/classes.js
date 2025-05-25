@@ -129,6 +129,10 @@ export class Graph extends DirectedGraph {
     this.updateSelectedNodesAttributes({ color, stroke });
   }
 
+  updateSelectedNodesName(label) {
+    this.updateSelectedNodesAttributes({ label });
+  }
+
   // 🎨 Update a specific attribute (like color) for all selected edges
   updateSelectedEdgesColor(color) {
     this.updateSelectedEdgesAttributes({ color });

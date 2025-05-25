@@ -16,18 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('img').forEach(img => {
     img.setAttribute('draggable', 'false');
   });
-  // document.addEventListener("wheel", function (event) {
-  //   if (event.ctrlKey) {
-  //     event.preventDefault();
-  //   }
-  // }, { passive: false });
-  //
-  // document.addEventListener("keydown", function (event) {
-  //   if (event.ctrlKey && (event.key === "+" || event.key === "-" || event.key === "0")) {
-  //     event.preventDefault();
-  //   }
-  // });
-
 });
 
 
