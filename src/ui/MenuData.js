@@ -541,7 +541,7 @@ export const menuData = [
       { type: "divider" },
       { title: "Neighbors", id: "neighbors-btn" },
       { title: "Shortest Path", id: "shortest-path-btn" },
-      { title: "Selected Node Info", id: "all-info-btn", shortcut: "(I)" },
+      { title: "Selected Node Info", id: "all-info-btn", shortcut: "(a)" },
       { type: "divider" },
       { title: "Clear Panel", id: "clear-info-panel-btn", shortcut: "(q)" },
     ],
