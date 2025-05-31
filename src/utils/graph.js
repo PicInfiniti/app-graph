@@ -5,22 +5,26 @@ export class Graph extends UndirectedGraph {
     super(options);
 
     // Automatically add 'id' and 'selected' to nodes
-    this.on('nodeAdded', ({ key }) => {
+    this.on("nodeAdded", ({ key }) => {
       const attrs = this.getNodeAttributes(key);
 
-      if (!attrs.id) this.setNodeAttribute(key, 'id', Number(key));
-      if (attrs.selected === undefined) this.setNodeAttribute(key, 'selected', false);
-      if (attrs.size === undefined) this.setNodeAttribute(key, 'size', .25);
-      if (attrs.magnitude === undefined) this.setNodeAttribute(key, 'magnitude', 1);
+      if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
+      if (attrs.selected === undefined)
+        this.setNodeAttribute(key, "selected", false);
+      if (attrs.size === undefined) this.setNodeAttribute(key, "size", 0.25);
+      if (attrs.magnitude === undefined)
+        this.setNodeAttribute(key, "magnitude", 1);
+      if (attrs.desc === undefined) this.setNodeAttribute(key, "desc", {});
     });
 
     // Automatically add 'source', 'target', and 'selected' to edges
-    this.on('edgeAdded', ({ key, source, target }) => {
+    this.on("edgeAdded", ({ key, source, target }) => {
       const attrs = this.getEdgeAttributes(key);
 
-      if (!attrs.source) this.setEdgeAttribute(key, 'source', Number(source));
-      if (!attrs.target) this.setEdgeAttribute(key, 'target', Number(target));
-      if (attrs.selected === undefined) this.setEdgeAttribute(key, 'selected', false);
+      if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
+      if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
+      if (attrs.selected === undefined)
+        this.setEdgeAttribute(key, "selected", false);
     });
   }
 
@@ -35,7 +39,7 @@ export class Graph extends UndirectedGraph {
   getNodesForD3() {
     return this.nodes().map((id) => ({
       ...this.getNodeAttributes(id),
-      id: Number(id)
+      id: Number(id),
     }));
   }
 
@@ -46,72 +50,77 @@ export class Graph extends UndirectedGraph {
       return {
         source: Number(source),
         target: Number(target),
-        ...attributes
+        ...attributes,
       };
     });
   }
 
   getEdgeSourcetarget(e) {
-    return [this.source(e), this.target(e)]
+    return [this.source(e), this.target(e)];
   }
   // ❌ Clear selection on all nodes and edges
   deselectAll() {
     this.updateEachNodeAttributes((_, attrs) => ({
       ...attrs,
-      selected: 0
+      selected: 0,
     }));
 
     this.updateEachEdgeAttributes((_, attrs) => ({
       ...attrs,
-      selected: false
+      selected: false,
     }));
   }
 
   // ✅ Select node/edge
   selectNode(node) {
-    this.setNodeAttribute(node, 'selected', true);
+    this.setNodeAttribute(node, "selected", true);
   }
 
   selectEdge(edge) {
-    this.setEdgeAttribute(edge, 'selected', true);
+    this.setEdgeAttribute(edge, "selected", true);
   }
 
   // ❌ Deselect node/edge
   deselectNode(node) {
-    this.setNodeAttribute(node, 'selected', false);
+    this.setNodeAttribute(node, "selected", false);
   }
 
   deselectEdge(edge) {
-    this.setEdgeAttribute(edge, 'selected', false);
+    this.setEdgeAttribute(edge, "selected", false);
   }
 
   // 🔁 Toggle selection
   toggleNodeSelection(node) {
-    const current = this.getNodeAttribute(node, 'selected') || 0;
+    const current = this.getNodeAttribute(node, "selected") || 0;
 
     if (current > 0) {
       // Deselect
-      this.setNodeAttribute(node, 'selected', 0);
+      this.setNodeAttribute(node, "selected", 0);
     } else {
       // Assign next available number
       let max = 0;
       this.forEachNode((_, attrs) => {
-        if (typeof attrs.selected === 'number' && attrs.selected > max) {
+        if (typeof attrs.selected === "number" && attrs.selected > max) {
           max = attrs.selected;
         }
       });
-      this.setNodeAttribute(node, 'selected', max + 1);
+      this.setNodeAttribute(node, "selected", max + 1);
     }
   }
 
   toggleEdgeSelection(edge) {
-    this.updateEdgeAttribute(edge, 'selected', v => !v);
+    this.updateEdgeAttribute(edge, "selected", (v) => !v);
   }
 
   // 📦 Get selected node/edge keys
   getSelectedNodes() {
-    return this.filterNodes((_, attrs) => typeof attrs.selected === 'number' && attrs.selected > 0)
-           .sort((a, b) => this.getNodeAttribute(a, 'selected') - this.getNodeAttribute(b, 'selected'));
+    return this.filterNodes(
+      (_, attrs) => typeof attrs.selected === "number" && attrs.selected > 0,
+    ).sort(
+      (a, b) =>
+        this.getNodeAttribute(a, "selected") -
+        this.getNodeAttribute(b, "selected"),
+    );
   }
 
   getSelectedEdges() {
@@ -120,8 +129,8 @@ export class Graph extends UndirectedGraph {
 
   // 🧹 Delete all selected nodes and edges
   deleteSelected() {
-    this.getSelectedEdges().forEach(edge => this.dropEdge(edge));
-    this.getSelectedNodes().forEach(node => this.dropNode(node));
+    this.getSelectedEdges().forEach((edge) => this.dropEdge(edge));
+    this.getSelectedNodes().forEach((node) => this.dropNode(node));
   }
 
   // 🎨 Update a specific attribute (like color) for all selected nodes
