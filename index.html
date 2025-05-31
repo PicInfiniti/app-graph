@@ -1,28 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="theme-color" content="#FFFFFF">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="theme-color" content="#FFFFFF" />
 
-
-    <meta name="citation_title" content="Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs">
-    <meta name="citation_author" content="PicInfiniti">
-    <meta name="citation_publication_date" content="2025">
-    <meta name="citation_public_url" content="https://graph.picinfiniti.net">
+    <meta
+      name="citation_title"
+      content="Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs"
+    />
+    <meta name="citation_author" content="PicInfiniti" />
+    <meta name="citation_publication_date" content="2025" />
+    <meta name="citation_public_url" content="https://graph.picinfiniti.net" />
 
     <title>Graph Studio</title>
 
-    <link rel="icon" href="/favicon.png" type="image/gif">
-    <script type="module" crossorigin src="/assets/index-XvQdWjoH.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CpLKId2q.css">
+    <link rel="icon" href="/favicon.png" type="image/gif" />
+    <script type="module" crossorigin src="/assets/index-zjGuGRiz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DInDFYWX.css">
   </head>
   <body>
     <div class="container">
       <div class="header">
         <div id="menu-bar"></div>
-        <a href="https://github.com/PicInfiniti/app.graph"  target="_blank">
-          <img src="/github.png" class="black">
+        <a href="https://github.com/PicInfiniti/app.graph" target="_blank">
+          <img src="/github.png" class="black" />
         </a>
       </div>
 
@@ -32,9 +37,10 @@
 
       <footer>
         <div>
-          <p>.Powered by <span href="http://picinfiniti.net/">PicInfiniti.</span></p>
+          <p>
+            .Powered by <span href="http://picinfiniti.net/">PicInfiniti.</span>
+          </p>
         </div>
-
       </footer>
     </div>
 
@@ -43,12 +49,8 @@
         <h3 id="info">
           <div>Info</div>
           <div class="cm">
-            <div class="max">
-              ▢
-            </div>
-             <div class="close">
-              x
-             </div>           
+            <div class="max">▢</div>
+            <div class="close">x</div>
           </div>
         </h3>
         <div class="body-info"></div>
@@ -58,60 +60,100 @@
         <h4 id="tools"><span>Tools</span><span class="close">x</span></h4>
         <div class="body-tools">
           <div class="scale" title="Scale">
-            <img src="/icon/scale.png" id="scale" name="scale" alt="scale">
+            <img src="/icon/scale.png" id="scale" name="scale" alt="scale" />
           </div>
 
           <div class="panning" title="Panning">
-            <img src="/icon/move.png" id="panning" name="panning" alt="panning">
+            <img
+              src="/icon/move.png"
+              id="panning"
+              name="panning"
+              alt="panning"
+            />
           </div>
           <div class="select" title="Select">
-            <img src="/icon/select.png" id="select" name="select" alt="select">
+            <img
+              src="/icon/select.png"
+              id="select"
+              name="select"
+              alt="select"
+            />
           </div>
           <div class="component" title="Component">
-            <img src="/icon/component.png" id="component" name="component" alt="component">
+            <img
+              src="/icon/component.png"
+              id="component"
+              name="component"
+              alt="component"
+            />
           </div>
           <div class="tree" title="Tree">
-            <img src="/icon/tree.png" id="tree" name="tree" alt="tree">
+            <img src="/icon/tree.png" id="tree" name="tree" alt="tree" />
           </div>
           <div class="force" title="Force Simulation">
-            <img src="/favicon.png" id="force" name="force" alt="force">
+            <img src="/favicon.png" id="force" name="force" alt="force" />
           </div>
 
-          <div id='color'>
+          <div id="color">
             <div class="color-1">
               <label for="node-color">Node</label>
-              <input type="color" id="node-color" name="node-color" value="#000000">
+              <input
+                type="color"
+                id="node-color"
+                name="node-color"
+                value="#000000"
+              />
             </div>
 
             <div class="color-2">
               <label for="stroke-color">Stroke</label>
-              <input type="color" id="stroke-color" name="stroke-color" value="#000000">
+              <input
+                type="color"
+                id="stroke-color"
+                name="stroke-color"
+                value="#000000"
+              />
             </div>
 
             <div class="color-3">
               <label for="edge-color">Edge</label>
-              <input type="color" id="edge-color" name="edge-color" value="#4682B4">
+              <input
+                type="color"
+                id="edge-color"
+                name="edge-color"
+                value="#4682B4"
+              />
             </div>
 
             <div class="color-4">
               <label for="label-color">Label</label>
-              <input type="color" id="label-color" name="label-color" value="#4682B4">
+              <input
+                type="color"
+                id="label-color"
+                name="label-color"
+                value="#4682B4"
+              />
             </div>
-
           </div>
-
         </div>
       </div>
 
-
       <div id="custom-context-menu">
         <ul>
-          <li name="organize-circle"><span>Organize Nodes</span><span>(O)</span></li>
-          <li name="complete-btn"><span>Complete Graph</span><span>(C)</span></li>
-          <li name="remove-selection-btn"><span>Delete</span><span>(d)</span></li>
-          <li name="color-selection-btn"><span>Assign Color</span><span>(c)</span></li>
+          <li name="organize-circle">
+            <span>Organize Nodes</span><span>(O)</span>
+          </li>
+          <li name="complete-btn">
+            <span>Complete Graph</span><span>(C)</span>
+          </li>
+          <li name="remove-selection-btn">
+            <span>Delete</span><span>(d)</span>
+          </li>
+          <li name="color-selection-btn">
+            <span>Assign Color</span><span>(c)</span>
+          </li>
           <li name="add-edge-btn"><span>Add Edge</span><span>(e)</span></li>
-          <hr>
+          <hr />
           <li name="undo-btn"><span>Undo</span><span>(u)</span></li>
           <li name="redo-btn"><span>Redo</span><span>(r)</span></li>
         </ul>
@@ -120,27 +162,51 @@
       <div class="modal">
         <div id="help-panel" class="help-panel">
           <div class="help-title">Mouse Commnads</div>
-          <hr>
+          <hr />
           <div class="help-content">
             <table class="help-table">
-              <tr><td class="key">dblclick</td><td class="command">add node</td></tr>
-              <tr><td class="key">dbltap</td><td class="command">add node</td></tr>
-              <tr><td class="key">dblclick on node</td><td class="command">select node</td></tr>
-              <tr><td class="key">dblclick on edge</td><td class="command">select edge</td></tr>
-              <tr><td class="key">right click</td><td class="command">context menu</td></tr>
-              <tr><td class="key">hold (touchscreen)</td><td class="command">context menu</td></tr>
-              <tr><td class="key">drag</td><td class="command">move node</td></tr>
+              <tr>
+                <td class="key">dblclick</td>
+                <td class="command">add node</td>
+              </tr>
+              <tr>
+                <td class="key">dbltap</td>
+                <td class="command">add node</td>
+              </tr>
+              <tr>
+                <td class="key">dblclick on node</td>
+                <td class="command">select node</td>
+              </tr>
+              <tr>
+                <td class="key">dblclick on edge</td>
+                <td class="command">select edge</td>
+              </tr>
+              <tr>
+                <td class="key">right click</td>
+                <td class="command">context menu</td>
+              </tr>
+              <tr>
+                <td class="key">hold (touchscreen)</td>
+                <td class="command">context menu</td>
+              </tr>
+              <tr>
+                <td class="key">drag</td>
+                <td class="command">move node</td>
+              </tr>
             </table>
           </div>
         </div>
 
         <div class="rename-panel">
           <label>Rename</label>
-          <input type="text" id="rename" placeholder="Write new name..."/>
+          <input type="text" id="rename" placeholder="Write new name..." />
+        </div>
+
+        <div class="desc-panel">
+          <label>Add Description</label>
+          <input type="text" id="desc" placeholder="Write Comment..." />
         </div>
       </div>
-
-
     </widgets>
   </body>
 </html>
