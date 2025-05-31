@@ -279,6 +279,7 @@ export class Canvas {
     let clickedEdge = this.findClickedEdge(x, y);
 
     if (clickedNode || clickedEdge) {
+      console.log(clickedNode);
       if (
         clickedNode &&
         clickedNode.desc &&

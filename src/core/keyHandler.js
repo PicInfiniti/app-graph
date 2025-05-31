@@ -35,29 +35,19 @@ export class KeyHandler {
         if (event.key === "Enter") {
           const input = document.getElementById("desc");
           const value = input.value;
-          if (value) {
-            input.value = "";
-            this.desc.style.display = "none";
-            d.querySelector(".modal").style.display = "none";
-            this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
-          } else {
-            this.app.graphManager.metric.addInfo("Write Somthing!");
-            this.app.graphManager.metric.addLine();
-          }
+          input.value = "";
+          this.desc.style.display = "none";
+          d.querySelector(".modal").style.display = "none";
+          this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
         }
       } else if (this.rename.style.display === "flex") {
         if (event.key === "Enter") {
           const input = document.getElementById("rename");
           const value = input.value;
-          if (value) {
-            input.value = "";
-            this.rename.style.display = "none";
-            d.querySelector(".modal").style.display = "none";
-            this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
-          } else {
-            this.app.graphManager.metric.addInfo("Write Somthing!");
-            this.app.graphManager.metric.addLine();
-          }
+          input.value = "";
+          this.rename.style.display = "none";
+          d.querySelector(".modal").style.display = "none";
+          this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
         }
       } else {
         if (this.shortcuts[event.key]) {
