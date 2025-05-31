@@ -281,6 +281,8 @@ export class Menu {
       "disparity-btn": () => this.graphManager.metric.disparity(),
       "clear-info-panel-btn": () =>
         (d.querySelector("#floating-panel .body-info").innerHTML = ""),
+
+      "all-info-btn": () => this.graphManager.metric.allInfo(),
       //Generator
       //Classic
       empty: () =>
