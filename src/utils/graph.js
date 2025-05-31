@@ -142,7 +142,7 @@ export class Graph extends UndirectedGraph {
     this.updateSelectedNodesAttributes({ label });
   }
 
-  updateSelctedNodesInfo(desc) {
+  updateSelectedNodesInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
   }
   // 🎨 Update a specific attribute (like color) for all selected edges

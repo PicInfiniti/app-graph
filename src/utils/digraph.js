@@ -142,7 +142,7 @@ export class Digraph extends DirectedGraph {
     this.updateSelectedNodesAttributes({ label });
   }
 
-  updateSelctedNodesInfo(desc) {
+  updateSelectedNodesInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
   }
 

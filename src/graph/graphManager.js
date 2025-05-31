@@ -154,9 +154,9 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "updateNodesNames" });
   }
 
-  updateSelctedNodesInfo(val) {
+  updateSelectedNodesInfo(val) {
     this.saveGraphState();
-    this.graph.updateSelctedNodesInfo({ "": val });
+    this.graph.updateSelectedNodesInfo({ "": val });
     this.eventBus.emit("graph:updated", { type: "updateNodesInfo" });
   }
 

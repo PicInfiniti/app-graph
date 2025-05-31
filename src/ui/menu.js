@@ -202,7 +202,7 @@ export class Menu {
           d.getElementById("rename").value = "";
         }, 10);
       },
-      desc: () => this.graphManager.updateSelctedNodesInfo(val),
+      desc: () => this.graphManager.updateSelectedNodesInfo(val),
       "desc-btn": () => {
         const modal = d.querySelector(".modal");
         if (modal.style.display === "flex") {
