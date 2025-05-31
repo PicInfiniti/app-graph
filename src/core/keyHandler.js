@@ -23,6 +23,7 @@ export class KeyHandler {
       C: "complete-btn",
       r: "rename-btn",
       i: "desc-btn",
+      q: "clear-info-panel-btn",
     };
   }
 

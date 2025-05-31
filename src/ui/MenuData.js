@@ -542,7 +542,7 @@ export const menuData = [
       { title: "Neighbors", id: "neighbors-btn" },
       { title: "Shortest Path", id: "shortest-path-btn" },
       { type: "divider" },
-      { title: "Clear Panel", id: "clear-info-panel-btn" },
+      { title: "Clear Panel", id: "clear-info-panel-btn", shortcut: "(q)" },
     ],
   },
   {
