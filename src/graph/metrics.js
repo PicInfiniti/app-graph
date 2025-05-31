@@ -46,8 +46,9 @@ export class Metric {
   }
 
   allInfo() {
-    for (let node in this.graphManager.graph.getSelectedNodes()) {
+    for (let node of this.graphManager.graph.getSelectedNodes()) {
       const attrs = this.graphManager.graph.getNodeAttributes(node);
+      console.log(attrs);
       if (Object.keys(attrs.desc).length != 0) {
         this.addHeader(`${attrs.label}:`);
         for (let key in attrs.desc) {

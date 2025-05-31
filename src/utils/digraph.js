@@ -154,7 +154,6 @@ export class Digraph extends DirectedGraph {
   // 🛠️ Update multiple attributes for selected nodes
   updateSelectedNodesAttributes(updates) {
     this.getSelectedNodes().forEach((node) => {
-      console.log(node, updates);
       this.mergeNodeAttributes(node, updates);
     });
   }
