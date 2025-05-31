@@ -8,17 +8,17 @@ export class Widget {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
-    this.mettric = new Metric(app)
+    this.mettric = new Metric(app);
 
     this.panels = {
-      info: d.getElementById('floating-panel'),
-      tools: d.getElementById('tools-panel'),
+      info: d.getElementById("floating-panel"),
+      tools: d.getElementById("tools-panel"),
     };
 
     this.handels = {
       info: "#info",
       tools: "#tools",
-    }
+    };
 
     this.addEventListeners();
     this.makePanelsDraggable();
@@ -27,8 +27,8 @@ export class Widget {
   }
 
   init() {
-    this.togglePanel('info', '#panel-btn .check', this.settings.info_panel);
-    this.togglePanel('tools', '#tools-btn .check', this.settings.tools_panel);  // Add event listeners for button clicks
+    this.togglePanel("info", "#panel-btn .check", this.settings.info_panel);
+    this.togglePanel("tools", "#tools-btn .check", this.settings.tools_panel); // Add event listeners for button clicks
   }
 
   contexMenu() {
@@ -63,7 +63,6 @@ export class Widget {
     d.addEventListener("click", () => {
       d.getElementById("custom-context-menu").style.display = "none";
     });
-
   }
 
   togglePanel(panelKey, buttonSelector, isVisible) {
@@ -71,65 +70,63 @@ export class Widget {
     const button = d.querySelector(buttonSelector);
 
     button.classList.toggle("hidden", !isVisible);
-    panel.style.display = isVisible ? 'flex' : 'none';
+    panel.style.display = isVisible ? "flex" : "none";
 
     if (!isVisible) {
-      this.resetPanel(panel)
+      this.resetPanel(panel);
     }
   }
 
   resetPanel(panel) {
-    panel.style.transform = 'translate(0px, 0px)';
-    panel.setAttribute('data-x', 0);
-    panel.setAttribute('data-y', 0);
+    panel.style.transform = "translate(0px, 0px)";
+    panel.setAttribute("data-x", 0);
+    panel.setAttribute("data-y", 0);
   }
 
   addEventListeners() {
-    const infoClose = d.querySelector('#floating-panel .close');
-    const infoMax = d.querySelector('#floating-panel .max');
-    const toolsClose = d.querySelector('#tools-panel .close');
+    const infoClose = d.querySelector("#floating-panel .close");
+    const infoMax = d.querySelector("#floating-panel .max");
+    const toolsClose = d.querySelector("#tools-panel .close");
     const modalClose = d.querySelector(".modal");
 
     if (infoClose) {
-      infoClose.addEventListener('click', () => {
+      infoClose.addEventListener("click", () => {
         this.eventBus.emit("toggleSetting", { key: "info_panel" });
       });
     }
 
     if (infoMax) {
-      infoMax.addEventListener('click', () => {
-        this.resetPanel(this.panels.info)
+      infoMax.addEventListener("click", () => {
+        this.resetPanel(this.panels.info);
         d.querySelector("#floating-panel").classList.toggle("MAX");
       });
     }
 
     if (toolsClose) {
-      toolsClose.addEventListener('click', () => {
+      toolsClose.addEventListener("click", () => {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" });
       });
     }
 
     if (modalClose) {
-      modalClose.addEventListener('click', (e) => {
+      modalClose.addEventListener("click", (e) => {
         if (e.target.classList.contains("modal")) {
           modalClose.style.display = "none";
-          d.querySelector(".modal .help-panel").style.display = "none"
-          d.querySelector(".modal .rename-panel").style.display = "none"
+          d.querySelector(".modal .help-panel").style.display = "none";
+          d.querySelector(".modal .rename-panel").style.display = "none";
+          d.querySelector(".modal .desc-panel").style.display = "none";
         }
       });
     }
-
   }
 
-
   makePanelsDraggable() {
-    Object.keys(this.panels).forEach(key => {
+    Object.keys(this.panels).forEach((key) => {
       if (this.panels[key] && this.handels[key]) {
         this.makeDraggable(this.panels[key], this.handels[key]);
       }
     });
   }
-
 
   makeDraggable(panel, handleSelector) {
     // Initialize the panel as draggable with Interact.js
@@ -140,44 +137,61 @@ export class Widget {
         move(event) {
           const target = event.target;
           // Get current translation values or default to 0
-          let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-          let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+          let x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
+          let y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
 
           // Apply the translation using CSS transform
           target.style.transform = `translate(${x}px, ${y}px)`;
 
           // Store the new position in data attributes
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-        }
-      }
+          target.setAttribute("data-x", x);
+          target.setAttribute("data-y", y);
+        },
+      },
     });
   }
 
   listeners() {
-    d.querySelector("widgets #tools-panel .scale").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "scale" })
-    })
+    d.querySelector("widgets #tools-panel .scale").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "scale" });
+      },
+    );
 
-    d.querySelector("widgets #tools-panel .tree").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "tree" })
-    })
+    d.querySelector("widgets #tools-panel .tree").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "tree" });
+      },
+    );
 
-    d.querySelector("widgets #tools-panel .force").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "forceSimulation" })
-    })
+    d.querySelector("widgets #tools-panel .force").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "forceSimulation" });
+      },
+    );
 
-    d.querySelector("widgets #tools-panel .panning").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "panning" })
-    })
+    d.querySelector("widgets #tools-panel .panning").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "panning" });
+      },
+    );
 
-    d.querySelector("widgets #tools-panel .select").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "select" })
-    })
+    d.querySelector("widgets #tools-panel .select").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "select" });
+      },
+    );
 
-    d.querySelector("widgets #tools-panel .component").addEventListener("click", (event) => {
-      this.eventBus.emit("toggleSetting", { key: "component" })
-    })
+    d.querySelector("widgets #tools-panel .component").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "component" });
+      },
+    );
   }
 }
-

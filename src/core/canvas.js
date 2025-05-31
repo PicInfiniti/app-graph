@@ -284,6 +284,7 @@ export class Canvas {
         clickedNode.desc &&
         Object.keys(clickedNode.desc).length != 0
       ) {
+        this.app.graphManager.metric.addHeader(`${clickedNode.label}:`);
         for (let key in clickedNode.desc) {
           this.app.graphManager.metric.addInfo(
             `${key}: ${clickedNode.desc[key]}`,

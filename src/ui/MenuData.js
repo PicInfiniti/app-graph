@@ -4,17 +4,26 @@ export const menuData = [
     id: "file",
     submenu: [
       {
-        title: "🆕 New Graph", id: "new-btn", shortcut: "(n)",
+        title: "🆕 New Graph",
+        id: "new-btn",
+        shortcut: "(n)",
       },
       {
-        title: "➡️ New Digraph", id: "new-digraph-btn", shortcut: "(N)"
+        title: "➡️ New Digraph",
+        id: "new-digraph-btn",
+        shortcut: "(N)",
       },
       {
-        title: "📂 Import", id: "import-graph", shortcut: "(o)", input: [
+        title: "📂 Import",
+        id: "import-graph",
+        shortcut: "(o)",
+        input: [
           {
-            type: "file", id: "file-input", hidden: true
-          }
-        ]
+            type: "file",
+            id: "file-input",
+            hidden: true,
+          },
+        ],
       },
       { title: "💾 Export", id: "export-graph", shortcut: "(s)" },
       { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(p)" },
@@ -32,9 +41,14 @@ export const menuData = [
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
-      { title: "Directed Edge", name: "add-directed-edge-btn", shortcut: "(E)" },
+      {
+        title: "Directed Edge",
+        name: "add-directed-edge-btn",
+        shortcut: "(E)",
+      },
       { type: "divider" },
       { title: "Rename Nodes", name: "rename-btn", shortcut: "(r)" },
+      { title: "Add Node Info", name: "desc-btn", shortcut: "(i)" },
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
       { title: "Redo", name: "redo-btn", shortcut: "(R)" },
@@ -53,9 +67,9 @@ export const menuData = [
                 id: "grid-size-1",
                 min: 0,
                 max: 100,
-                value: 20
-              }
-            ]
+                value: 20,
+              },
+            ],
           },
           {
             title: "Node",
@@ -67,9 +81,9 @@ export const menuData = [
                 min: 0,
                 max: 200,
                 value: 10,
-                step: .1
-              }
-            ]
+                step: 0.1,
+              },
+            ],
           },
           {
             title: "Edge",
@@ -80,9 +94,9 @@ export const menuData = [
                 id: "edge-size-1",
                 min: 1,
                 max: 100,
-                value: 2
-              }
-            ]
+                value: 2,
+              },
+            ],
           },
           {
             title: "Label",
@@ -93,9 +107,9 @@ export const menuData = [
                 id: "label-size-1",
                 min: 0,
                 max: 100,
-                value: 15
-              }
-            ]
+                value: 15,
+              },
+            ],
           },
           {
             title: "Stroke",
@@ -107,9 +121,9 @@ export const menuData = [
                 min: 0,
                 max: 50,
                 value: 5,
-                step: .1
-              }
-            ]
+                step: 0.1,
+              },
+            ],
           },
         ],
       },
@@ -130,10 +144,20 @@ export const menuData = [
       { title: "Scale", id: "scale-btn", check: false, shortcut: "Alt+Shift" },
       { title: "Panning", id: "panning-btn", check: false, shortcut: "Ctrl" },
       { title: "Selecting", id: "select-btn", check: false, shortcut: "Shift" },
-      { title: "Component", id: "component-btn", check: false, shortcut: "Alt" },
+      {
+        title: "Component",
+        id: "component-btn",
+        check: false,
+        shortcut: "Alt",
+      },
       { type: "divider" },
       { title: "Tree", id: "tree-btn", check: false, shortcut: "t" },
-      { title: "Force Simulation", id: "force-btn", check: false, shortcut: "f" },
+      {
+        title: "Force Simulation",
+        id: "force-btn",
+        check: false,
+        shortcut: "f",
+      },
     ],
   },
   {
@@ -153,9 +177,9 @@ export const menuData = [
                 id: "g-empty-1",
                 min: 1,
                 max: 500,
-                value: 5
-              }
-            ]
+                value: 5,
+              },
+            ],
           },
           {
             title: "Kₙ",
@@ -167,9 +191,9 @@ export const menuData = [
                 id: "g-complete-1",
                 min: 1,
                 max: 500,
-                value: 5
-              }
-            ]
+                value: 5,
+              },
+            ],
           },
           {
             title: "Kₙ,ₙ",
@@ -189,8 +213,8 @@ export const menuData = [
                 min: 1,
                 max: 500,
                 value: 5,
-              }
-            ]
+              },
+            ],
           },
           {
             title: "Pₙ",
@@ -202,9 +226,9 @@ export const menuData = [
                 id: "g-path-1",
                 min: 2,
                 max: 500,
-                value: 5
-              }
-            ]
+                value: 5,
+              },
+            ],
           },
           {
             title: "Cₙ",
@@ -216,9 +240,9 @@ export const menuData = [
                 id: "g-cycle-1",
                 min: 3,
                 max: 500,
-                value: 5
-              }
-            ]
+                value: 5,
+              },
+            ],
           },
           {
             title: "Lₙ",
@@ -230,11 +254,11 @@ export const menuData = [
                 id: "g-ladder-1",
                 min: 2,
                 max: 500,
-                value: 5
-              }
-            ]
+                value: 5,
+              },
+            ],
           },
-        ]
+        ],
       },
       {
         title: "Community",
@@ -258,8 +282,8 @@ export const menuData = [
                 min: 1,
                 max: 500,
                 value: 5,
-              }
-            ]
+              },
+            ],
           },
           {
             title: "Qₙ,ₙ",
@@ -279,11 +303,12 @@ export const menuData = [
                 min: 1,
                 max: 500,
                 value: 5,
-              }
-            ]
+              },
+            ],
           },
         ],
-      }, {
+      },
+      {
         title: "Random",
         id: "random",
         submenu: [
@@ -311,8 +336,8 @@ export const menuData = [
                 min: 2,
                 max: 500,
                 value: 10,
-              }
-            ]
+              },
+            ],
           },
           {
             title: "erdos Renyi",
@@ -331,10 +356,10 @@ export const menuData = [
                 id: "g-erdos-renyi-2",
                 min: 0,
                 max: 1,
-                step: .1,
-                value: .5,
-              }
-            ]
+                step: 0.1,
+                value: 0.5,
+              },
+            ],
           },
           {
             title: "Girvan Newman",
@@ -347,10 +372,10 @@ export const menuData = [
                 min: 1,
                 max: 500,
                 value: 5,
-              }
-            ]
+              },
+            ],
           },
-        ]
+        ],
       },
       {
         title: "Small",
@@ -359,9 +384,9 @@ export const menuData = [
           {
             title: "Krackhardt kite",
             id: "krackhardt-kite",
-            link: "https://en.wikipedia.org/wiki/Krackhardt_kite_graph"
+            link: "https://en.wikipedia.org/wiki/Krackhardt_kite_graph",
           },
-        ]
+        ],
       },
       {
         title: "Social",
@@ -374,9 +399,9 @@ export const menuData = [
           {
             title: "Zachary’s karate club",
             id: "karate-club",
-            link: "https://en.wikipedia.org/wiki/Zachary%27s_karate_club"
+            link: "https://en.wikipedia.org/wiki/Zachary%27s_karate_club",
           },
-        ]
+        ],
       },
       { type: "divider" },
       {
@@ -387,82 +412,82 @@ export const menuData = [
             title: "Aries",
             id: "aries",
             label: "♈",
-            link: "https://en.wikipedia.org/wiki/Aries_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Aries_(astrology)",
           },
           {
             title: "Taurus",
             id: "taurus",
             label: "♉",
-            link: "https://en.wikipedia.org/wiki/Taurus_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Taurus_(astrology)",
           },
           {
             title: "Gemini",
             id: "gemini",
             label: "♊",
-            link: "https://en.wikipedia.org/wiki/Gemini_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Gemini_(astrology)",
           },
           {
             title: "Cancer",
             id: "cancer",
             label: "♋",
-            link: "https://en.wikipedia.org/wiki/Cancer_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Cancer_(astrology)",
           },
           {
             title: "Leo",
             id: "leo",
             label: "♌",
-            link: "https://en.wikipedia.org/wiki/Leo_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Leo_(astrology)",
           },
           {
             title: "Virgo",
             id: "virgo",
             label: "♍",
-            link: "https://en.wikipedia.org/wiki/Virgo_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Virgo_(astrology)",
           },
           {
             title: "Libra",
             id: "libra",
             label: "♎",
-            link: "https://en.wikipedia.org/wiki/Libra_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Libra_(astrology)",
           },
           {
             title: "Scorpius",
             id: "scorpius",
             label: "♏",
-            link: "https://en.wikipedia.org/wiki/Scorpio_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Scorpio_(astrology)",
           },
           {
             title: "Ophiuchus",
             id: "ophiuchus",
             label: "⛎",
-            link: "https://en.wikipedia.org/wiki/Ophiuchus_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Ophiuchus_(astrology)",
           },
           {
             title: "Sagittarius",
             id: "sagittarius",
             label: "♐",
-            link: "https://en.wikipedia.org/wiki/Sagittarius_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Sagittarius_(astrology)",
           },
           {
             title: "Capricornus",
             id: "capricornus",
             label: "♑",
-            link: "https://en.wikipedia.org/wiki/Capricorn_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Capricorn_(astrology)",
           },
           {
             title: "Aquarius",
             id: "aquarius",
             label: "♒",
-            link: "https://en.wikipedia.org/wiki/Aquarius_(astrology)"
+            link: "https://en.wikipedia.org/wiki/Aquarius_(astrology)",
           },
           {
             title: "Pisces",
             id: "pisces",
             label: "♓",
-            link: "https://en.wikipedia.org/wiki/Pisces_(astrology)"
-          }
-        ]
-      }
+            link: "https://en.wikipedia.org/wiki/Pisces_(astrology)",
+          },
+        ],
+      },
     ],
   },
   {
@@ -497,7 +522,10 @@ export const menuData = [
         id: "layout-quality",
         submenu: [
           { title: "Edge Uniformity", id: "edge-uniformity-btn" },
-          { title: "Neighborhood Preservation", id: "neighborhood-preservation-btn" },
+          {
+            title: "Neighborhood Preservation",
+            id: "neighborhood-preservation-btn",
+          },
           { title: "Stress", id: "stress-btn" },
         ],
       },
@@ -514,7 +542,7 @@ export const menuData = [
       { title: "Neighbors", id: "neighbors-btn" },
       { title: "Shortest Path", id: "shortest-path-btn" },
       { type: "divider" },
-      { title: "Clear Panel", id: "clear-info-panel-btn" }
+      { title: "Clear Panel", id: "clear-info-panel-btn" },
     ],
   },
   {
@@ -527,4 +555,3 @@ export const menuData = [
     ],
   },
 ];
-
