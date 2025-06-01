@@ -131,6 +131,32 @@ export class App {
         ctx.fillStyle = attr.selected ? "orange" : attr.color;
         ctx.fill();
       }
+
+      if (settings.edgeLabel) {
+        ctx.fillStyle = this.settings.label_color;
+        ctx.font = `${settings.label_size}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const midX = (source.x + target.x) / 2;
+        const midY = (source.y + target.y) / 2;
+
+        // Calculate perpendicular offset
+        const dx = target.x - source.x;
+        const dy = target.y - source.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        const offset = 10; // margin in pixels — tweak as you like
+
+        // Normalized perpendicular vector
+        const perpX = -dy / len;
+        const perpY = dx / len;
+
+        // Final position with margin
+        const labelX = midX + perpX * offset + settings.label_pos.x;
+        const labelY = midY + perpY * offset + settings.label_pos.y;
+
+        ctx.fillText(attr.label, labelX, labelY);
+      }
     });
 
     // Draw nodes
@@ -157,7 +183,6 @@ export class App {
         ctx.stroke();
       }
       ctx.closePath();
-
       if (settings.vertexLabel) {
         ctx.fillStyle = this.settings.label_color;
         ctx.font = `${settings.label_size}px sans-serif`;

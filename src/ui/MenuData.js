@@ -58,6 +58,7 @@ export const menuData = [
         id: "settings",
         submenu: [
           { title: "Vertex Label", id: "vertex-label", check: true },
+          { title: "Edge Label", id: "edge-label", check: true },
           {
             title: "Grid",
             id: "gride-size",

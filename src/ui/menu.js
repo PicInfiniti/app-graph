@@ -243,6 +243,9 @@ export class Menu {
       //Setting
       "vertex-label": () =>
         this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
+      "edge-label": () =>
+        this.eventBus.emit("toggleSetting", { key: "edgeLabel" }),
+
       "vertex-size-1": () =>
         this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
       "edge-size-1": () =>
