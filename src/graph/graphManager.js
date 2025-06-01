@@ -21,7 +21,8 @@ export class GraphManager {
     this.history = [empty(this.graphClass, 0)];
     this.graph = this.history[0];
 
-    this.selectIndex = 0;
+    this.selectNodeIndex = 0;
+    this.selectEdgeIndex = 0;
 
     this.init();
   }
@@ -31,20 +32,36 @@ export class GraphManager {
     this.app.eventBus.on("keydown", (event) => {
       switch (event.key) {
         case "ArrowDown":
-          this.deselectAll();
+          if (this.app.eventHanders.Ctrl) {
+            this.deselectAllEdge();
+          } else {
+            this.deselectAllNode();
+          }
           this.app.rect.scale.active = false;
           this.eventBus.emit("graph:updated", { type: "unselect" });
           break;
         case "ArrowUp":
-          this.selectAll();
+          if (this.app.eventHanders.Ctrl) {
+            this.selectAllEdge();
+          } else {
+            this.selectAllNode();
+          }
           this.eventBus.emit("graph:updated", { type: "select" });
           break;
         // You can have any number of case statements
         case "ArrowRight":
-          this.selectNextNode();
+          if (this.app.eventHanders.Ctrl) {
+            this.selectNextEdge();
+          } else {
+            this.selectNextNode();
+          }
           break;
         case "ArrowLeft":
-          this.selectPerviousNode();
+          if (this.app.eventHanders.Ctrl) {
+            this.selectPerviousEdge();
+          } else {
+            this.selectPerviousNode();
+          }
           break;
         // You can have any number of case statements
         default:
@@ -188,11 +205,18 @@ export class GraphManager {
   }
 
   deselectAll() {
+    this.deselectAllNode();
+    this.deselectAllEdge();
+  }
+
+  deselectAllNode() {
     this.graph.updateEachNodeAttributes((node, attrs) => ({
       ...attrs,
       selected: false,
     }));
+  }
 
+  deselectAllEdge() {
     this.graph.updateEachEdgeAttributes((edge, attrs) => ({
       ...attrs,
       selected: false,
@@ -200,6 +224,18 @@ export class GraphManager {
   }
 
   selectAll() {
+    this.selectAllNode();
+    this.selectAllEdge();
+  }
+
+  selectAllEdge() {
+    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+      ...attrs,
+      selected: attrs.id + 1,
+    }));
+  }
+
+  selectAllNode() {
     this.graph.updateEachNodeAttributes((node, attrs) => {
       return {
         ...attrs,
@@ -209,20 +245,52 @@ export class GraphManager {
   }
 
   selectNode(node) {
-    this.graph.setNodeAttribute(node, "selected", 1);
+    this.graph.selectNode(node);
   }
 
   selectNextNode() {
-    if (!this.app.eventHanders.Shift) this.deselectAll();
-    this.selectIndex = positiveModulus(this.selectIndex + 1, this.graph.order);
-    this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
+    if (!this.app.eventHanders.Shift) this.deselectAllNode();
+    this.selectNodeIndex = positiveModulus(
+      this.selectNodeIndex + 1,
+      this.graph.order,
+    );
+    this.graph.selectNode(this.selectNodeIndex);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectPerviousNode() {
-    if (!this.app.eventHanders.Shift) this.deselectAll();
-    this.selectIndex = positiveModulus(this.selectIndex - 1, this.graph.order);
-    this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
+    if (!this.app.eventHanders.Shift) this.deselectAllNode();
+    this.selectNodeIndex = positiveModulus(
+      this.selectNodeIndex - 1,
+      this.graph.order,
+    );
+    this.graph.selectNode(this.selectNodeIndex);
+    this.eventBus.emit("graph:updated", { type: "select" });
+  }
+
+  selectNextEdge() {
+    if (!this.app.eventHanders.Shift) this.deselectAllEdge();
+    this.selectEdgeIndex = positiveModulus(
+      this.selectEdgeIndex + 1,
+      this.graph.size,
+    );
+    const edge = this.graph.filterEdges(
+      (_, attrs) => attrs.id == this.selectEdgeIndex,
+    )[0];
+    this.graph.selectEdge(edge);
+    this.eventBus.emit("graph:updated", { type: "select" });
+  }
+
+  selectPerviousEdge() {
+    if (!this.app.eventHanders.Shift) this.deselectAllEdge();
+    this.selectEdgeIndex = positiveModulus(
+      this.selectEdgeIndex + 1,
+      this.graph.size,
+    );
+    const edge = this.graph.filterEdges(
+      (_, attrs) => attrs.id == this.selectEdgeIndex,
+    )[0];
+    this.graph.selectEdge(edge);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
 }
