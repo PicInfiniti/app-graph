@@ -24,6 +24,29 @@ export class GraphManager {
 
   init() {
     this.setupEventListeners();
+    this.app.eventBus.on("keydown", (event) => {
+      switch (event.key) {
+        case "ArrowDown":
+          this.deselectAll();
+          this.app.rect.scale.active = false;
+          this.eventBus.emit("graph:updated", { type: "unselect" });
+          break;
+        case "ArrowUp":
+          this.selectAll();
+          this.eventBus.emit("graph:updated", { type: "select" });
+          break;
+        // You can have any number of case statements
+        case "ArrowRight":
+          // Code to be executed if expression === value1
+          break;
+        case "ArrowLeft":
+          // Code to be executed if expression === value2
+          break;
+        // You can have any number of case statements
+        default:
+        // Code to be executed if expression doesn't match any case
+      }
+    });
   }
 
   addNode(id, attr) {
@@ -172,6 +195,15 @@ export class GraphManager {
     }));
   }
 
+  selectAll() {
+    let counter = 1;
+    this.graph.updateEachNodeAttributes((node, attrs) => {
+      return {
+        ...attrs,
+        selected: counter++,
+      };
+    });
+  }
   selectNode(node) {
     this.setNodeAttribute(node, "selected", true);
   }
