@@ -213,15 +213,15 @@ export class GraphManager {
   }
 
   selectNextNode() {
-    this.deselectAll();
+    if (!this.app.eventHanders.Shift) this.deselectAll();
     this.selectIndex = positiveModulus(this.selectIndex + 1, this.graph.order);
-
     this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectPerviousNode() {
-    this.deselectAll();
+    if (!this.app.eventHanders.Shift) this.deselectAll();
+
     this.selectIndex = positiveModulus(this.selectIndex - 1, this.graph.order);
     this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
     this.eventBus.emit("graph:updated", { type: "select" });
