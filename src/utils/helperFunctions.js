@@ -1,4 +1,3 @@
-
 export function getMinAvailableNumber(existingNumbers) {
   const numberSet = new Set(existingNumbers.map(Number));
   let minNumber = 0;
@@ -11,7 +10,7 @@ export function getMinAvailableNumber(existingNumbers) {
 }
 
 export function getAvailableLabel(n, maxLength = 3) {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
   const combinations = [];
 
   function generateNthCombination(prefix, start, remaining) {
@@ -28,7 +27,7 @@ export function getAvailableLabel(n, maxLength = 3) {
 
   let currentLength = 1;
   while (combinations.length <= n && currentLength <= maxLength) {
-    generateNthCombination('', 0, currentLength);
+    generateNthCombination("", 0, currentLength);
     currentLength++;
   }
 
@@ -67,4 +66,8 @@ export function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
   let dx = px - xx;
   let dy = py - yy;
   return Math.sqrt(dx * dx + dy * dy);
+}
+
+export function positiveModulus(a, b) {
+  return ((a % b) + b) % b;
 }

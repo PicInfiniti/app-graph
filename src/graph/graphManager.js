@@ -3,6 +3,7 @@ import { Graph } from "../utils/graph";
 import { empty } from "graphology-generators/classic";
 import { Metric } from "./metrics";
 import { Generator } from "../generator/main";
+import { positiveModulus } from "../utils/helperFunctions.js";
 
 export class GraphManager {
   constructor(app, limit) {
@@ -19,6 +20,9 @@ export class GraphManager {
     this.index = 0;
     this.history = [empty(this.graphClass, 0)];
     this.graph = this.history[0];
+
+    this.selectIndex = 0;
+
     this.init();
   }
 
@@ -37,10 +41,10 @@ export class GraphManager {
           break;
         // You can have any number of case statements
         case "ArrowRight":
-          // Code to be executed if expression === value1
+          this.selectNextNode();
           break;
         case "ArrowLeft":
-          // Code to be executed if expression === value2
+          this.selectPerviousNode();
           break;
         // You can have any number of case statements
         default:
@@ -196,15 +200,30 @@ export class GraphManager {
   }
 
   selectAll() {
-    let counter = 1;
     this.graph.updateEachNodeAttributes((node, attrs) => {
       return {
         ...attrs,
-        selected: counter++,
+        selected: attrs.id + 1,
       };
     });
   }
+
   selectNode(node) {
-    this.setNodeAttribute(node, "selected", true);
+    this.graph.setNodeAttribute(node, "selected", 1);
+  }
+
+  selectNextNode() {
+    this.deselectAll();
+    this.selectIndex = positiveModulus(this.selectIndex + 1, this.graph.order);
+
+    this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
+    this.eventBus.emit("graph:updated", { type: "select" });
+  }
+
+  selectPerviousNode() {
+    this.deselectAll();
+    this.selectIndex = positiveModulus(this.selectIndex - 1, this.graph.order);
+    this.graph.setNodeAttribute(this.selectIndex, "selected", 1);
+    this.eventBus.emit("graph:updated", { type: "select" });
   }
 }
