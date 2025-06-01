@@ -20,7 +20,8 @@ export class Digraph extends DirectedGraph {
     // Automatically add 'source', 'target', and 'selected' to edges
     this.on("edgeAdded", ({ key, source, target }) => {
       const attrs = this.getEdgeAttributes(key);
-
+      console.log(key);
+      if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
       if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)
