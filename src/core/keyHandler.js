@@ -43,7 +43,9 @@ export class KeyHandler {
 
   init() {
     d.addEventListener("keydown", (event) => {
+      if (event.target.tagName === "INPUT" && event.key != "Enter") return;
       event.preventDefault();
+
       EventBus.emit("key:pressed", { key: event.key });
 
       switch (event.key) {
