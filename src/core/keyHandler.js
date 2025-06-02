@@ -28,24 +28,36 @@ export class KeyHandler {
       a: "all-node-info-btn",
       q: "clear-info-panel-btn",
       F5: "reload",
+      ArrowUp: "select-all-node",
+      ArrowDown: "deselect-all-node",
+      ArrowRight: "select-next-node",
+      ArrowLeft: "select-pervious-node",
     };
 
     this.AltKeys = {
       a: "all-edge-info-btn",
+      ArrowUp: "select-all-edge",
+      ArrowDown: "deselect-all-edge",
+      ArrowRight: "select-next-edge",
+      ArrowLeft: "select-pervious-edge",
     };
 
     this.CtrlKeys = {
       r: "redo-btn",
     };
 
-    this.ShiftKeys = {};
+    this.ShiftKeys = {
+      ArrowUp: "select-all-node",
+      ArrowDown: "deselect-all-node",
+      ArrowRight: "select-next-node",
+      ArrowLeft: "select-pervious-node",
+    };
   }
 
   init() {
     d.addEventListener("keydown", (event) => {
       if (event.target.tagName === "INPUT" && event.key != "Enter") return;
       event.preventDefault();
-
       EventBus.emit("key:pressed", { key: event.key });
 
       switch (event.key) {

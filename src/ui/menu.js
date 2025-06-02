@@ -447,6 +447,16 @@ export class Menu {
         d.querySelector(".modal .help-panel").style.display = "block";
       },
       about: () => window.open("http://picinfiniti.net/", "_blank"),
+
+      // shortcuts
+      "select-all-node": () => this.graphManager.selectAllNode(),
+      "deselect-all-node": () => this.graphManager.deselectAllNode(),
+      "select-next-node": () => this.graphManager.selectNextNode(),
+      "select-pervious-node": () => this.graphManager.selectPerviousNode(),
+      "select-all-edge": () => this.graphManager.selectAllEdge(),
+      "deselect-all-edge": () => this.graphManager.deselectAllEdge(),
+      "select-next-edge": () => this.graphManager.selectNextEdge(),
+      "select-pervious-edge": () => this.graphManager.selectPerviousEdge(),
     };
 
     if (actions[menuId]) {

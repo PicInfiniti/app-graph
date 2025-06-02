@@ -29,45 +29,6 @@ export class GraphManager {
 
   init() {
     this.setupEventListeners();
-    this.app.eventBus.on("keydown", (event) => {
-      switch (event.key) {
-        case "ArrowDown":
-          if (this.app.keyHandler.Alt) {
-            this.deselectAllEdge();
-          } else {
-            this.deselectAllNode();
-          }
-          this.app.rect.scale.active = false;
-          this.eventBus.emit("graph:updated", { type: "unselect" });
-          break;
-        case "ArrowUp":
-          if (this.app.keyHandler.Alt) {
-            this.selectAllEdge();
-          } else {
-            this.selectAllNode();
-          }
-          this.eventBus.emit("graph:updated", { type: "select" });
-          break;
-        // You can have any number of case statements
-        case "ArrowRight":
-          if (this.app.keyHandler.Alt) {
-            this.selectNextEdge();
-          } else {
-            this.selectNextNode();
-          }
-          break;
-        case "ArrowLeft":
-          if (this.app.keyHandler.Alt) {
-            this.selectPerviousEdge();
-          } else {
-            this.selectPerviousNode();
-          }
-          break;
-        // You can have any number of case statements
-        default:
-        // Code to be executed if expression doesn't match any case
-      }
-    });
   }
 
   addNode(id, attr) {
@@ -222,6 +183,8 @@ export class GraphManager {
       ...attrs,
       selected: false,
     }));
+    this.app.rect.scale.active = false;
+    this.eventBus.emit("graph:updated", { type: "unselect" });
   }
 
   deselectAllEdge() {
@@ -229,6 +192,8 @@ export class GraphManager {
       ...attrs,
       selected: false,
     }));
+    this.app.rect.scale.active = false;
+    this.eventBus.emit("graph:updated", { type: "unselect" });
   }
 
   selectAll() {
@@ -241,6 +206,7 @@ export class GraphManager {
       ...attrs,
       selected: attrs.id + 1,
     }));
+    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectAllNode() {
@@ -250,13 +216,16 @@ export class GraphManager {
         selected: attrs.id + 1,
       };
     });
+    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectNode(node) {
     this.graph.selectNode(node);
+    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectNextNode() {
+    console.log(!this.app.keyHandler.Shift);
     if (!this.app.keyHandler.Shift) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex + 1,
