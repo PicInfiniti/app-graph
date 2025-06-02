@@ -17,7 +17,6 @@ export class KeyHandler {
       s: "export-graph",
       p: "export-png",
       u: "undo-btn",
-      R: "redo-btn",
       d: "remove-selection-btn",
       c: "color-selection-btn",
       e: "add-edge-btn",
@@ -34,10 +33,17 @@ export class KeyHandler {
     this.AltKeys = {
       a: "all-edge-info-btn",
     };
+
+    this.CtrlKeys = {
+      r: "redo-btn",
+    };
+
+    this.ShiftKeys = {};
   }
 
   init() {
     d.addEventListener("keydown", (event) => {
+      event.preventDefault();
       EventBus.emit("key:pressed", { key: event.key });
 
       switch (event.key) {
@@ -75,6 +81,14 @@ export class KeyHandler {
             if (this.Alt) {
               if (this.AltKeys[event.key]) {
                 this.app.menu.handleMenuAction(this.AltKeys[event.key]); // Trigger the corresponding menu item
+              }
+            } else if (this.Ctrl) {
+              if (this.CtrlKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.CtrlKeys[event.key]); // Trigger the corresponding menu item
+              }
+            } else if (this.Shift) {
+              if (this.ShiftKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.ShiftKeys[event.key]); // Trigger the corresponding menu item
               }
             } else {
               if (this.shortcuts[event.key]) {

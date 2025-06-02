@@ -53,7 +53,7 @@ export const menuData = [
       { title: "Add Node Info", name: "desc-btn", shortcut: "(i)" },
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
-      { title: "Redo", name: "redo-btn", shortcut: "(R)" },
+      { title: "Redo", name: "redo-btn", shortcut: "(Ctrl+r)" },
       { type: "divider" },
       {
         title: "Settings",
