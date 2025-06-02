@@ -200,7 +200,11 @@ export class GraphManager {
 
   updateSelectedInfo(val) {
     this.saveGraphState();
-    this.graph.updateSelectedInfo({ "": val });
+    if (val) {
+      this.graph.updateSelectedInfo({ "": val });
+    } else {
+      this.graph.updateSelectedInfo({});
+    }
     this.eventBus.emit("graph:updated", { type: "updateNodesInfo" });
   }
 
