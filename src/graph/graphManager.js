@@ -194,7 +194,11 @@ export class GraphManager {
 
   updateSelectedName(name) {
     this.saveGraphState();
-    this.graph.updateSelectedName(name);
+    if (name) {
+      this.graph.updateSelectedName(name);
+    } else {
+      this.graph.updateSelectedName("");
+    }
     this.eventBus.emit("graph:updated", { type: "updateNodesNames" });
   }
 

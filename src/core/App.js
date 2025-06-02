@@ -92,7 +92,7 @@ export class App {
     // Draw edges
 
     graph.forEachEdge((edge, attr, s, t, source, target) => {
-      if (!attr.label) {
+      if (attr.label === undefined) {
         const newLabel = getAvailableLabel(attr.id);
         graph.setEdgeAttribute(edge, "label", newLabel);
       }
@@ -161,7 +161,7 @@ export class App {
 
     // Draw nodes
     graph.forEachNode((node, attr) => {
-      if (!attr.label) {
+      if (attr.label === undefined) {
         const newLabel = getAvailableLabel(node);
         graph.setNodeAttribute(node, "label", newLabel);
       }
