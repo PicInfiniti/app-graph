@@ -186,7 +186,7 @@ export class Menu {
         }),
       "grid-color": () =>
         this.eventBus.emit("updateSetting", { key: "grid_color", value: val }),
-      rename: () => this.graphManager.updateSelectedNodesName(val),
+      rename: () => this.graphManager.updateSelectedName(val),
       "rename-btn": () => {
         const modal = d.querySelector(".modal");
         if (modal.style.display === "flex") {
@@ -203,7 +203,7 @@ export class Menu {
           d.getElementById("rename").value = "";
         }, 10);
       },
-      desc: () => this.graphManager.updateSelectedNodesInfo(val),
+      desc: () => this.graphManager.updateSelectedInfo(val),
       "desc-btn": () => {
         const modal = d.querySelector(".modal");
         if (modal.style.display === "flex") {
@@ -286,7 +286,8 @@ export class Menu {
       "clear-info-panel-btn": () =>
         (d.querySelector("#floating-panel .body-info").innerHTML = ""),
 
-      "all-info-btn": () => this.graphManager.metric.allInfo(),
+      "all-node-info-btn": () => this.graphManager.metric.allNodeInfo(),
+      "all-edge-info-btn": () => this.graphManager.metric.allEdgeInfo(),
       //Generator
       //Classic
       empty: () =>

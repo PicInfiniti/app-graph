@@ -291,6 +291,18 @@ export class Canvas {
           );
         }
         this.app.graphManager.metric.addLine();
+      } else if (
+        clickedEdge &&
+        clickedEdge.desc &&
+        Object.keys(clickedEdge.desc).length != 0
+      ) {
+        this.app.graphManager.metric.addHeader(`${clickedEdge.label}:`);
+        for (let key in clickedEdge.desc) {
+          this.app.graphManager.metric.addInfo(
+            `${key}: ${clickedEdge.desc[key]}`,
+          );
+        }
+        this.app.graphManager.metric.addLine();
       }
     } else {
       this.app.graphManager.deselectAll();

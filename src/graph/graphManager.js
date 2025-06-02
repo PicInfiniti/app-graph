@@ -32,7 +32,7 @@ export class GraphManager {
     this.app.eventBus.on("keydown", (event) => {
       switch (event.key) {
         case "ArrowDown":
-          if (this.app.eventHanders.Ctrl) {
+          if (this.app.keyHandler.Alt) {
             this.deselectAllEdge();
           } else {
             this.deselectAllNode();
@@ -41,7 +41,7 @@ export class GraphManager {
           this.eventBus.emit("graph:updated", { type: "unselect" });
           break;
         case "ArrowUp":
-          if (this.app.eventHanders.Ctrl) {
+          if (this.app.keyHandler.Alt) {
             this.selectAllEdge();
           } else {
             this.selectAllNode();
@@ -50,14 +50,14 @@ export class GraphManager {
           break;
         // You can have any number of case statements
         case "ArrowRight":
-          if (this.app.eventHanders.Ctrl) {
+          if (this.app.keyHandler.Alt) {
             this.selectNextEdge();
           } else {
             this.selectNextNode();
           }
           break;
         case "ArrowLeft":
-          if (this.app.eventHanders.Ctrl) {
+          if (this.app.keyHandler.Alt) {
             this.selectPerviousEdge();
           } else {
             this.selectPerviousNode();
@@ -192,15 +192,15 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
   }
 
-  updateSelectedNodesName(name) {
+  updateSelectedName(name) {
     this.saveGraphState();
-    this.graph.updateSelectedNodesName(name);
+    this.graph.updateSelectedName(name);
     this.eventBus.emit("graph:updated", { type: "updateNodesNames" });
   }
 
-  updateSelectedNodesInfo(val) {
+  updateSelectedInfo(val) {
     this.saveGraphState();
-    this.graph.updateSelectedNodesInfo({ "": val });
+    this.graph.updateSelectedInfo({ "": val });
     this.eventBus.emit("graph:updated", { type: "updateNodesInfo" });
   }
 
@@ -249,7 +249,7 @@ export class GraphManager {
   }
 
   selectNextNode() {
-    if (!this.app.eventHanders.Shift) this.deselectAllNode();
+    if (!this.app.keyHandler.Shift) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex + 1,
       this.graph.order,
@@ -259,7 +259,7 @@ export class GraphManager {
   }
 
   selectPerviousNode() {
-    if (!this.app.eventHanders.Shift) this.deselectAllNode();
+    if (!this.app.keyHandler.Shift) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex - 1,
       this.graph.order,
@@ -269,7 +269,7 @@ export class GraphManager {
   }
 
   selectNextEdge() {
-    if (!this.app.eventHanders.Shift) this.deselectAllEdge();
+    if (!this.app.keyHandler.Shift) this.deselectAllEdge();
     this.selectEdgeIndex = positiveModulus(
       this.selectEdgeIndex + 1,
       this.graph.size,
@@ -282,7 +282,7 @@ export class GraphManager {
   }
 
   selectPerviousEdge() {
-    if (!this.app.eventHanders.Shift) this.deselectAllEdge();
+    if (!this.app.keyHandler.Shift) this.deselectAllEdge();
     this.selectEdgeIndex = positiveModulus(
       this.selectEdgeIndex + 1,
       this.graph.size,

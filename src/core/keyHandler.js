@@ -7,6 +7,9 @@ export class KeyHandler {
     this.eventBus = app.eventBus;
     this.rename = d.querySelector(".rename-panel");
     this.desc = d.querySelector(".desc-panel");
+    this.Shift = false;
+    this.Ctrl = false;
+    this.Alt = false;
     this.shortcuts = {
       n: "new-btn",
       N: "new-digraph-btn",
@@ -23,42 +26,83 @@ export class KeyHandler {
       C: "complete-btn",
       r: "rename-btn",
       i: "desc-btn",
-      a: "all-info-btn",
+      a: "all-node-info-btn",
       q: "clear-info-panel-btn",
       F5: "reload",
+    };
+
+    this.AltKeys = {
+      a: "all-edge-info-btn",
     };
   }
 
   init() {
     d.addEventListener("keydown", (event) => {
       EventBus.emit("key:pressed", { key: event.key });
-      if (this.desc.style.display === "flex") {
-        if (event.key === "Enter") {
-          const input = document.getElementById("desc");
-          const value = input.value;
-          input.value = "";
-          this.desc.style.display = "none";
-          d.querySelector(".modal").style.display = "none";
-          this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
-        }
-      } else if (this.rename.style.display === "flex") {
-        if (event.key === "Enter") {
-          const input = document.getElementById("rename");
-          const value = input.value;
-          input.value = "";
-          this.rename.style.display = "none";
-          d.querySelector(".modal").style.display = "none";
-          this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
-        }
-      } else {
-        if (this.shortcuts[event.key]) {
-          this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
-        }
+
+      switch (event.key) {
+        case "Control":
+          this.Ctrl = true;
+          break;
+        case "Shift":
+          this.Shift = true;
+          break;
+
+        case "Alt":
+          this.Alt = true;
+          break;
+
+        default:
+          if (this.desc.style.display === "flex") {
+            if (event.key === "Enter") {
+              const input = document.getElementById("desc");
+              const value = input.value;
+              input.value = "";
+              this.desc.style.display = "none";
+              d.querySelector(".modal").style.display = "none";
+              this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+            }
+          } else if (this.rename.style.display === "flex") {
+            if (event.key === "Enter") {
+              const input = document.getElementById("rename");
+              const value = input.value;
+              input.value = "";
+              this.rename.style.display = "none";
+              d.querySelector(".modal").style.display = "none";
+              this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
+            }
+          } else {
+            if (this.Alt) {
+              if (this.AltKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.AltKeys[event.key]); // Trigger the corresponding menu item
+              }
+            } else {
+              if (this.shortcuts[event.key]) {
+                this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
+              }
+            }
+          }
+          break;
       }
     });
 
     d.addEventListener("keyup", (event) => {
-      this.eventBus.emit("key:release", { key: event.key });
+      switch (event.key) {
+        case "Control":
+          this.Ctrl = false;
+          break;
+        case "Shift":
+          this.Shift = false;
+          break;
+
+        case "Alt":
+          this.Alt = false;
+          break;
+
+        default:
+          this.eventBus.emit("key:release", { key: event.key });
+          break;
+      }
     });
   }
 }

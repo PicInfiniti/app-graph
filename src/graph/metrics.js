@@ -45,10 +45,9 @@ export class Metric {
     this.pannel.scrollTop = this.pannel.scrollHeight;
   }
 
-  allInfo() {
+  allNodeInfo() {
     for (let node of this.graphManager.graph.getSelectedNodes()) {
       const attrs = this.graphManager.graph.getNodeAttributes(node);
-      console.log(attrs);
       if (Object.keys(attrs.desc).length != 0) {
         this.addHeader(`${attrs.label}:`);
         for (let key in attrs.desc) {
@@ -59,6 +58,18 @@ export class Metric {
     }
   }
 
+  allEdgeInfo() {
+    for (let node of this.graphManager.graph.getSelectedEdges()) {
+      const attrs = this.graphManager.graph.getEdgeAttributes(node);
+      if (Object.keys(attrs.desc).length != 0) {
+        this.addHeader(`${attrs.label}:`);
+        for (let key in attrs.desc) {
+          this.addInfo(`${key}: ${attrs.desc[key]}`);
+        }
+        this.addLine();
+      }
+    }
+  }
   getComponent(node) {
     const graph = this.graphManager.graph;
     const components = connectedComponents(graph);

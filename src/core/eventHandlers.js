@@ -8,8 +8,6 @@ export class EventHandlers {
     this.modal = d.querySelector(".modal");
     this.rename = d.querySelector(".rename-panel");
     this.desc = d.querySelector(".desc-panel");
-    this.Shift = false;
-    this.Ctrl = false;
 
     this.pressedKeys = new Set();
     this.keySettingsMap = {
@@ -35,12 +33,7 @@ export class EventHandlers {
         this.eventBus.emit("toggleSetting", { key: "scale", value: true });
         return;
       }
-      if (event.key === "Shift") {
-        this.Shift = true;
-      }
-      if (event.key === "Control") {
-        this.Ctrl = true;
-      }
+
       const key = this.keySettingsMap[event.key];
       if (
         key &&
@@ -53,12 +46,6 @@ export class EventHandlers {
 
     this.app.eventBus.on("keyup", (event) => {
       this.pressedKeys.delete(event.key);
-      if (event.key === "Shift") {
-        this.Shift = false;
-      }
-      if (event.key === "Control") {
-        this.Ctrl = false;
-      }
       // Disable "scale" if either Shift or Alt is released
       if (event.key === "Shift" || event.key === "Alt") {
         this.eventBus.emit("toggleSetting", { key: "scale", value: false });

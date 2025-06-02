@@ -101,7 +101,7 @@ export class Graph extends UndirectedGraph {
       // Assign next available number
       let max = 0;
       this.forEachNode((_, attrs) => {
-        if (typeof attrs.selected === "number" && attrs.selected > max) {
+        if (attrs.selected > max) {
           max = attrs.selected;
         }
       });
@@ -110,7 +110,7 @@ export class Graph extends UndirectedGraph {
   }
 
   toggleEdgeSelection(edge) {
-    const current = this.getNodeAttribute(edge, "selected") || 0;
+    const current = this.getEdgeAttribute(edge, "selected") || 0;
 
     if (current > 0) {
       // Deselect
@@ -118,20 +118,18 @@ export class Graph extends UndirectedGraph {
     } else {
       // Assign next available number
       let max = 0;
-      this.forEdgeNode((_, attrs) => {
-        if (typeof attrs.selected === "number" && attrs.selected > max) {
+      this.forEachEdge((_, attrs) => {
+        if (attrs.selected > max) {
           max = attrs.selected;
         }
       });
-      this.setEdgeAttribute(node, "selected", max + 1);
+      this.setEdgeAttribute(edge, "selected", max + 1);
     }
   }
 
   // 📦 Get selected node/edge keys
   getSelectedNodes() {
-    return this.filterNodes(
-      (_, attrs) => typeof attrs.selected === "number" && attrs.selected > 0,
-    ).sort(
+    return this.filterNodes((_, attrs) => attrs.selected > 0).sort(
       (a, b) =>
         this.getNodeAttribute(a, "selected") -
         this.getNodeAttribute(b, "selected"),
@@ -139,12 +137,10 @@ export class Graph extends UndirectedGraph {
   }
 
   getSelectedEdges() {
-    return this.filterNodes(
-      (_, attrs) => typeof attrs.selected === "number" && attrs.selected > 0,
-    ).sort(
+    return this.filterEdges((_, attrs) => attrs.selected > 0).sort(
       (a, b) =>
-        this.getNodeAttribute(a, "selected") -
-        this.getNodeAttribute(b, "selected"),
+        this.getEdgeAttribute(a, "selected") -
+        this.getEdgeAttribute(b, "selected"),
     );
   }
 
