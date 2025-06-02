@@ -254,7 +254,8 @@ export class GraphManager {
       this.selectNodeIndex + 1,
       this.graph.order,
     );
-    this.graph.selectNode(this.selectNodeIndex);
+    const node = this.graph.nodes()[this.selectNodeIndex];
+    this.graph.selectNode(node);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
 
@@ -264,7 +265,8 @@ export class GraphManager {
       this.selectNodeIndex - 1,
       this.graph.order,
     );
-    this.graph.selectNode(this.selectNodeIndex);
+    const node = this.graph.nodes()[this.selectNodeIndex];
+    this.graph.selectNode(node);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
 
@@ -274,9 +276,7 @@ export class GraphManager {
       this.selectEdgeIndex + 1,
       this.graph.size,
     );
-    const edge = this.graph.filterEdges(
-      (_, attrs) => attrs.id == this.selectEdgeIndex,
-    )[0];
+    const edge = this.graph.edges()[this.selectEdgeIndex];
     this.graph.selectEdge(edge);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
@@ -287,9 +287,7 @@ export class GraphManager {
       this.selectEdgeIndex + 1,
       this.graph.size,
     );
-    const edge = this.graph.filterEdges(
-      (_, attrs) => attrs.id == this.selectEdgeIndex,
-    )[0];
+    const edge = this.graph.edges()[this.selectEdgeIndex];
     this.graph.selectEdge(edge);
     this.eventBus.emit("graph:updated", { type: "select" });
   }
