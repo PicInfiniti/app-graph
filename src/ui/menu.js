@@ -157,6 +157,7 @@ export class Menu {
       "export-png": () => this.eventBus.emit("export", { type: "png" }),
       "default-settings-btn": () => this.appSettings.resetToDefault(),
       "sky-night-theme-btn": () => this.appSettings.loadNightSkyTheme(),
+      reload: () => location.reload(),
 
       // Edit
       "add-edge-btn": () => this.graphManager.connectSelectedNodes(),

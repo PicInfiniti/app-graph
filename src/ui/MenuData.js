@@ -30,6 +30,8 @@ export const menuData = [
       { type: "divider" },
       { title: "⚙️ Default Setting", id: "default-settings-btn" },
       { title: "🌙 Sky Night", id: "sky-night-theme-btn" },
+      { type: "divider" },
+      { title: "🔄 Reload", id: "reload", shortcut: "(F5)" },
     ],
   },
   {

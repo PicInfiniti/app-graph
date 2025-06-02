@@ -25,6 +25,7 @@ export class KeyHandler {
       i: "desc-btn",
       a: "all-info-btn",
       q: "clear-info-panel-btn",
+      F5: "reload",
     };
   }
 
