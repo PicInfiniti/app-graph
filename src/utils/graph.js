@@ -25,6 +25,7 @@ export class Graph extends UndirectedGraph {
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)
         this.setEdgeAttribute(key, "selected", false);
+      if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
   }
 
@@ -158,6 +159,16 @@ export class Graph extends UndirectedGraph {
     this.updateSelectedNodesAttributes({ color, stroke });
   }
 
+  updateSelectedName(label) {
+    this.updateSelectedNodesAttributes({ label });
+    this.updateSelectedEdgesAttributes({ label });
+  }
+
+  updateSelectedInfo(desc) {
+    this.updateSelectedNodesAttributes({ desc });
+    this.updateSelectedEdgesAttributes({ desc });
+  }
+
   updateSelectedNodesName(label) {
     this.updateSelectedNodesAttributes({ label });
   }
@@ -165,6 +176,15 @@ export class Graph extends UndirectedGraph {
   updateSelectedNodesInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
   }
+
+  updateSelectedNodesInfo(desc) {
+    this.updateSelectedNodesAttributes({ desc });
+  }
+
+  updateSelectedEdgesName(label) {
+    this.updateSelectedEdgesAttributes({ label });
+  }
+
   // 🎨 Update a specific attribute (like color) for all selected edges
   updateSelectedEdgesColor(color) {
     this.updateSelectedEdgesAttributes({ color });

@@ -25,6 +25,7 @@ export class Digraph extends DirectedGraph {
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)
         this.setEdgeAttribute(key, "selected", false);
+      if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
   }
 
@@ -109,7 +110,21 @@ export class Digraph extends DirectedGraph {
   }
 
   toggleEdgeSelection(edge) {
-    this.updateEdgeAttribute(edge, "selected", (v) => !v);
+    const current = this.getNodeAttribute(edge, "selected") || 0;
+
+    if (current > 0) {
+      // Deselect
+      this.setEdgeAttribute(edge, "selected", 0);
+    } else {
+      // Assign next available number
+      let max = 0;
+      this.forEdgeNode((_, attrs) => {
+        if (typeof attrs.selected === "number" && attrs.selected > max) {
+          max = attrs.selected;
+        }
+      });
+      this.setEdgeAttribute(node, "selected", max + 1);
+    }
   }
 
   // 📦 Get selected node/edge keys
@@ -124,7 +139,13 @@ export class Digraph extends DirectedGraph {
   }
 
   getSelectedEdges() {
-    return this.filterEdges((_, attrs) => attrs.selected);
+    return this.filterNodes(
+      (_, attrs) => typeof attrs.selected === "number" && attrs.selected > 0,
+    ).sort(
+      (a, b) =>
+        this.getNodeAttribute(a, "selected") -
+        this.getNodeAttribute(b, "selected"),
+    );
   }
 
   // 🧹 Delete all selected nodes and edges
@@ -138,12 +159,30 @@ export class Digraph extends DirectedGraph {
     this.updateSelectedNodesAttributes({ color, stroke });
   }
 
+  updateSelectedName(label) {
+    this.updateSelectedNodesAttributes({ label });
+    this.updateSelectedEdgesAttributes({ label });
+  }
+
+  updateSelectedInfo(desc) {
+    this.updateSelectedNodesAttributes({ desc });
+    this.updateSelectedEdgesAttributes({ desc });
+  }
+
   updateSelectedNodesName(label) {
     this.updateSelectedNodesAttributes({ label });
   }
 
   updateSelectedNodesInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
+  }
+
+  updateSelectedEdgesName(label) {
+    this.updateSelectedEdgesAttributes({ label });
+  }
+
+  updateSelectedEdgesInfo(desc) {
+    this.updateSelectedEdgesAttributes({ desc });
   }
 
   // 🎨 Update a specific attribute (like color) for all selected edges
