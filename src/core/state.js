@@ -16,6 +16,7 @@ class AppSettings {
     this.defaultSettings = {
       background_color: "white",
       forceSimulation: true,
+      colorPicker: true,
       component: false,
       scale: false,
       tree: true,
