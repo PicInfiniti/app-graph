@@ -88,6 +88,7 @@ export class Widget {
     const infoMax = d.querySelector("#floating-panel .max");
     const toolsClose = d.querySelector("#tools-panel .close");
     const modalClose = d.querySelector(".modal");
+    const modalChordClose = d.querySelector(".modal-chord");
 
     if (infoClose) {
       infoClose.addEventListener("click", () => {
@@ -115,6 +116,15 @@ export class Widget {
           d.querySelector(".modal .help-panel").style.display = "none";
           d.querySelector(".modal .rename-panel").style.display = "none";
           d.querySelector(".modal .desc-panel").style.display = "none";
+        }
+      });
+    }
+
+    if (modalChordClose) {
+      modalChordClose.addEventListener("click", (e) => {
+        if (e.target.classList.contains("modal-chord")) {
+          modalChordClose.style.display = "none";
+          this.app.keyHandler.Space = false;
         }
       });
     }

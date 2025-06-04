@@ -1,0 +1,12 @@
+[
+  { "title": "c", "desc": "Color Picker" },
+  { "title": "l", "desc": "Ne Node" },
+  { "title": "h", "desc": "Per Node" },
+  { "title": "k", "desc": "Se Nodes" },
+  { "title": "j", "desc": "De Nodes" },
+  { "title": "A-l", "desc": "Ne Edge" },
+  { "title": "A-h", "desc": "Per Edge" },
+  { "title": "A-k", "desc": "Se Edges" },
+  { "title": "A-j", "desc": "De Edges" },
+  { "title": "⎵", "desc": "Toggle" }
+]

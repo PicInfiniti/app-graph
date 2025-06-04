@@ -4,7 +4,7 @@
   left: 0
   width: 100vw
   height: 100vh
-  display: none
+  display: flex
   justify-content: center
   align-items: center
   z-index: 20
@@ -13,60 +13,60 @@
     user-select: none
     font-size: 18px
   
-  .rename-panel
-    display: none
-    flex-direction: column
-    background-color: rgba(255,255,255, 0.7)
-    padding: 10px
-    gap: 5px
-    label 
-      font-weight: bold
-    input
-      border: 1px solid rgba(0, 0, 0, 0.2)
-      padding: 5px
+.rename-panel
+  display: none
+  flex-direction: column
+  background-color: rgba(255,255,255, 0.7)
+  padding: 10px
+  gap: 5px
+  label 
+    font-weight: bold
+  input
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    padding: 5px
 
-  .desc-panel
-    display: none
-    flex-direction: column
-    background-color: rgba(255,255,255, 0.7)
-    padding: 10px
-    gap: 5px
-    label 
-      font-weight: bold
-    input
-      border: 1px solid rgba(0, 0, 0, 0.2)
-      padding: 5px
+.desc-panel
+  display: none
+  flex-direction: column
+  background-color: rgba(255,255,255, 0.7)
+  padding: 10px
+  gap: 5px
+  label 
+    font-weight: bold
+  input
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    padding: 5px
 
 
 
-  .help-panel
-    display: none
-    padding: 15px
-    background-color: rgba(255,255,255, 0.7)
-    width: 350px
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+.help-panel
+  display: none
+  padding: 15px
+  background-color: rgba(255,255,255, 0.7)
+  width: 350px
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
 
-    .help-title
-      text-align: center
-      font-weight: bold
-      padding: 5px
+  .help-title
+    text-align: center
+    font-weight: bold
+    padding: 5px
 
-    hr 
-      width: 50%
+  hr 
+    width: 50%
 
-    .help-content
+  .help-content
+    width: 100%
+    padding: 5px
+
+    .help-table
       width: 100%
-      padding: 5px
 
-      .help-table
+      tr 
+        padding: 3px
         width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
 
-        tr 
-          padding: 3px
-          width: 100%
-          display: flex
-          justify-content: space-between
-          align-items: center
-
-          .key 
-            font-weight: bold
+        .key 
+          font-weight: bold
