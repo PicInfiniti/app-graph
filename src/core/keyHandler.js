@@ -24,6 +24,9 @@ export class KeyHandler {
       i: "desc-btn",
       a: "all-node-info-btn",
       q: "clear-info-panel-btn",
+      y: "copy-subgraph",
+      x: "cut-subgraph",
+      p: "paste-subgraph",
       F5: "reload",
       ArrowUp: "select-all-node",
       ArrowDown: "deselect-all-node",
@@ -38,6 +41,9 @@ export class KeyHandler {
       j: "deselect-all-node",
       l: "select-next-node",
       h: "select-pervious-node",
+      y: "copy-subgraph",
+      x: "cut-subgraph",
+      p: "paste-subgraph",
     };
 
     this.AltKeys = {

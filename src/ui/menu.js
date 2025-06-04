@@ -463,6 +463,11 @@ export class Menu {
       "deselect-all-edge": () => this.graphManager.deselectAllEdge(),
       "select-next-edge": () => this.graphManager.selectNextEdge(),
       "select-pervious-edge": () => this.graphManager.selectPerviousEdge(),
+
+      //copy cut past
+      "copy-subgraph": () => this.graphManager.copySubgraph(),
+      "cut-subgraph": () => this.graphManager.cutSubgraph(),
+      "paste-subgraph": () => this.graphManager.pasteSubgraph(),
     };
 
     if (actions[menuId]) {

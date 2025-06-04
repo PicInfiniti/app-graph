@@ -24,6 +24,7 @@ export class GraphManager {
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
 
+    this.subGraph = null;
     this.init();
   }
 
@@ -267,5 +268,27 @@ export class GraphManager {
     const edge = this.graph.edges()[this.selectEdgeIndex];
     this.graph.selectEdge(edge);
     this.eventBus.emit("graph:updated", { type: "select" });
+  }
+
+  //🔁 copySelected()
+  copySubgraph() {
+    this.saveGraphState();
+    this.subGraph = this.graph.copySubgraph();
+    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
+  }
+
+  //✂️ cutSelected()
+  cutSubgraph() {
+    this.saveGraphState();
+    this.subGraph = this.graph.cutSubgraph();
+    console.log(this.subgraph);
+    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
+  }
+
+  //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
+  pasteSubgraph(offset = { x: 150, y: 100 }) {
+    this.saveGraphState();
+    this.graph.pasteSubgraph(this.subGraph, offset);
+    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
   }
 }

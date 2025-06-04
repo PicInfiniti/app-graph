@@ -1,4 +1,6 @@
 import { DirectedGraph } from "graphology";
+import { subgraph } from "graphology-operators";
+import { disjointUnion } from "graphology-operators";
 
 export class Digraph extends DirectedGraph {
   constructor(options) {
@@ -243,5 +245,41 @@ export class Digraph extends DirectedGraph {
         this.selectEdge(edgeKey);
       }
     }
+  }
+
+  //🔁 copySelected()
+  copySubgraph() {
+    const selectedNodes = this.getSelectedNodes();
+    if (selectedNodes.length === 0) return null;
+
+    return subgraph(this, selectedNodes);
+  }
+
+  //✂️ cutSelected()
+  cutSubgraph() {
+    const selected = this.copySubgraph();
+    if (selected) this.deleteSelected();
+    return selected;
+  }
+
+  //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
+  pasteSubgraph(sub, offset = { x: 0, y: 0 }) {
+    if (!sub) return;
+
+    // Optional: adjust layout if using x/y coordinates
+    sub.forEachNode((key, attrs) => {
+      const newAttrs = { ...attrs };
+      if ("x" in newAttrs) newAttrs.x += offset.x;
+      if ("y" in newAttrs) newAttrs.y += offset.y;
+      sub.replaceNodeAttributes(key, newAttrs);
+    });
+
+    // Use disjointUnion to merge with remapped node keys
+    this.deselectAll();
+    const combined = disjointUnion(this, sub);
+    // Replace this graph's contents with the combined graph
+    this.clear();
+    this.import(combined.export());
+    console.log(this.getSelectedNodes());
   }
 }
