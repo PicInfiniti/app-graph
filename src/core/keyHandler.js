@@ -67,16 +67,19 @@ export class KeyHandler {
       ArrowRight: "select-next-node",
       ArrowLeft: "select-pervious-node",
     };
+
+    this.exceptionKey = ["ArrowUp", "ArrowDown", "arrowLeft", "ArrowRight"];
   }
 
   init() {
     this.createShortcutChord();
     d.addEventListener("keydown", (event) => {
+      if (event.repeat && !this.exceptionKey.includes(event.key)) return;
       if (event.target.tagName === "INPUT" && event.key != "Enter") return;
       event.preventDefault();
       EventBus.emit("key:pressed", { key: event.key });
 
-      if (!event.repeat && event.code == "Space") {
+      if (event.code == "Space") {
         this.Space = !this.Space;
         this.modal.style.display = this.Space ? "flex" : "none";
       } else {
