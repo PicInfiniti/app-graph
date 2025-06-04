@@ -240,7 +240,8 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "panning" }),
       "select-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "select" }),
-
+      "color-picker-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "colorPicker" }),
       //Setting
       "vertex-label": () =>
         this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),

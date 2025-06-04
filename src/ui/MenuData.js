@@ -161,6 +161,13 @@ export const menuData = [
         check: false,
         shortcut: "f",
       },
+      { type: "divider" },
+      {
+        title: "Color Picker",
+        id: "color-picker-btn",
+        check: false,
+        shortcut: "Alt+c",
+      },
     ],
   },
   {

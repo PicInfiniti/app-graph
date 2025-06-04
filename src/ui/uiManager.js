@@ -37,7 +37,10 @@ export function applySettingsToUI(settings, canvas) {
     "gray-background",
     !settings.forceSimulation,
   );
-  d.querySelector("#colorPicker").classList.toggle("gray-background", false);
+  d.querySelector("#colorPicker").classList.toggle(
+    "gray-background",
+    !settings.colorPicker,
+  );
   d.querySelector("#panning").classList.toggle(
     "gray-background",
     !settings.panning,

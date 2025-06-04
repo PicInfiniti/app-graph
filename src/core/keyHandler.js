@@ -40,6 +40,7 @@ export class KeyHandler {
       ArrowDown: "deselect-all-edge",
       ArrowRight: "select-next-edge",
       ArrowLeft: "select-pervious-edge",
+      c: "color-picker-btn",
     };
 
     this.CtrlKeys = {

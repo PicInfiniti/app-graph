@@ -193,5 +193,12 @@ export class Widget {
         this.eventBus.emit("toggleSetting", { key: "component" });
       },
     );
+
+    d.querySelector("widgets #tools-panel .color-picker").addEventListener(
+      "click",
+      (event) => {
+        this.eventBus.emit("toggleSetting", { key: "colorPicker" });
+      },
+    );
   }
 }
