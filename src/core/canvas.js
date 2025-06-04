@@ -1,9 +1,13 @@
 import * as d3 from "d3";
 import { pointToSegmentDistance } from "../utils/helperFunctions";
+import { applySettingsToUI } from "../ui/uiManager";
 import {
   getAvailableLabel,
   getMinAvailableNumber,
 } from "../utils/helperFunctions.js";
+
+const d = document;
+
 export class Canvas {
   constructor(app) {
     this.app = app;
@@ -278,12 +282,8 @@ export class Canvas {
     let clickedNode = this.findClickedNode(x, y);
     let clickedEdge = this.findClickedEdge(x, y);
 
-    if (clickedNode || clickedEdge) {
-      if (
-        clickedNode &&
-        clickedNode.desc &&
-        Object.keys(clickedNode.desc).length != 0
-      ) {
+    if (clickedNode) {
+      if (clickedNode.desc && Object.keys(clickedNode.desc).length != 0) {
         this.app.graphManager.metric.addHeader(`${clickedNode.label}:`);
         for (let key in clickedNode.desc) {
           this.app.graphManager.metric.addInfo(
@@ -291,11 +291,15 @@ export class Canvas {
           );
         }
         this.app.graphManager.metric.addLine();
-      } else if (
-        clickedEdge &&
-        clickedEdge.desc &&
-        Object.keys(clickedEdge.desc).length != 0
-      ) {
+      }
+
+      if (this.settings.colorPicker) {
+        this.app.appSettings.setSetting("node_color", clickedNode.color);
+        this.app.appSettings.setSetting("stroke_color", clickedNode.stroke);
+        applySettingsToUI(this.settings, this.app.canvas);
+      }
+    } else if (clickedEdge) {
+      if (clickedEdge.desc && Object.keys(clickedEdge.desc).length != 0) {
         this.app.graphManager.metric.addHeader(`${clickedEdge.label}:`);
         for (let key in clickedEdge.desc) {
           this.app.graphManager.metric.addInfo(
@@ -303,6 +307,10 @@ export class Canvas {
           );
         }
         this.app.graphManager.metric.addLine();
+      }
+      if (this.settings.colorPicker) {
+        this.app.appSettings.setSetting("edge_color", clickedEdge.color);
+        applySettingsToUI(this.settings, this.app.canvas);
       }
     } else {
       this.app.graphManager.deselectAll();

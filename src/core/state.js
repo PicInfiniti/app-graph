@@ -176,7 +176,7 @@ class AppSettings {
   }
 
   toggleSetting(key, value = null) {
-    const one = ["panning", "scale", "select", "component"];
+    const one = ["scale", "panning", "select", "component"];
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
       if (value === null) this.settings[key] = !this.settings[key];
