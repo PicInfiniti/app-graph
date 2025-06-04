@@ -12,7 +12,6 @@ export class KeyHandler {
     this.Alt = false;
     this.shortcuts = {
       n: "new-btn",
-      N: "new-digraph-btn",
       o: "import-graph",
       s: "export-graph",
       p: "export-png",
@@ -20,9 +19,6 @@ export class KeyHandler {
       d: "remove-selection-btn",
       c: "color-selection-btn",
       e: "add-edge-btn",
-      E: "add-directed-edge-btn",
-      O: "organize-circle",
-      C: "complete-btn",
       r: "rename-btn",
       i: "desc-btn",
       a: "all-node-info-btn",
@@ -48,6 +44,10 @@ export class KeyHandler {
     };
 
     this.ShiftKeys = {
+      C: "complete-btn",
+      N: "new-digraph-btn",
+      O: "organize-circle",
+      E: "add-directed-edge-btn",
       ArrowUp: "select-all-node",
       ArrowDown: "deselect-all-node",
       ArrowRight: "select-next-node",
