@@ -179,13 +179,18 @@ export class Menu {
           key: "stroke_color",
           value: val,
         }),
-      "background-color": () =>
+      "background-color": () => {
+        d.querySelector(".container").style.backgroundColor = val;
         this.eventBus.emit("updateSetting", {
           key: "background_color",
           value: val,
-        }),
-      "grid-color": () =>
-        this.eventBus.emit("updateSetting", { key: "grid_color", value: val }),
+        });
+      },
+      "grid-color": () => {
+        const root = d.documentElement;
+        root.style.setProperty("--grid-color", val);
+        this.eventBus.emit("updateSetting", { key: "grid_color", value: val });
+      },
       rename: () => this.graphManager.updateSelectedName(val),
       "rename-btn": () => {
         const modal = d.querySelector(".modal");

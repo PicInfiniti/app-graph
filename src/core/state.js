@@ -14,7 +14,7 @@ class AppSettings {
     this.debounceTimer = null;
 
     this.defaultSettings = {
-      background_color: "white",
+      background_color: "#ffffff",
       forceSimulation: true,
       colorPicker: false,
       component: false,
