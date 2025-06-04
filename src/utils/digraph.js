@@ -56,7 +56,7 @@ export class Digraph extends DirectedGraph {
     });
   }
 
-  getEdgeSourcetarget(e) {
+  getEdgeSourceTarget(e) {
     return [this.source(e), this.target(e)];
   }
   // ❌ Clear selection on all nodes and edges

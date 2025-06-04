@@ -56,7 +56,7 @@ export class Graph extends UndirectedGraph {
     });
   }
 
-  getEdgeSourcetarget(e) {
+  getEdgeSourceTarget(e) {
     return [this.source(e), this.target(e)];
   }
   // ❌ Clear selection on all nodes and edges
@@ -173,12 +173,12 @@ export class Graph extends UndirectedGraph {
     this.updateSelectedNodesAttributes({ desc });
   }
 
-  updateSelectedNodesInfo(desc) {
-    this.updateSelectedNodesAttributes({ desc });
-  }
-
   updateSelectedEdgesName(label) {
     this.updateSelectedEdgesAttributes({ label });
+  }
+
+  updateSelectedEdgesInfo(desc) {
+    this.updateSelectedEdgesAttributes({ desc });
   }
 
   // 🎨 Update a specific attribute (like color) for all selected edges
