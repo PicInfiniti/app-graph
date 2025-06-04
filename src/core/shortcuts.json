@@ -1,5 +1,8 @@
 [
   { "title": "c", "desc": "Color Picker" },
+  { "title": "y", "desc": "Copy" },
+  { "title": "x", "desc": "Cut" },
+  { "title": "p", "desc": "Past" },
   { "title": "l", "desc": "Next Node (Alt for Edge)" },
   { "title": "h", "desc": "Pervious Node (Alt for Edge)" },
   { "title": "k", "desc": "Select all Nodes (Alt for Edges)" },

@@ -16,7 +16,6 @@ export class KeyHandler {
       n: "new-btn",
       o: "import-graph",
       s: "export-graph",
-      p: "export-png",
       u: "undo-btn",
       d: "remove-selection-btn",
       c: "color-selection-btn",
@@ -62,8 +61,7 @@ export class KeyHandler {
       N: "new-digraph-btn",
       O: "organize-circle",
       E: "add-directed-edge-btn",
-      ArrowUp: "select-all-node",
-      ArrowDown: "deselect-all-node",
+      P: "export-png",
       ArrowRight: "select-next-node",
       ArrowLeft: "select-pervious-node",
     };

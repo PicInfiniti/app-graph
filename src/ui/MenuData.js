@@ -26,7 +26,7 @@ export const menuData = [
         ],
       },
       { title: "💾 Export", id: "export-graph", shortcut: "(s)" },
-      { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(p)" },
+      { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(P)" },
       { type: "divider" },
       { title: "⚙️ Default Setting", id: "default-settings-btn" },
       { title: "🌙 Sky Night", id: "sky-night-theme-btn" },
