@@ -99,6 +99,9 @@ export class App {
       if (!attr.color) {
         graph.setEdgeAttribute(edge, "color", settings.edge_color);
       }
+      if (!attr.labelColor) {
+        graph.setEdgeAttribute(edge, "labelColor", settings.label_color);
+      }
 
       // Draw the edge line
       ctx.beginPath();
@@ -133,7 +136,7 @@ export class App {
       }
 
       if (settings.edgeLabel) {
-        ctx.fillStyle = this.settings.label_color;
+        ctx.fillStyle = attr.labelColor;
         ctx.font = `${settings.label_size}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -168,9 +171,11 @@ export class App {
       if (!attr.color) {
         graph.setNodeAttribute(node, "color", settings.node_color);
       }
-
       if (!attr.stroke) {
         graph.setNodeAttribute(node, "stroke", settings.stroke_color);
+      }
+      if (!attr.labelColor) {
+        graph.setNodeAttribute(node, "labelColor", settings.label_color);
       }
 
       ctx.beginPath();
@@ -183,8 +188,9 @@ export class App {
         ctx.stroke();
       }
       ctx.closePath();
+
       if (settings.vertexLabel) {
-        ctx.fillStyle = this.settings.label_color;
+        ctx.fillStyle = attr.labelColor;
         ctx.font = `${settings.label_size}px sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -210,7 +216,7 @@ export class App {
         };
       });
     });
-    EventBus.emit("graph:updated", { type: "tick" });
+    this.eventBus.emit("graph:updated", { type: "tick" });
   }
 
   startSimulation() {

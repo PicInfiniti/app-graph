@@ -1,4 +1,6 @@
 import { UndirectedGraph } from "graphology";
+import { subgraph } from "graphology-operators";
+import { disjointUnion } from "graphology-operators";
 
 export class Graph extends UndirectedGraph {
   constructor(options) {
@@ -9,6 +11,12 @@ export class Graph extends UndirectedGraph {
       const attrs = this.getNodeAttributes(key);
 
       if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
+      if (attrs.label === undefined)
+        this.setNodeAttribute(key, "label", undefined); // it shouldn't be null
+      if (attrs.color === undefined)
+        this.setNodeAttribute(key, "color", undefined);
+      if (attrs.labelColor === undefined)
+        this.setNodeAttribute(key, "labelColor", undefined);
       if (attrs.selected === undefined)
         this.setNodeAttribute(key, "selected", false);
       if (attrs.size === undefined) this.setNodeAttribute(key, "size", 0.25);
@@ -21,6 +29,12 @@ export class Graph extends UndirectedGraph {
     this.on("edgeAdded", ({ key, source, target }) => {
       const attrs = this.getEdgeAttributes(key);
       if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
+      if (attrs.label === undefined)
+        this.setEdgeAttribute(key, "label", undefined);
+      if (attrs.color === undefined)
+        this.setEdgeAttribute(key, "color", undefined);
+      if (attrs.labelColor === undefined)
+        this.setEdgeAttribute(key, "labelColor", undefined);
       if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)
@@ -243,5 +257,41 @@ export class Graph extends UndirectedGraph {
         this.selectEdge(edgeKey);
       }
     }
+  }
+
+  //🔁 copySelected()
+  copySubgraph() {
+    const selectedNodes = this.getSelectedNodes();
+    if (selectedNodes.length === 0) return null;
+
+    return subgraph(this, selectedNodes);
+  }
+
+  //✂️ cutSelected()
+  cutSubgraph() {
+    const selected = this.copySubgraph();
+    if (selected) this.deleteSelected();
+    return selected;
+  }
+
+  //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
+  pasteSubgraph(sub, offset = { x: 0, y: 0 }) {
+    if (!sub) return;
+
+    // Optional: adjust layout if using x/y coordinates
+    sub.forEachNode((key, attrs) => {
+      const newAttrs = { ...attrs };
+      if ("x" in newAttrs) newAttrs.x += offset.x;
+      if ("y" in newAttrs) newAttrs.y += offset.y;
+      sub.replaceNodeAttributes(key, newAttrs);
+    });
+
+    // Use disjointUnion to merge with remapped node keys
+    this.deselectAll();
+    const combined = disjointUnion(this, sub);
+    // Replace this graph's contents with the combined graph
+    this.clear();
+    this.import(combined.export());
+    console.log(this.getSelectedNodes());
   }
 }
