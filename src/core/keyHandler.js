@@ -81,7 +81,7 @@ export class KeyHandler {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
       if (event.target.tagName === "INPUT" && event.key != "Enter") return;
       event.preventDefault();
-      EventBus.emit("key:pressed", { key: event.key });
+      this.eventBus.emit("key:pressed", { key: event.key });
 
       if (event.code == "Space") {
         this.Space = !this.Space;

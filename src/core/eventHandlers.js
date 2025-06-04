@@ -25,7 +25,8 @@ export class EventHandlers {
   }
 
   init() {
-    this.app.eventBus.on("keydown", (event) => {
+    this.eventBus.on("keydown", (event) => {
+      if (event.repeat) return;
       this.pressedKeys.add(event.key);
 
       // Shift + Alt combo triggers "scale"
@@ -44,7 +45,7 @@ export class EventHandlers {
       }
     });
 
-    this.app.eventBus.on("keyup", (event) => {
+    this.eventBus.on("keyup", (event) => {
       this.pressedKeys.delete(event.key);
       // Disable "scale" if either Shift or Alt is released
       if (event.key === "Shift" || event.key === "Alt") {
