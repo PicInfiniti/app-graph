@@ -170,6 +170,7 @@ export class KeyHandler {
 
   createShortcutChord() {
     const container = d.querySelector(".shortcut-chord");
+    const container_fake = d.querySelector(".shortcut-chord-fake");
     const ul = d.createElement("ul");
 
     shortcuts.forEach(({ title, desc }) => {
@@ -183,5 +184,6 @@ export class KeyHandler {
     });
 
     container.appendChild(ul);
+    container_fake.appendChild(ul.cloneNode(true));
   }
 }

@@ -4,24 +4,22 @@
   left: 0
   width: 100vw
   height: 100vh
-  display: flex
-  justify-content: end
-  align-items: end
-  z-index: 19
+  z-index: 17
 
   *
     user-select: none
     font-size: 18px
 
-.shortcut-chord
-  opacity: .85
-  position: relative
+
+.shortcut-chord, .shortcut-chord-fake
+  position: absolute
+  right: 0
+  bottom: 0
   min-width: 250px
   max-height: 90% 
   border-radius: 5px
   margin: 10px
   padding: 10px
-  background-color: #1F1F28
   color: white
   .header
     width: 40px 
@@ -30,13 +28,11 @@
     justify-content: center
     position: absolute  
     padding-bottom: 5px 
-    background-color: #1F1F28
     top: 0px
     left: 20px
   ul
     padding: 10px
     margin: 0
-    border: 1px solid gray
     border-radius: 5px
     display: flex
     flex-direction: column
@@ -60,4 +56,24 @@
         color: #D3B37BFF
 
    
+.shortcut-chord-fake
+  z-index: 19
+  .header
+    background-color: #1F1F2800
+
+  ul 
+    border: 1px solid #00000000
+
+.shortcut-chord
+  z-index: 18
+  opacity: .85 
+  background-color: #1F1F28
+  .header
+    background-color: #1F1F28
+
+  ul 
+    border: 1px solid gray
+    li 
+      opacity: 0
+
 
