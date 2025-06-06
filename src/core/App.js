@@ -103,18 +103,43 @@ export class App {
         graph.setEdgeAttribute(edge, "labelColor", settings.label_color);
       }
 
-      // Draw the edge line
-      ctx.beginPath();
-      ctx.moveTo(source.x, source.y);
-      ctx.lineTo(target.x, target.y);
-      ctx.strokeStyle = attr.selected ? "orange" : attr.color;
-      ctx.lineWidth = settings.edge_size;
-      ctx.stroke();
-      ctx.closePath();
+      if (settings.directed) {
+        const dx = target.x - source.x;
+        const dy = target.y - source.y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        // How far before the target point you want the line to end
+        const shorten = 12 + Number(settings.edge_size);
+
+        // Normalize and scale the direction vector
+        const offsetX = (dx / length) * shorten;
+        const offsetY = (dy / length) * shorten;
+
+        // Compute the new end point
+        const endX = target.x - offsetX;
+        const endY = target.y - offsetY;
+
+        ctx.beginPath();
+        ctx.moveTo(source.x, source.y);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = attr.selected ? "orange" : attr.color;
+        ctx.lineWidth = settings.edge_size;
+        ctx.stroke();
+        ctx.closePath();
+      } else {
+        // Draw the edge line
+        ctx.beginPath();
+        ctx.moveTo(source.x, source.y);
+        ctx.lineTo(target.x, target.y);
+        ctx.strokeStyle = attr.selected ? "orange" : attr.color;
+        ctx.lineWidth = settings.edge_size;
+        ctx.stroke();
+        ctx.closePath();
+      }
 
       if (settings.directed) {
         // Draw arrowhead for directed edge
-        const arrowSize = 15; // size of the arrowhead
+        const arrowSize = 14 + Number(settings.edge_size); // size of the arrowhead
         const angle = Math.atan2(target.y - source.y, target.x - source.x);
 
         const arrowX = target.x - (Math.cos(angle) * settings.node_radius) / 4; // slightly back from node center
