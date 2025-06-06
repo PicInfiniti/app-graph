@@ -94,8 +94,9 @@ export class ShortcutChord {
     } else {
       this.Rename = val;
     }
-    this.Space = true;
+
     if (this.Rename) {
+      this.Space = true;
       this.modalChord.style.display = "flex";
       this.shortcutChord.style.display = "none";
       this.renameChord.style.display = "block";
@@ -104,6 +105,8 @@ export class ShortcutChord {
       this.renameChord.querySelector("input").focus();
 
       this.Info = false;
+    } else {
+      this.toggleChord(false);
     }
   }
 
@@ -123,6 +126,8 @@ export class ShortcutChord {
 
       this.infoChord.querySelector("input").focus();
       this.Rename = false;
+    } else {
+      this.toggleChord(false);
     }
   }
 
@@ -143,6 +148,25 @@ export class ShortcutChord {
             this.Chord("c");
           }
         }
+        if (this.Rename) {
+          if (event.key === "Enter") {
+            const input = d.getElementById("rename");
+            const value = input.value;
+            input.value = "";
+            this.toggleRename(false);
+            this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
+          }
+        }
+
+        if (this.Info) {
+          if (event.key === "Enter") {
+            const input = document.getElementById("desc");
+            const value = input.value;
+            input.value = "";
+            this.toggleInfo(false);
+            this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+          }
+        }
       }
       return;
     } else {
@@ -155,21 +179,3 @@ export class ShortcutChord {
     }
   }
 }
-
-// if (this.shortcutChord.Info) {
-//   if (event.key === "Enter") {
-//     const input = document.getElementById("desc");
-//     const value = input.value;
-//     input.value = "";
-//     this.shortcutChord.toggleInfo(false);
-//     this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
-//   }
-// } else if (this.shortcutChord.Rename) {
-//   if (event.key === "Enter") {
-//     const input = document.getElementById("rename");
-//     const value = input.value;
-//     input.value = "";
-//     this.shortcutChord.toggleRename(false);
-//     this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
-//   }
-// }
