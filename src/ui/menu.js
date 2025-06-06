@@ -13,6 +13,13 @@ export class Menu {
       console.error("Menu container not found!");
       return;
     }
+    this.spaceEvent = new KeyboardEvent("keydown", {
+      key: " ",
+      code: "Space",
+      keyCode: 32, // Deprecated but sometimes needed
+      which: 32,
+      bubbles: true,
+    });
   }
 
   init() {
@@ -233,7 +240,7 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "info_panel" }),
       "tools-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
-
+      "shortcut-chord-btn": () => d.dispatchEvent(this.spaceEvent),
       //Tools
       "component-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "component" }),

@@ -138,6 +138,7 @@ export const menuData = [
     submenu: [
       { title: "Info Panel", id: "panel-btn", check: true },
       { title: "Tools Panel", id: "tools-btn", check: false },
+      { title: "Key Chord", id: "shortcut-chord-btn", shortcut: "⎵" },
     ],
   },
   {
