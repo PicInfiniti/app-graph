@@ -136,16 +136,20 @@ export class ShortcutChord {
       if (event.code == "Space") {
         if (this.C) {
           this.toggleChord(true);
+          return;
         } else {
           this.toggleChord(false);
+          return;
         }
       } else {
         if (this.C) {
           this.app.menu.handleMenuAction(this.CKeys[event.key]);
           this.toggleChord(false);
+          return;
         } else {
           if (event.key === "c") {
             this.Chord("c");
+            return;
           }
         }
         if (this.Rename) {
@@ -155,6 +159,7 @@ export class ShortcutChord {
             input.value = "";
             this.toggleRename(false);
             this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
+            return;
           }
         }
 
@@ -165,17 +170,17 @@ export class ShortcutChord {
             input.value = "";
             this.toggleInfo(false);
             this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+            return;
           }
         }
       }
-      return;
     } else {
       if (event.code == "Space") {
         this.toggleChord(true);
         return;
-      } else {
-        return true;
       }
     }
+    this.toggleChord(false);
+    return true;
   }
 }

@@ -2,14 +2,11 @@
   "space": {
     "name": "⎵",
     "data": [
-      { "title": "c", "desc": "+Color" },
-      { "title": "y", "desc": "Copy" },
-      { "title": "x", "desc": "Cut" },
-      { "title": "p", "desc": "Past" },
-      { "title": "l", "desc": "Next Node (Alt for Edge)" },
-      { "title": "h", "desc": "Pervious Node (Alt for Edge)" },
-      { "title": "k", "desc": "Select all Nodes (Alt for Edges)" },
-      { "title": "j", "desc": "Deselect all Nodes (Alt for Edges)" }
+      { "title": "c", "desc": "+ Color" },
+      { "title": "⇒", "desc": "Next Node (Alt for Edge)" },
+      { "title": "⇐", "desc": "Pervious Node (Alt for Edge)" },
+      { "title": "⇑", "desc": "Select all Nodes (Alt for Edges)" },
+      { "title": "⇓", "desc": "Deselect all Nodes (Alt for Edges)" }
     ]
   },
   "c": {

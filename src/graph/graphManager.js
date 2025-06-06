@@ -230,7 +230,6 @@ export class GraphManager {
   }
 
   selectNextNode() {
-    console.log(!this.app.keyHandler.Shift);
     if (!this.app.keyHandler.Shift) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex + 1,
