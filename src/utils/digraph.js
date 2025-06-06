@@ -11,6 +11,12 @@ export class Digraph extends DirectedGraph {
       const attrs = this.getNodeAttributes(key);
 
       if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
+      if (attrs.label === undefined)
+        this.setNodeAttribute(key, "label", undefined); // it shouldn't be null
+      if (attrs.color === undefined)
+        this.setNodeAttribute(key, "color", undefined);
+      if (attrs.labelColor === undefined)
+        this.setNodeAttribute(key, "labelColor", undefined);
       if (attrs.selected === undefined)
         this.setNodeAttribute(key, "selected", false);
       if (attrs.size === undefined) this.setNodeAttribute(key, "size", 0.25);
@@ -23,6 +29,12 @@ export class Digraph extends DirectedGraph {
     this.on("edgeAdded", ({ key, source, target }) => {
       const attrs = this.getEdgeAttributes(key);
       if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
+      if (attrs.label === undefined)
+        this.setEdgeAttribute(key, "label", undefined);
+      if (attrs.color === undefined)
+        this.setEdgeAttribute(key, "color", undefined);
+      if (attrs.labelColor === undefined)
+        this.setEdgeAttribute(key, "labelColor", undefined);
       if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)
@@ -153,8 +165,8 @@ export class Digraph extends DirectedGraph {
   }
 
   // 🎨 Update a specific attribute (like color) for all selected nodes
-  updateSelectedNodesColor(color, stroke) {
-    this.updateSelectedNodesAttributes({ color, stroke });
+  updateSelectedNodesColor(color, stroke, labelColor) {
+    this.updateSelectedNodesAttributes({ color, stroke, labelColor });
   }
 
   updateSelectedName(label) {
@@ -184,8 +196,8 @@ export class Digraph extends DirectedGraph {
   }
 
   // 🎨 Update a specific attribute (like color) for all selected edges
-  updateSelectedEdgesColor(color) {
-    this.updateSelectedEdgesAttributes({ color });
+  updateSelectedEdgesColor(color, labelColor) {
+    this.updateSelectedEdgesAttributes({ color, labelColor });
   }
 
   // 🛠️ Update multiple attributes for selected nodes
