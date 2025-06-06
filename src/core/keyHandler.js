@@ -85,14 +85,6 @@ export class KeyHandler {
             this.Alt = true;
             break;
 
-          case "r":
-            this.shortcutChord.toggleRename(true);
-
-            break;
-          case "i":
-            this.shortcutChord.toggleInfo(true);
-            break;
-
           default:
             if (this.Alt) {
               if (this.AltKeys[event.key]) {
@@ -106,6 +98,10 @@ export class KeyHandler {
               if (this.ShiftKeys[event.key]) {
                 this.app.menu.handleMenuAction(this.ShiftKeys[event.key]); // Trigger the corresponding menu item
               }
+            } else if (event.key == "r") {
+              this.shortcutChord.toggleRename(true);
+            } else if (event.key == "i") {
+              this.shortcutChord.toggleInfo(true);
             } else {
               if (this.shortcuts[event.key]) {
                 this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
