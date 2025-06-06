@@ -24,7 +24,7 @@ export class GraphManager {
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
 
-    this.subGraph = null;
+    this.subGraph = undefined;
     this.init();
   }
 
@@ -52,7 +52,7 @@ export class GraphManager {
   }
 
   getIndex(index) {
-    return this.history[index] ?? null;
+    return this.history[index] ?? undefined;
   }
 
   updateIndex(value) {
@@ -144,16 +144,17 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
   }
 
-  updateSelectedNodesEdgesColor() {
+  updateSelectedNodesEdgesColor(n = true, s = true, e = true, l = true) {
+    console.log(e);
     this.saveGraphState();
     this.graph.updateSelectedNodesColor(
-      this.settings.node_color,
-      this.settings.stroke_color,
-      this.settings.label_color,
+      n ? this.settings.node_color : false,
+      s ? this.settings.stroke_color : false,
+      l ? this.settings.label_color : false,
     );
     this.graph.updateSelectedEdgesColor(
-      this.settings.edge_color,
-      this.settings.label_color,
+      e ? this.settings.edge_color : false,
+      l ? this.settings.label_color : false,
     );
     this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
   }

@@ -165,7 +165,7 @@ export class Menu {
         this.graphManager.connectSelectedNodesInOrder(),
       "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
       "color-selection-btn": () =>
-        this.graphManager.updateSelectedNodesEdgesColor("all"),
+        this.graphManager.updateSelectedNodesEdgesColor(true, true, true, true),
       "organize-circle": () => this.layout.applyLayout("circle"),
       "complete-btn": () => this.graphManager.makeGraphComplete(),
       "node-color": () =>
@@ -469,10 +469,34 @@ export class Menu {
       "paste-subgraph": () => this.graphManager.pasteSubgraph(),
 
       // color chord
-      "update-node-color": () => this.graphManager.copySubgraph(),
-      "update-stroke-color": () => this.graphManager.copySubgraph(),
-      "update-edge-color": () => this.graphManager.copySubgraph(),
-      "update-label-color": () => this.graphManager.copySubgraph(),
+      "update-node-color": () =>
+        this.graphManager.updateSelectedNodesEdgesColor(
+          true,
+          false,
+          false,
+          false,
+        ),
+      "update-stroke-color": () =>
+        this.graphManager.updateSelectedNodesEdgesColor(
+          false,
+          true,
+          false,
+          false,
+        ),
+      "update-edge-color": () =>
+        this.graphManager.updateSelectedNodesEdgesColor(
+          false,
+          false,
+          true,
+          false,
+        ),
+      "update-label-color": () =>
+        this.graphManager.updateSelectedNodesEdgesColor(
+          false,
+          false,
+          false,
+          true,
+        ),
     };
 
     if (actions[menuId]) {

@@ -166,7 +166,17 @@ export class Digraph extends DirectedGraph {
 
   // 🎨 Update a specific attribute (like color) for all selected nodes
   updateSelectedNodesColor(color, stroke, labelColor) {
-    this.updateSelectedNodesAttributes({ color, stroke, labelColor });
+    if (!color || !stroke || !labelColor) {
+      if (color) {
+        this.updateSelectedNodesAttributes({ color });
+      } else if (stroke) {
+        this.updateSelectedNodesAttributes({ stroke });
+      } else if (labelColor) {
+        this.updateSelectedNodesAttributes({ labelColor });
+      }
+    } else {
+      this.updateSelectedNodesAttributes({ color, stroke, labelColor });
+    }
   }
 
   updateSelectedName(label) {
@@ -197,7 +207,15 @@ export class Digraph extends DirectedGraph {
 
   // 🎨 Update a specific attribute (like color) for all selected edges
   updateSelectedEdgesColor(color, labelColor) {
-    this.updateSelectedEdgesAttributes({ color, labelColor });
+    if (!color || !labelColor) {
+      if (color) {
+        this.updateSelectedEdgesAttributes({ color });
+      } else if (labelColor) {
+        this.updateSelectedEdgesAttributes({ labelColor });
+      }
+    } else {
+      this.updateSelectedEdgesAttributes({ color, labelColor });
+    }
   }
 
   // 🛠️ Update multiple attributes for selected nodes
