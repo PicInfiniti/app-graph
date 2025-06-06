@@ -312,4 +312,9 @@ export class Digraph extends DirectedGraph {
     this.import(combined.export());
     console.log(this.getSelectedNodes());
   }
+
+  replace(graph) {
+    this.clear();
+    this.import(graph.export());
+  }
 }

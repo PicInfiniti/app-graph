@@ -312,4 +312,8 @@ export class Graph extends UndirectedGraph {
     this.import(combined.export());
     console.log(this.getSelectedNodes());
   }
+
+  replace(graph) {
+    this.import(graph.export());
+  }
 }

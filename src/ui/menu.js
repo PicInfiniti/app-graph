@@ -439,6 +439,10 @@ export class Menu {
       capricornus: () => this.graphManager.generator.zodiac.capricornus(),
       aquarius: () => this.graphManager.generator.zodiac.aquarius(),
       pisces: () => this.graphManager.generator.zodiac.pisces(),
+      //Operators
+      "reverse-direction": () => this.graphManager.reverseGraph(),
+      "to-digraph": () => this.graphManager.toDigraph(),
+      "to-graph": () => this.graphManager.toGraph(),
 
       //Help
       "how-to-use": () =>

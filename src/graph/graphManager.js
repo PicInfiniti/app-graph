@@ -4,6 +4,7 @@ import { empty } from "graphology-generators/classic";
 import { Metric } from "./metrics";
 import { Generator } from "../generator/main";
 import { positiveModulus } from "../utils/helperFunctions.js";
+import { reverse, toDirected, toUndirected } from "graphology-operators";
 
 export class GraphManager {
   constructor(app, limit) {
@@ -75,7 +76,6 @@ export class GraphManager {
     this.graph = empty(Graph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" });
     this.graphClass = Graph;
-    console.log();
   }
 
   clearToDigraph() {
@@ -279,21 +279,49 @@ export class GraphManager {
   copySubgraph() {
     this.saveGraphState();
     this.subGraph = this.graph.copySubgraph();
-    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
   }
 
   //✂️ cutSelected()
   cutSubgraph() {
     this.saveGraphState();
     this.subGraph = this.graph.cutSubgraph();
-    console.log(this.subgraph);
-    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
   pasteSubgraph(offset = { x: 150, y: 100 }) {
     this.saveGraphState();
     this.graph.pasteSubgraph(this.subGraph, offset);
-    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
+    this.eventBus.emit("graph:updated", { type: "pasteSubgraph" });
+  }
+
+  reverseGraph() {
+    if (this.graph.type == "directed") {
+      this.saveGraphState();
+      const reversedGraph = reverse(this.graph);
+      this.graph.replace(reversedGraph);
+      this.eventBus.emit("graph:updated", { type: "reverseGraph" });
+    }
+  }
+
+  toDigraph() {
+    if (this.graph.type == "undirected") {
+      this.saveGraphState();
+      const diGraph = toDirected(this.graph);
+      this.clearToDigraph();
+      this.graph.replace(diGraph);
+      this.eventBus.emit("updateSetting", { key: "directed", value: true });
+      this.eventBus.emit("graph:updated", { type: "toDigraph" });
+    }
+  }
+
+  toGraph() {
+    if (this.graph.type == "directed") {
+      this.saveGraphState();
+      const graph = toUndirected(this.graph);
+      this.clear();
+      this.graph.replace(graph);
+      this.eventBus.emit("updateSetting", { key: "directed", value: false });
+      this.eventBus.emit("graph:updated", { type: "toGraph" });
+    }
   }
 }

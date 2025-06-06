@@ -417,6 +417,7 @@ export const menuData = [
       {
         title: "Zodiac",
         id: "zodiac",
+        shortcut: ">",
         submenu: [
           {
             title: "Aries",
@@ -563,6 +564,15 @@ export const menuData = [
       },
       { type: "divider" },
       { title: "Clear Panel", id: "clear-info-panel-btn", shortcut: "(q)" },
+    ],
+  },
+  {
+    title: "Operators",
+    id: "help",
+    submenu: [
+      { title: "Reverse Direction", id: "reverse-direction" },
+      { title: "To Digraph", id: "to-digraph" },
+      { title: "To Graph", id: "to-graph" },
     ],
   },
   {
