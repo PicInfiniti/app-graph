@@ -107,20 +107,22 @@ export class App {
         const dx = target.x - source.x;
         const dy = target.y - source.y;
         const length = Math.sqrt(dx * dx + dy * dy);
-
-        // How far before the target point you want the line to end
         const shorten = 12 + Number(settings.edge_size);
 
-        // Normalize and scale the direction vector
         const offsetX = (dx / length) * shorten;
         const offsetY = (dy / length) * shorten;
 
-        // Compute the new end point
+        // Check for reverse edge
+        const hasReverseEdge = graph.hasEdge(t, s);
+
+        // Adjust start and end based on reverse presence
+        const startX = hasReverseEdge ? source.x + offsetX : source.x;
+        const startY = hasReverseEdge ? source.y + offsetY : source.y;
         const endX = target.x - offsetX;
         const endY = target.y - offsetY;
 
         ctx.beginPath();
-        ctx.moveTo(source.x, source.y);
+        ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
         ctx.strokeStyle = attr.selected ? "orange" : attr.color;
         ctx.lineWidth = settings.edge_size;
