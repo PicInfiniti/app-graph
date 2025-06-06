@@ -19,8 +19,8 @@
     <title>Graph Studio</title>
 
     <link rel="icon" href="/favicon.png" type="image/gif" />
-    <script type="module" crossorigin src="/assets/index-1VSA8iQu.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C9fb5m5o.css">
+    <script type="module" crossorigin src="/assets/index-CbwavK6W.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-hGQfsdta.css">
   </head>
   <body>
     <div class="container">
@@ -232,20 +232,29 @@
             </table>
           </div>
         </div>
-
-        <div class="rename-panel">
-          <label>Rename</label>
-          <input type="text" id="rename" placeholder="Write new name..." />
-        </div>
-
-        <div class="desc-panel">
-          <label>Add Description</label>
-          <input type="text" id="desc" placeholder="Write Comment..." />
-        </div>
       </div>
 
       <div class="modal-chord">
-        <div class="shortcut-chord"></div>
+        <div class="desc-chord">
+          <div class="header">Edit Description</div>
+          <input type="text" id="desc" placeholder="Write Comment..." />
+        </div>
+
+        <div class="rename-chord">
+          <div class="header">Rename</div>
+          <input type="text" id="rename" placeholder="Write new name..." />
+        </div>
+
+        <div id="shortcut-chord">
+          <div class="shortcut-chord-fake">
+            <div class="header">⎵</div>
+            <ul></ul>
+          </div>
+          <div class="shortcut-chord">
+            <div class="header">⎵</div>
+            <ul></ul>
+          </div>
+        </div>
       </div>
     </widgets>
   </body>
