@@ -1,5 +1,6 @@
 import { EventBus } from "./eventBus";
-import shortcuts from "./shortcuts.json";
+import { ShortcutChord } from "./shortcutChord.js";
+
 const d = document;
 
 export class KeyHandler {
@@ -11,7 +12,8 @@ export class KeyHandler {
     this.Shift = false;
     this.Ctrl = false;
     this.Alt = false;
-    this.Space = true;
+    this.shortcutChord = new ShortcutChord(app);
+
     this.shortcuts = {
       n: "new-btn",
       o: "import-graph",
@@ -20,8 +22,6 @@ export class KeyHandler {
       d: "remove-selection-btn",
       c: "color-selection-btn",
       e: "add-edge-btn",
-      r: "rename-btn",
-      i: "desc-btn",
       a: "all-node-info-btn",
       q: "clear-info-panel-btn",
       y: "copy-subgraph",
@@ -32,18 +32,6 @@ export class KeyHandler {
       ArrowDown: "deselect-all-node",
       ArrowRight: "select-next-node",
       ArrowLeft: "select-pervious-node",
-    };
-
-    this.modal = document.querySelector(".modal-chord");
-    this.SpaceKeys = {
-      c: "color-picker-btn",
-      k: "select-all-node",
-      j: "deselect-all-node",
-      l: "select-next-node",
-      h: "select-pervious-node",
-      y: "copy-subgraph",
-      x: "cut-subgraph",
-      p: "paste-subgraph",
     };
 
     this.AltKeys = {
@@ -76,7 +64,8 @@ export class KeyHandler {
   }
 
   init() {
-    this.createShortcutChord();
+    this.shortcutChord.init();
+
     d.addEventListener("keydown", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
       if (event.target.tagName === "INPUT" && event.key != "Enter") return;
@@ -84,13 +73,13 @@ export class KeyHandler {
       this.eventBus.emit("key:pressed", { key: event.key });
 
       if (event.code == "Space") {
-        this.Space = !this.Space;
-        this.modal.style.display = this.Space ? "flex" : "none";
+        this.shortcutChord.toggleChord();
       } else {
         switch (event.key) {
           case "Control":
             this.Ctrl = true;
             break;
+
           case "Shift":
             this.Shift = true;
             break;
@@ -98,24 +87,29 @@ export class KeyHandler {
           case "Alt":
             this.Alt = true;
             break;
+          case "r":
+            this.shortcutChord.toggleRename(true);
+
+            break;
+          case "i":
+            this.shortcutChord.toggleInfo(true);
+            break;
 
           default:
-            if (this.desc.style.display === "flex") {
+            if (this.shortcutChord.Info) {
               if (event.key === "Enter") {
                 const input = document.getElementById("desc");
                 const value = input.value;
                 input.value = "";
-                this.desc.style.display = "none";
-                d.querySelector(".modal").style.display = "none";
+                this.shortcutChord.toggleInfo(false);
                 this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
               }
-            } else if (this.rename.style.display === "flex") {
+            } else if (this.shortcutChord.Rename) {
               if (event.key === "Enter") {
                 const input = document.getElementById("rename");
                 const value = input.value;
                 input.value = "";
-                this.rename.style.display = "none";
-                d.querySelector(".modal").style.display = "none";
+                this.shortcutChord.toggleRename(false);
                 this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
               }
             } else {
@@ -141,10 +135,9 @@ export class KeyHandler {
                 }
               }
             }
+            this.shortcutChord.toggleChord(false);
             break;
         }
-        this.Space = false;
-        this.modal.style.display = "none";
       }
     });
 
@@ -166,24 +159,5 @@ export class KeyHandler {
           break;
       }
     });
-  }
-
-  createShortcutChord() {
-    const container = d.querySelector(".shortcut-chord");
-    const container_fake = d.querySelector(".shortcut-chord-fake");
-    const ul = d.createElement("ul");
-
-    shortcuts.forEach(({ title, desc }) => {
-      const li = d.createElement("li");
-      li.innerHTML = `
-      <span class="title">${title}</span>
-      <span class="arrow">→</span>
-      <span class="desc">${desc}</span>
-    `;
-      ul.appendChild(li);
-    });
-
-    container.appendChild(ul);
-    container_fake.appendChild(ul.cloneNode(true));
   }
 }

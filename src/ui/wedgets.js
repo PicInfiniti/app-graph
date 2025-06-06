@@ -114,8 +114,6 @@ export class Widget {
         if (e.target.classList.contains("modal")) {
           modalClose.style.display = "none";
           d.querySelector(".modal .help-panel").style.display = "none";
-          d.querySelector(".modal .rename-panel").style.display = "none";
-          d.querySelector(".modal .desc-panel").style.display = "none";
         }
       });
     }
@@ -123,8 +121,7 @@ export class Widget {
     if (modalChordClose) {
       modalChordClose.addEventListener("click", (e) => {
         if (e.target.classList.contains("modal-chord")) {
-          modalChordClose.style.display = "none";
-          this.app.keyHandler.Space = false;
+          this.app.keyHandler.shortcutChord.toggleChord();
         }
       });
     }

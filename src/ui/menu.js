@@ -448,9 +448,8 @@ export class Menu {
         ),
       command: () => {
         d.querySelector(".modal").style.display = "flex";
-        d.querySelector(".modal .rename-panel").style.display = "none";
-        d.querySelector(".modal .desc-panel").style.display = "none";
         d.querySelector(".modal .help-panel").style.display = "block";
+        this.app.keyHandler.shortcutChord.toggleChord(false);
       },
       about: () => window.open("http://picinfiniti.net/", "_blank"),
 

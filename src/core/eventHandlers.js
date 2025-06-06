@@ -36,11 +36,7 @@ export class EventHandlers {
       }
 
       const key = this.keySettingsMap[event.key];
-      if (
-        key &&
-        this.rename.style.display != "flex" &&
-        this.desc.style.display != "flex"
-      ) {
+      if (key && this.app.keyHandler.shortcutChord.space) {
         this.eventBus.emit("toggleSetting", { key, value: true });
       }
     });

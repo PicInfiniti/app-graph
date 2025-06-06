@@ -1,11 +1,25 @@
-[
-  { "title": "c", "desc": "Color Picker" },
-  { "title": "y", "desc": "Copy" },
-  { "title": "x", "desc": "Cut" },
-  { "title": "p", "desc": "Past" },
-  { "title": "l", "desc": "Next Node (Alt for Edge)" },
-  { "title": "h", "desc": "Pervious Node (Alt for Edge)" },
-  { "title": "k", "desc": "Select all Nodes (Alt for Edges)" },
-  { "title": "j", "desc": "Deselect all Nodes (Alt for Edges)" },
-  { "title": "⎵", "desc": "Toggle" }
-]
+{
+  "space": {
+    "name": "⎵",
+    "data": [
+      { "title": "c", "desc": "+Color" },
+      { "title": "y", "desc": "Copy" },
+      { "title": "x", "desc": "Cut" },
+      { "title": "p", "desc": "Past" },
+      { "title": "l", "desc": "Next Node (Alt for Edge)" },
+      { "title": "h", "desc": "Pervious Node (Alt for Edge)" },
+      { "title": "k", "desc": "Select all Nodes (Alt for Edges)" },
+      { "title": "j", "desc": "Deselect all Nodes (Alt for Edges)" }
+    ]
+  },
+  "c": {
+    "name": "+Color",
+    "data": [
+      { "title": "c", "desc": "Color Picker" },
+      { "title": "n", "desc": "Update Node Color" },
+      { "title": "s", "desc": "Update Stroke Color" },
+      { "title": "e", "desc": "Update Edge Color" },
+      { "title": "l", "desc": "Update Label Color" }
+    ]
+  }
+}
