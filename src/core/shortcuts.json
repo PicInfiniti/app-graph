@@ -10,7 +10,7 @@
     ]
   },
   "c": {
-    "name": "+Color",
+    "name": "+ Color",
     "data": [
       { "title": "c", "desc": "Color Picker" },
       { "title": "n", "desc": "Update Node Color" },
