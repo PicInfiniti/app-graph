@@ -71,10 +71,7 @@ export class KeyHandler {
       if (event.target.tagName === "INPUT" && event.key != "Enter") return;
       event.preventDefault();
       this.eventBus.emit("key:pressed", { key: event.key });
-
-      if (event.code == "Space") {
-        this.shortcutChord.toggleChord();
-      } else {
+      if (this.shortcutChord.handleKey(event)) {
         switch (event.key) {
           case "Control":
             this.Ctrl = true;
@@ -87,6 +84,7 @@ export class KeyHandler {
           case "Alt":
             this.Alt = true;
             break;
+
           case "r":
             this.shortcutChord.toggleRename(true);
 
@@ -96,46 +94,24 @@ export class KeyHandler {
             break;
 
           default:
-            if (this.shortcutChord.Info) {
-              if (event.key === "Enter") {
-                const input = document.getElementById("desc");
-                const value = input.value;
-                input.value = "";
-                this.shortcutChord.toggleInfo(false);
-                this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+            if (this.Alt) {
+              if (this.AltKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.AltKeys[event.key]); // Trigger the corresponding menu item
               }
-            } else if (this.shortcutChord.Rename) {
-              if (event.key === "Enter") {
-                const input = document.getElementById("rename");
-                const value = input.value;
-                input.value = "";
-                this.shortcutChord.toggleRename(false);
-                this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
+            } else if (this.Ctrl) {
+              if (this.CtrlKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.CtrlKeys[event.key]); // Trigger the corresponding menu item
+              }
+            } else if (this.Shift) {
+              if (this.ShiftKeys[event.key]) {
+                this.app.menu.handleMenuAction(this.ShiftKeys[event.key]); // Trigger the corresponding menu item
               }
             } else {
-              if (this.Space) {
-                if (this.SpaceKeys[event.key]) {
-                  this.app.menu.handleMenuAction(this.SpaceKeys[event.key]); // Trigger the corresponding menu item
-                }
-              } else if (this.Alt) {
-                if (this.AltKeys[event.key]) {
-                  this.app.menu.handleMenuAction(this.AltKeys[event.key]); // Trigger the corresponding menu item
-                }
-              } else if (this.Ctrl) {
-                if (this.CtrlKeys[event.key]) {
-                  this.app.menu.handleMenuAction(this.CtrlKeys[event.key]); // Trigger the corresponding menu item
-                }
-              } else if (this.Shift) {
-                if (this.ShiftKeys[event.key]) {
-                  this.app.menu.handleMenuAction(this.ShiftKeys[event.key]); // Trigger the corresponding menu item
-                }
-              } else {
-                if (this.shortcuts[event.key]) {
-                  this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
-                }
+              if (this.shortcuts[event.key]) {
+                this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
               }
             }
-            this.shortcutChord.toggleChord(false);
+
             break;
         }
       }

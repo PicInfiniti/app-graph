@@ -33,15 +33,7 @@ export class ShortcutChord {
     };
 
     this.SpaceKeys = {
-      k: "select-all-node",
-      j: "deselect-all-node",
-      l: "select-next-node",
-      h: "select-pervious-node",
-      y: "copy-subgraph",
-      x: "cut-subgraph",
-      p: "paste-subgraph",
-      r: "rename",
-      i: "edit-info",
+      c: "toggle-color",
     };
   }
 
@@ -50,6 +42,10 @@ export class ShortcutChord {
   }
 
   Chord(chord) {
+    if (chord === "c") {
+      this.C = true;
+    }
+
     const ul = d.createElement("ul");
 
     shortcuts[chord].data.forEach(({ title, desc }) => {
@@ -61,6 +57,13 @@ export class ShortcutChord {
     `;
       ul.appendChild(li);
     });
+
+    // Remove existing <ul> if it exists
+    const existingUlChord = this.chord.querySelector("ul");
+    if (existingUlChord) this.chord.removeChild(existingUlChord);
+
+    const existingUlFake = this.fakeChord.querySelector("ul");
+    if (existingUlFake) this.fakeChord.removeChild(existingUlFake);
 
     this.chord.appendChild(ul);
     this.fakeChord.appendChild(ul.cloneNode(true));
@@ -80,6 +83,9 @@ export class ShortcutChord {
 
     this.Rename = false;
     this.Info = false;
+    this.C = false;
+
+    this.Chord("space");
   }
 
   toggleRename(val = undefined) {
@@ -119,4 +125,51 @@ export class ShortcutChord {
       this.Rename = false;
     }
   }
+
+  handleKey(event) {
+    if (this.Space) {
+      if (event.code == "Space") {
+        if (this.C) {
+          this.toggleChord(true);
+        } else {
+          this.toggleChord(false);
+        }
+      } else {
+        if (this.C) {
+          this.app.menu.handleMenuAction(this.CKeys[event.key]);
+          this.toggleChord(false);
+        } else {
+          if (event.key === "c") {
+            this.Chord("c");
+          }
+        }
+      }
+      return;
+    } else {
+      if (event.code == "Space") {
+        this.toggleChord(true);
+        return;
+      } else {
+        return true;
+      }
+    }
+  }
 }
+
+// if (this.shortcutChord.Info) {
+//   if (event.key === "Enter") {
+//     const input = document.getElementById("desc");
+//     const value = input.value;
+//     input.value = "";
+//     this.shortcutChord.toggleInfo(false);
+//     this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+//   }
+// } else if (this.shortcutChord.Rename) {
+//   if (event.key === "Enter") {
+//     const input = document.getElementById("rename");
+//     const value = input.value;
+//     input.value = "";
+//     this.shortcutChord.toggleRename(false);
+//     this.app.menu.handleMenuAction("rename", value); // Trigger the corresponding menu item
+//   }
+// }
