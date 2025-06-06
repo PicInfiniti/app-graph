@@ -36,7 +36,7 @@ export class EventHandlers {
       }
 
       const key = this.keySettingsMap[event.key];
-      if (key && this.app.keyHandler.shortcutChord.space) {
+      if (key && !this.app.keyHandler.shortcutChord.Space) {
         this.eventBus.emit("toggleSetting", { key, value: true });
       }
     });
