@@ -199,39 +199,9 @@ export class Menu {
         this.eventBus.emit("updateSetting", { key: "grid_color", value: val });
       },
       rename: () => this.graphManager.updateSelectedName(val),
-      "rename-btn": () => {
-        const modal = d.querySelector(".modal");
-        if (modal.style.display === "flex") {
-          modal.style.display = "none";
-        } else {
-          modal.style.display = "flex";
-          d.querySelector(".modal .desc-panel").style.display = "none";
-        }
-
-        d.querySelector(".modal .help-panel").style.display = "none";
-        d.querySelector(".modal .rename-panel").style.display = "flex";
-        d.getElementById("rename").focus();
-        setTimeout(() => {
-          d.getElementById("rename").value = "";
-        }, 10);
-      },
+      "rename-btn": () => this.app.keyHandler.shortcutChord.toggleRename(),
       desc: () => this.graphManager.updateSelectedInfo(val),
-      "desc-btn": () => {
-        const modal = d.querySelector(".modal");
-        if (modal.style.display === "flex") {
-          modal.style.display = "none";
-        } else {
-          modal.style.display = "flex";
-          d.querySelector(".modal .rename-panel").style.display = "none";
-        }
-
-        d.querySelector(".modal .help-panel").style.display = "none";
-        d.querySelector(".modal .desc-panel").style.display = "flex";
-        d.getElementById("desc").focus();
-        setTimeout(() => {
-          d.getElementById("desc").value = "";
-        }, 10);
-      },
+      "desc-btn": () => this.app.keyHandler.shortcutChord.toggleInfo(),
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
 

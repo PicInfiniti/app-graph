@@ -145,7 +145,6 @@ export class GraphManager {
   }
 
   updateSelectedNodesEdgesColor(n = true, s = true, e = true, l = true) {
-    console.log(e);
     this.saveGraphState();
     this.graph.updateSelectedNodesColor(
       n ? this.settings.node_color : false,
