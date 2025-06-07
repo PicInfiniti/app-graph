@@ -296,6 +296,7 @@ export class Canvas {
       if (this.settings.colorPicker) {
         this.app.appSettings.setSetting("node_color", clickedNode.color);
         this.app.appSettings.setSetting("stroke_color", clickedNode.stroke);
+        this.app.appSettings.setSetting("label_color", clickedNode.labelColor);
         applySettingsToUI(this.settings, this.app.canvas);
       }
     } else if (clickedEdge) {
@@ -310,6 +311,7 @@ export class Canvas {
       }
       if (this.settings.colorPicker) {
         this.app.appSettings.setSetting("edge_color", clickedEdge.color);
+        this.app.appSettings.setSetting("label_color", clickedEdge.labelColor);
         applySettingsToUI(this.settings, this.app.canvas);
       }
     } else {
