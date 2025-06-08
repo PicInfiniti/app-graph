@@ -201,7 +201,7 @@ export class Metric {
     const graph = this.graphManager.graph;
     const strengths = simmelianStrength(graph);
     for (const key in strengths) {
-      const [source, target] = graph.getEdgeSourcetarget(key);
+      const { source, target } = graph.getEdgeAttributes(key);
       this.addInfo(
         `${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${strengths[key]}`,
       );
@@ -296,11 +296,11 @@ export class Metric {
   disparity() {
     this.addHeader("disparity");
     const graph = this.graphManager.graph;
-    const strengths = disparity(graph);
-    for (const key in strengths) {
-      const [source, target] = graph.getEdgeSourcetarget(key);
+    const disparities = disparity(graph);
+    for (const key in disparities) {
+      const { source, target } = graph.getEdgeAttributes(key);
       this.addInfo(
-        `${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${strengths[key]}`,
+        `${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${disparities[key]}`,
       );
     }
     this.addLine();
