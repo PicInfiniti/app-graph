@@ -92,11 +92,11 @@ Each generator includes documentation and Wikipedia links to learn more.
 
 ### UI Overview
 
-![Graph Studio UI](./src/assets/img/Screenshot-1.png)
+![Graph Studio UI](./src/assets/img/Screenshot-3.png)
 
 ### Night Sky Mode
 
-![Night Sky](./src/assets/img/Screenshot-2.png)
+![Night Sky](./src/assets/img/Screenshot-4.png)
 
 ---
 
