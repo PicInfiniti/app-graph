@@ -13,6 +13,8 @@ export class Digraph extends DirectedGraph {
       if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
       if (attrs.label === undefined)
         this.setNodeAttribute(key, "label", undefined); // it shouldn't be null
+      if (attrs.weight === undefined)
+        this.setNodeAttribute(key, "weight", undefined);
       if (attrs.color === undefined)
         this.setNodeAttribute(key, "color", undefined);
       if (attrs.labelColor === undefined)
@@ -31,6 +33,8 @@ export class Digraph extends DirectedGraph {
       if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
       if (attrs.label === undefined)
         this.setEdgeAttribute(key, "label", undefined);
+      if (attrs.weight === undefined)
+        this.setEdgeAttribute(key, "weight", undefined);
       if (attrs.color === undefined)
         this.setEdgeAttribute(key, "color", undefined);
       if (attrs.labelColor === undefined)
@@ -41,6 +45,22 @@ export class Digraph extends DirectedGraph {
         this.setEdgeAttribute(key, "selected", false);
       if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
+  }
+
+  getEdgeWeight(edge) {
+    const { weight } = this.getEdgeAttributes(edge);
+    return weight;
+  }
+
+  setEdgeWeight(edge, val) {
+    this.updateEdgeAttribute(edge, "weight", (n) => val);
+  }
+
+  setDefaultEdgeWeight(val = 1) {
+    this.updateEachEdgeAttributes((_, attrs) => ({
+      ...attrs,
+      weight: val,
+    }));
   }
 
   // 🧬 Deep copy with structure and attributes
@@ -187,6 +207,11 @@ export class Digraph extends DirectedGraph {
   updateSelectedInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
     this.updateSelectedEdgesAttributes({ desc });
+  }
+
+  updateSelectedWeight(weight) {
+    this.updateSelectedNodesAttributes({ weight });
+    this.updateSelectedEdgesAttributes({ weight });
   }
 
   updateSelectedNodesName(label) {

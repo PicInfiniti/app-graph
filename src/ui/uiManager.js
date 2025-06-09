@@ -17,6 +17,10 @@ export function applySettingsToUI(settings, canvas) {
     "hidden",
     !settings.edgeLabel,
   );
+  d.querySelector("#weight-label .check").classList.toggle(
+    "hidden",
+    !settings.weightLabel,
+  );
 
   d.querySelector("#component").classList.toggle(
     "gray-background",

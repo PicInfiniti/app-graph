@@ -40,7 +40,7 @@ class AppSettings {
       label_color: "#000000",
       label_pos: { x: 0, y: 0 },
       grid_color: "#00000020",
-      weighted: false,
+      weightLabel: true,
     };
 
     this.nightSkyTheme = {
@@ -101,7 +101,8 @@ class AppSettings {
         if (
           key == "vertexLabel" ||
           key == "directed_edge" ||
-          key == "edgeLabel"
+          key == "edgeLabel" ||
+          key == "weightLabel"
         ) {
           this.eventBus.emit("graph:updated", { type: "vertexLabel" });
         }

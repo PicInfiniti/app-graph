@@ -31,6 +31,8 @@ export class Graph extends UndirectedGraph {
       if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
       if (attrs.label === undefined)
         this.setEdgeAttribute(key, "label", undefined);
+      if (attrs.weight === undefined)
+        this.setEdgeAttribute(key, "weight", undefined);
       if (attrs.color === undefined)
         this.setEdgeAttribute(key, "color", undefined);
       if (attrs.labelColor === undefined)
@@ -43,6 +45,10 @@ export class Graph extends UndirectedGraph {
     });
   }
 
+  getEdgeWeight(edge) {
+    const { weight } = this.getEdgeAttributes(edge);
+    return weight;
+  }
   // 🧬 Deep copy with structure and attributes
   copy() {
     const newGraph = new Graph(this.options);

@@ -165,7 +165,7 @@ export class App {
         ctx.fill();
       }
 
-      if (settings.edgeLabel) {
+      if (settings.edgeLabel || settings.weightLabel) {
         ctx.fillStyle = attr.labelColor;
         ctx.font = `${settings.label_size}px sans-serif`;
         ctx.textAlign = "center";
@@ -188,7 +188,15 @@ export class App {
         const labelX = midX + perpX * offset + settings.label_pos.x;
         const labelY = midY + perpY * offset + settings.label_pos.y;
 
-        ctx.fillText(attr.label, labelX, labelY);
+        if (settings.edgeLabel && settings.weightLabel) {
+          if (attr.weight)
+            ctx.fillText(`${attr.label}, ${attr.weight}`, labelX, labelY);
+          else ctx.fillText(attr.label, labelX, labelY);
+        } else if (!settings.edgeLabel && settings.weightLabel && attr.weight) {
+          ctx.fillText(attr.weight, labelX, labelY);
+        } else if (settings.edgeLabel && !settings.weightLabel) {
+          ctx.fillText(attr.label, labelX, labelY);
+        }
       }
     });
 

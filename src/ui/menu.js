@@ -202,6 +202,9 @@ export class Menu {
       "rename-btn": () => this.app.keyHandler.shortcutChord.toggleRename(),
       desc: () => this.graphManager.updateSelectedInfo(val),
       "desc-btn": () => this.app.keyHandler.shortcutChord.toggleInfo(),
+      weight: () => this.graphManager.updateSelectedWeight(val),
+      "weight-btn": () => this.app.keyHandler.shortcutChord.toggleInfo(),
+
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
 
@@ -229,6 +232,8 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
       "edge-label": () =>
         this.eventBus.emit("toggleSetting", { key: "edgeLabel" }),
+      "weight-label": () =>
+        this.eventBus.emit("toggleSetting", { key: "weightLabel" }),
 
       "vertex-size-1": () =>
         this.eventBus.emit("updateSetting", { key: "node_radius", value: val }),
@@ -503,7 +508,13 @@ export class Menu {
 
     d.addEventListener("input", (event) => {
       const target = event.target;
-      if (!target || target.id == "rename" || target.id == "desc") return;
+      if (
+        !target ||
+        target.id == "rename" ||
+        target.id == "desc" ||
+        target.id == "weight"
+      )
+        return;
       const menuId = target.id || target.getAttribute("name");
       if (menuId) {
         this.handleMenuAction(menuId, target.value);

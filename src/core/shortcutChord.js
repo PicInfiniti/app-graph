@@ -9,9 +9,13 @@ export class ShortcutChord {
     this.eventBus = app.eventBus;
 
     this.modalChord = d.querySelector(".modal-chord");
+
     this.infoChord = d.querySelector(".modal-chord .desc-chord");
     this.renameChord = d.querySelector(".modal-chord .rename-chord");
+    this.weightChord = d.querySelector(".modal-chord .weight-chord");
+
     this.shortcutChord = d.querySelector(".modal-chord #shortcut-chord");
+
     this.header = d.querySelector(".modal-chord .shortcut-chord .header");
     this.fakeHeader = d.querySelector(
       ".modal-chord  .shortcut-chord-fake .header",
@@ -23,6 +27,7 @@ export class ShortcutChord {
     this.C = false;
     this.Rename = false;
     this.Info = false;
+    this.Weight = false;
 
     this.CKeys = {
       c: "color-picker-btn",
@@ -80,9 +85,11 @@ export class ShortcutChord {
     this.shortcutChord.style.display = "block";
     this.renameChord.style.display = "none";
     this.infoChord.style.display = "none";
+    this.weightChord.style.display = "none";
 
     this.Rename = false;
     this.Info = false;
+    this.Weight = false;
     this.C = false;
 
     this.Chord("space");
@@ -101,10 +108,12 @@ export class ShortcutChord {
       this.shortcutChord.style.display = "none";
       this.renameChord.style.display = "block";
       this.infoChord.style.display = "none";
+      this.weightChord.style.display = "none";
 
       this.renameChord.querySelector("input").focus();
 
       this.Info = false;
+      this.Weight = false;
     } else {
       this.toggleChord(false);
     }
@@ -122,10 +131,35 @@ export class ShortcutChord {
       this.modalChord.style.display = "flex";
       this.shortcutChord.style.display = "none";
       this.renameChord.style.display = "none";
+      this.weightChord.style.display = "none";
       this.infoChord.style.display = "block";
 
       this.infoChord.querySelector("input").focus();
       this.Rename = false;
+      this.Weight = false;
+    } else {
+      this.toggleChord(false);
+    }
+  }
+
+  toggleWeight(val = undefined) {
+    if (val === undefined) {
+      this.Weight = !this.Weight;
+    } else {
+      this.Weight = val;
+    }
+
+    this.Space = true;
+    if (this.Weight) {
+      this.modalChord.style.display = "flex";
+      this.shortcutChord.style.display = "none";
+      this.renameChord.style.display = "none";
+      this.weightChord.style.display = "block";
+      this.infoChord.style.display = "none";
+
+      this.weightChord.querySelector("input").focus();
+      this.Rename = false;
+      this.Info = false;
     } else {
       this.toggleChord(false);
     }
@@ -165,11 +199,22 @@ export class ShortcutChord {
 
         if (this.Info) {
           if (event.key === "Enter") {
-            const input = document.getElementById("desc");
+            const input = d.getElementById("desc");
             const value = input.value;
             input.value = "";
             this.toggleInfo(false);
             this.app.menu.handleMenuAction("desc", value); // Trigger the corresponding menu item
+            return;
+          }
+        }
+
+        if (this.Weight) {
+          if (event.key === "Enter") {
+            const input = d.getElementById("weight");
+            const value = input.value;
+            input.value = "";
+            this.toggleWeight(false);
+            this.app.menu.handleMenuAction("weight", value); // Trigger the corresponding menu item
             return;
           }
         }

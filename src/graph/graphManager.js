@@ -178,6 +178,17 @@ export class GraphManager {
     this.eventBus.emit("graph:updated", { type: "updateNodesInfo" });
   }
 
+  updateSelectedWeight(val) {
+    this.saveGraphState();
+    const weight = parseFloat(val);
+    if (weight) {
+      this.graph.updateSelectedWeight(weight);
+    } else {
+      this.graph.updateSelectedWeight(undefined);
+    }
+    this.eventBus.emit("graph:updated", { type: "updateEdgeWeight" });
+  }
+
   deselectAll() {
     this.deselectAllNode();
     this.deselectAllEdge();

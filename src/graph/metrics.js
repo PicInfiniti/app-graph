@@ -45,13 +45,62 @@ export class Metric {
     this.pannel.scrollTop = this.pannel.scrollHeight;
   }
 
-  allNodeInfo() {
-    for (let node of this.graphManager.graph.getSelectedNodes()) {
+  addNodeInfo(node) {
+    if (typeof node === "string") {
       const attrs = this.graphManager.graph.getNodeAttributes(node);
-      if (Object.keys(attrs.desc).length != 0) {
+      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
         this.addHeader(`${attrs.label}:`);
         for (let key in attrs.desc) {
           this.addInfo(`${key}: ${attrs.desc[key]}`);
+        }
+        if (attrs.weight) {
+          this.addInfo(`weight: ${attrs.weight}`);
+        }
+        this.addLine();
+      }
+    } else {
+      const attrs = node;
+      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
+        this.addHeader(`${attrs.label}:`);
+        for (let key in attrs.desc) {
+          this.addInfo(`${key}: ${attrs.desc[key]}`);
+        }
+        if (attrs.weight) {
+          this.addInfo(`weight: ${attrs.weight}`);
+        }
+        this.addLine();
+      }
+    }
+  }
+
+  allNodeInfo() {
+    for (let node of this.graphManager.graph.getSelectedNodes()) {
+      this.addNodeInfo(node);
+    }
+  }
+
+  addEdgeInfo(edge) {
+    if (typeof edge === "string") {
+      const attrs = this.graphManager.graph.getEdgeAttributes(edge);
+      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
+        this.addHeader(`${attrs.label}:`);
+        for (let key in attrs.desc) {
+          this.addInfo(`${key}: ${attrs.desc[key]}`);
+        }
+        if (attrs.weight) {
+          this.addInfo(`weight: ${attrs.weight}`);
+        }
+        this.addLine();
+      }
+    } else {
+      const attrs = edge;
+      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
+        this.addHeader(`${attrs.label}:`);
+        for (let key in attrs.desc) {
+          this.addInfo(`${key}: ${attrs.desc[key]}`);
+        }
+        if (attrs.weight) {
+          this.addInfo(`weight: ${attrs.weight}`);
         }
         this.addLine();
       }
@@ -59,17 +108,11 @@ export class Metric {
   }
 
   allEdgeInfo() {
-    for (let node of this.graphManager.graph.getSelectedEdges()) {
-      const attrs = this.graphManager.graph.getEdgeAttributes(node);
-      if (Object.keys(attrs.desc).length != 0) {
-        this.addHeader(`${attrs.label}:`);
-        for (let key in attrs.desc) {
-          this.addInfo(`${key}: ${attrs.desc[key]}`);
-        }
-        this.addLine();
-      }
+    for (let edge of this.graphManager.graph.getSelectedEdges()) {
+      this.addEdgeInfo(edge);
     }
   }
+
   getComponent(node) {
     const graph = this.graphManager.graph;
     const components = connectedComponents(graph);
@@ -86,7 +129,10 @@ export class Metric {
     this.addHeader("Basic Informattion");
     this.addInfo(`|V|: ${graph.order}`);
     this.addInfo(`|E|: ${graph.size}`);
-    this.addInfo(`Type: ${graph.type}`);
+    const weighted = graph.someEdge((_, attrs) => attrs.weight);
+    this.addInfo(
+      weighted ? `Type: ${graph.type}, weighted` : `Type: ${graph.type}`,
+    );
     this.addLine();
   }
 

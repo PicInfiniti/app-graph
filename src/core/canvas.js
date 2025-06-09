@@ -283,15 +283,7 @@ export class Canvas {
     let clickedEdge = this.findClickedEdge(x, y);
 
     if (clickedNode) {
-      if (clickedNode.desc && Object.keys(clickedNode.desc).length != 0) {
-        this.app.graphManager.metric.addHeader(`${clickedNode.label}:`);
-        for (let key in clickedNode.desc) {
-          this.app.graphManager.metric.addInfo(
-            `${key}: ${clickedNode.desc[key]}`,
-          );
-        }
-        this.app.graphManager.metric.addLine();
-      }
+      this.app.graphManager.metric.addEdgeInfo(clickedNode);
 
       if (this.settings.colorPicker) {
         this.app.colorPicker.setColor("node", clickedNode.color);
@@ -299,15 +291,8 @@ export class Canvas {
         this.app.colorPicker.setColor("label", clickedNode.labelColor);
       }
     } else if (clickedEdge) {
-      if (clickedEdge.desc && Object.keys(clickedEdge.desc).length != 0) {
-        this.app.graphManager.metric.addHeader(`${clickedEdge.label}:`);
-        for (let key in clickedEdge.desc) {
-          this.app.graphManager.metric.addInfo(
-            `${key}: ${clickedEdge.desc[key]}`,
-          );
-        }
-        this.app.graphManager.metric.addLine();
-      }
+      this.app.graphManager.metric.addEdgeInfo(clickedEdge);
+
       if (this.settings.colorPicker) {
         this.app.colorPicker.setColor("edge", clickedEdge.color);
         this.app.colorPicker.setColor("label", clickedEdge.LabeClolor);

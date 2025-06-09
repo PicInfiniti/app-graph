@@ -55,6 +55,7 @@ export const menuData = [
       { type: "divider" },
       { title: "Rename", name: "rename-btn", shortcut: "(r)" },
       { title: "Edit Info", name: "desc-btn", shortcut: "(i)" },
+      { title: "Edit Weight", name: "weight-btn", shortcut: "(w)" },
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
       { title: "Redo", name: "redo-btn", shortcut: "(Ctrl+r)" },
@@ -65,6 +66,7 @@ export const menuData = [
         submenu: [
           { title: "Vertex Label", id: "vertex-label", check: true },
           { title: "Edge Label", id: "edge-label", check: true },
+          { title: "Weight Label", id: "weight-label", check: true },
           {
             title: "Grid",
             id: "gride-size",

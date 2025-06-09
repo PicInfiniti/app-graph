@@ -68,7 +68,12 @@ export class KeyHandler {
 
     d.addEventListener("keydown", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
-      if (event.target.tagName === "INPUT" && event.key != "Enter") return;
+      if (
+        event.target.tagName === "INPUT" &&
+        event.key != "Enter" &&
+        event.key != "Escape"
+      )
+        return;
       event.preventDefault();
       this.eventBus.emit("key:pressed", { key: event.key });
       if (this.shortcutChord.handleKey(event)) {
@@ -102,6 +107,8 @@ export class KeyHandler {
               this.shortcutChord.toggleRename(true);
             } else if (event.key == "i") {
               this.shortcutChord.toggleInfo(true);
+            } else if (event.key == "w") {
+              this.shortcutChord.toggleWeight(true);
             } else {
               if (this.shortcuts[event.key]) {
                 this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
