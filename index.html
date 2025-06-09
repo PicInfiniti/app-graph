@@ -19,8 +19,8 @@
     <title>Graph Studio</title>
 
     <link rel="icon" href="/favicon.png" type="image/gif" />
-    <script type="module" crossorigin src="/assets/index-ZaYwMRne.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-hGQfsdta.css">
+    <script type="module" crossorigin src="/assets/index-Cbsb5VhT.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BwN1EbbK.css">
   </head>
   <body>
     <div class="container">
@@ -113,62 +113,33 @@
             </div>
             <div class="color-1">
               <label for="node-color">Node</label>
-              <input
-                type="color"
-                id="node-color"
-                name="node-color"
-                value="#000000"
-              />
+              <div id="node-color"></div>
             </div>
 
             <div class="color-2">
               <label for="stroke-color">Stroke</label>
-              <input
-                type="color"
-                id="stroke-color"
-                name="stroke-color"
-                value="#000000"
-              />
+              <div id="stroke-color"></div>
             </div>
 
             <div class="color-3">
               <label for="edge-color">Edge</label>
-              <input
-                type="color"
-                id="edge-color"
-                name="edge-color"
-                value="#4682B4"
-              />
+              <div id="edge-color"></div>
             </div>
 
             <div class="color-4">
               <label for="label-color">Label</label>
-              <input
-                type="color"
-                id="label-color"
-                name="label-color"
-                value="#4682B4"
-              />
+              <div id="label-color"></div>
             </div>
 
             <div class="color-5">
               <label for="background-color">Bg</label>
-              <input
-                type="color"
-                id="background-color"
-                name="background-color"
-                value="#ffffff"
-              />
+              <div id="background-color"></div>
             </div>
 
             <div class="color-6">
               <label for="grid-color">Grid</label>
-              <input
-                type="color"
-                id="grid-color"
-                name="grid-color"
-                value="#00000020"
-              />
+              <div id="grid-color"></div>
+              <!-- In your template or HTML -->
             </div>
           </div>
         </div>
@@ -247,6 +218,15 @@
         <div class="rename-chord">
           <div class="header">Rename</div>
           <input type="text" id="rename" placeholder="Write new name..." />
+        </div>
+
+        <div class="weight-chord">
+          <div class="header">Weight</div>
+          <input
+            type="text"
+            id="weight"
+            placeholder="Write neumeric weight..."
+          />
         </div>
 
         <div id="shortcut-chord">
