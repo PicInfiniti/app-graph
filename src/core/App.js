@@ -11,6 +11,7 @@ import { menuData } from "../ui/MenuData.js";
 import { Layout } from "../graph/layouts.js";
 import { Widget } from "../ui/wedgets.js";
 import { Rect } from "./rect.js";
+import { ColorPicker } from "../ui/pickr.js";
 
 export class App {
   constructor() {
@@ -26,6 +27,7 @@ export class App {
     this.widget = new Widget(this);
     this.keyHandler = new KeyHandler(this); // Handle global keyboard shortcuts
     this.eventHanders = new EventHandlers(this);
+    this.colorPicker = new ColorPicker(this);
 
     this.simulation = null;
     this.nodes = [];
@@ -45,6 +47,7 @@ export class App {
     this.eventHanders.init();
     this.initSimulation();
     this.loadInitialGraph();
+    this.colorPicker.init();
   }
 
   initSimulation() {

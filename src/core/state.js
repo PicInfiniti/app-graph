@@ -40,6 +40,7 @@ class AppSettings {
       label_color: "#000000",
       label_pos: { x: 0, y: 0 },
       grid_color: "#00000020",
+      weighted: false,
     };
 
     this.nightSkyTheme = {

@@ -68,7 +68,7 @@
       align-items: center
       display: flex
 
-      &:hover div
+      &:hover > div
         transform: translateX(var(--hover-x))
         opacity: 1
         label
@@ -86,12 +86,19 @@
         label
           display: none
 
-        input
+        div
+          display: flex
+          justify-content: center
+          align-items: center
           width: 45px
           height: 45px
-          cursor: pointer
+          cursor: pointer !important
           border: none
-          background-color: #00000000
+
+          button
+            width: 30px
+            height: 30px
+            border: 1px solid #00000022 !important
 
       .color-0 
         z-index: 10

@@ -16,6 +16,7 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
+    "@simonwep/pickr": "^1.9.1",
     "chance": "^1.1.12",
     "d3": "^7.9.0",
     "dagre-d3": "^0.6.4",

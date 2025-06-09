@@ -294,10 +294,9 @@ export class Canvas {
       }
 
       if (this.settings.colorPicker) {
-        this.app.appSettings.setSetting("node_color", clickedNode.color);
-        this.app.appSettings.setSetting("stroke_color", clickedNode.stroke);
-        this.app.appSettings.setSetting("label_color", clickedNode.labelColor);
-        applySettingsToUI(this.settings, this.app.canvas);
+        this.app.colorPicker.setColor("node", clickedNode.color);
+        this.app.colorPicker.setColor("stroke", clickedNode.stroke);
+        this.app.colorPicker.setColor("label", clickedNode.labelColor);
       }
     } else if (clickedEdge) {
       if (clickedEdge.desc && Object.keys(clickedEdge.desc).length != 0) {
@@ -310,9 +309,8 @@ export class Canvas {
         this.app.graphManager.metric.addLine();
       }
       if (this.settings.colorPicker) {
-        this.app.appSettings.setSetting("edge_color", clickedEdge.color);
-        this.app.appSettings.setSetting("label_color", clickedEdge.labelColor);
-        applySettingsToUI(this.settings, this.app.canvas);
+        this.app.colorPicker.setColor("edge", clickedEdge.color);
+        this.app.colorPicker.setColor("label", clickedEdge.LabeClolor);
       }
     } else {
       this.app.graphManager.deselectAll();

@@ -17,12 +17,6 @@ export function applySettingsToUI(settings, canvas) {
     "hidden",
     !settings.edgeLabel,
   );
-  d.getElementById("node-color").value = settings.node_color;
-  d.getElementById("edge-color").value = settings.edge_color;
-  d.getElementById("label-color").value = settings.label_color;
-  d.getElementById("grid-color").value = settings.grid_color;
-  d.getElementById("background-color").value = settings.background_color;
-  d.getElementById("stroke-color").value = settings.stroke_color;
 
   d.querySelector("#component").classList.toggle(
     "gray-background",
