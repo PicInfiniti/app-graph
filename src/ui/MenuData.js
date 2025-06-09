@@ -580,6 +580,8 @@ export const menuData = [
       { title: "Reverse Direction", id: "reverse-direction" },
       { title: "To Digraph", id: "to-digraph" },
       { title: "To Graph", id: "to-graph" },
+      { title: "To Weighted", id: "to-weighted" },
+      { title: "To Unweighted", id: "to-unweighted" },
     ],
   },
   {

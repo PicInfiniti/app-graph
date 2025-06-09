@@ -333,4 +333,22 @@ export class GraphManager {
       this.eventBus.emit("graph:updated", { type: "toGraph" });
     }
   }
+
+  toWeighted() {
+    this.saveGraphState();
+    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+      ...attrs,
+      weight: 1,
+    }));
+    this.eventBus.emit("graph:updated", { type: "toWeighted" });
+  }
+
+  toUnweighted() {
+    this.saveGraphState();
+    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+      ...attrs,
+      weight: undefined,
+    }));
+    this.eventBus.emit("graph:updated", { type: "toUnweighted" });
+  }
 }

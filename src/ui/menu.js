@@ -425,6 +425,8 @@ export class Menu {
       "reverse-direction": () => this.graphManager.reverseGraph(),
       "to-digraph": () => this.graphManager.toDigraph(),
       "to-graph": () => this.graphManager.toGraph(),
+      "to-weighted": () => this.graphManager.toWeighted(),
+      "to-unweighted": () => this.graphManager.toUnweighted(),
 
       //Help
       "how-to-use": () =>
