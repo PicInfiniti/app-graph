@@ -590,7 +590,7 @@ export const menuData = [
     submenu: [
       { title: "Mouse Commnads", id: "command", name: "command-btn" },
       { title: "How to use", id: "how-to-use" },
-      { title: "About", id: "about", shortcut: "version: 1.2.1" },
+      { title: "About", id: "about", shortcut: "version: 1.3.0" },
     ],
   },
 ];

@@ -2,95 +2,108 @@
 
 ![GitHub release](https://img.shields.io/github/v/release/PicInfiniti/app-graph?sort=semver)
 
-**Graph Studio** is an interactive web application built with **D3 Canvas** and **Graphology.js**, designed for creating, visualizing, and analyzing **simple undirected and directed graphs**. It is touchscreen-friendly, intuitive, and packed with powerful tools for students, developers, researchers, or anyone interested in graph theory.
+**Graph Studio** is a modern, browser-based graph creation and analysis platform built with **D3 (Canvas)** and **Graphology.js**. Whether you're exploring graph theory, modeling networks, or visualizing data, Graph Studio offers a rich, intuitive environment tailored for both casual users and researchers.
 
 👉 [Live Demo](https://graph.picinfiniti.net/)
 
 ---
 
-## ✨ Features
+## 🚀 What's New
 
-### 📁 File Menu
-
-- 🆕 New Graph
-- 📂 Import Graph
-- 💾 Export Graph (JSON)
-- 🖼️ Export as PNG
-- ⚙️ Reset to Default Settings
-- 🌙 Toggle Night Sky Mode
-
-### ✏️ Edit Menu
-
-- Organize Nodes (Circle layout)
-- Complete Graph
-- Delete Selected Nodes/Edges
-- Assign Color
-- Add Edge
-- Undo / Redo
-- Customize:
-  - Vertex size
-  - Edge thickness
-  - Stroke width
-  - Label size
-  - Grid visibility & size
-
-### 👁️ View Menu
-
-- Toggle Info Panel (required to view metrics)
-- Toggle Tool Panel
-
-### 🧰 Tools Menu
-
-- Force Simulation
-- Tree Maker
-- Panning, Selecting, Scaling
-- Drag Components
-
-### ⚙️ Generator Menu
-
-Create graphs from templates:
-
-- **Classic Graphs** (Empty, Kₙ, Kₙ,ₙ, Pₙ, Cₙ, Lₙ)
-- **Community Structures** (Caveman, Connected Caveman)
-- **Random Graphs** (Clusters, Erdős–Rényi, Girvan–Newman)
-- **Small Graphs** (Krackhardt Kite)
-- **Social Networks** (Zachary’s Karate Club, Florentine Families)
-- **Zodiac** – 13 constellations with real astronomical data  
-  *(Click any star to view info like name, magnitude, RA/DEC in the Info Panel)*
-
-Each generator includes documentation and Wikipedia links to learn more.
-
-### 📊 Metrics Menu
-
-- **Basic:** Components, Degree Sequence, Density, Diameter, etc.
-- **Centrality:** Betweenness, Closeness, Degree, Eccentricity, PageRank, Eigenvector
-- **Layout Quality:** Edge Uniformity, Neighborhood Preservation, Stress
-- **Other:** Simmelian Strength, Disparity
-- Tools for:
-  - Shortest Path (requires two selected nodes)
-  - Node Neighbors
-  - Clear Info Panel
-
-### ❓ Help Menu
-
-- Mouse/Touch Commands
-- How to Use
-- About (version: 1.x.x)
+- 🔁 **Support for Weighted Graphs** — Works with both undirected and directed graphs.
+- 🏷️ **Editable Labels, Descriptions, and Weights** — For both nodes and edges.
+- 🎨 **Advanced Color Picker** — Includes alpha transparency support.
+- ⌨️ **Vim-like Shortcuts** — Copy (y), Cut (x), Paste (p), Undo (u), Redo (Ctrl+r), etc.
+- 🎹 **Key Chord Navigation** — Activate and toggle shortcuts with `Space`.
+- 🔼 **Arrow Key Navigation** — Select and deselect nodes/edges with arrows and Alt+arrows.
 
 ---
 
-## 🖐 Touch Support
+## ✨ Features Overview
 
-- Double-tap to add a node
-- Drag to move
+### 📁 File Menu
+
+- 🆕 Create new graphs or digraphs
+- 📂 Import JSON graphs
+- 💾 Export graphs or save as PNG
+- 🌙 Toggle Night Sky Theme
+- 🔄 Reload workspace or reset to defaults
+
+### ✏️ Edit Menu
+
+- 🧩 Organize (Circle layout), Complete Graph
+- 🎯 Add Edge / Directed Edge
+- 🗑️ Delete, Copy, Cut, Paste
+- 🎨 Assign Color with full RGBA control
+- 🔠 Rename, Edit Descriptions, Edit Weights
+- 🔄 Undo / Redo
+- ⚙️ Customize:
+
+  - Vertex/Edge size, Stroke width
+  - Label size, Grid visibility and density
+  - Toggle label types (vertex/edge/weight)
+
+### 👁️ View Menu
+
+- 🧾 Toggle Info & Tools Panels
+- ⌨️ Enable/Disable Key Chord Mode (⎵)
+
+### 🧰 Tools Menu
+
+- 🌳 Tree generator, Force-directed layout
+- 🖱️ Panning, Selecting, Scaling
+- 🎨 Quick access Color Picker (Alt+C)
+
+### ⚙️ Generator Menu
+
+Create graphs from built-in templates:
+
+- **Classic Graphs:** Kₙ, Kₙ,ₙ, Pₙ, Cₙ, Lₙ, Empty
+- **Community:** Caveman, Connected Caveman
+- **Random Models:** Clusters, Erdős-Rényi, Girvan-Newman
+- **Famous Graphs:** Krackhardt Kite, Karate Club, Florentine Families
+- **Zodiac Constellations:** Real astronomical data with RA/DEC, magnitude
+
+### 📊 Metrics Menu
+
+- **Basic:** Degree Sequence, Density, Components, Diameter
+- **Centrality:** Betweenness, Closeness, PageRank, Eigenvector
+- **Layout Quality:** Edge Uniformity, Neighborhood Preservation, Stress
+- **Other:** Simmelian Strength, Disparity
+- 🔍 Explore: Shortest Path, Neighbors, Selected Info
+
+### 🔁 Operators
+
+- Convert: Graph ⇌ Digraph, Weighted ⇌ Unweighted
+- Reverse Edge Direction
+
+### ❓ Help Menu
+
+- 💡 Usage Guide, Touch Commands, About
+
+---
+
+## 🖐 Touch & Keyboard Controls
+
+### Touch
+
+- Double-tap to create a node
 - Long-tap to select
-- Fully compatible with tablets and touchscreen devices
+- Drag to move
+
+### Keyboard (Key Chord Mode)
+
+- `Space`: Toggle shortcut mode
+- `y/x/p`: Copy, Cut, Paste
+- `e/E`: Add Edge / Directed Edge
+- `Alt + Arrow`: Precise selection
+- `Ctrl + r`: Redo
 
 ---
 
 ## 📸 Screenshots
 
-### UI Overview
+### Interface Overview
 
 ![Graph Studio UI](./src/assets/img/Screenshot-3.png)
 
@@ -102,7 +115,7 @@ Each generator includes documentation and Wikipedia links to learn more.
 
 ## 🛠 Installation
 
-To run locally:
+Clone and run locally:
 
 ```bash
 git clone https://github.com/PicInfiniti/graph-studio.git
@@ -111,68 +124,51 @@ npm install
 npm run dev
 ```
 
-Or try it online:  
-👉 [https://graph.picinfiniti.net/](https://graph.picinfiniti.net/)
+Or explore instantly at: 👉 [https://graph.picinfiniti.net/](https://graph.picinfiniti.net/)
 
 ---
 
-## 🧪 Tech Stack
+## 🧪 Built With
 
 - [D3.js (Canvas)](https://d3js.org/)
 - [Graphology.js](https://graphology.github.io/)
-- JavaScript (ES6+)
-- HTML5 + CSS3
+- JavaScript (ES6+), HTML5, CSS3
 
 ---
 
-## 🧭 Directed Graphs
+## 📚 Citation
 
-Graph Studio now supports **directed graphs (digraphs)**!
+If this tool assists your academic work, please cite:
 
-- Use the selection order system to define direction:
-  - The first selected node becomes the source
-  - The next becomes the target
-- Add directed paths, chains, and DAG structures interactively
-- Export, visualize, and analyze directed edges alongside your graph
+**BibTeX:**
 
-This makes Graph Studio even more powerful for modeling workflows, hierarchies, and network flows.
-
----
-
-## 📚 Cite This Tool
-
-If you use **Graph Studio** in academic work, please consider citing it:
-
-PicInfiniti. *Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs*. <https://graph.picinfiniti.net/>
-
-## BibTeX
-
+```bibtex
 @misc{graphstudio2025,
   author       = {PicInfiniti},
-  title        = {Graph Studio: An Interactive Tool for Visualizing and Analyze Graphs},
+  title        = {Graph Studio: An Interactive Tool for Graph Visualization and Analysis},
   year         = {2025},
-  howpublished = {\url{<https://graph.picinfiniti.net}}>,
+  howpublished = {\url{https://graph.picinfiniti.net}},
 }
+```
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE).  
-You are free to use, modify, and build upon it — just **please credit the original project**.
+Licensed under the [MIT License](./LICENSE).
+Free to use, modify, and share — just credit the original author.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, feedback, and feature suggestions are welcome!  
-Feel free to open an issue or pull request.
+Suggestions, issues, and PRs are welcome!
+Check the issues tab or submit a pull request to improve Graph Studio.
 
 ---
 
-## 🪐 Author
+## 🌠 Author
 
-Developed by **[PicInfiniti](https://github.com/PicInfiniti)** with love for graphs and starlight. 🌟  
-Check out the `About` section in the app for more details and version info.
+Created by **[PicInfiniti](https://github.com/PicInfiniti)** — fueled by curiosity and a love for the stars.
 
----
+Check the `About` section in-app for version info and more.
