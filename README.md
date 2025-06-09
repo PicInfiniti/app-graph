@@ -88,7 +88,7 @@ Create graphs from built-in templates:
 ### Touch
 
 - Double-tap to create a node
-- Long-tap to select
+- Select + tap to select
 - Drag to move
 
 ### Keyboard (Key Chord Mode)
