@@ -283,19 +283,39 @@ export class Canvas {
     let clickedEdge = this.findClickedEdge(x, y);
 
     if (clickedNode) {
-      this.app.graphManager.metric.addEdgeInfo(clickedNode);
+      if (this.settings.select) {
+        this.app.graphManager.graph.toggleNodeSelection(clickedNode.id);
+        if (!this.settings.forceSimulation) {
+          this.eventBus.emit("graph:updated", { type: "selected" });
+        }
+      } else {
+        this.app.graphManager.metric.addNodeInfo(clickedNode);
 
-      if (this.settings.colorPicker) {
-        this.app.colorPicker.setColor("node", clickedNode.color);
-        this.app.colorPicker.setColor("stroke", clickedNode.stroke);
-        this.app.colorPicker.setColor("label", clickedNode.labelColor);
+        if (this.settings.colorPicker) {
+          this.app.colorPicker.setColor("node", clickedNode.color);
+          this.app.colorPicker.setColor("stroke", clickedNode.stroke);
+          this.app.colorPicker.setColor("label", clickedNode.labelColor);
+        }
       }
     } else if (clickedEdge) {
-      this.app.graphManager.metric.addEdgeInfo(clickedEdge);
+      if (this.settings.select) {
+        this.app.graphManager.graph.findEdge(
+          clickedEdge.source.id,
+          clickedEdge.target.id,
+          (edge) => {
+            this.app.graphManager.graph.toggleEdgeSelection(edge);
+            if (!this.settings.forceSimulation) {
+              this.eventBus.emit("graph:updated", { type: "selected" });
+            }
+          },
+        );
+      } else {
+        this.app.graphManager.metric.addEdgeInfo(clickedEdge);
 
-      if (this.settings.colorPicker) {
-        this.app.colorPicker.setColor("edge", clickedEdge.color);
-        this.app.colorPicker.setColor("label", clickedEdge.LabeClolor);
+        if (this.settings.colorPicker) {
+          this.app.colorPicker.setColor("edge", clickedEdge.color);
+          this.app.colorPicker.setColor("label", clickedEdge.LabeClolor);
+        }
       }
     } else {
       this.app.graphManager.deselectAll();
