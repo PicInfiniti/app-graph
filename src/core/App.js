@@ -303,6 +303,7 @@ export class App {
   }
 
   startAnimationLoop() {
+    let counter = 0;
     const loop = () => {
       if (this.appSettings.settings.forceSimulation) {
         this.simulation.tick(); // Advance the simulation manually

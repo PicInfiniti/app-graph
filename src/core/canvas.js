@@ -174,8 +174,6 @@ export class Canvas {
           },
         );
       }
-
-      this.app.drawGraph();
     }
   }
 
@@ -252,9 +250,6 @@ export class Canvas {
         this.addNodeConnectedToNode(clickedNode);
       } else {
         this.app.graphManager.graph.toggleNodeSelection(clickedNode.id);
-        if (!this.settings.forceSimulation) {
-          this.eventBus.emit("graph:updated", { type: "selected" });
-        }
       }
     } else if (clickedEdge) {
       if (this.settings.tree) {
@@ -265,9 +260,6 @@ export class Canvas {
           clickedEdge.target.id,
           (edge) => {
             this.app.graphManager.graph.toggleEdgeSelection(edge);
-            if (!this.settings.forceSimulation) {
-              this.eventBus.emit("graph:updated", { type: "selected" });
-            }
           },
         );
       }
