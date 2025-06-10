@@ -48,6 +48,7 @@ export class App {
     this.initSimulation();
     this.loadInitialGraph();
     this.colorPicker.init();
+    this.startAnimationLoop();
   }
 
   initSimulation() {
@@ -73,8 +74,7 @@ export class App {
       .force("x", d3.forceX(this.canvas.width / 2).strength(0.05)) // Gentle attraction to center
       .force("y", d3.forceY(this.canvas.height / 1).strength(0.05)) // Gentle attraction to center
       .velocityDecay(0.3) // Slower decay for smoother stabilization
-      .alphaDecay(0.02) // Slower cooling, better final spread
-      .on("tick", this.ticked.bind(this));
+      .alphaDecay(0.02); // Slower cooling, better final spread
 
     if (!this.appSettings.settings.forceSimulation) {
       this.simulation.stop();
@@ -300,5 +300,18 @@ export class App {
         target: Number(t),
       });
     });
+  }
+
+  startAnimationLoop() {
+    const loop = () => {
+      if (this.appSettings.settings.forceSimulation) {
+        this.simulation.tick(); // Advance the simulation manually
+        this.ticked(); // Update graph model with simulation state
+      }
+      this.drawGraph(); // Always redraw
+      requestAnimationFrame(loop); // Loop
+    };
+
+    requestAnimationFrame(loop); // Start loop
   }
 }

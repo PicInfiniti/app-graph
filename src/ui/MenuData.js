@@ -63,6 +63,7 @@ export const menuData = [
       {
         title: "Settings",
         id: "settings",
+        shortcut: ">",
         submenu: [
           { title: "Vertex Label", id: "vertex-label", check: true },
           { title: "Edge Label", id: "edge-label", check: true },
@@ -184,6 +185,7 @@ export const menuData = [
       {
         title: "Classic",
         id: "classic",
+        shortcut: ">",
         submenu: [
           {
             title: "Empty",
@@ -280,6 +282,7 @@ export const menuData = [
       {
         title: "Community",
         id: "community",
+        shortcut: ">",
         submenu: [
           {
             title: "Cₙ,ₙ",
@@ -328,6 +331,7 @@ export const menuData = [
       {
         title: "Random",
         id: "random",
+        shortcut: ">",
         submenu: [
           {
             title: "Clusters",
@@ -397,6 +401,7 @@ export const menuData = [
       {
         title: "Small",
         id: "small",
+        shortcut: ">",
         submenu: [
           {
             title: "Krackhardt kite",
@@ -408,6 +413,7 @@ export const menuData = [
       {
         title: "Social",
         id: "social",
+        shortcut: ">",
         submenu: [
           {
             title: "Florentine families",
@@ -577,11 +583,12 @@ export const menuData = [
     title: "Operators",
     id: "help",
     submenu: [
-      { title: "Reverse Direction", id: "reverse-direction" },
       { title: "To Digraph", id: "to-digraph" },
       { title: "To Graph", id: "to-graph" },
       { title: "To Weighted", id: "to-weighted" },
       { title: "To Unweighted", id: "to-unweighted" },
+      { type: "divider" },
+      { title: "Reverse Direction", id: "reverse-direction" },
     ],
   },
   {
