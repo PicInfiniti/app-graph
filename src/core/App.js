@@ -21,7 +21,7 @@ export class App {
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas;
     this.layout = new Layout(this);
-    this.graphManager = new GraphManager(this, 100); // Handles graph logic
+    this.graphManager = new GraphManager(this, 100, this.settings.type); // Handles graph logic
     this.rect = new Rect(this);
     this.menu = new Menu(this, menuData);
     this.widget = new Widget(this);
@@ -106,7 +106,7 @@ export class App {
         graph.setEdgeAttribute(edge, "labelColor", settings.label_color);
       }
 
-      if (settings.directed) {
+      if (graph.type == "directed") {
         const dx = target.x - source.x;
         const dy = target.y - source.y;
         const length = Math.sqrt(dx * dx + dy * dy);
@@ -142,7 +142,7 @@ export class App {
         ctx.closePath();
       }
 
-      if (settings.directed) {
+      if (graph.type == "directed") {
         // Draw arrowhead for directed edge
         const arrowSize = 14 + Number(settings.edge_size); // size of the arrowhead
         const angle = Math.atan2(target.y - source.y, target.x - source.x);

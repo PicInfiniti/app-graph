@@ -1,5 +1,4 @@
-import { Graph as _Graph, UndirectedGraph, DirectedGraph } from "graphology";
-import { Graph } from "../utils/graph";
+import { Mixed, DirectedGraph, UndirectedGraph } from "../_graphology/graph";
 import { empty } from "graphology-generators/classic";
 import { Metric } from "./metrics";
 import { Generator } from "../generator/main";
@@ -9,36 +8,34 @@ import {
   toDirected,
   toUndirected,
   toMixed,
-} from "../_graphology/operators";
+} from "graphology-operators";
 
 export class GraphManager {
-  constructor(app, limit, type = "directed") {
+  constructor(app, limit, type = "mixed") {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
     this.layout = app.layout;
-    this.graphClass = Graph;
     this.generator = new Generator(this);
     this.metric = new Metric(this);
 
     this.limit = limit;
     this.index = 0;
 
-    this._graph = empty(Graph, 0);
     switch (type) {
       case "directed":
-        this._graph = toDirected(this._graph);
+        this.graphClass = DirectedGraph;
         break;
 
       case "undirected":
-        this._graph = toUnDirected(this._graph);
+        this.graphClass = UndirectedGraph;
         break;
 
       default:
-        this._graph = toMixed(this._graph);
+        this.graphClass = Mixed;
         break;
     }
-
+    this._graph = empty(this.graphClass, 0);
     this.history = [this._graph];
     this.graph = this.history[0];
 
@@ -91,18 +88,25 @@ export class GraphManager {
     return true;
   }
 
-  clear() {
-    this.saveGraphState();
-    this.graph = empty(Graph, 0);
-    this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = Graph;
+  clearToMixed() {
+    this.savegraphstate();
+    this.graph = empty(Mixed, 0);
+    this.eventbus.emit("graph:updated", { type: "clear" });
+    this.graphclass = mixed;
+  }
+
+  clearToUndirectedGraph() {
+    this.savegraphstate();
+    this.graph = empty(UndirectedGraph, 0);
+    this.eventbus.emit("graph:updated", { type: "clear" });
+    this.graphclass = UndirectedGraph;
   }
 
   clearToDigraph() {
     this.saveGraphState();
-    this.graph = empty(Digraph, 0);
+    this._graph = empty(UndirectedGraph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = Digraph;
+    this.graphClass = UndirectedGraph;
   }
 
   setupEventListeners() {

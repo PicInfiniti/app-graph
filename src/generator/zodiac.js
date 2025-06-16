@@ -1,4 +1,3 @@
-import { Graph } from "../_graphology/graph.js";
 import constellationData from "./constellations.json";
 
 export class Zodiac {

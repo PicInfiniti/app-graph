@@ -25,7 +25,7 @@ class AppSettings {
       edge_size: 2,
       forceSimulation: true,
       grid: 20,
-      type: "directed", // directed, undirected, mixed
+      type: "mixed", // directed, undirected, mixed
       grid_color: "#00000020",
       info_panel: true,
       label_color: "#000000",

@@ -151,13 +151,20 @@ export class Menu {
   handleMenuAction(menuId, val) {
     const actions = {
       // File
-      "new-btn": () => {
-        this.graphManager.clear();
-        this.eventBus.emit("updateSetting", { key: "directed", value: false });
+      "new-mixed-btn": () => {
+        this.graphManager.clearToMixed();
+        this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
       },
       "new-digraph-btn": () => {
         this.graphManager.clearToDigraph();
-        this.eventBus.emit("updateSetting", { key: "directed", value: true });
+        this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
+      },
+      "new-undirected-graph-btn": () => {
+        this.graphManager.clearToUndirectedGraph();
+        this.eventBus.emit("updateSetting", {
+          key: "type",
+          value: "undirected",
+        });
       },
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),

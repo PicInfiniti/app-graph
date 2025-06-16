@@ -1,9 +1,4 @@
-import {
-  complete,
-  empty,
-  path,
-  ladder,
-} from "../_graphology/generators/classic/";
+import { complete, empty, path, ladder } from "graphology-generators/classic";
 import { caveman, connectedCaveman } from "graphology-generators/community";
 import {
   clusters,
@@ -13,158 +8,107 @@ import {
 import {
   florentineFamilies,
   karateClub,
-} from "../_graphology/generators/random/";
+} from "../_graphology/generators/social";
 import { krackhardtKite } from "../_graphology/generators/small";
 import { Zodiac } from "./zodiac";
-import {
-  reverse,
-  toDirected,
-  toUndirected,
-  toMixed,
-} from "graphology-operators";
 
 export class Generator {
   constructor(graphManager) {
     this.graphManager = graphManager;
-    this.settings = graphManager.settings;
     this.layout = graphManager.layout;
     this.zodiac = new Zodiac(graphManager);
   }
 
-  generateAndLayout(createFn, layoutName, layoutParams = {}) {
-    const graph = createFn(this.settings.type);
-    this.graphManager.push(graph);
-    this.layout.applyLayout(layoutName, layoutParams);
-  }
-
   empty(n) {
-    this.generateAndLayout(
-      (type) => empty(this.graphManager.graphClass, Number(n), type),
-      "circle",
-    );
+    this.graphManager.push(empty(this.graphManager.graphClass, Number(n)));
+    this.layout.applyLayout("circle");
   }
 
   complete(n) {
-    this.generateAndLayout(
-      (type) => complete(this.graphManager.graphClass, Number(n), type),
-      "circle",
-    );
+    this.graphManager.push(complete(this.graphManager.graphClass, Number(n)));
+    this.layout.applyLayout("circle");
   }
 
   ladder(n) {
-    this.generateAndLayout(
-      (type) => ladder(this.graphManager.graphClass, Number(n), type),
-      "twoLine",
-      { line1Count: Number(n), Y: 50 },
-    );
+    this.graphManager.push(ladder(this.graphManager.graphClass, Number(n)));
+    this.layout.applyLayout("twoLine", { line1Count: Number(n), Y: 50 });
   }
 
   completeBipartite(n1, n2) {
-    this.generateAndLayout(
-      (type) => {
-        const graph = empty(
-          this.graphManager.graphClass,
-          Number(n1) + Number(n2),
-          type,
-        );
-        for (let i = 0; i < Number(n1); i++) {
-          for (let j = Number(n1); j < Number(n1) + Number(n2); j++) {
-            graph.addEdge(i, j);
-          }
-        }
-        return graph;
-      },
-      "twoLine",
-      { line1Count: Number(n1), Y: 50 },
-    );
+    const graph = empty(this.graphManager.graphClass, Number(n1) + Number(n2));
+    for (let i = 0; i < Number(n1); i++) {
+      for (let j = Number(n1); j < Number(n1) + Number(n2); j++) {
+        graph.addEdge(i, j);
+      }
+    }
+
+    this.graphManager.push(graph);
+    this.layout.applyLayout("twoLine", { line1Count: Number(n1), Y: 50 });
   }
 
   cycle(n) {
-    this.generateAndLayout((type) => {
-      const graph = path(this.graphManager.graphClass, Number(n), type);
-      graph.addEdge(0, Number(n) - 1);
-      return graph;
-    }, "circle");
+    this.graphManager.push(path(this.graphManager.graphClass, Number(n)));
+    this.graphManager.graph.addEdge(0, Number(n) - 1);
+    this.layout.applyLayout("circle");
   }
 
   path(n) {
-    this.generateAndLayout(
-      (type) => path(this.graphManager.graphClass, Number(n), type),
-      "oneLine",
-    );
+    this.graphManager.push(path(this.graphManager.graphClass, Number(n)));
+    this.layout.applyLayout("oneLine");
   }
-
   caveman(n1, n2) {
-    this.generateAndLayout(
-      (type) =>
-        caveman(this.graphManager.graphClass, Number(n1), Number(n2), type),
-      "circle",
+    this.graphManager.push(
+      caveman(this.graphManager.graphClass, Number(n1), Number(n2)),
     );
+    this.layout.applyLayout("circle");
   }
-
   connectedCaveman(n1, n2) {
-    this.generateAndLayout(
-      (type) =>
-        connectedCaveman(
-          this.graphManager.graphClass,
-          Number(n1),
-          Number(n2),
-          type,
-        ),
-      "circle",
+    this.graphManager.push(
+      connectedCaveman(this.graphManager.graphClass, Number(n1), Number(n2)),
     );
+    this.layout.applyLayout("circle");
   }
 
   clusters(o, s, c) {
-    this.generateAndLayout(
-      (type) =>
-        clusters(this.graphManager.graphClass, {
-          order: Number(o),
-          size: Number(s),
-          clusters: Number(c),
-          type,
-        }),
-      "circle",
-    );
+    const graph = clusters(this.graphManager.graphClass, {
+      order: Number(o),
+      size: Number(s),
+      clusters: Number(c),
+    });
+    this.graphManager.push(graph);
+    this.layout.applyLayout("circle");
   }
 
   erdosRenyi(o, p) {
-    this.generateAndLayout(
-      (type) =>
-        erdosRenyi(this.graphManager.graphClass, {
-          order: Number(o),
-          probability: Number(p),
-          type,
-        }),
-      "circle",
-    );
+    const graph = erdosRenyi(this.graphManager.graphClass, {
+      order: Number(o),
+      probability: Number(p),
+    });
+    this.graphManager.push(graph);
+    this.layout.applyLayout("circle");
   }
 
-  girvanNewman() {
-    this.generateAndLayout(
-      (type) => girvanNewman(this.graphManager.graphClass, { zOut: 4, type }),
-      "circle",
-    );
+  girvanNewman(n) {
+    const graph = girvanNewman(this.graphManager.graphClass, { zOut: 4 });
+    this.graphManager.push(graph);
+    this.layout.applyLayout("circle");
   }
 
   krackhardtkite() {
-    this.generateAndLayout(
-      (type) => krackhardtKite(this.graphManager.graphClass, type),
-      "oneLine",
-    );
+    const graph = krackhardtKite(this.graphManager.graphClass);
+    this.graphManager.push(graph);
+    this.layout.applyLayout("oneLine");
   }
 
   florentineFamilies() {
-    this.generateAndLayout(
-      (type) => florentineFamilies(this.graphManager.graphClass, type),
-      "circle",
-    );
+    const graph = florentineFamilies(this.graphManager.graphClass);
+    this.graphManager.push(graph);
+    this.layout.applyLayout("circle");
   }
 
   karateClub() {
-    this.generateAndLayout(
-      (type) => karateClub(this.graphManager.graphClass, type),
-      "circle",
-    );
+    const graph = karateClub(this.graphManager.graphClass);
+    this.graphManager.push(graph);
+    this.layout.applyLayout("circle");
   }
 }

@@ -2,36 +2,34 @@ import { circular } from "graphology-library/layout";
 
 export class Layout {
   constructor(app) {
-    this.app = app
-    this.eventBus = app.eventBus
-    this.canvas = app.canvas
+    this.app = app;
+    this.eventBus = app.eventBus;
+    this.canvas = app.canvas;
   }
 
-  init() {
-
-  }
+  init() {}
 
   applyLayout(type, param) {
     switch (type) {
-      case 'rotate180':
+      case "rotate180":
         this.rotate180();
-        this.eventBus.emit("graph:updated", { type: "layout" })
+        this.eventBus.emit("graph:updated", { type: "layout" });
         break;
 
-      case 'circle':
+      case "circle":
         this.organizeNodesInCircle();
-        this.eventBus.emit("graph:updated", { type: "layout" })
+        this.eventBus.emit("graph:updated", { type: "layout" });
         break;
 
-      case 'oneLine':
+      case "oneLine":
         this.organizeNodesInLine();
-        this.eventBus.emit("graph:updated", { type: "layout" })
+        this.eventBus.emit("graph:updated", { type: "layout" });
 
         break;
 
-      case 'twoLine':
+      case "twoLine":
         this.organizeNodesInTwoLines(param.line1Count, param.Y);
-        this.eventBus.emit("graph:updated", { type: "layout" })
+        this.eventBus.emit("graph:updated", { type: "layout" });
         break;
 
       default:
@@ -44,12 +42,20 @@ export class Layout {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
     const radius = Math.min(centerX * 0.5, centerY * 0.5);
-    const positions = circular(this.app.graphManager.graph, { scale: radius, dimensions: ['x', 'y'] });
-    this.app.graphManager.updateNodesPostion(positions, { x: centerX, y: centerY })
+
+    const positions = circular(this.app.graphManager.graph, {
+      scale: radius,
+      dimensions: ["x", "y"],
+    });
+
+    this.app.graphManager.updateNodesPostion(positions, {
+      x: centerX,
+      y: centerY,
+    });
   }
 
   organizeNodesInLine() {
-    const graph = this.app.graphManager.graph
+    const graph = this.app.graphManager.graph;
     const centerY = this.canvas.height / 2; // Middle of the canvas
     const padding = 100; // Space from edges
     const nodeIds = Array.from(graph.nodes()); // Get ordered nodes
@@ -57,7 +63,8 @@ export class Layout {
 
     if (totalNodes === 0) return; // Avoid errors if no nodes
 
-    const stepX = (this.canvas.width - 2 * padding) / Math.max(1, totalNodes - 1); // Space between nodes
+    const stepX =
+      (this.canvas.width - 2 * padding) / Math.max(1, totalNodes - 1); // Space between nodes
 
     nodeIds.forEach((id, index) => {
       const x = padding + index * stepX; // Spread across the width
@@ -71,7 +78,7 @@ export class Layout {
   }
 
   organizeNodesInTwoLines(line1Count, Y = 50) {
-    const graph = this.app.graphManager.graph
+    const graph = this.app.graphManager.graph;
     const centerY = this.canvas.height / 2;
     const paddingX = 100; // Horizontal padding
     const paddingY = Y; // Vertical spacing between lines
@@ -91,8 +98,14 @@ export class Layout {
     const totalLine2 = line2Ids.length;
 
     // Compute spacing for each line
-    const stepX1 = totalLine1 > 1 ? (this.canvas.width - 2 * paddingX) / (totalLine1 - 1) : 0;
-    const stepX2 = totalLine2 > 1 ? (this.canvas.width - 2 * paddingX) / (totalLine2 - 1) : 0;
+    const stepX1 =
+      totalLine1 > 1
+        ? (this.canvas.width - 2 * paddingX) / (totalLine1 - 1)
+        : 0;
+    const stepX2 =
+      totalLine2 > 1
+        ? (this.canvas.width - 2 * paddingX) / (totalLine2 - 1)
+        : 0;
 
     const y1 = centerY - paddingY; // Upper line
     const y2 = centerY + paddingY; // Lower line
@@ -128,9 +141,12 @@ export class Layout {
     if (nodeIds.length === 0) return;
 
     // Get bounding box of the current layout
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
 
-    nodeIds.forEach(id => {
+    nodeIds.forEach((id) => {
       const { x, y } = graph.getNodeAttributes(id);
       if (x < minX) minX = x;
       if (y < minY) minY = y;
@@ -151,19 +167,17 @@ export class Layout {
     const offsetY = (canvasHeight - layoutHeight * scale) / 2;
 
     // Apply scaling and centering
-    nodeIds.forEach(id => {
+    nodeIds.forEach((id) => {
       const { x, y } = graph.getNodeAttributes(id);
 
       const newX = canvasWidth - ((x - minX) * scale + offsetX);
       const newY = canvasHeight - ((y - minY) * scale + offsetY);
 
-      graph.updateNodeAttributes(id, attr => ({
+      graph.updateNodeAttributes(id, (attr) => ({
         ...attr,
         x: newX,
         y: newY,
       }));
     });
   }
-
-
 }

@@ -1,9 +1,9 @@
-import { Graph as _Graph } from "graphology";
+import { Graph } from "graphology";
 
-export class Graph extends _Graph {
+export default class Mixed extends Graph {
   constructor(options) {
     super(options);
-
+    this.custom = true;
     // Automatically add 'id' and 'selected' to nodes
     this.on("nodeAdded", ({ key }) => {
       const attrs = this.getNodeAttributes(key);
@@ -65,7 +65,7 @@ export class Graph extends _Graph {
   // other tyoe of copy includes emptyCopy and copy use this so it will fix functionality of all of them
 
   nullCopy(options) {
-    var graph = new Graph(assign({}, this._options, options));
+    var graph = new Mixed(assign({}, this._options, options));
     graph.replaceAttributes(assign({}, this.getAttributes()));
     return graph;
   }
