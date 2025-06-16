@@ -14,11 +14,11 @@ var ADJACENCY_NUMERIC = [
   [9, 8],
 ];
 
-export default function krackhardtKite(GraphClass) {
+export default function krackhardtKite(GraphClass, types = {}) {
   if (!isGraphConstructor(GraphClass))
     throw new Error("invalid Graph constructor.");
 
-  var graph = new GraphClass(),
+  var graph = new GraphClass(types),
     i,
     l;
 

@@ -343,3 +343,16 @@ export class Graph extends _Graph {
     this.import(graph.export());
   }
 }
+
+function assignPolyfill() {
+  var target = arguments[0];
+  for (var i = 1, l = arguments.length; i < l; i++) {
+    if (!arguments[i]) continue;
+    for (var k in arguments[i]) {
+      target[k] = arguments[i][k];
+    }
+  }
+  return target;
+}
+var assign = assignPolyfill;
+if (typeof Object.assign === "function") assign = Object.assign;

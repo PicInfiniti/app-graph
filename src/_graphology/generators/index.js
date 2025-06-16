@@ -1,5 +1,11 @@
-import karateClub from "./karateClub.js";
-import krackhardtKite from "./krackhardtKite.js";
-import florentineFamilies from "./florentineFamilies.js";
-
-export { karateClub, krackhardtKite, florentineFamilies };
+/**
+ * Graphology Graph Generators
+ * ============================
+ *
+ * Library endpoint.
+ */
+exports.classic = require('./classic');
+exports.community = require('./community');
+exports.random = require('./random');
+exports.small = require('./small');
+exports.social = require('./social');
