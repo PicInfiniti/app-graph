@@ -1,8 +1,6 @@
-import { DirectedGraph } from "graphology";
-import { subgraph } from "graphology-operators";
-import { disjointUnion } from "graphology-operators";
+import { Graph as _Graph } from "graphology";
 
-export class Digraph extends DirectedGraph {
+export class Graph extends _Graph {
   constructor(options) {
     super(options);
 
@@ -64,10 +62,12 @@ export class Digraph extends DirectedGraph {
   }
 
   // 🧬 Deep copy with structure and attributes
-  copy() {
-    const newGraph = new Digraph(this.options);
-    newGraph.import(this.export());
-    return newGraph;
+  // other tyoe of copy includes emptyCopy and copy use this so it will fix functionality of all of them
+
+  nullCopy(options) {
+    var graph = new Graph(assign({}, this._options, options));
+    graph.replaceAttributes(assign({}, this.getAttributes()));
+    return graph;
   }
 
   // 🚀 Prepare nodes for D3

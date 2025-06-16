@@ -15,46 +15,47 @@ class AppSettings {
 
     this.defaultSettings = {
       background_color: "#ffffff",
-      forceSimulation: true,
       colorPicker: false,
       component: false,
-      scale: false,
-      tree: true,
-      vertexLabel: true,
-      edgeLabel: true,
-      directed_edge: true,
-      directed: true,
-      node_radius: 40,
-      edge_size: 2,
-      label_size: 15,
-      stroke_size: 2,
-      info_panel: true,
-      tools_panel: true,
       console_panel: true,
-      panning: false,
-      select: false,
-      grid: 20,
-      stroke_color: "#4682b4",
-      node_color: "#ffffff",
+      directed: true,
+      directed_edge: true,
+      edgeLabel: true,
       edge_color: "#4682b4",
+      edge_size: 2,
+      forceSimulation: true,
+      grid: 20,
+      type: "directed", // directed, undirected, mixed
+      grid_color: "#00000020",
+      info_panel: true,
       label_color: "#000000",
       label_pos: { x: 0, y: 0 },
-      grid_color: "#00000020",
+      label_size: 15,
+      node_color: "#ffffff",
+      node_radius: 40,
+      panning: false,
+      scale: false,
+      select: false,
+      stroke_color: "#4682b4",
+      stroke_size: 2,
+      tools_panel: true,
+      tree: true,
+      vertexLabel: true,
       weightLabel: true,
     };
 
     this.nightSkyTheme = {
       background_color: "#0d1b2a", // deep midnight blue
-      stroke_color: "#ffffff",
-      node_color: "#ffffff", // crisp white stars
-      label_color: "#d1d5db", // soft gray labels (like Tailwind's text-gray-300)
       edge_color: "#60a5fa", // light blue lines (Tailwind's blue-400)
-      grid_color: "#ffffff10",
-      label_pos: { x: -20, y: -20 },
-      node_radius: 10,
       edge_size: 1,
-      stroke_size: 0,
       forceSimulation: false,
+      grid_color: "#ffffff10",
+      label_color: "#d1d5db", // soft gray labels (like Tailwind's text-gray-300)
+      label_pos: { x: -20, y: -20 },
+      node_color: "#ffffff", // crisp white stars
+      node_radius: 10,
+      stroke_color: "#ffffff",
+      stroke_size: 0,
     };
 
     // Load validated settings from localStorage or use defaults

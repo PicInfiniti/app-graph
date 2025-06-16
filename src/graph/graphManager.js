@@ -1,25 +1,45 @@
-import { Digraph } from "../utils/digraph";
+import { Graph as _Graph, UndirectedGraph, DirectedGraph } from "graphology";
 import { Graph } from "../utils/graph";
 import { empty } from "graphology-generators/classic";
 import { Metric } from "./metrics";
 import { Generator } from "../generator/main";
 import { positiveModulus } from "../utils/helperFunctions.js";
-import { reverse, toDirected, toUndirected } from "graphology-operators";
+import {
+  reverse,
+  toDirected,
+  toUndirected,
+  toMixed,
+} from "../_graphology/operators";
 
 export class GraphManager {
-  constructor(app, limit) {
+  constructor(app, limit, type = "directed") {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
     this.layout = app.layout;
-    this.graphClass = this.settings.directed ? Digraph : Graph;
-
+    this.graphClass = Graph;
     this.generator = new Generator(this);
     this.metric = new Metric(this);
 
     this.limit = limit;
     this.index = 0;
-    this.history = [empty(this.graphClass, 0)];
+
+    this._graph = empty(Graph, 0);
+    switch (type) {
+      case "directed":
+        this._graph = toDirected(this._graph);
+        break;
+
+      case "undirected":
+        this._graph = toUnDirected(this._graph);
+        break;
+
+      default:
+        this._graph = toMixed(this._graph);
+        break;
+    }
+
+    this.history = [this._graph];
     this.graph = this.history[0];
 
     this.selectNodeIndex = 0;
