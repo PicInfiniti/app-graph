@@ -1,9 +1,5 @@
-/**
- * Graphology Graph Generators
- * ============================
- *
- * Library endpoint.
- */
-exports.karateClub = require("./karateClub.js");
-exports.krackhardtKite = require("./krackhardtKite.js");
-exports.florentineFamilies = require("./florentineFamilies.js");
+import karateClub from "./karateClub.js";
+import krackhardtKite from "./krackhardtKite.js";
+import florentineFamilies from "./florentineFamilies.js";
+
+export { karateClub, krackhardtKite, florentineFamilies };

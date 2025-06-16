@@ -23,7 +23,7 @@ var EDGES_NUMERIC = [
   [12, 14],
 ];
 
-export function florentineFamilies(GraphClass) {
+export default function florentineFamilies(GraphClass) {
   if (!isGraphConstructor(GraphClass))
     throw new Error(
       "graphology-generators/social/florentine-families: invalid Graph constructor.",
