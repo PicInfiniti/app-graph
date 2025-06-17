@@ -1,22 +1,84 @@
 {
-  "space": {
-    "name": "⎵",
-    "data": [
-      { "title": "c", "desc": "+ Color" },
-      { "title": "⇒", "desc": "Next Node (Alt for Edge)" },
-      { "title": "⇐", "desc": "Pervious Node (Alt for Edge)" },
-      { "title": "⇑", "desc": "Select all Nodes (Alt for Edges)" },
-      { "title": "⇓", "desc": "Deselect all Nodes (Alt for Edges)" }
-    ]
-  },
-  "c": {
-    "name": "+ Color",
-    "data": [
-      { "title": "c", "desc": "Color Picker" },
-      { "title": "n", "desc": "Update Node Color" },
-      { "title": "s", "desc": "Update Stroke Color" },
-      { "title": "e", "desc": "Update Edge Color" },
-      { "title": "l", "desc": "Update Label Color" }
-    ]
+  "desc": "Shortcuts",
+  "action": {
+    "n": { "desc": "New graph", "action": "new-mixed-btn" },
+    "o": { "desc": "Import graph", "action": "import-graph" },
+    "s": { "desc": "Export graph", "action": "export-graph" },
+    "u": { "desc": "Undo", "action": "undo-btn" },
+    "d": { "desc": "Delete", "action": "remove-selection-btn" },
+    "c": { "desc": "Update color", "action": "color-selection-btn" },
+    "e": { "desc": "Add edge", "action": "add-edge-btn" },
+    "a": { "desc": "All node info", "action": "all-node-info-btn" },
+    "q": { "desc": "Clear panel", "action": "clear-info-panel-btn" },
+    "y": { "desc": "Copy", "action": "copy-subgraph" },
+    "x": { "desc": "Cut", "action": "cut-subgraph" },
+    "p": { "desc": "Paste", "action": "paste-subgraph" },
+    "F5": { "desc": "Reload", "action": "reload" },
+    "ArrowUp": { "desc": "Select all node", "action": "select-all-node" },
+    "ArrowDown": { "desc": "Deselect all node", "action": "deselect-all-node" },
+    "ArrowRight": { "desc": "Select next node", "action": "select-next-node" },
+    "ArrowLeft": {
+      "desc": "Select previous node",
+      "action": "select-pervious-node"
+    },
+
+    "alt+a": { "desc": "All edge info", "action": "all-edge-info-btn" },
+    "alt+ArrowUp": { "desc": "Select all edge", "action": "select-all-edge" },
+    "alt+ArrowDown": {
+      "desc": "Deselect all edge",
+      "action": "deselect-all-edge"
+    },
+    "alt+ArrowRight": {
+      "desc": "Select next edge",
+      "action": "select-next-edge"
+    },
+    "alt+ArrowLeft": {
+      "desc": "Select previous edge",
+      "action": "select-pervious-edge"
+    },
+
+    "ctrl+r": { "desc": "Redo", "action": "redo-btn" },
+
+    "C": { "desc": "Complete", "action": "complete-btn" },
+    "O": { "desc": "Organize circle", "action": "organize-circle" },
+    "E": { "desc": "Add directed edge", "action": "add-directed-edge-btn" },
+    "P": { "desc": "Export PNG", "action": "export-png" },
+
+    "space": {
+      "desc": "Home",
+      "action": {
+        "c": {
+          "desc": "+ Color",
+          "action": {
+            "c": { "desc": "Color Picker", "action": "color-picker-btn" },
+            "n": { "desc": "Update Node Color", "action": "update-node-color" },
+            "s": {
+              "desc": "Update Stroke Color",
+              "action": "update-stroke-color"
+            },
+            "e": { "desc": "Update Edge Color", "action": "update-edge-color" },
+            "l": {
+              "desc": "Update Label Color",
+              "action": "update-label-color"
+            }
+          }
+        },
+        "n": {
+          "desc": "+ New Graph",
+          "action": {
+            "m": { "desc": "Mixed Graph", "action": "new-mixed-btn" },
+            "d": { "desc": "Directed Graph", "action": "new-digraph-btn" },
+            "u": {
+              "desc": "Undirected Graph",
+              "action": "new-undirected-graph-btn"
+            }
+          }
+        },
+        "⇒": { "desc": "Next Node (Alt for Edge)", "action": "" },
+        "⇐": { "desc": "Pervious Node (Alt for Edge)", "action": "" },
+        "⇑": { "desc": "Select all Nodes (Alt for Edges)", "action": "" },
+        "⇓": { "desc": "Deselect all Nodes (Alt for Edges)", "action": "" }
+      }
+    }
   }
 }

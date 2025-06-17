@@ -1,5 +1,4 @@
 import { EventBus } from "./eventBus";
-import shortcuts from "./shortcuts.json";
 
 const d = document;
 
@@ -25,6 +24,7 @@ export class ShortcutChord {
 
     this.Space = true;
     this.C = false;
+    this.N = false;
     this.Rename = false;
     this.Info = false;
     this.Weight = false;
@@ -37,8 +37,15 @@ export class ShortcutChord {
       l: "update-label-color",
     };
 
+    this.NKeys = {
+      m: "new-mixed-btn",
+      d: "new-directed-btn",
+      u: "new-undirected-btn",
+    };
+
     this.SpaceKeys = {
       c: "toggle-color",
+      n: "toggle-new-graph",
     };
   }
 
@@ -51,9 +58,11 @@ export class ShortcutChord {
       this.C = true;
     }
 
+    if (chord === "n") this.N = true;
+
     const ul = d.createElement("ul");
 
-    shortcuts[chord].data.forEach(({ title, desc }) => {
+    keyChord[chord].data.forEach(({ title, desc }) => {
       const li = d.createElement("li");
       li.innerHTML = `
       <span class="title">${title}</span>
