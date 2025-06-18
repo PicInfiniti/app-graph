@@ -87,8 +87,6 @@ export class Widget {
     const infoClose = d.querySelector("#floating-panel .close");
     const infoMax = d.querySelector("#floating-panel .max");
     const toolsClose = d.querySelector("#tools-panel .close");
-    const modalClose = d.querySelector(".modal");
-    const modalChordClose = d.querySelector(".modal-chord");
 
     if (infoClose) {
       infoClose.addEventListener("click", () => {
@@ -106,23 +104,6 @@ export class Widget {
     if (toolsClose) {
       toolsClose.addEventListener("click", () => {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" });
-      });
-    }
-
-    if (modalClose) {
-      modalClose.addEventListener("click", (e) => {
-        if (e.target.classList.contains("modal")) {
-          modalClose.style.display = "none";
-          d.querySelector(".modal .help-panel").style.display = "none";
-        }
-      });
-    }
-
-    if (modalChordClose) {
-      modalChordClose.addEventListener("click", (e) => {
-        if (e.target.classList.contains("modal-chord")) {
-          this.app.keyHandler.shortcutChord.toggleChord();
-        }
       });
     }
   }

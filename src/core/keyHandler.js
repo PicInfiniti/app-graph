@@ -19,7 +19,8 @@ export class KeyHandler {
     this.lastChord = shortcuts.action.space.action;
 
     this.modalChord = d.querySelector(".modal-chord");
-    this.inputChord = d.querySelector(".modal-chord .input-chord");
+    this.inputModal = d.querySelector(".modal-input");
+    this._input = false;
 
     this.header = d.querySelector(".modal-chord .shortcut-chord .header");
     this.fakeHeader = d.querySelector(
@@ -36,78 +37,34 @@ export class KeyHandler {
     d.addEventListener("keydown", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
       const key = this.eventKeyMap[event.key] || event.key;
-      this.action(key);
-
-      // if (
-      //   event.target.tagName === "INPUT" &&
-      //   event.key != "Enter" &&
-      //   event.key != "Escape"
-      // )
-      //   return;
-      // event.preventDefault();
-      // this.eventBus.emit("key:pressed", { key: event.key });
-      // if (this.shortcutChord.handleKey(event)) {
-      //   switch (event.key) {
-      //     case "Control":
-      //       this.Ctrl = true;
-      //       break;
-      //
-      //     case "Shift":
-      //       this.Shift = true;
-      //       break;
-      //
-      //     case "Alt":
-      //       this.Alt = true;
-      //       break;
-      //
-      //     default:
-      //       if (this.Alt) {
-      //         if (this.AltKeys[event.key]) {
-      //           this.app.menu.handleMenuAction(this.AltKeys[event.key]); // Trigger the corresponding menu item
-      //         }
-      //       } else if (this.Ctrl) {
-      //         if (this.CtrlKeys[event.key]) {
-      //           this.app.menu.handleMenuAction(this.CtrlKeys[event.key]); // Trigger the corresponding menu item
-      //         }
-      //       } else if (this.Shift) {
-      //         if (this.ShiftKeys[event.key]) {
-      //           this.app.menu.handleMenuAction(this.ShiftKeys[event.key]); // Trigger the corresponding menu item
-      //         }
-      //       } else if (event.key == "r") {
-      //         this.shortcutChord.toggleRename(true);
-      //       } else if (event.key == "i") {
-      //         this.shortcutChord.toggleInfo(true);
-      //       } else if (event.key == "w") {
-      //         this.shortcutChord.toggleWeight(true);
-      //       } else {
-      //         if (this.shortcuts[event.key]) {
-      //           this.app.menu.handleMenuAction(this.shortcuts[event.key]); // Trigger the corresponding menu item
-      //         }
-      //       }
-      //
-      //       break;
-      // }
-      // }
+      if (this._input) {
+        if (key === "Escape") this.toggleInput("rename", false);
+        if (key === "Enter") {
+          const input = d.querySelector(".input-chord input");
+          this.app.menu.handleMenuAction(this._input, input.value);
+          this.toggleInput("rename", false);
+        }
+      } else {
+        this.action(key);
+      }
     });
 
     d.addEventListener("keyup", (event) => {
-      switch (event.key) {
-        case "Control":
-          this.Ctrl = false;
-          break;
-        case "Shift":
-          this.Shift = false;
-          break;
-
-        case "Alt":
-          this.Alt = false;
-          break;
-
-        default:
-          this.eventBus.emit("key:release", { key: event.key });
-          break;
-      }
+      this.eventBus.emit("key:release", { key: event.key });
     });
+
+    const modals = d.querySelectorAll(".modal, .modal-chord, .modal-input");
+    if (modals.length > 0) {
+      modals.forEach((modal) => {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            modal.style.display = "none";
+            this.lastChord = shortcuts.action;
+            this._input = false;
+          }
+        });
+      });
+    }
   }
 
   chordGenerator(chord) {
@@ -158,5 +115,44 @@ export class KeyHandler {
     } else {
       this.modalChord.style.display = "none";
     }
+  }
+
+  toggleInput(_input = "rename", val = true) {
+    const header = d.querySelector(".input-chord .header");
+    const input = d.querySelector(".input-chord input");
+    switch (_input) {
+      case "rename":
+        header.textContent = "Rename";
+        input.name = "rename";
+        input.placeholder = "Enter New Name ...";
+        break;
+
+      case "desc":
+        header.textContent = "Description";
+        input.name = "desc";
+        input.placeholder = "Enter New Description ...";
+        break;
+
+      case "weight":
+        header.textContent = "Weight";
+        input.name = "weight";
+        input.placeholder = "Enter New Weight ...";
+        break;
+
+      default:
+        break;
+    }
+
+    if (val) {
+      this.inputModal.style.display = "flex";
+      input.focus();
+      this._input = _input;
+    } else {
+      this.inputModal.style.display = "none";
+      this._input = false;
+    }
+    setInterval(() => {
+      input.value = "";
+    }, 1);
   }
 }
