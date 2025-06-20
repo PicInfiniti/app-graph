@@ -39,7 +39,7 @@ export const menuData = [
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
       {
-        title: "Directed Edge",
+        title: "Add Directed Edge",
         name: "add-directed-edge-btn",
         shortcut: "(E)",
       },

@@ -175,6 +175,7 @@ export class Menu {
 
       // Edit
       "add-edge-btn": () => this.graphManager.connectSelectedNodes(),
+
       "add-directed-edge-btn": () =>
         this.graphManager.connectSelectedNodesInOrder(),
       "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),

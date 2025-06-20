@@ -106,7 +106,7 @@ export class App {
         graph.setEdgeAttribute(edge, "labelColor", settings.label_color);
       }
 
-      if (graph.type == "directed") {
+      if (graph.isDirected(edge)) {
         const dx = target.x - source.x;
         const dy = target.y - source.y;
         const length = Math.sqrt(dx * dx + dy * dy);
@@ -142,7 +142,7 @@ export class App {
         ctx.closePath();
       }
 
-      if (graph.type == "directed") {
+      if (graph.isDirected(edge)) {
         // Draw arrowhead for directed edge
         const arrowSize = 14 + Number(settings.edge_size); // size of the arrowhead
         const angle = Math.atan2(target.y - source.y, target.x - source.x);

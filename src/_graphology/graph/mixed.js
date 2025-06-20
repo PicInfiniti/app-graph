@@ -266,7 +266,10 @@ export default class Mixed extends Graph {
         const source = selected[i];
         const target = selected[j];
         // This creates the edge if it doesn't exist, or merges attributes if it does
-        this.mergeEdge(source, target, { color: color, selected: false });
+        this.mergeUndirectedEdge(source, target, {
+          color: color,
+          selected: false,
+        });
       }
     }
   }

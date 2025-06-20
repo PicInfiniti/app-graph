@@ -87,6 +87,13 @@
     "O": { "desc": "Organize circle", "action": "organize-circle" },
     "E": { "desc": "Add directed edge", "action": "add-directed-edge-btn" },
     "P": { "desc": "Export PNG", "action": "export-png" },
+    "shift+C": { "desc": "Complete", "action": "complete-btn" },
+    "shift+O": { "desc": "Organize circle", "action": "organize-circle" },
+    "shift+E": {
+      "desc": "Add directed edge",
+      "action": "add-directed-edge-btn"
+    },
+    "shift+P": { "desc": "Export PNG", "action": "export-png" },
 
     "space": {
       "desc": "Home",
