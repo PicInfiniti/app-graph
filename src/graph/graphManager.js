@@ -89,17 +89,17 @@ export class GraphManager {
   }
 
   clearToMixed() {
-    this.savegraphstate();
+    this.saveGraphState();
     this.graph = empty(Mixed, 0);
-    this.eventbus.emit("graph:updated", { type: "clear" });
-    this.graphclass = mixed;
+    this.eventBus.emit("graph:updated", { type: "clear" });
+    this.graphClass = Mixed;
   }
 
   clearToUndirectedGraph() {
     this.savegraphstate();
     this.graph = empty(UndirectedGraph, 0);
-    this.eventbus.emit("graph:updated", { type: "clear" });
-    this.graphclass = UndirectedGraph;
+    this.eventBus.emit("graph:updated", { type: "clear" });
+    this.graphClass = UndirectedGraph;
   }
 
   clearToDigraph() {

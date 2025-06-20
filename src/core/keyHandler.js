@@ -13,8 +13,11 @@ export class KeyHandler {
       Alt: "alt",
       Control: "ctrl",
       Shift: "shift",
+      Meta: "meta",
       " ": "space",
     };
+
+    this.pressedKeys = new Set();
 
     this.lastChord = shortcuts.action.space.action;
 
@@ -36,7 +39,7 @@ export class KeyHandler {
     this.chordGenerator(this.lastChord);
     d.addEventListener("keydown", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
-      const key = this.eventKeyMap[event.key] || event.key;
+      const key = this.updatePressedKeys(event, "add");
       if (this._input) {
         if (key === "Escape") this.toggleInput("rename", false);
         if (key === "Enter") {
@@ -46,13 +49,13 @@ export class KeyHandler {
         }
       } else {
         event.preventDefault();
-        this.action(key);
+        this.action(this.findKey());
       }
     });
 
     d.addEventListener("keyup", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
-      const key = this.eventKeyMap[event.key] || event.key;
+      const key = this.updatePressedKeys(event, "delete");
       if (!this._input) {
         event.preventDefault();
         if (
@@ -168,5 +171,33 @@ export class KeyHandler {
     setTimeout(() => {
       input.value = "";
     }, 1);
+  }
+
+  findKey() {
+    const keys = Object.keys(this.lastChord);
+    const found = keys.find((item) => {
+      const comboKeys = item.split("+");
+      return this.isCombo(...comboKeys);
+    });
+    return found;
+  }
+
+  isCombo(...keys) {
+    return (
+      keys.every((key) => this.pressedKeys.has(key)) &&
+      this.pressedKeys.size === keys.length
+    );
+  }
+
+  updatePressedKeys(event, action = "add") {
+    const key = this.eventKeyMap[event.key] || event.key;
+
+    if (action === "add") {
+      this.pressedKeys.add(key);
+    } else {
+      this.pressedKeys.delete(key);
+    }
+
+    return key;
   }
 }

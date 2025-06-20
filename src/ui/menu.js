@@ -206,11 +206,11 @@ export class Menu {
         this.eventBus.emit("updateSetting", { key: "grid_color", value: val });
       },
       rename: () => this.graphManager.updateSelectedName(val),
-      "rename-btn": () => this.app.keyHandler.shortcutChord.toggleRename(),
+      "rename-btn": () => this.app.keyHandler.toggleInput("rename"),
       desc: () => this.graphManager.updateSelectedInfo(val),
-      "desc-btn": () => this.app.keyHandler.shortcutChord.toggleInfo(),
+      "desc-btn": () => this.app.keyHandler.toggleInput("desc"),
       weight: () => this.graphManager.updateSelectedWeight(val),
-      "weight-btn": () => this.app.keyHandler.shortcutChord.toggleInfo(),
+      "weight-btn": () => this.app.keyHandler.toggleInput("weight"),
 
       "redo-btn": () => this.eventBus.emit("redo"),
       "undo-btn": () => this.eventBus.emit("undo"),
@@ -232,6 +232,23 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "panning" }),
       "select-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "select" }),
+
+      "toggle-component-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "component", value: val }),
+      "toggle-scale-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "scale", value: val }),
+      "toggle-tree-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "tree", value: val }),
+      "toggle-force-btn": () =>
+        this.eventBus.emit("toggleSetting", {
+          key: "forceSimulation",
+          value: val,
+        }),
+      "toggle-panning-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "panning", value: val }),
+      "toggle-select-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "select", value: val }),
+
       "color-picker-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "colorPicker" }),
       //Setting
@@ -444,7 +461,6 @@ export class Menu {
       command: () => {
         d.querySelector(".modal").style.display = "flex";
         d.querySelector(".modal .help-panel").style.display = "block";
-        this.app.keyHandler.shortcutChord.toggleChord(false);
       },
       about: () => window.open("http://picinfiniti.net/", "_blank"),
 
@@ -519,9 +535,9 @@ export class Menu {
       const target = event.target;
       if (
         !target ||
-        target.id == "rename" ||
-        target.id == "desc" ||
-        target.id == "weight"
+        target.name == "rename" ||
+        target.name == "desc" ||
+        target.name == "weight"
       )
         return;
       const menuId = target.id || target.getAttribute("name");

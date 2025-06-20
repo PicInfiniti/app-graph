@@ -5,13 +5,8 @@ export const menuData = [
     submenu: [
       {
         title: "🆕 New Graph",
-        id: "new-btn",
+        id: "new-mixed-btn",
         shortcut: "(n)",
-      },
-      {
-        title: "➡️ New Digraph",
-        id: "new-digraph-btn",
-        shortcut: "(N)",
       },
       {
         title: "📂 Import",
@@ -25,7 +20,7 @@ export const menuData = [
           },
         ],
       },
-      { title: "💾 Export", id: "export-graph", shortcut: "(s)" },
+      { title: "💾 Export", id: "export-graph", shortcut: "(Ctrl+s)" },
       { title: "🖼️ Export to PNG", id: "export-png", shortcut: "(P)" },
       { type: "divider" },
       { title: "⚙️ Default Setting", id: "default-settings-btn" },
@@ -152,7 +147,7 @@ export const menuData = [
     title: "Tools",
     id: "tools",
     submenu: [
-      { title: "Scale", id: "scale-btn", check: false, shortcut: "Alt+Shift" },
+      { title: "Scale", id: "scale-btn", check: false, shortcut: "(s)" },
       { title: "Panning", id: "panning-btn", check: false, shortcut: "Ctrl" },
       { title: "Selecting", id: "select-btn", check: false, shortcut: "Shift" },
       {
@@ -162,19 +157,19 @@ export const menuData = [
         shortcut: "Alt",
       },
       { type: "divider" },
-      { title: "Tree", id: "tree-btn", check: false, shortcut: "t" },
+      { title: "Tree", id: "tree-btn", check: false, shortcut: "(t)" },
       {
         title: "Force Simulation",
         id: "force-btn",
         check: false,
-        shortcut: "f",
+        shortcut: "(f)",
       },
       { type: "divider" },
       {
         title: "Color Picker",
         id: "color-picker-btn",
         check: false,
-        shortcut: "Alt+c",
+        shortcut: "⎵ cc",
       },
     ],
   },
@@ -583,8 +578,9 @@ export const menuData = [
     title: "Operators",
     id: "help",
     submenu: [
+      { title: "To Graph", id: "to-undireted-graph" },
+      { title: "To Mix", id: "to-mixed" },
       { title: "To Digraph", id: "to-digraph" },
-      { title: "To Graph", id: "to-graph" },
       { title: "To Weighted", id: "to-weighted" },
       { title: "To Unweighted", id: "to-unweighted" },
       { type: "divider" },
