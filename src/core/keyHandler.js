@@ -194,7 +194,6 @@ export class KeyHandler {
   updatePressedKeys(event, action = "add") {
     const key = this.eventKeyMap[event.code] || event.key;
 
-    console.log(key);
     if (action === "add" && key !== "meta") {
       this.pressedKeys.add(key);
     } else {

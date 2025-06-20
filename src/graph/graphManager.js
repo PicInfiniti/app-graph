@@ -96,7 +96,7 @@ export class GraphManager {
   }
 
   clearToUndirectedGraph() {
-    this.savegraphstate();
+    this.saveGraphState();
     this.graph = empty(UndirectedGraph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" });
     this.graphClass = UndirectedGraph;
@@ -104,9 +104,9 @@ export class GraphManager {
 
   clearToDigraph() {
     this.saveGraphState();
-    this._graph = empty(UndirectedGraph, 0);
+    this.graph = empty(DirectedGraph, 0);
     this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = UndirectedGraph;
+    this.graphClass = DirectedGraph;
   }
 
   setupEventListeners() {
