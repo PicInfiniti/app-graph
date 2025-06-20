@@ -45,12 +45,26 @@ export class KeyHandler {
           this.toggleInput("rename", false);
         }
       } else {
+        event.preventDefault();
         this.action(key);
       }
     });
 
     d.addEventListener("keyup", (event) => {
-      this.eventBus.emit("key:release", { key: event.key });
+      if (event.repeat && !this.exceptionKey.includes(event.key)) return;
+      const key = this.eventKeyMap[event.key] || event.key;
+      if (!this._input) {
+        event.preventDefault();
+        if (
+          this.lastChord[key] &&
+          typeof this.lastChord[key].value === "boolean"
+        ) {
+          this.app.menu.handleMenuAction(
+            this.lastChord[key].action,
+            !this.lastChord[key].value,
+          );
+        }
+      }
     });
 
     const modals = d.querySelectorAll(".modal, .modal-chord, .modal-input");
@@ -95,7 +109,7 @@ export class KeyHandler {
     const chord = this.lastChord[key];
     if (chord) {
       if (typeof chord.action === "string") {
-        this.app.menu.handleMenuAction(chord.action);
+        this.app.menu.handleMenuAction(chord.action, chord.value);
         this.lastChord = shortcuts.action;
         this.toggleChord(false);
       } else {
@@ -151,7 +165,7 @@ export class KeyHandler {
       this.inputModal.style.display = "none";
       this._input = false;
     }
-    setInterval(() => {
+    setTimeout(() => {
       input.value = "";
     }, 1);
   }

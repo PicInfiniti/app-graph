@@ -25,36 +25,6 @@ export class EventHandlers {
   }
 
   init() {
-    this.eventBus.on("keydown", (event) => {
-      if (event.repeat) return;
-      this.pressedKeys.add(event.key);
-
-      // Shift + Alt combo triggers "scale"
-      if (this.isCombo("Shift", "Alt")) {
-        this.eventBus.emit("toggleSetting", { key: "scale", value: true });
-        return;
-      }
-
-      const key = this.keySettingsMap[event.key];
-      if (key && !this.app.keyHandler.shortcutChord.Space) {
-        this.eventBus.emit("toggleSetting", { key, value: true });
-      }
-    });
-
-    this.eventBus.on("keyup", (event) => {
-      this.pressedKeys.delete(event.key);
-      // Disable "scale" if either Shift or Alt is released
-      if (event.key === "Shift" || event.key === "Alt") {
-        this.eventBus.emit("toggleSetting", { key: "scale", value: false });
-      }
-
-      const key =
-        this.keySettingsMap[event.key === "AltLeft" ? "Alt" : event.key];
-      if (key) {
-        this.eventBus.emit("toggleSetting", { key, value: false });
-      }
-    });
-
     this.app.eventBus.on("layout:changed", (event) => {
       const { layoutType } = event.detail;
       this.app.graphManager.applyLayout(layoutType);
