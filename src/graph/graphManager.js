@@ -336,25 +336,36 @@ export class GraphManager {
     }
   }
 
-  toDigraph() {
-    if (this.graph.type == "undirected") {
+  toDirectedGraph() {
+    if (this.graph.type !== "directed") {
       this.saveGraphState();
       const diGraph = toDirected(this.graph);
       this.clearToDigraph();
       this.graph.replace(diGraph);
-      this.eventBus.emit("updateSetting", { key: "directed", value: true });
-      this.eventBus.emit("graph:updated", { type: "toDigraph" });
+      this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
+      this.eventBus.emit("graph:updated", { type: "toDirectedGraph" });
     }
   }
 
-  toGraph() {
-    if (this.graph.type == "directed") {
+  toMixedGraph() {
+    if (this.graph.type !== "mixed") {
       this.saveGraphState();
-      const graph = toUndirected(this.graph);
-      this.clear();
+      const graph = toMixed(this.graph);
+      this.clearToMixed();
       this.graph.replace(graph);
-      this.eventBus.emit("updateSetting", { key: "directed", value: false });
-      this.eventBus.emit("graph:updated", { type: "toGraph" });
+      this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
+      this.eventBus.emit("graph:updated", { type: "toMixedGraph" });
+    }
+  }
+
+  toUndirectedGraph() {
+    if (this.graph.type !== "undirected") {
+      this.saveGraphState();
+      const diGraph = toUndirected(this.graph);
+      this.clearToUndirectedGraph();
+      this.graph.replace(diGraph);
+      this.eventBus.emit("updateSetting", { key: "type", value: "undirected" });
+      this.eventBus.emit("graph:updated", { type: "toUndirectedGraph" });
     }
   }
 

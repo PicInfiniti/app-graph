@@ -578,9 +578,9 @@ export const menuData = [
     title: "Operators",
     id: "help",
     submenu: [
-      { title: "To Graph", id: "to-undireted-graph" },
-      { title: "To Mix", id: "to-mixed" },
-      { title: "To Digraph", id: "to-digraph" },
+      { title: "To Mixed", id: "to-mixed" },
+      { title: "To Undirected", id: "to-undirected" },
+      { title: "To Directed", id: "to-directed" },
       { title: "To Weighted", id: "to-weighted" },
       { title: "To Unweighted", id: "to-unweighted" },
       { type: "divider" },

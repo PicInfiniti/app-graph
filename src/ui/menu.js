@@ -447,8 +447,9 @@ export class Menu {
       pisces: () => this.graphManager.generator.zodiac.pisces(),
       //Operators
       "reverse-direction": () => this.graphManager.reverseGraph(),
-      "to-digraph": () => this.graphManager.toDigraph(),
-      "to-graph": () => this.graphManager.toGraph(),
+      "to-undirected": () => this.graphManager.toUndirectedGraph(),
+      "to-directed": () => this.graphManager.toDirectedGraph(),
+      "to-mixed": () => this.graphManager.toMixedGraph(),
       "to-weighted": () => this.graphManager.toWeighted(),
       "to-unweighted": () => this.graphManager.toUnweighted(),
 
