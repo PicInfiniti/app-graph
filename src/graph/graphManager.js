@@ -140,11 +140,15 @@ export class GraphManager {
     this.push(this.graph.copy());
   }
 
-  makeGraphComplete() {
+  makeGraphComplete(type = "directed") {
     this.saveGraphState();
     for (let i = 0; i < this.graph.order; i++) {
       for (let j = i + 1; j < this.graph.order; j++) {
-        this.graph.mergeEdge(i, j); // Add edge if it doesn't exist
+        if (type == "undirected") {
+          this.graph.mergeUndirectedEdge(i, j);
+        } else {
+          this.graph.mergeDirectedEdge(i, j);
+        }
       }
     }
     this.eventBus.emit("graph:updated", { type: "addEdge" });

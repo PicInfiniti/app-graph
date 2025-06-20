@@ -34,7 +34,7 @@ export const menuData = [
     id: "edit",
     submenu: [
       { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
-      { title: "Complete Graph", name: "complete-btn", shortcut: "(C)" },
+      { title: "Complete Graph", name: "complete-btn", shortcut: "(alt-C)" },
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(alt-e)" },

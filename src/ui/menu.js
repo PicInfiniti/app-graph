@@ -188,7 +188,9 @@ export class Menu {
       "color-selection-btn": () =>
         this.graphManager.updateSelectedNodesEdgesColor(true, true, true, true),
       "organize-circle": () => this.layout.applyLayout("circle"),
-      "complete-btn": () => this.graphManager.makeGraphComplete(),
+      "complete-btn": () => this.graphManager.makeGraphComplete("undirected"),
+      "complete-directed-btn": () =>
+        this.graphManager.makeGraphComplete("directed"),
       "node-color": () =>
         this.eventBus.emit("updateSetting", { key: "node_color", value: val }),
       "edge-color": () =>
