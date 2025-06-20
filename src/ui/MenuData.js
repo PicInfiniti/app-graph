@@ -37,11 +37,11 @@ export const menuData = [
       { title: "Complete Graph", name: "complete-btn", shortcut: "(C)" },
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
-      { title: "Add Edge", name: "add-edge-btn", shortcut: "(e)" },
+      { title: "Add Edge", name: "add-edge-btn", shortcut: "(alt-e)" },
       {
         title: "Add Directed Edge",
         name: "add-directed-edge-btn",
-        shortcut: "(E)",
+        shortcut: "(alt-E)",
       },
       { type: "divider" },
       { title: "Copy", name: "copy-subgraph", shortcut: "(y)" },

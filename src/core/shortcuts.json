@@ -12,6 +12,7 @@
     "d": { "desc": "Delete", "action": "remove-selection-btn" },
     "c": { "desc": "Update color", "action": "color-selection-btn" },
     "e": { "desc": "Add edge", "action": "add-edge-btn" },
+    "alt+e": { "desc": "Add edge", "action": "add-edge-in-order-btn" },
     "a": { "desc": "All node info", "action": "all-node-info-btn" },
     "q": { "desc": "Clear panel", "action": "clear-info-panel-btn" },
     "y": { "desc": "Copy", "action": "copy-subgraph" },
@@ -86,9 +87,17 @@
     "C": { "desc": "Complete", "action": "complete-btn" },
     "O": { "desc": "Organize circle", "action": "organize-circle" },
     "E": { "desc": "Add directed edge", "action": "add-directed-edge-btn" },
+    "alt+E": {
+      "desc": "Add directed edge",
+      "action": "add-directed-edge-in-order-btn"
+    },
     "P": { "desc": "Export PNG", "action": "export-png" },
     "shift+C": { "desc": "Complete", "action": "complete-btn" },
     "shift+O": { "desc": "Organize circle", "action": "organize-circle" },
+    "shift+alt+E": {
+      "desc": "Add directed edge",
+      "action": "add-directed-edge-in-order-btn"
+    },
     "shift+E": {
       "desc": "Add directed edge",
       "action": "add-directed-edge-btn"

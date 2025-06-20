@@ -174,10 +174,16 @@ export class Menu {
       reload: () => location.reload(),
 
       // Edit
-      "add-edge-btn": () => this.graphManager.connectSelectedNodes(),
+      "add-edge-btn": () =>
+        this.graphManager.connectSelectedNodes("undirected"),
+      "add-edge-in-order-btn": () =>
+        this.graphManager.connectSelectedNodesInOrder("undirected"),
 
       "add-directed-edge-btn": () =>
-        this.graphManager.connectSelectedNodesInOrder(),
+        this.graphManager.connectSelectedNodes("directed"),
+      "add-directed-edge-in-order-btn": () =>
+        this.graphManager.connectSelectedNodesInOrder("directed"),
+
       "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
       "color-selection-btn": () =>
         this.graphManager.updateSelectedNodesEdgesColor(true, true, true, true),
