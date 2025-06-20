@@ -35,6 +35,15 @@
       "action": "select-pervious-node"
     },
 
+    "shift+ArrowRight": {
+      "desc": "Select next node",
+      "action": "select-next-node"
+    },
+    "shift+ArrowLeft": {
+      "desc": "Select previous node",
+      "action": "select-pervious-node"
+    },
+
     "shift": { "desc": "Tree", "action": "toggle-select-btn", "value": true },
     "alt": {
       "desc": "Component",
@@ -58,6 +67,15 @@
       "action": "select-next-edge"
     },
     "alt+ArrowLeft": {
+      "desc": "Select previous edge",
+      "action": "select-pervious-edge"
+    },
+
+    "shift+alt+ArrowRight": {
+      "desc": "Select next edge",
+      "action": "select-next-edge"
+    },
+    "shift+alt+ArrowLeft": {
       "desc": "Select previous edge",
       "action": "select-pervious-edge"
     },

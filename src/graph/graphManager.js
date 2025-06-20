@@ -265,7 +265,7 @@ export class GraphManager {
   }
 
   selectNextNode() {
-    if (!this.app.keyHandler.Shift) this.deselectAllNode();
+    if (!this.app.keyHandler.isShiftHold()) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex + 1,
       this.graph.order,
@@ -276,7 +276,7 @@ export class GraphManager {
   }
 
   selectPerviousNode() {
-    if (!this.app.keyHandler.Shift) this.deselectAllNode();
+    if (!this.app.keyHandler.isShiftHold()) this.deselectAllNode();
     this.selectNodeIndex = positiveModulus(
       this.selectNodeIndex - 1,
       this.graph.order,
@@ -287,7 +287,7 @@ export class GraphManager {
   }
 
   selectNextEdge() {
-    if (!this.app.keyHandler.Shift) this.deselectAllEdge();
+    if (!this.app.keyHandler.isShiftHold()) this.deselectAllEdge();
     this.selectEdgeIndex = positiveModulus(
       this.selectEdgeIndex + 1,
       this.graph.size,
@@ -298,7 +298,7 @@ export class GraphManager {
   }
 
   selectPerviousEdge() {
-    if (!this.app.keyHandler.Shift) this.deselectAllEdge();
+    if (!this.app.keyHandler.isShiftHold()) this.deselectAllEdge();
     this.selectEdgeIndex = positiveModulus(
       this.selectEdgeIndex + 1,
       this.graph.size,

@@ -10,11 +10,13 @@ export class KeyHandler {
     this.eventBus = app.eventBus;
 
     this.eventKeyMap = {
-      Alt: "alt",
-      Control: "ctrl",
-      Shift: "shift",
-      Meta: "meta",
-      " ": "space",
+      AltRight: "alt",
+      ControlRight: "ctrl",
+      ShiftRight: "shift",
+      AltLeft: "alt",
+      ControlLeft: "ctrl",
+      ShiftLeft: "shift",
+      Space: "space",
     };
 
     this.pressedKeys = new Set();
@@ -190,14 +192,19 @@ export class KeyHandler {
   }
 
   updatePressedKeys(event, action = "add") {
-    const key = this.eventKeyMap[event.key] || event.key;
+    const key = this.eventKeyMap[event.code] || event.key;
 
-    if (action === "add") {
+    console.log(key);
+    if (action === "add" && key !== "meta") {
       this.pressedKeys.add(key);
     } else {
       this.pressedKeys.delete(key);
     }
 
     return key;
+  }
+
+  isShiftHold() {
+    return this.pressedKeys.has("shift");
   }
 }
