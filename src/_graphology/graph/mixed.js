@@ -261,23 +261,38 @@ export default class Mixed extends Graph {
   // 🔗 Connect all selected nodes (fully connected using merge)
   connectSelectedNodes(color, type = "directed") {
     const selected = this.getSelectedNodes();
-    if (selected.length < 2) return;
-    for (let i = 0; i < selected.length; i++) {
-      for (let j = i + 1; j < selected.length; j++) {
-        const source = selected[i];
-        const target = selected[j];
-        // This creates the edge if it doesn't exist, or merges attributes if it does
-        if (type == "undirected") {
-          this.mergeUndirectedEdge(source, target, {
-            color: color,
-            selected: false,
-          });
-        } else {
-          this.mergeDirectedEdge(source, target, {
-            color: color,
-            selected: false,
-          });
+    if (selected.length < 1) return;
+    if (selected.length > 1) {
+      for (let i = 0; i < selected.length; i++) {
+        for (let j = i + 1; j < selected.length; j++) {
+          const source = selected[i];
+          const target = selected[j];
+          // This creates the edge if it doesn't exist, or merges attributes if it does
+          if (type == "undirected") {
+            this.mergeUndirectedEdge(source, target, {
+              color: color,
+              selected: false,
+            });
+          } else {
+            this.mergeDirectedEdge(source, target, {
+              color: color,
+              selected: false,
+            });
+          }
         }
+      }
+    } else if (this.allowSelfLoops) {
+      const node = selected[0];
+      if (type == "undirected") {
+        this.mergeUndirectedEdge(node, node, {
+          color: color,
+          selected: false,
+        });
+      } else {
+        this.mergeDirectedEdge(node, node, {
+          color: color,
+          selected: false,
+        });
       }
     }
   }
