@@ -1,4 +1,5 @@
 import { Graph } from "graphology";
+import { subgraph, disjointUnion } from "graphology-operators";
 
 export default class Mixed extends Graph {
   constructor(options) {
@@ -355,7 +356,6 @@ export default class Mixed extends Graph {
     // Replace this graph's contents with the combined graph
     this.clear();
     this.import(combined.export());
-    console.log(this.getSelectedNodes());
   }
 
   replace(graph) {
