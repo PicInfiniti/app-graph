@@ -54,15 +54,21 @@ export const menuData = [
       { type: "divider" },
       { title: "Undo", name: "undo-btn", shortcut: "(u)" },
       { title: "Redo", name: "redo-btn", shortcut: "(Ctrl+r)" },
-      { type: "divider" },
+    ],
+  },
+  {
+    title: "Settings",
+    id: "settings",
+    submenu: [
       {
-        title: "Settings",
-        id: "settings",
+        title: "Graph",
+        id: "graph-settings",
         shortcut: ">",
         submenu: [
           { title: "Vertex Label", id: "vertex-label", check: true },
           { title: "Edge Label", id: "edge-label", check: true },
           { title: "Weight Label", id: "weight-label", check: true },
+          { type: "divider" },
           {
             title: "Grid",
             id: "gride-size",
@@ -132,15 +138,20 @@ export const menuData = [
           },
         ],
       },
-    ],
-  },
-  {
-    title: "View",
-    id: "view",
-    submenu: [
-      { title: "Info Panel", id: "panel-btn", check: true },
-      { title: "Tools Panel", id: "tools-btn", check: false },
-      { title: "Key Chord", id: "shortcut-chord-btn", shortcut: "⎵" },
+      {
+        title: "View",
+        id: "view",
+        shortcut: ">",
+        submenu: [
+          { title: "Info Panel", id: "panel-btn", check: true },
+          { title: "Tools Panel", id: "tools-btn", check: false },
+          { title: "Key Chord", id: "shortcut-chord-btn", shortcut: "⎵" },
+        ],
+      },
+
+      { type: "divider" },
+      { title: "Save History", id: "save-history", check: true },
+      { title: "Clear History", id: "clear-histoory-btn" },
     ],
   },
   {

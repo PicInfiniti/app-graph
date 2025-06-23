@@ -161,6 +161,9 @@ export class GraphManager {
       this.history.length = this.index + 1;
     }
     this.push(this.graphs.map((graph) => graph.export()));
+    if (this.settings.saveHistory) {
+      this.saveHistoryToLocalStorage();
+    }
   }
 
   makeGraphComplete(type = "directed") {
@@ -412,5 +415,105 @@ export class GraphManager {
       weight: undefined,
     }));
     this.eventBus.emit("graph:updated", { type: "toUnweighted" });
+  }
+
+  saveHistoryToLocalStorage() {
+    if (!this.validateHistory(this.history)) {
+      console.warn("Cannot save: history data is invalid.");
+      return false;
+    }
+
+    try {
+      const historyJSON = JSON.stringify(this.history);
+      localStorage.setItem("graphStudio-history", historyJSON);
+      console.log("History successfully saved to local storage.");
+      return true;
+    } catch (error) {
+      console.error("Failed to save history to local storage:", error);
+      return false;
+    }
+  }
+
+  loadHitoryFromLocalStorage() {
+    const history = localStorage.getItem("graphStudio-history");
+    if (history) {
+      try {
+        const parsedHistory = JSON.parse(history);
+        if (this.validateHistory(parsedHistory)) {
+          this.history = parsedHistory;
+          this.updateIndex(this.history.length - 1);
+          return true;
+        }
+      } catch (error) {
+        console.warn("Invalid JSON format in localStorage.");
+      }
+    }
+  }
+
+  cleanLocalStorage() {
+    localStorage.removeItem("graphStudio-history");
+  }
+
+  validateHistory(graphData) {
+    if (!Array.isArray(graphData)) {
+      console.error("Graph data must be an array.");
+      return false;
+    }
+
+    for (let i = 0; i < graphData.length; i++) {
+      const graph = graphData[i][0]; // Each graph state is wrapped in an array
+      if (!graph) {
+        console.error(`Graph at index ${i} is missing.`);
+        return false;
+      }
+
+      // Validate nodes
+      if (!Array.isArray(graph.nodes)) {
+        console.error(`Graph at index ${i} has invalid or missing nodes.`);
+        return false;
+      }
+      for (const node of graph.nodes) {
+        if (typeof node.key !== "string") {
+          console.error(`Node missing or invalid key at graph ${i}.`);
+          return false;
+        }
+        if (typeof node.attributes !== "object" || node.attributes === null) {
+          console.error(`Node ${node.key} missing attributes at graph ${i}.`);
+          return false;
+        }
+        if (!("id" in node.attributes)) {
+          console.error(`Node ${node.key} missing id at graph ${i}.`);
+          return false;
+        }
+      }
+
+      // Validate edges
+      if (!Array.isArray(graph.edges)) {
+        console.error(`Graph at index ${i} has invalid or missing edges.`);
+        return false;
+      }
+      for (const edge of graph.edges) {
+        if (typeof edge.key !== "string") {
+          console.error(`Edge missing or invalid key at graph ${i}.`);
+          return false;
+        }
+        if (
+          typeof edge.source !== "string" ||
+          typeof edge.target !== "string"
+        ) {
+          console.error(
+            `Edge ${edge.key} missing or invalid source/target at graph ${i}.`,
+          );
+          return false;
+        }
+        if (typeof edge.attributes !== "object" || edge.attributes === null) {
+          console.error(`Edge ${edge.key} missing attributes at graph ${i}.`);
+          return false;
+        }
+      }
+    }
+
+    console.log("Graph data validated successfully.");
+    return true;
   }
 }

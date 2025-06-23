@@ -260,6 +260,7 @@ export class Menu {
 
       "color-picker-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "colorPicker" }),
+
       //Setting
       "vertex-label": () =>
         this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
@@ -278,6 +279,9 @@ export class Menu {
         this.eventBus.emit("updateSetting", { key: "grid", value: val }),
       "stroke-size-1": () =>
         this.eventBus.emit("updateSetting", { key: "stroke_size", value: val }),
+      "save-history": () =>
+        this.eventBus.emit("toggleSetting", { key: "saveHistory" }),
+      "clear-histoory-btn": () => this.graphManager.cleanLocalStorage(),
 
       //Metrics
       "basic-info-btn": () => this.graphManager.metric.basicInfo(),

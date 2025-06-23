@@ -82,7 +82,8 @@ export class App {
   }
 
   loadInitialGraph() {
-    this.graphManager.generator.clusters(20, 20, 10);
+    if (!this.graphManager.loadHitoryFromLocalStorage())
+      this.graphManager.generator.clusters(20, 20, 10);
   }
 
   drawGraph() {

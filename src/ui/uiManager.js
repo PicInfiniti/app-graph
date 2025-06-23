@@ -22,6 +22,11 @@ export function applySettingsToUI(settings, canvas) {
     !settings.weightLabel,
   );
 
+  d.querySelector("#save-history .check").classList.toggle(
+    "hidden",
+    !settings.saveHistory,
+  );
+
   d.querySelector("#component").classList.toggle(
     "gray-background",
     !settings.component,

@@ -42,6 +42,7 @@ class AppSettings {
       tree: true,
       vertexLabel: true,
       weightLabel: true,
+      saveHistory: true,
     };
 
     this.nightSkyTheme = {
