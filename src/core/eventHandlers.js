@@ -75,7 +75,7 @@ export class EventHandlers {
 
     this.app.eventBus.on("export", (event) => {
       if (event.detail.type === "json") {
-        const graphJSON = this.app.graphManager.graph.export();
+        const graphJSON = this.app.graphManager.history;
         const dataStr =
           "data:text/json;charset=utf-8," +
           encodeURIComponent(JSON.stringify(graphJSON, null, 2));
@@ -108,12 +108,10 @@ export class EventHandlers {
         reader.onload = (e) => {
           const importedData = JSON.parse(e.target.result);
           console.log("Imported Data:", importedData); // Debugging
-
-          const newGraph = this.app.graphManager.graph.copy();
-          this.app.graphManager.push(newGraph); // Make sure `push` is defined
-          newGraph.clear();
-          this.app.graphManager.graph.import(importedData);
-
+          this.app.graphManager.history.push(...importedData);
+          this.app.graphManager.updateIndex(
+            this.app.graphManager.history.length - 1,
+          );
           this.app.eventBus.emit("graph:updated", { type: "import" });
         };
         reader.readAsText(file);
