@@ -35,9 +35,18 @@ export class GraphManager {
         this.graphClass = Mixed;
         break;
     }
+
+    this.graphIndex = 0;
     this._graph = empty(this.graphClass, 0);
-    this.history = [this._graph];
-    this.graph = this.history[0];
+    this._graph.updateAttributes((attr) => {
+      return {
+        ...attr,
+        label: "Graph",
+        id: 0,
+      };
+    });
+    this.graphs = [this._graph];
+    this.history = [this.graphs.map((graph) => graph.export())];
 
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
@@ -50,19 +59,18 @@ export class GraphManager {
     this.setupEventListeners();
   }
 
-  addNode(id, attr) {
-    this.saveGraphState();
-    this.graph.addNode(id, attr);
-    this.eventBus.emit("graph:updated", { type: "addNode", node: id });
+  get graph() {
+    return this.graphs[this.graphIndex];
   }
 
-  push(value) {
-    if (this.history.length >= this.limit) {
-      this.history.shift();
-    }
-    this.history.push(value);
-    this.index = this.history.length - 1;
-    this.graph = this.history[this.index];
+  set graph(value) {
+    value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
+    this.graphs[this.graphIndex] = value;
+  }
+
+  addNode(id, attr) {
+    this.graph.addNode(id, attr);
+    this.saveGraphState();
   }
 
   getHistory() {
@@ -84,7 +92,12 @@ export class GraphManager {
     }
 
     this.index = value;
-    this.graph = this.history[value];
+    this.graphs = [];
+    for (const h of this.history[this.index]) {
+      const graph = empty(this.graphClass, 0);
+      this.graphs.push(graph.import(h));
+    }
+    this.graph = this.graphs[0];
     return true;
   }
 
@@ -122,7 +135,6 @@ export class GraphManager {
   }
 
   updateNodesPostion(positions, center) {
-    this.saveGraphState();
     // update position of all nodes
     this.graph.forEachNode((node, attr) => {
       this.graph.updateNodeAttributes(node, (attr) => {
@@ -133,11 +145,22 @@ export class GraphManager {
         };
       });
     });
+    this.saveGraphState();
+  }
+
+  push(graphs) {
+    if (this.history.length >= this.limit) {
+      this.history.shift();
+    }
+    this.history.push(graphs);
+    this.index++;
   }
 
   saveGraphState() {
-    this.history.length = this.index + 1;
-    this.push(this.graph.copy());
+    if (this.history.length != this.index + 1) {
+      this.history.length = this.index + 1;
+    }
+    this.push(this.graphs.map((graph) => graph.export()));
   }
 
   makeGraphComplete(type = "directed") {

@@ -132,7 +132,6 @@ export class Canvas {
     if (this.settings.panning) {
       subject.component = this.app.graphManager.graph.nodes();
     }
-
     return subject;
   }
 
@@ -142,14 +141,16 @@ export class Canvas {
     }
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
-    if (!this.settings.forceSimulation) {
-      this.app.graphManager.saveGraphState();
-    }
+    event.subject.__moved = false;
   }
 
   dragged(event) {
     event.subject.fx = event.x;
     event.subject.fy = event.y;
+
+    if (event.dx !== 0 || event.dy !== 0) {
+      event.subject.__moved = true;
+    }
 
     if (!this.settings.forceSimulation && event.subject.component) {
       for (let node of event.subject.component) {
@@ -184,6 +185,14 @@ export class Canvas {
     event.subject.x = event.x;
     event.subject.y = event.y;
     if (!this.settings.forceSimulation) this.app.updateSimulation();
+
+    if (
+      event.subject.__moved &&
+      event.subject.id &&
+      !this.settings.forceSimulation
+    ) {
+      this.app.graphManager.saveGraphState();
+    }
   }
 
   findClickedNode(x, y) {
@@ -312,7 +321,6 @@ export class Canvas {
     } else {
       this.app.graphManager.deselectAll();
       this.app.rect.scale.active = false;
-      this.eventBus.emit("graph:updated", { type: "unselect" });
     }
   }
 }

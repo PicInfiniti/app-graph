@@ -25,7 +25,7 @@ export class EventHandlers {
   }
 
   init() {
-    this.app.eventBus.on("layout:changed", (event) => {
+    this.app.eventBus.on("lalayout:changedyout:changed", (event) => {
       const { layoutType } = event.detail;
       this.app.graphManager.applyLayout(layoutType);
       this.eventBus.emit("graph:updated", { type: "layout" });
@@ -33,7 +33,7 @@ export class EventHandlers {
 
     // When graph data updates, re-render visualization
     this.app.eventBus.on("graph:updated", (event) => {
-      this.app.rect.scale.active = false;
+      this.app.rect.scale.active = true;
       this.app.drawGraph(); // Visualize the graph
       const updateTypes = [
         "addEdges",
