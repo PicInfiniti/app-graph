@@ -44,6 +44,7 @@ class AppSettings {
       weightLabel: true,
       saveHistory: true,
       historyLimit: 100,
+      graphs_panel: true,
     };
 
     this.nightSkyTheme = {

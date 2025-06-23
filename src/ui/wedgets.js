@@ -13,11 +13,13 @@ export class Widget {
     this.panels = {
       info: d.getElementById("floating-panel"),
       tools: d.getElementById("tools-panel"),
+      graphs: d.getElementById("graphs-panel"),
     };
 
     this.handels = {
       info: "#info",
       tools: "#tools",
+      graphs: "#graphs",
     };
 
     this.addEventListeners();
@@ -29,6 +31,11 @@ export class Widget {
   init() {
     this.togglePanel("info", "#panel-btn .check", this.settings.info_panel);
     this.togglePanel("tools", "#tools-btn .check", this.settings.tools_panel); // Add event listeners for button clicks
+    this.togglePanel(
+      "graphs",
+      "#graphs-btn .check",
+      this.settings.graphs_panel,
+    ); // Add event listeners for button clicks
   }
 
   contexMenu() {
@@ -87,6 +94,7 @@ export class Widget {
     const infoClose = d.querySelector("#floating-panel .close");
     const infoMax = d.querySelector("#floating-panel .max");
     const toolsClose = d.querySelector("#tools-panel .close");
+    const graphsClose = d.querySelector("#graphs-panel .close");
 
     if (infoClose) {
       infoClose.addEventListener("click", () => {
@@ -104,6 +112,12 @@ export class Widget {
     if (toolsClose) {
       toolsClose.addEventListener("click", () => {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" });
+      });
+    }
+
+    if (graphsClose) {
+      graphsClose.addEventListener("click", () => {
+        this.eventBus.emit("toggleSetting", { key: "graphs_panel" });
       });
     }
   }

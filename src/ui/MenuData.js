@@ -144,7 +144,9 @@ export const menuData = [
         shortcut: ">",
         submenu: [
           { title: "Info Panel", id: "panel-btn", check: true },
-          { title: "Tools Panel", id: "tools-btn", check: false },
+          { title: "Tools Panel", id: "tools-btn", check: true },
+          { title: "Graphs Panel", id: "graphs-btn", check: true },
+          { type: "divider" },
           { title: "Key Chord", id: "shortcut-chord-btn", shortcut: "⎵" },
         ],
       },
