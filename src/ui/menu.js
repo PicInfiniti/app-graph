@@ -282,6 +282,13 @@ export class Menu {
       "save-history": () =>
         this.eventBus.emit("toggleSetting", { key: "saveHistory" }),
       "clear-histoory-btn": () => this.graphManager.cleanLocalStorage(),
+      "history-limit-1": () => {
+        this.graphManager.limit = val;
+        this.eventBus.emit("updateSetting", {
+          key: "historyLimit",
+          value: val,
+        });
+      },
 
       //Metrics
       "basic-info-btn": () => this.graphManager.metric.basicInfo(),

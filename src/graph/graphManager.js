@@ -149,11 +149,13 @@ export class GraphManager {
   }
 
   push(graphs) {
-    if (this.history.length >= this.limit) {
-      this.history.shift();
-    }
     this.history.push(graphs);
     this.index++;
+
+    if (this.history.length >= this.limit) {
+      this.history = this.history.slice(-this.limit);
+      this.index = this.history.length - 1;
+    }
   }
 
   saveGraphState() {
@@ -426,7 +428,7 @@ export class GraphManager {
     try {
       const historyJSON = JSON.stringify(this.history);
       localStorage.setItem("graphStudio-history", historyJSON);
-      console.log("History successfully saved to local storage.");
+      // console.log("History successfully saved to local storage.");
       return true;
     } catch (error) {
       console.error("Failed to save history to local storage:", error);
@@ -454,14 +456,14 @@ export class GraphManager {
     localStorage.removeItem("graphStudio-history");
   }
 
-  validateHistory(graphData) {
-    if (!Array.isArray(graphData)) {
+  validateHistory(history) {
+    if (!Array.isArray(history)) {
       console.error("Graph data must be an array.");
       return false;
     }
 
-    for (let i = 0; i < graphData.length; i++) {
-      const graph = graphData[i][0]; // Each graph state is wrapped in an array
+    for (const h of history) {
+      const graph = h[0]; // Each graph state is wrapped in an array
       if (!graph) {
         console.error(`Graph at index ${i} is missing.`);
         return false;
@@ -513,7 +515,7 @@ export class GraphManager {
       }
     }
 
-    console.log("Graph data validated successfully.");
+    // console.log("Graph data validated successfully.");
     return true;
   }
 }

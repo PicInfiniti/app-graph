@@ -43,6 +43,7 @@ class AppSettings {
       vertexLabel: true,
       weightLabel: true,
       saveHistory: true,
+      historyLimit: 100,
     };
 
     this.nightSkyTheme = {

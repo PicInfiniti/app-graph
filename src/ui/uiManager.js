@@ -9,6 +9,7 @@ export function applySettingsToUI(settings, canvas) {
   d.getElementById("vertex-size-1").value = settings.node_radius;
   d.getElementById("edge-size-1").value = settings.edge_size;
   d.getElementById("label-size-1").value = settings.label_size;
+  d.getElementById("history-limit-1").value = settings.historyLimit;
   d.querySelector("#vertex-label .check").classList.toggle(
     "hidden",
     !settings.vertexLabel,

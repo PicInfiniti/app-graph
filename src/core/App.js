@@ -21,7 +21,12 @@ export class App {
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas;
     this.layout = new Layout(this);
-    this.graphManager = new GraphManager(this, 100, this.settings.type); // Handles graph logic
+    console.log(this.settings.historyLimit);
+    this.graphManager = new GraphManager(
+      this,
+      this.settings.historyLimit,
+      this.settings.type,
+    ); // Handles graph logic
     this.rect = new Rect(this);
     this.menu = new Menu(this, menuData);
     this.widget = new Widget(this);

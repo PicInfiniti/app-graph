@@ -150,8 +150,28 @@ export const menuData = [
       },
 
       { type: "divider" },
-      { title: "Save History", id: "save-history", check: true },
-      { title: "Clear History", id: "clear-histoory-btn" },
+      {
+        title: "History",
+        id: "History",
+        shortcut: ">",
+        submenu: [
+          {
+            title: "History Limit",
+            id: "history-limit",
+            input: [
+              {
+                type: "number",
+                id: "history-limit-1",
+                min: 5,
+                max: 10_000,
+                value: 5,
+              },
+            ],
+          },
+          { title: "Save History", id: "save-history", check: true },
+          { title: "Clear History", id: "clear-histoory-btn" },
+        ],
+      },
     ],
   },
   {
