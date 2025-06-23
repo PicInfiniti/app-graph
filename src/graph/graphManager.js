@@ -64,7 +64,7 @@ export class GraphManager {
   }
 
   set graph(value) {
-    value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
+    // value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
     this.graphs[this.graphIndex] = value;
   }
 
