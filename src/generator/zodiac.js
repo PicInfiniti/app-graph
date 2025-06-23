@@ -9,13 +9,12 @@ export class Zodiac {
   load(name) {
     const data = constellationData[name.toLowerCase()];
     if (data) {
-      const graph = createConstellation(
+      this.graphManager.graph = createConstellation(
         name,
         data.stars,
         data.edges,
         this.graphManager.graphClass,
       );
-      this.graphManager.push(graph);
       this.layout.applyLayout("rotate180");
     } else {
       console.warn(`Constellation "${name}" not found.`);

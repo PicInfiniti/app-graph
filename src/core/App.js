@@ -21,7 +21,6 @@ export class App {
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas;
     this.layout = new Layout(this);
-    console.log(this.settings.historyLimit);
     this.graphManager = new GraphManager(
       this,
       this.settings.historyLimit,

@@ -21,19 +21,16 @@ export class Generator {
 
   empty(n) {
     this.graphManager.graph = empty(this.graphManager.graphClass, Number(n));
-
     this.layout.applyLayout("circle");
   }
 
   complete(n) {
     this.graphManager.graph = complete(this.graphManager.graphClass, Number(n));
-
     this.layout.applyLayout("circle");
   }
 
   ladder(n) {
     this.graphManager.graph = ladder(this.graphManager.graphClass, Number(n));
-
     this.layout.applyLayout("twoLine", { line1Count: Number(n), Y: 50 });
   }
 
@@ -47,7 +44,6 @@ export class Generator {
         this.graphManager.graph.addEdge(i, j);
       }
     }
-
     this.layout.applyLayout("twoLine", { line1Count: Number(n1), Y: 50 });
   }
 
@@ -60,7 +56,6 @@ export class Generator {
 
   path(n) {
     this.graphManager.graph = path(this.graphManager.graphClass, Number(n));
-
     this.layout.applyLayout("oneLine");
   }
 
@@ -70,7 +65,6 @@ export class Generator {
       Number(n1),
       Number(n2),
     );
-
     this.layout.applyLayout("circle");
   }
 
@@ -80,7 +74,6 @@ export class Generator {
       Number(n1),
       Number(n2),
     );
-
     this.layout.applyLayout("circle");
   }
 
@@ -90,7 +83,6 @@ export class Generator {
       size: Number(s),
       clusters: Number(c),
     });
-
     this.layout.applyLayout("circle");
   }
 
@@ -99,7 +91,6 @@ export class Generator {
       order: Number(o),
       probability: Number(p),
     });
-
     this.layout.applyLayout("circle");
   }
 
@@ -107,25 +98,21 @@ export class Generator {
     this.graphManager.graph = girvanNewman(this.graphManager.graphClass, {
       zOut: 4,
     });
-
     this.layout.applyLayout("circle");
   }
 
   krackhardtkite() {
     this.graphManager.graph = krackhardtKite(this.graphManager.graphClass);
-
     this.layout.applyLayout("oneLine");
   }
 
   florentineFamilies() {
     this.graphManager.graph = florentineFamilies(this.graphManager.graphClass);
-
     this.layout.applyLayout("circle");
   }
 
   karateClub() {
     this.graphManager.graph = karateClub(this.graphManager.graphClass);
-
     this.layout.applyLayout("circle");
   }
 }

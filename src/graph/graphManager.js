@@ -134,7 +134,7 @@ export class GraphManager {
     });
   }
 
-  updateNodesPostion(positions, center) {
+  updateNodesPostion(positions, center = { x: 0, y: 0 }) {
     // update position of all nodes
     this.graph.forEachNode((node, attr) => {
       this.graph.updateNodeAttributes(node, (attr) => {
