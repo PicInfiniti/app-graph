@@ -477,16 +477,7 @@ export class Menu {
       "to-unweighted": () => this.graphManager.toUnweighted(),
       "subgraph-btn": () => this.graphManager.subgraph(),
 
-      graphs: () => {
-        const selected = d.querySelectorAll("#graphs-panel ul li.select");
-        const numbers = Array.from(selected)
-          .map((li) => {
-            const match = li.id.match(/\d+$/); // match number at end of id
-            return match ? parseInt(match[0], 10) : null;
-          })
-          .filter((num) => num !== null);
-        this.graphManager.selectAllNode(numbers);
-      },
+      graphs: () => this.graphManager.graphsPanel.selectLis(val),
 
       //Help
       "how-to-use": () =>
@@ -563,7 +554,7 @@ export class Menu {
       if (!target) return;
 
       const menuId = target.getAttribute("name") || target.id;
-      if (menuId) this.handleMenuAction(menuId);
+      if (menuId) this.handleMenuAction(menuId, target.id);
     });
 
     d.addEventListener("input", (event) => {

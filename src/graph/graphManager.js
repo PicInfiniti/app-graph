@@ -9,6 +9,7 @@ import {
   toUndirected,
   toMixed,
 } from "graphology-operators";
+import { GraphsPanel } from "../wedgets/graphsPanel.js";
 
 const d = document;
 
@@ -20,6 +21,7 @@ export class GraphManager {
     this.layout = app.layout;
     this.generator = new Generator(this);
     this.metric = new Metric(this);
+    this.graphsPanel = new GraphsPanel(this);
 
     this.limit = limit;
     this.index = 0;
@@ -60,6 +62,7 @@ export class GraphManager {
 
   init() {
     this.setupEventListeners();
+    this.graphsPanel.init();
   }
 
   get graph() {
@@ -103,7 +106,7 @@ export class GraphManager {
       this.graphs.push(graph.import(h));
     }
     this.graphIndex = 0;
-    this.updateGraphsPanel();
+    this.graphsPanel.updateGraphsPanel();
     return true;
   }
 
@@ -172,7 +175,7 @@ export class GraphManager {
     if (this.settings.saveHistory) {
       this.saveHistoryToLocalStorage();
     }
-    this.updateGraphsPanel();
+    this.graphsPanel.updateGraphsPanel();
   }
 
   makeGraphComplete(type = "directed") {
@@ -531,28 +534,6 @@ export class GraphManager {
 
     // console.log("Graph data validated successfully.");
     return true;
-  }
-
-  updateGraphsPanel() {
-    const ul = d.querySelector("widgets #graphs-panel ul");
-    ul.innerHTML = "";
-    this.graphs.forEach((graph, index) => {
-      if (graph.getAttribute("label") === "Graph") {
-        graph.setAttribute("id", 0);
-      } else {
-        graph.setAttribute("id", index);
-        graph.setAttribute("label", `graph ${index}`);
-      }
-
-      const li = d.createElement("li");
-      li.id = `graphs-${graph.getAttribute("id")}`; // set the ID
-      li.setAttribute("name", "graphs");
-      li.textContent = graph.getAttribute("label"); // set the display name
-      if (index === this.graphIndex) {
-        li.classList.add("select");
-      }
-      ul.appendChild(li);
-    });
   }
 
   subgraph() {

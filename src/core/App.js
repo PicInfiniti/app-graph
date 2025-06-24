@@ -9,7 +9,7 @@ import { getAvailableLabel } from "../utils/helperFunctions.js";
 import { EventHandlers } from "./eventHandlers.js";
 import { menuData } from "../ui/MenuData.js";
 import { Layout } from "../graph/layouts.js";
-import { Widget } from "../ui/wedgets.js";
+import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
 import { ColorPicker } from "../ui/pickr.js";
 
@@ -28,7 +28,7 @@ export class App {
     ); // Handles graph logic
     this.rect = new Rect(this);
     this.menu = new Menu(this, menuData);
-    this.widget = new Widget(this);
+    this.widget = new Widgets(this);
     this.keyHandler = new KeyHandler(this); // Handle global keyboard shortcuts
     this.eventHanders = new EventHandlers(this);
     this.colorPicker = new ColorPicker(this);
