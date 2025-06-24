@@ -202,5 +202,88 @@ export class Widget {
         this.eventBus.emit("toggleSetting", { key: "colorPicker" });
       },
     );
+
+    //Graphs
+    const panel = d.querySelector("widgets #graphs-panel");
+    const ul = panel.querySelector("ul");
+    const lis = () => ul.querySelectorAll("li");
+
+    panel.addEventListener("click", (event) => {
+      const li = event.target.closest("li");
+      const isCtrl = event.ctrlKey || event.metaKey;
+
+      if (li) {
+        if (isCtrl) {
+          if (li.classList.contains("select")) {
+            if (panel.querySelectorAll("li.select").length > 1) {
+              li.classList.remove("select");
+            }
+          } else {
+            li.classList.add("select");
+          }
+        } else {
+          lis().forEach((el) => el.classList.remove("select"));
+          li.classList.add("select");
+        }
+        printSelectedIds();
+      } else if (event.target === panel) {
+        const items = lis();
+        const selectedItems = Array.from(items).filter((el) =>
+          el.classList.contains("select"),
+        );
+        let keep = selectedItems[0] || items[0];
+
+        items.forEach((el) => el.classList.remove("select"));
+        if (keep) {
+          keep.classList.add("select");
+        }
+        printSelectedIds();
+      }
+    });
+
+    // Add keydown listener on the document (or panel if you prefer)
+    d.addEventListener("keydown", (event) => {
+      const isCtrl = event.ctrlKey || event.metaKey;
+      const isShift = event.shiftKey;
+      const arrowDown = event.key === "ArrowDown";
+      const arrowUp = event.key === "ArrowUp";
+
+      if (!isCtrl || (!arrowDown && !arrowUp)) return;
+
+      const items = Array.from(lis());
+      const selected = panel.querySelector("li.select"); // get one selected
+      let index = items.indexOf(selected);
+
+      // Determine next index
+      if (arrowDown) {
+        index = (index + 1) % items.length;
+      } else if (arrowUp) {
+        index = (index - 1 + items.length) % items.length;
+      }
+
+      const nextLi = items[index];
+
+      if (isShift) {
+        // Multi-select add
+        nextLi.classList.add("select");
+      } else {
+        // Single select, remove others
+        items.forEach((el) => el.classList.remove("select"));
+        nextLi.classList.add("select");
+      }
+      printSelectedIds(); // 💡 Add this to log the selection
+      event.preventDefault(); // prevent page scroll
+    });
+
+    function printSelectedIds() {
+      const selected = panel.querySelectorAll("li.select");
+      const numbers = Array.from(selected)
+        .map((li) => {
+          const match = li.id.match(/\d+$/); // match number at end of id
+          return match ? parseInt(match[0], 10) : null;
+        })
+        .filter((num) => num !== null);
+      console.log("Selected numbers:", numbers);
+    }
   }
 }

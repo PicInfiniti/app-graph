@@ -10,6 +10,8 @@ import {
   toMixed,
 } from "graphology-operators";
 
+const d = document;
+
 export class GraphManager {
   constructor(app, limit, type = "mixed") {
     this.app = app;
@@ -57,6 +59,7 @@ export class GraphManager {
 
   init() {
     this.setupEventListeners();
+    this.updateGraphsPanel();
   }
 
   get graph() {
@@ -517,5 +520,22 @@ export class GraphManager {
 
     // console.log("Graph data validated successfully.");
     return true;
+  }
+
+  updateGraphsPanel() {
+    const ul = d.querySelector("widgets #graphs-panel ul");
+    ul.innerHTML = "";
+    this.graphs.forEach((graph, index) => {
+      if (!graph.getAttribute("id")) graph.setAttribute("id", index);
+      if (!graph.getAttribute("label")) graph.setAttribute("label", index);
+
+      const li = d.createElement("li");
+      li.id = `graphs-${graph.getAttribute("id")}`; // set the ID
+      li.textContent = graph.getAttribute("label"); // set the display name
+      if (index === this.graphIndex) {
+        li.classList.add("select");
+      }
+      ul.appendChild(li);
+    });
   }
 }

@@ -50,15 +50,26 @@
         color: red
         cursor: pointer 
 
-  .body-info
-    padding: 10px
+  .body-graphs
     overflow: auto
     scrollbar-width: thin
-    cursor: text
-    h4 
-      margin: 0px 0px 10px 0px
-    div
-      padding: 1px
-    hr 
-      opacity: .5
-      margin: 10px
+    cursor: pointer
+    
+    ul 
+      list-style-type: none
+      padding-left: 15px
+      li 
+        margin: 3px
+        width: 90% 
+        font-size: 16px
+        font-weight: bold
+        padding: 5px 0 5px 10px
+        border-radius: 5px
+        &:hover
+          background-color: rgba(70, 130, 180, .5 )
+          color: #f2f2f2ff 
+        
+        &.select
+          background-color: rgba(70, 130, 180, .9 )
+          color: #ffffff 
+        
