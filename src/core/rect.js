@@ -1,18 +1,18 @@
-import * as d3 from 'd3';
-import { scale } from 'sigma/utils';
+import * as d3 from "d3";
+import { scale } from "sigma/utils";
 export class Rect {
   constructor(app, canvas) {
-    this.app = app
-    this.settings = app.settings
-    this.canvas = app.canvas
-    this.ctx = app._canvas.ctx
+    this.app = app;
+    this.settings = app.settings;
+    this.canvas = app.canvas;
+    this.ctx = app._canvas.ctx;
 
     this.selection = {
       x: 0,
       y: 0,
       width: 0,
       height: 0,
-      active: false
+      active: false,
     };
 
     this.scale = {
@@ -25,19 +25,18 @@ export class Rect {
       offsetX: 0,
       offsetY: 0,
       handleSize: 10,
-      handles: ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'],
+      handles: ["nw", "n", "ne", "e", "se", "s", "sw", "w"],
       cursorMap: {
-        'nw': 'nwse-resize',
-        'n': 'ns-resize',
-        'ne': 'nesw-resize',
-        'e': 'ew-resize',
-        'se': 'nwse-resize',
-        's': 'ns-resize',
-        'sw': 'nesw-resize',
-        'w': 'ew-resize',
-      }
-    }
-
+        nw: "nwse-resize",
+        n: "ns-resize",
+        ne: "nesw-resize",
+        e: "ew-resize",
+        se: "nwse-resize",
+        s: "ns-resize",
+        sw: "nesw-resize",
+        w: "ew-resize",
+      },
+    };
   }
 
   init() {
@@ -46,62 +45,52 @@ export class Rect {
     this.canvas.addEventListener("mousemove", this.updateSelection.bind(this));
     this.canvas.addEventListener("mouseup", this.endSelection.bind(this));
 
-    this.app.drawGraph()
+    this.app.drawGraph();
   }
 
   draw() {
-    const selection = this.selection
     if (this.settings.select || this.settings.scale) {
-      if (selection.active) {
-        this.drawSelect(this.selection)
+      if (this.selection.active) {
+        this.drawSelect(this.selection);
       }
 
       if (this.settings.scale) {
-        this.drawScale()
+        this.drawScale();
       }
     }
   }
 
   drawSelect(selection) {
-    if (!selection) return
-    const ctx = this.ctx
+    if (!selection) return;
+    const ctx = this.ctx;
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Semi-transparent blue fill
-    ctx.fillRect(
-      selection.x,
-      selection.y,
-      selection.width,
-      selection.height
-    );
+    ctx.fillRect(selection.x, selection.y, selection.width, selection.height);
 
     ctx.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]); // Dashed border effect
-    ctx.strokeRect(
-      selection.x,
-      selection.y,
-      selection.width,
-      selection.height
-    );
+    ctx.strokeRect(selection.x, selection.y, selection.width, selection.height);
     ctx.setLineDash([]); // Reset line style
   }
 
   drawScale() {
     if (this.scale.active) {
-      this.drawScaleBox(this.scale.rect, this.ctx)
+      this.drawScaleBox(this.scale.rect, this.ctx);
     }
   }
 
   // Dragging logic
   startSelection(event) {
     if (this.settings.select || this.settings.scale) {
+      console.log(this.scale.active);
+
       // selection rect
-      const selection = this.selection
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-      selection.x = mouseX;
-      selection.y = mouseY;
-      selection.width = 0;
-      selection.height = 0;
-      selection.active = !this.scale.active;
+      this.selection.x = mouseX;
+      this.selection.y = mouseY;
+      this.selection.width = 0;
+      this.selection.height = 0;
+      this.selection.active = !this.scale.active;
 
       //Scale rect
       if (this.settings.scale && this.scale.active) {
@@ -113,8 +102,10 @@ export class Rect {
         if (this.scale.activeHandle) return;
 
         if (
-          mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
-          my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
+          mx >= this.scale.rect.x &&
+          mx <= this.scale.rect.x + this.scale.rect.width &&
+          my >= this.scale.rect.y &&
+          my <= this.scale.rect.y + this.scale.rect.height
         ) {
           this.scale.isDragging = true;
           this.scale.offsetX = mx - this.scale.rect.x;
@@ -128,15 +119,15 @@ export class Rect {
   }
 
   updateSelection(event) {
-    const selection = this.selection
-    const rect = this.scale.rect
-    const selectedNodes = this.app.graphManager.graph.getSelectedNodes()
+    const selection = this.selection;
+    const rect = this.scale.rect;
+    const selectedNodes = this.app.graphManager.graph.getSelectedNodes();
 
     if (selection.active && !this.scale.active) {
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
       selection.width = mouseX - selection.x;
       selection.height = mouseY - selection.y;
-      this.app.drawGraph()
+      this.app.drawGraph();
       return;
     }
 
@@ -146,15 +137,15 @@ export class Rect {
       if (this.scale.activeHandle) {
         this.resizeRect(this.scale.activeHandle, mx, my);
         for (let node of selectedNodes) {
-          this.app.graphManager.graph.updateNodeAttributes(node, attr => {
+          this.app.graphManager.graph.updateNodeAttributes(node, (attr) => {
             return {
               ...attr,
               x: rect.x + rect.width * this.scale.scaleData[node].x,
-              y: rect.y + rect.height * this.scale.scaleData[node].y
+              y: rect.y + rect.height * this.scale.scaleData[node].y,
             };
           });
         }
-        this.app.drawGraph()
+        this.app.drawGraph();
         return;
       }
 
@@ -162,20 +153,19 @@ export class Rect {
         this.scale.rect.x = mx - this.scale.offsetX;
         this.scale.rect.y = my - this.scale.offsetY;
 
-
         const dx = mx - this.scale.prevMouse.x;
         const dy = my - this.scale.prevMouse.y;
         for (let node of selectedNodes) {
-          this.app.graphManager.graph.updateNodeAttributes(node, attr => {
+          this.app.graphManager.graph.updateNodeAttributes(node, (attr) => {
             return {
               ...attr,
               x: attr.x + dx,
-              y: attr.y + dy
+              y: attr.y + dy,
             };
           });
         }
         this.scale.prevMouse = { x: mx, y: my };
-        this.app.drawGraph()
+        this.app.drawGraph();
         return;
       }
 
@@ -184,16 +174,17 @@ export class Rect {
       if (handle) {
         this.canvas.style.cursor = this.scale.cursorMap[handle];
       } else if (
-        mx >= this.scale.rect.x && mx <= this.scale.rect.x + this.scale.rect.width &&
-        my >= this.scale.rect.y && my <= this.scale.rect.y + this.scale.rect.height
+        mx >= this.scale.rect.x &&
+        mx <= this.scale.rect.x + this.scale.rect.width &&
+        my >= this.scale.rect.y &&
+        my <= this.scale.rect.y + this.scale.rect.height
       ) {
-        this.canvas.style.cursor = 'move';
+        this.canvas.style.cursor = "move";
       } else {
-        this.canvas.style.cursor = 'default';
+        this.canvas.style.cursor = "default";
       }
     }
   }
-
 
   endSelection(event) {
     this.selection.active = false;
@@ -201,55 +192,82 @@ export class Rect {
     this.scale.activeHandle = null;
 
     const selectedNodes = this.pointsInRect(this.selection);
-    selectedNodes.forEach(node => {
+    selectedNodes.forEach((node) => {
       this.app.graphManager.graph.toggleNodeSelection(node);
     });
 
     const selectedEdges = this.linesInRect(this.selection);
-    selectedEdges.forEach(edge => {
+    selectedEdges.forEach((edge) => {
       this.app.graphManager.graph.toggleEdgeSelection(edge);
     });
 
     const SELECTED = this.app.graphManager.graph.getSelectedNodes();
     if (this.settings.scale && SELECTED.length > 0 && !this.scale.active) {
       this.scale.active = true;
-      this.scale.rect = getBoundingBox(this.app.graphManager.graph, SELECTED, this.settings.node_radius);
-      this.scaleData = {}
-      SELECTED.forEach(
-        nodeId => {
-          const node = this.app.graphManager.graph.getNodeAttributes(nodeId)
-          this.scale.scaleData[nodeId] =
-            { id: nodeId, x: (node.x - this.scale.rect.x) / this.scale.rect.width, y: (node.y - this.scale.rect.y) / this.scale.rect.height }
-        }
-      )
-
+      this.scale.rect = getBoundingBox(
+        this.app.graphManager.graph,
+        SELECTED,
+        this.settings.node_radius,
+      );
+      this.scaleData = {};
+      SELECTED.forEach((nodeId) => {
+        const node = this.app.graphManager.graph.getNodeAttributes(nodeId);
+        this.scale.scaleData[nodeId] = {
+          id: nodeId,
+          x: (node.x - this.scale.rect.x) / this.scale.rect.width,
+          y: (node.y - this.scale.rect.y) / this.scale.rect.height,
+        };
+      });
     }
     this.app.drawGraph();
   }
 
   pointsInRect(selection) {
     const [x1, y1, x2, y2] = getRectAxis(selection);
-    return this.app.graphManager.graph.filterNodes(
-      (node, attrs) => pointInRect(attrs.x, attrs.y, x1, y1, x2, y2));
+    return this.app.graphManager.graph.filterNodes((node, attrs) =>
+      pointInRect(attrs.x, attrs.y, x1, y1, x2, y2),
+    );
   }
 
   linesInRect(selection) {
     const rect = getRectAxis(selection);
     return this.app.graphManager.graph.filterEdges(
-      (edge, attr, s, t, source, target) => this.lineIntersectsRect([source.x, source.y, target.x, target.y], rect))
+      (edge, attr, s, t, source, target) =>
+        this.lineIntersectsRect([source.x, source.y, target.x, target.y], rect),
+    );
   }
 
   lineIntersectsRect(line, rect) {
-    let [x1, y1, x2, y2] = line;  // Line segment coordinates
-    let [a, b, c, d] = rect;  // Rectangle properties
-    const treshHold = this.settings.node_radius / 2 + 20
+    let [x1, y1, x2, y2] = line; // Line segment coordinates
+    let [a, b, c, d] = rect; // Rectangle properties
+    const treshHold = this.settings.node_radius / 2 + 20;
     // Check if the line intersects any of the rectangle's edges
-    if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) return true
-    if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) return true
-    if (pointInRect(x1, y1, a + treshHold, b + treshHold, c - treshHold, d - treshHold)) return true
-    if (pointInRect(x2, y2, a + treshHold, b + treshHold, c - treshHold, d - treshHold)) return true
+    if (lineIntersectsLine([x1, y1, x2, y2], [a, b, c, d])) return true;
+    if (lineIntersectsLine([x1, y1, x2, y2], [a, d, c, b])) return true;
+    if (
+      pointInRect(
+        x1,
+        y1,
+        a + treshHold,
+        b + treshHold,
+        c - treshHold,
+        d - treshHold,
+      )
+    )
+      return true;
+    if (
+      pointInRect(
+        x2,
+        y2,
+        a + treshHold,
+        b + treshHold,
+        c - treshHold,
+        d - treshHold,
+      )
+    )
+      return true;
 
-    return false;  // No intersection
+    return false; // No intersection
   }
 
   drawScaleBox(rect, ctx) {
@@ -263,7 +281,7 @@ export class Rect {
     // Draw handles
     ctx.fillStyle = "#fff";
     ctx.strokeStyle = "#000";
-    this.scale.handles.forEach(dir => {
+    this.scale.handles.forEach((dir) => {
       const [hx, hy] = this.getHandlePosition(dir);
       ctx.fillRect(hx, hy, this.scale.handleSize, this.scale.handleSize);
       ctx.strokeRect(hx, hy, this.scale.handleSize, this.scale.handleSize);
@@ -273,24 +291,36 @@ export class Rect {
     const { x, y, width: w, height: h } = this.scale.rect;
     const s = this.scale.handleSize / 2;
     switch (dir) {
-      case 'nw': return [x - s, y - s];
-      case 'n': return [x + w / 2 - s, y - s];
-      case 'ne': return [x + w - s, y - s];
-      case 'e': return [x + w - s, y + h / 2 - s];
-      case 'se': return [x + w - s, y + h - s];
-      case 's': return [x + w / 2 - s, y + h - s];
-      case 'sw': return [x - s, y + h - s];
-      case 'w': return [x - s, y + h / 2 - s];
+      case "nw":
+        return [x - s, y - s];
+      case "n":
+        return [x + w / 2 - s, y - s];
+      case "ne":
+        return [x + w - s, y - s];
+      case "e":
+        return [x + w - s, y + h / 2 - s];
+      case "se":
+        return [x + w - s, y + h - s];
+      case "s":
+        return [x + w / 2 - s, y + h - s];
+      case "sw":
+        return [x - s, y + h - s];
+      case "w":
+        return [x - s, y + h / 2 - s];
     }
   }
 
   hitTestHandle(mx, my) {
-    return this.scale.handles.find(dir => {
+    return this.scale.handles.find((dir) => {
       const [hx, hy] = this.getHandlePosition(dir);
-      return mx >= hx && mx <= hx + this.scale.handleSize && my >= hy && my <= hy + this.scale.handleSize;
+      return (
+        mx >= hx &&
+        mx <= hx + this.scale.handleSize &&
+        my >= hy &&
+        my <= hy + this.scale.handleSize
+      );
     });
   }
-
 
   resizeRect(handle, mx, my) {
     const minSize = 20;
@@ -382,25 +412,27 @@ function getRectAxis(sel) {
 // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
 function lineIntersectsLine(line1, line2) {
   var det, gamma, lambda;
-  const [a, b, c, d] = line1
-  const [p, q, r, s] = line2
+  const [a, b, c, d] = line1;
+  const [p, q, r, s] = line2;
   det = (c - a) * (s - q) - (r - p) * (d - b);
   if (det === 0) {
     return false;
   } else {
     lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
     gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
-    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+    return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
   }
-};
-
+}
 
 function getBoundingBox(graph, nodeIds, node_radius) {
   if (!nodeIds.length) return null;
 
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
 
-  nodeIds.forEach(id => {
+  nodeIds.forEach((id) => {
     const n = graph.getNodeAttributes(id);
     if (n.x < minX) minX = n.x;
     if (n.y < minY) minY = n.y;
@@ -408,13 +440,12 @@ function getBoundingBox(graph, nodeIds, node_radius) {
     if (n.y > maxY) maxY = n.y;
   });
 
-  const treshHold = node_radius * 1.5
+  const treshHold = node_radius * 1.5;
 
   return {
     x: minX - treshHold,
     y: minY - treshHold,
     width: maxX - minX + 2 * treshHold,
-    height: maxY - minY + 2 * treshHold
+    height: maxY - minY + 2 * treshHold,
   };
 }
-

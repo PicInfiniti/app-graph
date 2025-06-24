@@ -33,7 +33,6 @@ export class EventHandlers {
 
     // When graph data updates, re-render visualization
     this.app.eventBus.on("graph:updated", (event) => {
-      this.app.rect.scale.active = true;
       this.app.drawGraph(); // Visualize the graph
       const updateTypes = [
         "addEdges",
