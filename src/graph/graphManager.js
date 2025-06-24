@@ -23,6 +23,7 @@ export class GraphManager {
 
     this.limit = limit;
     this.index = 0;
+    this.cut = false;
 
     switch (type) {
       case "directed":
@@ -360,21 +361,21 @@ export class GraphManager {
 
   //🔁 copySelected()
   copySubgraph() {
-    this.saveGraphState();
     this.subGraph = this.graph.copySubgraph();
+    this.cut = false;
   }
 
   //✂️ cutSelected()
   cutSubgraph() {
-    this.saveGraphState();
     this.subGraph = this.graph.cutSubgraph();
+    this.cut = true;
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
   pasteSubgraph(val = false, offset = { x: 150, y: 100 }) {
-    this.subGraph = this.graph.pasteSubgraph(this.subGraph, offset);
+    this.subGraph = this.graph.pasteSubgraph(this.subGraph, this.cut, offset);
     if (val) this.subgraph();
-
+    this.cut = false;
     this.saveGraphState();
   }
 
@@ -536,10 +537,12 @@ export class GraphManager {
     const ul = d.querySelector("widgets #graphs-panel ul");
     ul.innerHTML = "";
     this.graphs.forEach((graph, index) => {
-      if (graph.getAttribute("id") === undefined)
+      if (graph.getAttribute("label") === "Graph") {
+        graph.setAttribute("id", 0);
+      } else {
         graph.setAttribute("id", index);
-      if (!graph.getAttribute("label"))
         graph.setAttribute("label", `graph ${index}`);
+      }
 
       const li = d.createElement("li");
       li.id = `graphs-${graph.getAttribute("id")}`; // set the ID

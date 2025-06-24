@@ -1,5 +1,5 @@
 import { Graph } from "graphology";
-import { subgraph, disjointUnion } from "graphology-operators";
+import { subgraph, disjointUnion, union } from "graphology-operators";
 
 export default class Mixed extends Graph {
   constructor(options) {
@@ -354,7 +354,7 @@ export default class Mixed extends Graph {
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
-  pasteSubgraph(sub, offset = { x: 0, y: 0 }) {
+  pasteSubgraph(sub, cut = false, offset = { x: 0, y: 0 }) {
     if (!sub) return;
 
     // Optional: adjust layout if using x/y coordinates
@@ -367,11 +367,17 @@ export default class Mixed extends Graph {
 
     // Use disjointUnion to merge with remapped node keys
     this.deselectAll();
-    const combined = disjointUnion(this, sub);
+    let combined;
+    if (cut) {
+      combined = union(this, sub);
+    } else {
+      combined = disjointUnion(this, sub);
+    }
+
     // Replace this graph's contents with the combined graph
     this.clear();
     this.import(combined.export());
-    return combined.nodes().slice(sub.length);
+    return sub;
   }
 
   replace(graph) {
