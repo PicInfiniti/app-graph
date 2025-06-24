@@ -624,6 +624,7 @@ export const menuData = [
         ],
       },
       { title: "Reverse Direction", id: "reverse-direction" },
+      { title: "Subgraph", id: "subgraph-btn" },
     ],
   },
   {

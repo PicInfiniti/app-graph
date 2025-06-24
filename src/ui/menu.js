@@ -475,6 +475,18 @@ export class Menu {
       "to-mixed": () => this.graphManager.toMixedGraph(),
       "to-weighted": () => this.graphManager.toWeighted(),
       "to-unweighted": () => this.graphManager.toUnweighted(),
+      "subgraph-btn": () => this.graphManager.subgraph(),
+
+      graphs: () => {
+        const selected = d.querySelectorAll("#graphs-panel ul li.select");
+        const numbers = Array.from(selected)
+          .map((li) => {
+            const match = li.id.match(/\d+$/); // match number at end of id
+            return match ? parseInt(match[0], 10) : null;
+          })
+          .filter((num) => num !== null);
+        this.graphManager.selectAllNode(numbers);
+      },
 
       //Help
       "how-to-use": () =>
@@ -502,6 +514,7 @@ export class Menu {
       "copy-subgraph": () => this.graphManager.copySubgraph(),
       "cut-subgraph": () => this.graphManager.cutSubgraph(),
       "paste-subgraph": () => this.graphManager.pasteSubgraph(),
+      "paste-subgraph-seprate": () => this.graphManager.pasteSubgraph(true),
 
       // color chord
       "update-node-color": () =>
@@ -549,10 +562,8 @@ export class Menu {
       const target = event.target.closest("li");
       if (!target) return;
 
-      const menuId = target.id || target.getAttribute("name");
-      if (menuId) {
-        this.handleMenuAction(menuId);
-      }
+      const menuId = target.getAttribute("name") || target.id;
+      if (menuId) this.handleMenuAction(menuId);
     });
 
     d.addEventListener("input", (event) => {

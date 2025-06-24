@@ -371,6 +371,7 @@ export default class Mixed extends Graph {
     // Replace this graph's contents with the combined graph
     this.clear();
     this.import(combined.export());
+    return combined.nodes().slice(sub.length);
   }
 
   replace(graph) {

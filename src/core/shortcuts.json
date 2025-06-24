@@ -18,6 +18,10 @@
     "y": { "desc": "Copy", "action": "copy-subgraph" },
     "x": { "desc": "Cut", "action": "cut-subgraph" },
     "p": { "desc": "Paste", "action": "paste-subgraph" },
+    "ctrl+p": {
+      "desc": "Paste",
+      "action": "paste-subgraph-seprate"
+    },
     "r": { "desc": "Rename", "action": "rename-btn" },
     "i": { "desc": "Info", "action": "desc-btn" },
     "w": { "desc": "weight", "action": "weight-btn" },
@@ -83,6 +87,22 @@
 
     "ctrl+r": { "desc": "Redo", "action": "redo-btn" },
     "ctrl+s": { "desc": "Export graph", "action": "export-graph" },
+    "ctrl+ArrowUp": {
+      "desc": "Select subgraph",
+      "action": "graphs"
+    },
+    "ctrl+ArrowDown": {
+      "desc": "Select suubgraph",
+      "action": "graphs"
+    },
+    "shift+ctrl+ArrowUp": {
+      "desc": "Select subgraph",
+      "action": "graphs"
+    },
+    "shidt+ctrl+ArrowDown": {
+      "desc": "Select suubgraph",
+      "action": "graphs"
+    },
 
     "C": { "desc": "Complete", "action": "complete-btn" },
     "alt+C": { "desc": "Complete", "action": "complete-directed-btn" },

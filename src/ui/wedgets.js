@@ -225,7 +225,6 @@ export class Widget {
           lis().forEach((el) => el.classList.remove("select"));
           li.classList.add("select");
         }
-        printSelectedIds();
       } else if (event.target === panel) {
         const items = lis();
         const selectedItems = Array.from(items).filter((el) =>
@@ -237,7 +236,6 @@ export class Widget {
         if (keep) {
           keep.classList.add("select");
         }
-        printSelectedIds();
       }
     });
 
@@ -271,19 +269,7 @@ export class Widget {
         items.forEach((el) => el.classList.remove("select"));
         nextLi.classList.add("select");
       }
-      printSelectedIds(); // 💡 Add this to log the selection
       event.preventDefault(); // prevent page scroll
     });
-
-    function printSelectedIds() {
-      const selected = panel.querySelectorAll("li.select");
-      const numbers = Array.from(selected)
-        .map((li) => {
-          const match = li.id.match(/\d+$/); // match number at end of id
-          return match ? parseInt(match[0], 10) : null;
-        })
-        .filter((num) => num !== null);
-      console.log("Selected numbers:", numbers);
-    }
   }
 }

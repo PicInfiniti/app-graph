@@ -59,16 +59,17 @@ export class GraphManager {
 
   init() {
     this.setupEventListeners();
-    this.updateGraphsPanel();
   }
 
   get graph() {
-    return this.graphs[this.graphIndex];
+    // return this.graphs[this.graphIndex];
+    return this.graphs[0];
   }
 
   set graph(value) {
-    // value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
-    this.graphs[this.graphIndex] = value;
+    value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
+    // this.graphs[this.graphIndex] = value;
+    this.graphs = [value];
   }
 
   addNode(id, attr) {
@@ -100,7 +101,8 @@ export class GraphManager {
       const graph = empty(this.graphClass, 0);
       this.graphs.push(graph.import(h));
     }
-    this.graph = this.graphs[0];
+    this.graphIndex = 0;
+    this.updateGraphsPanel();
     return true;
   }
 
@@ -169,6 +171,7 @@ export class GraphManager {
     if (this.settings.saveHistory) {
       this.saveHistoryToLocalStorage();
     }
+    this.updateGraphsPanel();
   }
 
   makeGraphComplete(type = "directed") {
@@ -259,7 +262,6 @@ export class GraphManager {
       selected: false,
     }));
     this.app.rect.scale.active = false;
-    this.eventBus.emit("graph:updated", { type: "unselect" });
   }
 
   deselectAllEdge() {
@@ -268,35 +270,49 @@ export class GraphManager {
       selected: false,
     }));
     this.app.rect.scale.active = false;
-    this.eventBus.emit("graph:updated", { type: "unselect" });
   }
 
-  selectAll() {
-    this.selectAllNode();
-    this.selectAllEdge();
+  selectAll(array = null) {
+    this.selectAllNode(array);
+    this.selectAllEdge(array);
   }
 
-  selectAllEdge() {
-    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
-      ...attrs,
-      selected: attrs.id + 1,
-    }));
-    this.eventBus.emit("graph:updated", { type: "select" });
-  }
-
-  selectAllNode() {
-    this.graph.updateEachNodeAttributes((node, attrs) => {
-      return {
+  selectAllEdge(array) {
+    if (array) {
+    } else {
+      this.graph.updateEachEdgeAttributes((edge, attrs) => ({
         ...attrs,
         selected: attrs.id + 1,
-      };
-    });
-    this.eventBus.emit("graph:updated", { type: "select" });
+      }));
+    }
+  }
+
+  selectAllNode(array) {
+    if (array) {
+      this.deselectAllNode();
+      array.forEach((id) => {
+        const graph = this.graphs[id];
+        graph.forEachNode((node, attr) => {
+          this.graph.updateNodeAttributes(node, (attrs) => {
+            return {
+              ...attrs,
+              selected: attrs.id + 1,
+            };
+          });
+        });
+      });
+    } else {
+      this.graph.updateEachNodeAttributes((node, attrs) => {
+        return {
+          ...attrs,
+          selected: attrs.id + 1,
+        };
+      });
+    }
   }
 
   selectNode(node) {
     this.graph.selectNode(node);
-    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectNextNode() {
@@ -307,7 +323,6 @@ export class GraphManager {
     );
     const node = this.graph.nodes()[this.selectNodeIndex];
     this.graph.selectNode(node);
-    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectPerviousNode() {
@@ -356,10 +371,11 @@ export class GraphManager {
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
-  pasteSubgraph(offset = { x: 150, y: 100 }) {
+  pasteSubgraph(val = false, offset = { x: 150, y: 100 }) {
+    this.subGraph = this.graph.pasteSubgraph(this.subGraph, offset);
+    if (val) this.subgraph();
+
     this.saveGraphState();
-    this.graph.pasteSubgraph(this.subGraph, offset);
-    this.eventBus.emit("graph:updated", { type: "pasteSubgraph" });
   }
 
   reverseGraph() {
@@ -367,7 +383,6 @@ export class GraphManager {
       this.saveGraphState();
       const reversedGraph = reverse(this.graph);
       this.graph.replace(reversedGraph);
-      this.eventBus.emit("graph:updated", { type: "reverseGraph" });
     }
   }
 
@@ -526,16 +541,35 @@ export class GraphManager {
     const ul = d.querySelector("widgets #graphs-panel ul");
     ul.innerHTML = "";
     this.graphs.forEach((graph, index) => {
-      if (!graph.getAttribute("id")) graph.setAttribute("id", index);
-      if (!graph.getAttribute("label")) graph.setAttribute("label", index);
+      if (graph.getAttribute("id") === undefined)
+        graph.setAttribute("id", index);
+      if (!graph.getAttribute("label"))
+        graph.setAttribute("label", `graph ${index}`);
 
       const li = d.createElement("li");
       li.id = `graphs-${graph.getAttribute("id")}`; // set the ID
+      li.setAttribute("name", "graphs");
       li.textContent = graph.getAttribute("label"); // set the display name
       if (index === this.graphIndex) {
         li.classList.add("select");
       }
       ul.appendChild(li);
     });
+  }
+
+  subgraph() {
+    const nodeIds = this.graph.getSelectedNodes();
+    if (!nodeIds.length) {
+      this.metric.addHeader("Graphs");
+      this.metric.addInfo("Select at least one node");
+      this.metric.addLine();
+      return;
+    }
+    const subgraph = this.graph.copySubgraph();
+    subgraph.removeAttribute("id");
+    subgraph.removeAttribute("label");
+    this.graphs.push(subgraph);
+    this.deselectAll();
+    this.saveGraphState();
   }
 }
