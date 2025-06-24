@@ -82,8 +82,6 @@ export class Rect {
   // Dragging logic
   startSelection(event) {
     if (this.settings.select || this.settings.scale) {
-      console.log(this.scale.active);
-
       // selection rect
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
       this.selection.x = mouseX;

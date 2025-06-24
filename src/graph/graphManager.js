@@ -185,29 +185,35 @@ export class GraphManager {
         }
       }
     }
-    this.eventBus.emit("graph:updated", { type: "addEdge" });
   }
 
   dropSelectedNodesEdges() {
+    const edges = this.graph.getSelectedEdges();
+    const nodes = this.graph.getSelectedNodes();
+    this.graphs.forEach((graph, index) => {
+      edges.forEach((edge) => {
+        if (graph.hasEdge(edge)) graph.dropEdge(edge);
+      });
+      nodes.forEach((node) => {
+        if (graph.hasNode(node)) graph.dropNode(node);
+        if (!graph.order) this.graphs.splice(index, 1);
+      });
+    });
+
     this.saveGraphState();
-    this.graph.deleteSelected();
-    this.eventBus.emit("graph:updated", { type: "dropNodesEdges" });
   }
 
   connectSelectedNodes(type = "directed") {
-    this.saveGraphState();
     this.graph.connectSelectedNodes(this.settings.edge_color, type);
-    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
+    this.saveGraphState();
   }
 
   connectSelectedNodesInOrder(type = "directed") {
-    this.saveGraphState();
     this.graph.connectSelectedNodesInOrder(this.settings.edge_color, type);
-    this.eventBus.emit("graph:updated", { type: "addNodesEdges" });
+    this.saveGraphState();
   }
 
   updateSelectedNodesEdgesColor(n = true, s = true, e = true, l = true) {
-    this.saveGraphState();
     this.graph.updateSelectedNodesColor(
       n ? this.settings.node_color : false,
       s ? this.settings.stroke_color : false,
@@ -217,38 +223,35 @@ export class GraphManager {
       e ? this.settings.edge_color : false,
       l ? this.settings.label_color : false,
     );
-    this.eventBus.emit("graph:updated", { type: "updateNodesEdgesColor" });
+    this.saveGraphState();
   }
 
   updateSelectedName(name) {
-    this.saveGraphState();
     if (name) {
       this.graph.updateSelectedName(name);
     } else {
       this.graph.updateSelectedName("");
     }
-    this.eventBus.emit("graph:updated", { type: "updateNodesNames" });
+    this.saveGraphState();
   }
 
   updateSelectedInfo(val) {
-    this.saveGraphState();
     if (val) {
       this.graph.updateSelectedInfo({ "": val });
     } else {
       this.graph.updateSelectedInfo({});
     }
-    this.eventBus.emit("graph:updated", { type: "updateNodesInfo" });
+    this.saveGraphState();
   }
 
   updateSelectedWeight(val) {
-    this.saveGraphState();
     const weight = parseFloat(val);
     if (weight) {
       this.graph.updateSelectedWeight(weight);
     } else {
       this.graph.updateSelectedWeight(undefined);
     }
-    this.eventBus.emit("graph:updated", { type: "updateEdgeWeight" });
+    this.saveGraphState();
   }
 
   deselectAll() {
@@ -333,7 +336,6 @@ export class GraphManager {
     );
     const node = this.graph.nodes()[this.selectNodeIndex];
     this.graph.selectNode(node);
-    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectNextEdge() {
@@ -344,7 +346,6 @@ export class GraphManager {
     );
     const edge = this.graph.edges()[this.selectEdgeIndex];
     this.graph.selectEdge(edge);
-    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   selectPerviousEdge() {
@@ -355,7 +356,6 @@ export class GraphManager {
     );
     const edge = this.graph.edges()[this.selectEdgeIndex];
     this.graph.selectEdge(edge);
-    this.eventBus.emit("graph:updated", { type: "select" });
   }
 
   //🔁 copySelected()
@@ -393,7 +393,6 @@ export class GraphManager {
       this.clearToDigraph();
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
-      this.eventBus.emit("graph:updated", { type: "toDirectedGraph" });
     }
   }
 
@@ -404,37 +403,33 @@ export class GraphManager {
       this.clearToMixed();
       this.graph.replace(graph);
       this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
-      this.eventBus.emit("graph:updated", { type: "toMixedGraph" });
     }
   }
 
   toUndirectedGraph() {
     if (this.graph.type !== "undirected") {
-      this.saveGraphState();
       const diGraph = toUndirected(this.graph);
       this.clearToUndirectedGraph();
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "undirected" });
-      this.eventBus.emit("graph:updated", { type: "toUndirectedGraph" });
+      this.saveGraphState();
     }
   }
 
   toWeighted() {
-    this.saveGraphState();
     this.graph.updateEachEdgeAttributes((edge, attrs) => ({
       ...attrs,
       weight: 1,
     }));
-    this.eventBus.emit("graph:updated", { type: "toWeighted" });
+    this.saveGraphState();
   }
 
   toUnweighted() {
-    this.saveGraphState();
     this.graph.updateEachEdgeAttributes((edge, attrs) => ({
       ...attrs,
       weight: undefined,
     }));
-    this.eventBus.emit("graph:updated", { type: "toUnweighted" });
+    this.saveGraphState();
   }
 
   saveHistoryToLocalStorage() {
