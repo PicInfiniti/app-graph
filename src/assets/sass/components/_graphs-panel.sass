@@ -57,25 +57,44 @@
     
     ul 
       list-style-type: none
-      padding-left: 15px
+      padding-left: 20px
       li 
         margin: 3px
+        margin-left: 10px
         width: 90% 
         font-size: 16px
         font-weight: bold
-        padding: 5px 0 5px 10px
-        border-radius: 5px
+        padding: 5px 0px 5px 5px
+        border-radius: 0 5px 5px 0
+        display: block
+        position: relative
+
         &:hover
           background-color: rgba(70, 130, 180, .5 )
-          color: #f2f2f2ff 
-        
+          color: #f2f2f2ff !important
+
         &.select
-          background-color: rgba(70, 130, 180, .9 )
-          color: #ffffff
+          background-color: rgba(70, 130, 180, .75 )
+          color: #ffffff !important
+
+        &:not(:first-child):before
+          content: ""
+          display: block
+          position: absolute 
+          top: -13px
+          left: -15px
+          width: 10px
+          height: 28px
+          border: solid #bebebe
+          border-width: 0 0 2px 2px
+
+        &:nth-of-type(2)
+          &:before
+            top: -5px
+            height: 18px
 
         &:first-of-type
-          margin: 3px 3px 10px -10px
-          
-          background-color: #005000
-          color: white
-        
+          margin: 3px 3px 5px -20px
+          color: #005000
+
+
