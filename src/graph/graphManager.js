@@ -532,4 +532,11 @@ export class GraphManager {
     this.deselectAll();
     this.saveGraphState();
   }
+
+  // Faces
+  addFace() {
+    const nodes = this.graph.getSelectedNodes();
+    this.graph.addFace(nodes, { color: this.settings.edge_color });
+    this.saveGraphState();
+  }
 }

@@ -118,7 +118,7 @@ export class App {
       });
 
       if (hull) {
-        ctx.fillStyle = "#00000055";
+        ctx.fillStyle = attrs.color;
 
         ctx.beginPath();
         ctx.moveTo(hull[0][0], hull[0][1]);

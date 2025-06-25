@@ -393,10 +393,10 @@ export default class Mixed extends Graph {
     nodes.sort();
     const face = nodes.join("_");
 
-    attrs = attrs || {
+    attrs = {
+      ...attrs,
       key: face,
       id: this._faces.size,
-      label: getAvailableLabel(this._faces.size),
       nodes: nodes,
     };
 

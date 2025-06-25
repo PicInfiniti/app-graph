@@ -170,6 +170,7 @@ export class Menu {
       // Edit
       "add-edge-btn": () =>
         this.graphManager.connectSelectedNodes("undirected"),
+      "add-face-btn": () => this.graphManager.addFace(),
       "add-edge-in-order-btn": () =>
         this.graphManager.connectSelectedNodesInOrder("undirected"),
 

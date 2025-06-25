@@ -30,6 +30,10 @@
       "action": "toggle-force-btn",
       "value": true
     },
+    "ctrl+f": {
+      "desc": "Force Simulation",
+      "action": "add-face-btn"
+    },
     "t": { "desc": "Tree", "action": "toggle-tree-btn", "value": true },
     "F5": { "desc": "Reload", "action": "reload" },
     "ArrowUp": { "desc": "Select all node", "action": "select-all-node" },
