@@ -26,23 +26,14 @@ export class GraphManager {
     this.limit = limit;
     this.index = 0;
     this.cut = false;
-
-    switch (type) {
-      case "directed":
-        this.graphClass = DirectedGraph;
-        break;
-
-      case "undirected":
-        this.graphClass = UndirectedGraph;
-        break;
-
-      default:
-        this.graphClass = Mixed;
-        break;
-    }
-
+    this.graphClass = {
+      directed: DirectedGraph,
+      undirected: UndirectedGraph,
+      mixed: Mixed,
+    };
     this.graphIndex = 0;
-    this._graph = empty(this.graphClass, 0);
+
+    this._graph = empty(this.graphClass[type], 0);
     this._graph.updateAttributes((attr) => {
       return {
         ...attr,
@@ -70,6 +61,7 @@ export class GraphManager {
   }
 
   set graph(value) {
+    console.log(this.graphs);
     value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
     // this.graphs[this.graphIndex] = value;
     this.graphs = [value];
@@ -101,33 +93,22 @@ export class GraphManager {
     this.index = value;
     this.graphs = [];
     for (const h of this.history[this.index]) {
-      const graph = empty(this.graphClass, 0);
+      const graph = empty(this.graphClass[h.options.type], 0);
       this.graphs.push(graph.import(h));
     }
+    this.eventBus.emit("updateSetting", {
+      key: "type",
+      value: this.history[this.index][0].options.type,
+    });
     this.graphIndex = 0;
     this.graphsPanel.updateGraphsPanel();
     return true;
   }
 
-  clearToMixed() {
-    this.saveGraphState();
+  clearTo(type = "mixed") {
+    this.eventBus.emit("updateSetting", { key: "type", value: type });
     this.graph = empty(Mixed, 0);
-    this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = Mixed;
-  }
-
-  clearToUndirectedGraph() {
     this.saveGraphState();
-    this.graph = empty(UndirectedGraph, 0);
-    this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = UndirectedGraph;
-  }
-
-  clearToDigraph() {
-    this.saveGraphState();
-    this.graph = empty(DirectedGraph, 0);
-    this.eventBus.emit("graph:updated", { type: "clear" });
-    this.graphClass = DirectedGraph;
   }
 
   setupEventListeners() {

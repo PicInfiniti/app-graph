@@ -3,6 +3,7 @@ import constellationData from "./constellations.json";
 export class Zodiac {
   constructor(graphManager) {
     this.graphManager = graphManager;
+    this.settings = graphManager.settings;
     this.layout = graphManager.layout;
   }
 
@@ -13,7 +14,7 @@ export class Zodiac {
         name,
         data.stars,
         data.edges,
-        this.graphManager.graphClass,
+        this.graphManager.graphClass[this.settings.type],
       );
       this.layout.applyLayout("rotate180");
     } else {

@@ -152,19 +152,13 @@ export class Menu {
     const actions = {
       // File
       "new-mixed-btn": () => {
-        this.graphManager.clearToMixed();
-        this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
+        this.graphManager.clearTo("mixed");
       },
       "new-digraph-btn": () => {
-        this.graphManager.clearToDigraph();
-        this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
+        this.graphManager.clearTo("directed");
       },
       "new-undirected-graph-btn": () => {
-        this.graphManager.clearToUndirectedGraph();
-        this.eventBus.emit("updateSetting", {
-          key: "type",
-          value: "undirected",
-        });
+        this.graphManager.clearTo("undireccted");
       },
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),

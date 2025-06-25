@@ -58,6 +58,7 @@ export class GraphsPanel {
   }
 
   selectLi(id) {
+    if (this.app.keyHandler.isCtrlHold()) this.deselectLis();
     const li = this.ul.querySelector(`#graphs-${id}`);
     if (li) {
       li.classList.toggle("select");
