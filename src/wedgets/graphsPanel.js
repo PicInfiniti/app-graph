@@ -25,7 +25,10 @@ export class GraphsPanel {
   selectLis(val) {
     this.index = val.split("-")[1];
     this.selectLi(this.index);
-    this.graphManager.selectAllNode(this.lis());
+
+    if (this.app.keyHandler.isCtrlHold())
+      this.graphManager.graphIndex = this.index;
+    else this.graphManager.selectAllNode(this.lis());
   }
 
   updateGraphsPanel() {
@@ -44,9 +47,6 @@ export class GraphsPanel {
       li.id = `graphs-${graph.getAttribute("id")}`; // set the ID
       li.setAttribute("name", "graphs");
       li.textContent = graph.getAttribute("label"); // set the display name
-      if (index === this.graphIndex) {
-        li.classList.add("select");
-      }
       this.ul.appendChild(li);
     });
   }

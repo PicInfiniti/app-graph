@@ -66,8 +66,7 @@ export class GraphManager {
   }
 
   get graph() {
-    // return this.graphs[this.graphIndex];
-    return this.graphs[0];
+    return this.graphs[this.graphIndex];
   }
 
   set graph(value) {
@@ -300,12 +299,13 @@ export class GraphManager {
       array.forEach((id) => {
         const graph = this.graphs[id];
         graph.forEachNode((node, attr) => {
-          this.graph.updateNodeAttributes(node, (attrs) => {
-            return {
-              ...attrs,
-              selected: attrs.id + 1,
-            };
-          });
+          if (this.graph.hasNode(node))
+            this.graph.updateNodeAttributes(node, (attrs) => {
+              return {
+                ...attrs,
+                selected: attrs.id + 1,
+              };
+            });
         });
       });
     } else {
@@ -548,6 +548,7 @@ export class GraphManager {
     subgraph.removeAttribute("id");
     subgraph.removeAttribute("label");
     this.graphs.push(subgraph);
+    subgraph.deselectAll();
     this.deselectAll();
     this.saveGraphState();
   }

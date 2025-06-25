@@ -206,4 +206,8 @@ export class KeyHandler {
   isShiftHold() {
     return this.pressedKeys.has("shift");
   }
+
+  isCtrlHold() {
+    return this.pressedKeys.has("ctrl");
+  }
 }
