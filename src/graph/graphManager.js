@@ -32,7 +32,6 @@ export class GraphManager {
       mixed: Mixed,
     };
     this.graphIndex = 0;
-
     this._graph = empty(this.graphClass[type], 0);
     this._graph.updateAttributes((attr) => {
       return {
@@ -107,7 +106,7 @@ export class GraphManager {
 
   clearTo(type = "mixed") {
     this.eventBus.emit("updateSetting", { key: "type", value: type });
-    this.graph = empty(Mixed, 0);
+    this.graph = empty(this.graphClass[type], 0);
     this.saveGraphState();
   }
 

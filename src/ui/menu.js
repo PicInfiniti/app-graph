@@ -158,7 +158,7 @@ export class Menu {
         this.graphManager.clearTo("directed");
       },
       "new-undirected-graph-btn": () => {
-        this.graphManager.clearTo("undireccted");
+        this.graphManager.clearTo("undirected");
       },
       "import-graph": () => this.eventBus.emit("import"),
       "export-graph": () => this.eventBus.emit("export", { type: "json" }),

@@ -94,7 +94,6 @@ export class Generator {
   }
 
   clusters(o, s, c) {
-    console.log(this.graphManager.graphClass[this.settings.type]);
     this.graphManager.graph = clusters(
       this.graphManager.graphClass[this.settings.type],
       {
