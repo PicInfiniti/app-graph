@@ -44,6 +44,9 @@ export default class Mixed extends Graph {
         this.setEdgeAttribute(key, "selected", false);
       if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
+
+    // Faces
+    this._faces = new Map();
   }
 
   getEdgeWeight(edge) {
@@ -384,8 +387,38 @@ export default class Mixed extends Graph {
     this.clear();
     this.import(graph.export());
   }
+
+  //faces
+  addFace(nodes, attrs) {
+    nodes.sort();
+    const face = nodes.join("_");
+
+    attrs = attrs || {
+      key: face,
+      id: this._faces.size,
+      label: getAvailableLabel(this._faces.size),
+      nodes: nodes,
+    };
+
+    this._faces.set(face, attrs);
+  }
+
+  faces() {
+    return Array.from(this._faces.keys());
+  }
+
+  forEachFace(callback) {
+    var iterator = this._faces.values();
+
+    var step, attrs;
+    while (((step = iterator.next()), step.done !== true)) {
+      attrs = step.value;
+      callback(attrs.key, attrs);
+    }
+  }
 }
 
+// do note remove following code
 function assignPolyfill() {
   var target = arguments[0];
   for (var i = 1, l = arguments.length; i < l; i++) {
@@ -398,3 +431,28 @@ function assignPolyfill() {
 }
 var assign = assignPolyfill;
 if (typeof Object.assign === "function") assign = Object.assign;
+
+function getAvailableLabel(n, maxLength = 3) {
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+  const combinations = [];
+
+  function generateNthCombination(prefix, start, remaining) {
+    if (remaining === 0) {
+      combinations.push(prefix);
+      return;
+    }
+
+    for (let i = start; i < alphabet.length; i++) {
+      generateNthCombination(prefix + alphabet[i], i + 1, remaining - 1);
+      if (combinations.length > n) return;
+    }
+  }
+
+  let currentLength = 1;
+  while (combinations.length <= n && currentLength <= maxLength) {
+    generateNthCombination("", 0, currentLength);
+    currentLength++;
+  }
+
+  return combinations[n] || null;
+}

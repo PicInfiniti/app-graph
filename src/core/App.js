@@ -100,6 +100,36 @@ export class App {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Draw edges
 
+    graph.forEachFace((face, attrs) => {
+      const hull = attrs.nodes.map((p) => {
+        const node = graph.getNodeAttributes(p);
+        return [node.x, node.y];
+      });
+
+      const centroid = {
+        x: d3.mean(hull, (d) => d.x),
+        y: d3.mean(hull, (d) => d.y),
+      };
+
+      hull.sort((a, b) => {
+        const angleA = Math.atan2(a.y - centroid.y, a.x - centroid.x);
+        const angleB = Math.atan2(b.y - centroid.y, b.x - centroid.x);
+        return angleA - angleB;
+      });
+
+      if (hull) {
+        ctx.fillStyle = "#00000055";
+
+        ctx.beginPath();
+        ctx.moveTo(hull[0][0], hull[0][1]);
+        for (let i = 1; i < hull.length; i++) {
+          ctx.lineTo(hull[i][0], hull[i][1]);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+    });
+
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       if (attr.label === undefined) {
         const newLabel = getAvailableLabel(attr.id);
