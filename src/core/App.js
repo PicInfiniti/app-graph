@@ -11,7 +11,7 @@ import { menuData } from "../ui/MenuData.js";
 import { Layout } from "../graph/layouts.js";
 import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
-import { ColorPicker } from "../ui/pickr.js";
+import { ColorPicker } from "../ui/colorPickr.js";
 
 export class App {
   constructor() {
@@ -100,8 +100,20 @@ export class App {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Draw edges
 
-    graph.forEachFace((face, attrs) => {
-      const hull = attrs.nodes.map((p) => {
+    graph.forEachFace((face, attr) => {
+      if (attr.label === undefined) {
+        const newLabel = getAvailableLabel(attr.id);
+        graph.setFaceAttribute(face, "label", newLabel);
+      }
+
+      if (!attr.color) {
+        graph.setFaceAttribute(face, "color", settings.face_color);
+      }
+      if (!attr.labelColor) {
+        graph.setFaceAttribute(face, "labelColor", settings.label_color);
+      }
+
+      const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);
         return [node.x, node.y];
       });
@@ -118,7 +130,7 @@ export class App {
       });
 
       if (hull) {
-        ctx.fillStyle = attrs.color;
+        ctx.fillStyle = attr.color;
 
         ctx.beginPath();
         ctx.moveTo(hull[0][0], hull[0][1]);

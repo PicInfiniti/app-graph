@@ -13,6 +13,7 @@ export class ColorPicker {
       "node",
       "stroke",
       "edge",
+      "face",
       "label",
       "background",
       "grid",

@@ -536,7 +536,7 @@ export class GraphManager {
   // Faces
   addFace() {
     const nodes = this.graph.getSelectedNodes();
-    this.graph.addFace(nodes, { color: this.settings.edge_color });
+    this.graph.addFace(nodes);
     this.saveGraphState();
   }
 }

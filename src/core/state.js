@@ -32,6 +32,7 @@ class AppSettings {
       label_pos: { x: 0, y: 0 },
       label_size: 15,
       node_color: "#ffffff",
+      face_color: "#4682b455",
       node_radius: 40,
       panning: false,
       scale: false,

@@ -389,18 +389,19 @@ export default class Mixed extends Graph {
   }
 
   //faces
-  addFace(nodes, attrs) {
+  addFace(nodes, attributes) {
     nodes.sort();
     const face = nodes.join("_");
 
-    attrs = {
-      ...attrs,
+    attributes = {
+      ...attributes,
       key: face,
       id: this._faces.size,
       nodes: nodes,
     };
 
-    this._faces.set(face, attrs);
+    var faceData = new FaceData(face, nodes, attributes);
+    this._faces.set(face, faceData);
   }
 
   faces() {
@@ -410,11 +411,19 @@ export default class Mixed extends Graph {
   forEachFace(callback) {
     var iterator = this._faces.values();
 
-    var step, attrs;
+    var step, faceData;
     while (((step = iterator.next()), step.done !== true)) {
-      attrs = step.value;
-      callback(attrs.key, attrs);
+      faceData = step.value;
+      callback(faceData.key, faceData.attributes);
     }
+  }
+
+  setFaceAttribute(face, key, attr) {
+    this._faces.get(face).attributes[key] = attr;
+  }
+
+  getFaceAttribute(face, key) {
+    return this._faces.get(face).attributes[key];
   }
 }
 
@@ -455,4 +464,10 @@ function getAvailableLabel(n, maxLength = 3) {
   }
 
   return combinations[n] || null;
+}
+
+function FaceData(key, nodes, attributes) {
+  this.key = key;
+  this.attributes = attributes;
+  this.nodes = nodes;
 }
