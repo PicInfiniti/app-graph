@@ -56,7 +56,6 @@ export class ColorPicker {
   }
 
   setColor(key, color) {
-    console.log(color);
     const pickr = this.pickrs[key];
     if (pickr) {
       pickr.setColor(color);
