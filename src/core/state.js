@@ -42,6 +42,7 @@ class AppSettings {
       tools_panel: true,
       tree: true,
       vertexLabel: true,
+      faceLabel: true,
       weightLabel: true,
       saveHistory: true,
       historyLimit: 100,

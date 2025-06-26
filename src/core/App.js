@@ -12,6 +12,7 @@ import { Layout } from "../graph/layouts.js";
 import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
 import { ColorPicker } from "../ui/colorPickr.js";
+import { subgraph } from "graphology-operators";
 
 export class App {
   constructor() {
@@ -112,22 +113,16 @@ export class App {
       if (!attr.labelColor) {
         graph.setFaceAttribute(face, "labelColor", settings.label_color);
       }
-
-      const hull = attr.nodes.map((p) => {
+      const _subgraph = subgraph(graph, attr.nodes);
+      const hull = this.graphManager.metric._isCycle(_subgraph).map((p) => {
         const node = graph.getNodeAttributes(p);
         return [node.x, node.y];
       });
 
       const centroid = {
-        x: d3.mean(hull, (d) => d.x),
-        y: d3.mean(hull, (d) => d.y),
+        x: d3.mean(hull, (d) => d[0]),
+        y: d3.mean(hull, (d) => d[1]),
       };
-
-      hull.sort((a, b) => {
-        const angleA = Math.atan2(a.y - centroid.y, a.x - centroid.x);
-        const angleB = Math.atan2(b.y - centroid.y, b.x - centroid.x);
-        return angleA - angleB;
-      });
 
       if (hull) {
         ctx.fillStyle = attr.color;
@@ -139,6 +134,14 @@ export class App {
         }
         ctx.closePath();
         ctx.fill();
+      }
+
+      if (settings.faceLabel) {
+        ctx.fillStyle = attr.labelColor || "#000"; // fallback if labelColor missing
+        ctx.font = `${settings.label_size}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(attr.label, centroid.x, centroid.y);
       }
     });
 

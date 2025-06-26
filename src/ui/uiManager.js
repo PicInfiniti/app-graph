@@ -18,6 +18,10 @@ export function applySettingsToUI(settings, canvas) {
     "hidden",
     !settings.edgeLabel,
   );
+  d.querySelector("#face-label .check").classList.toggle(
+    "hidden",
+    !settings.faceLabel,
+  );
   d.querySelector("#weight-label .check").classList.toggle(
     "hidden",
     !settings.weightLabel,

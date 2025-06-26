@@ -264,6 +264,8 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "vertexLabel" }),
       "edge-label": () =>
         this.eventBus.emit("toggleSetting", { key: "edgeLabel" }),
+      "face-label": () =>
+        this.eventBus.emit("toggleSetting", { key: "faceLabel" }),
       "weight-label": () =>
         this.eventBus.emit("toggleSetting", { key: "weightLabel" }),
 

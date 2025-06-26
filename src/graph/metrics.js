@@ -358,7 +358,6 @@ export class Metric {
       const edge = graph.edges()[0];
       const { source, target } = graph.getEdgeAttributes(edge);
       graph.dropEdge(edge);
-      console.log(source, target);
 
       const path = bidirectional(graph, target, source);
       return path;

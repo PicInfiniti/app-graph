@@ -10,6 +10,7 @@ import {
   toMixed,
 } from "graphology-operators";
 import { GraphsPanel } from "../wedgets/graphsPanel.js";
+import { subgraph } from "graphology-operators";
 
 const d = document;
 
@@ -41,7 +42,7 @@ export class GraphManager {
       };
     });
     this.graphs = [this._graph];
-    this.history = [this.graphs.map((graph) => graph.export())];
+    this.history = [this.graphs.map((graph) => graph.Export())];
 
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
@@ -150,7 +151,7 @@ export class GraphManager {
     if (this.history.length != this.index + 1) {
       this.history.length = this.index + 1;
     }
-    this.push(this.graphs.map((graph) => graph.export()));
+    this.push(this.graphs.map((graph) => graph.Export()));
     if (this.settings.saveHistory) {
       this.saveHistoryToLocalStorage();
     }
@@ -158,16 +159,21 @@ export class GraphManager {
   }
 
   makeGraphComplete(type = "directed") {
-    this.saveGraphState();
     for (let i = 0; i < this.graph.order; i++) {
       for (let j = i + 1; j < this.graph.order; j++) {
-        if (type == "undirected") {
-          this.graph.mergeUndirectedEdge(i, j);
+        if (this.graph.type == "mixed") {
+          if (type == "undirected") {
+            this.graph.mergeUndirectedEdge(i, j);
+          } else {
+            this.graph.mergeDirectedEdge(i, j);
+          }
         } else {
-          this.graph.mergeDirectedEdge(i, j);
+          this.graph.mergeEdge(i, j);
         }
       }
     }
+
+    this.saveGraphState();
   }
 
   dropSelectedNodesEdges() {
@@ -374,7 +380,7 @@ export class GraphManager {
     if (this.graph.type !== "directed") {
       this.saveGraphState();
       const diGraph = toDirected(this.graph);
-      this.clearToDigraph();
+      this.clearTo("directed");
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
     }
@@ -384,7 +390,7 @@ export class GraphManager {
     if (this.graph.type !== "mixed") {
       this.saveGraphState();
       const graph = toMixed(this.graph);
-      this.clearToMixed();
+      this.clearTo("mixed");
       this.graph.replace(graph);
       this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
     }
@@ -393,7 +399,7 @@ export class GraphManager {
   toUndirectedGraph() {
     if (this.graph.type !== "undirected") {
       const diGraph = toUndirected(this.graph);
-      this.clearToUndirectedGraph();
+      this.clearTo("undirected");
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "undirected" });
       this.saveGraphState();
@@ -536,7 +542,10 @@ export class GraphManager {
   // Faces
   addFace() {
     const nodes = this.graph.getSelectedNodes();
-    this.graph.addFace(nodes);
-    this.saveGraphState();
+    const _subgraph = subgraph(this.graph, nodes);
+    if (this.metric._isCycle(_subgraph)) {
+      this.graph.addFace(nodes);
+      this.saveGraphState();
+    }
   }
 }

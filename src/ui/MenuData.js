@@ -65,9 +65,10 @@ export const menuData = [
         id: "graph-settings",
         shortcut: ">",
         submenu: [
-          { title: "Vertex Label", id: "vertex-label", check: true },
-          { title: "Edge Label", id: "edge-label", check: true },
-          { title: "Weight Label", id: "weight-label", check: true },
+          { title: "Vertex", id: "vertex-label", check: true },
+          { title: "Edge", id: "edge-label", check: true },
+          { title: "Face", id: "face-label", check: true },
+          { title: "Weight", id: "weight-label", check: true },
           { type: "divider" },
           {
             title: "Grid",
