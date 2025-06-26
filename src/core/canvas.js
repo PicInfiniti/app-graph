@@ -315,7 +315,7 @@ export class Canvas {
 
         if (this.settings.colorPicker) {
           this.app.colorPicker.setColor("edge", clickedEdge.color);
-          this.app.colorPicker.setColor("label", clickedEdge.LabeClolor);
+          this.app.colorPicker.setColor("label", clickedEdge.labelColor);
         }
       }
     } else {
