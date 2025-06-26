@@ -4,58 +4,9 @@ export class EventHandlers {
   constructor(app) {
     this.app = app;
     this.eventBus = app.eventBus;
-
-    this.modal = d.querySelector(".modal");
-    this.rename = d.querySelector(".rename-panel");
-    this.desc = d.querySelector(".desc-panel");
-
-    this.pressedKeys = new Set();
-    this.keySettingsMap = {
-      Shift: "select",
-      Control: "panning",
-      Alt: "component",
-      Meta: "scale",
-      f: "forceSimulation",
-      t: "tree",
-    };
-  }
-
-  isCombo(...keys) {
-    return keys.every((key) => this.pressedKeys.has(key));
   }
 
   init() {
-    this.app.eventBus.on("lalayout:changedyout:changed", (event) => {
-      const { layoutType } = event.detail;
-      this.app.graphManager.applyLayout(layoutType);
-      this.eventBus.emit("graph:updated", { type: "layout" });
-    });
-
-    // When graph data updates, re-render visualization
-    this.app.eventBus.on("graph:updated", (event) => {
-      const updateTypes = [
-        "addEdges",
-        "dropNodesEdges",
-        "addNode",
-        "undo",
-        "redo",
-        "clear",
-        "import",
-        "addNodeInEdge",
-        "layout",
-        "addEdge",
-      ];
-      if (updateTypes.includes(event.detail.type)) {
-        this.app.updateSimulation();
-      }
-    });
-
-    // Toggle simulation based on UI interactions
-    this.app.eventBus.on("simulation:toggled", (event) => {});
-
-    // Example: Key event to toggle simulation
-    this.app.eventBus.on("key:pressed", (event) => {});
-
     this.app.eventBus.on("settingToggled", (event) => {
       const { key, value } = event.detail;
       if (key == "forceSimulation") {

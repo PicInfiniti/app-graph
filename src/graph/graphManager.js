@@ -147,7 +147,7 @@ export class GraphManager {
     }
   }
 
-  saveGraphState() {
+  saveGraphState(force = true) {
     if (this.history.length != this.index + 1) {
       this.history.length = this.index + 1;
     }
@@ -156,6 +156,9 @@ export class GraphManager {
       this.saveHistoryToLocalStorage();
     }
     this.graphsPanel.updateGraphsPanel();
+    if (force) {
+      this.app.updateSimulation();
+    }
   }
 
   makeGraphComplete(type = "directed") {
@@ -212,7 +215,7 @@ export class GraphManager {
       e ? this.settings.edge_color : false,
       l ? this.settings.label_color : false,
     );
-    this.saveGraphState();
+    this.saveGraphState(false);
   }
 
   updateSelectedName(name) {
@@ -221,7 +224,7 @@ export class GraphManager {
     } else {
       this.graph.updateSelectedName("");
     }
-    this.saveGraphState();
+    this.saveGraphState(false);
   }
 
   updateSelectedInfo(val) {
@@ -230,7 +233,7 @@ export class GraphManager {
     } else {
       this.graph.updateSelectedInfo({});
     }
-    this.saveGraphState();
+    this.saveGraphState(false);
   }
 
   updateSelectedWeight(val) {
@@ -240,7 +243,7 @@ export class GraphManager {
     } else {
       this.graph.updateSelectedWeight(undefined);
     }
-    this.saveGraphState();
+    this.saveGraphState(false);
   }
 
   deselectAll() {
