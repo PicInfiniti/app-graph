@@ -30,7 +30,6 @@ export class FacePanel {
     this.selectLi(face);
 
     let nodes = this.lis().map((face) => graph.getFaceAttribute(face, "nodes"));
-    console.log(nodes);
     nodes = new Set(nodes.flat());
     this.graphManager.selectAllNode(nodes);
   }

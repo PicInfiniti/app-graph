@@ -41,6 +41,7 @@ export class KeyHandler {
     this.chordGenerator(this.lastChord);
     d.addEventListener("keydown", (event) => {
       if (event.repeat && !this.exceptionKey.includes(event.key)) return;
+
       const key = this.updatePressedKeys(event, "add");
       if (this._input) {
         if (key === "Escape") this.toggleInput("rename", false);
@@ -51,11 +52,12 @@ export class KeyHandler {
         }
       } else {
         event.preventDefault();
+        if (this.isChordVisible())
+          this.eventBus.emit("key:down", {
+            key: this.pressedKeys,
+          });
         this.action(this.findKey());
       }
-      this.eventBus.emit("key:down", {
-        key: this.pressedKeys,
-      });
     });
 
     d.addEventListener("keyup", (event) => {
@@ -215,5 +217,9 @@ export class KeyHandler {
 
   isCtrlHold() {
     return this.pressedKeys.has("ctrl");
+  }
+
+  isChordVisible() {
+    return this.modalChord.style.display !== "none";
   }
 }

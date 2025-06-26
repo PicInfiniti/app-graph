@@ -44,7 +44,7 @@ export class GraphManager {
       };
     });
     this.graphs = [this._graph];
-    this.history = [this.graphs.map((graph) => graph.Export())];
+    this.history = [this.graphs.map((graph) => graph.export())];
 
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
@@ -96,7 +96,7 @@ export class GraphManager {
     this.graphs = [];
     for (const h of this.history[this.index]) {
       const graph = empty(this.graphClass[h.options.type], 0);
-      this.graphs.push(graph.Import(h));
+      this.graphs.push(graph.import(h));
     }
     this.eventBus.emit("updateSetting", {
       key: "type",
@@ -154,7 +154,7 @@ export class GraphManager {
     if (this.history.length != this.index + 1) {
       this.history.length = this.index + 1;
     }
-    this.push(this.graphs.map((graph) => graph.Export()));
+    this.push(this.graphs.map((graph) => graph.export()));
     if (this.settings.saveHistory) {
       this.saveHistoryToLocalStorage();
     }

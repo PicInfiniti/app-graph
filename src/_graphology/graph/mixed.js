@@ -379,18 +379,25 @@ export default class Mixed extends Graph {
 
     // Replace this graph's contents with the combined graph
     this.clear();
-    this.Import(combined.Export());
+    this.import(combined.export());
     return sub;
   }
 
   replace(graph) {
     this.clear();
-    this.Import(graph.Export());
+    this.import(graph.export());
   }
-
+  //nodes
+  dropNode(node) {
+    super.dropNode(node);
+    const faces = this.faceNeighbors(node);
+    if (faces.length)
+      faces.map((face) => {
+        this.dropFace(face);
+      });
+  }
   //faces
   addFace(nodes, attributes) {
-    nodes.sort();
     const face = nodes.join("_");
 
     attributes = {
@@ -408,12 +415,29 @@ export default class Mixed extends Graph {
     return Array.from(this._faces.keys());
   }
 
-  forEachFace(callback) {
-    var iterator = this._faces.values();
+  findFace(nodes) {
+    nodes.sort();
+    return nodes.join("_");
+  }
 
-    var step, faceData;
-    while (((step = iterator.next()), step.done !== true)) {
-      faceData = step.value;
+  dropFace(face) {
+    if (this._faces.has(face)) this._faces.delete(face);
+  }
+
+  hasFace(face) {
+    return this._faces.has(face);
+  }
+
+  faceNeighbors(node) {
+    const faces = [];
+    this.forEachFace((face, attrs) => {
+      if (attrs.nodes.includes(node)) faces.push(face);
+    });
+    return faces;
+  }
+
+  forEachFace(callback) {
+    for (const faceData of this._faces.values()) {
       callback(faceData.key, faceData.attributes);
     }
   }
@@ -430,8 +454,8 @@ export default class Mixed extends Graph {
     return this._faces.get(face).attributes;
   }
 
-  Export() {
-    const _export = this.export();
+  export() {
+    const _export = super.export();
 
     var faces = new Array(this._faces.size);
     var i = 0;
@@ -442,8 +466,8 @@ export default class Mixed extends Graph {
     return _export;
   }
 
-  Import(h) {
-    const graph = this.import(h);
+  import(h) {
+    const graph = super.import(h);
     for (const face of h.faces) {
       this.addFace(face.nodes, face.attributes);
     }
