@@ -4,7 +4,7 @@ import { subgraph, disjointUnion, union } from "graphology-operators";
 export default class Mixed extends Graph {
   constructor(options) {
     super(options);
-    this.custom = true;
+    this.isCustom = true;
     // Automatically add 'id' and 'selected' to nodes
     this.on("nodeAdded", ({ key }) => {
       const attrs = this.getNodeAttributes(key);

@@ -5,6 +5,7 @@ export class FacePanel {
     this.app = graphManager.app;
     this.eventBus = this.app.eventBus;
     this.graphManager = graphManager;
+    this.settings = graphManager.settings;
 
     this.panel = d.querySelector("widgets #face-panel");
     this.ul = this.panel.querySelector("ul");
@@ -77,6 +78,16 @@ export class FacePanel {
     const li = this.ul.querySelector(`#face-${face}`);
     if (li) {
       li.classList.toggle("select");
+    }
+    console.log(5);
+    if (this.settings.colorPicker) {
+      const faceColor = this.graphManager.graph.getFaceAttribute(face, "color");
+      const labelColor = this.graphManager.graph.getFaceAttribute(
+        face,
+        "labelColor",
+      );
+      this.app.colorPicker.setColor("face", faceColor);
+      this.app.colorPicker.setColor("label", labelColor);
     }
   }
 
