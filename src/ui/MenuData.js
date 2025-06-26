@@ -43,6 +43,7 @@ export const menuData = [
         name: "add-directed-edge-btn",
         shortcut: "(alt-E)",
       },
+      { title: "Add Face", name: "add-face-btn", shortcut: "(ctrl+f)" },
       { type: "divider" },
       { title: "Copy", name: "copy-subgraph", shortcut: "(y)" },
       { title: "Cut", name: "cut-subgraph", shortcut: "(x)" },
