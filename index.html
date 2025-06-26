@@ -67,6 +67,18 @@
         </div>
       </div>
 
+      <div id="face-panel">
+        <h3 id="faces">
+          <div>Faces</div>
+          <div class="cm">
+            <div class="close">x</div>
+          </div>
+        </h3>
+        <div class="body-faces">
+          <ul></ul>
+        </div>
+      </div>
+
       <div id="tools-panel">
         <h4 id="tools"><span>Tools</span><span class="close">x</span></h4>
         <div class="body-tools">
@@ -165,12 +177,6 @@
 
       <div id="custom-context-menu">
         <ul>
-          <li name="organize-circle">
-            <span>Organize Nodes</span><span>(O)</span>
-          </li>
-          <li name="complete-btn">
-            <span>Complete Graph</span><span>(C)</span>
-          </li>
           <li name="remove-selection-btn">
             <span>Delete</span><span>(d)</span>
           </li>
@@ -178,6 +184,9 @@
             <span>Assign Color</span><span>(c)</span>
           </li>
           <li name="add-edge-btn"><span>Add Edge</span><span>(e)</span></li>
+          <li name="add-face-btn">
+            <span>Add Face</span><span>(ctrl+f)</span>
+          </li>
           <hr />
           <li name="copy-subgraph"><span>Copy</span><span>(y)</span></li>
           <li name="cut-subgraph"><span>Cut</span><span>(x)</span></li>

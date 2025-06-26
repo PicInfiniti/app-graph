@@ -8,79 +8,72 @@ export class Widgets {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
-    this.mettric = new Metric(app);
+    this.metric = new Metric(app);
 
     this.panels = {
       info: d.getElementById("floating-panel"),
       tools: d.getElementById("tools-panel"),
       graphs: d.getElementById("graphs-panel"),
+      faces: d.getElementById("face-panel"),
     };
 
-    this.handels = {
+    this.handles = {
       info: "#info",
       tools: "#tools",
       graphs: "#graphs",
+      faces: "#faces",
     };
 
     this.addEventListeners();
     this.makePanelsDraggable();
-    this.listeners();
-    this.contexMenu();
+    this.registerToolListeners();
+    this.setupContextMenu();
   }
 
   init() {
     this.togglePanel("info", "#panel-btn .check", this.settings.info_panel);
-    this.togglePanel("tools", "#tools-btn .check", this.settings.tools_panel); // Add event listeners for button clicks
+    this.togglePanel("tools", "#tools-btn .check", this.settings.tools_panel);
     this.togglePanel(
       "graphs",
       "#graphs-btn .check",
       this.settings.graphs_panel,
-    ); // Add event listeners for button clicks
+    );
+    this.togglePanel("faces", "#faces-btn .check", this.settings.face_panel);
   }
 
-  contexMenu() {
-    const contextMenu = d.getElementById("custom-context-menu");
+  setupContextMenu() {
+    const menu = d.getElementById("custom-context-menu");
+
     d.addEventListener("contextmenu", (event) => {
       event.preventDefault();
 
-      const menu = d.getElementById("custom-context-menu");
-      const menuWidth = menu.offsetWidth;
-      const menuHeight = menu.offsetHeight;
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      let x = event.pageX;
-      let y = event.pageY;
+      const { offsetWidth: w, offsetHeight: h } = menu;
+      const { innerWidth, innerHeight } = window;
+      let { pageX: x, pageY: y } = event;
 
-      // Adjust position if menu goes off the right edge
-      if (x + menuWidth > screenWidth) {
-        x -= menuWidth; // Move left
-      }
+      if (x + w > innerWidth) x -= w;
+      if (y + h > innerHeight) y -= h;
 
-      // Adjust position if menu goes off the bottom edge
-      if (y + menuHeight > screenHeight) {
-        y -= menuHeight; // Move up
-      }
-
-      menu.style.left = `${x}px`;
-      menu.style.top = `${y}px`;
-      menu.style.display = "block";
+      Object.assign(menu.style, {
+        left: `${x}px`,
+        top: `${y}px`,
+        display: "block",
+      });
     });
 
-    // Hide menu when clicking elsewhere
     d.addEventListener("click", () => {
-      d.getElementById("custom-context-menu").style.display = "none";
+      menu.style.display = "none";
     });
   }
 
-  togglePanel(panelKey, buttonSelector, isVisible) {
-    const panel = this.panels[panelKey];
+  togglePanel(key, buttonSelector, isVisible) {
+    const panel = this.panels[key];
     const button = d.querySelector(buttonSelector);
 
-    button.classList.toggle("hidden", !isVisible);
-    panel.style.display = isVisible ? "flex" : "none";
-
-    if (!isVisible) {
-      this.resetPanel(panel);
+    button?.classList.toggle("hidden", !isVisible);
+    if (panel) {
+      panel.style.display = isVisible ? "flex" : "none";
+      if (!isVisible) this.resetPanel(panel);
     }
   }
 
@@ -91,61 +84,43 @@ export class Widgets {
   }
 
   addEventListeners() {
-    const infoClose = d.querySelector("#floating-panel .close");
+    const setupClose = (selector, key) => {
+      d.querySelector(selector)?.addEventListener("click", () => {
+        this.eventBus.emit("toggleSetting", { key });
+      });
+    };
+
+    setupClose("#floating-panel .close", "info_panel");
+    setupClose("#tools-panel .close", "tools_panel");
+    setupClose("#graphs-panel .close", "graphs_panel");
+    setupClose("#face-panel .close", "face_panel");
+
     const infoMax = d.querySelector("#floating-panel .max");
-    const toolsClose = d.querySelector("#tools-panel .close");
-    const graphsClose = d.querySelector("#graphs-panel .close");
-
-    if (infoClose) {
-      infoClose.addEventListener("click", () => {
-        this.eventBus.emit("toggleSetting", { key: "info_panel" });
-      });
-    }
-
-    if (infoMax) {
-      infoMax.addEventListener("click", () => {
-        this.resetPanel(this.panels.info);
-        d.querySelector("#floating-panel").classList.toggle("MAX");
-      });
-    }
-
-    if (toolsClose) {
-      toolsClose.addEventListener("click", () => {
-        this.eventBus.emit("toggleSetting", { key: "tools_panel" });
-      });
-    }
-
-    if (graphsClose) {
-      graphsClose.addEventListener("click", () => {
-        this.eventBus.emit("toggleSetting", { key: "graphs_panel" });
-      });
-    }
+    infoMax?.addEventListener("click", () => {
+      this.resetPanel(this.panels.info);
+      d.getElementById("floating-panel")?.classList.toggle("MAX");
+    });
   }
 
   makePanelsDraggable() {
-    Object.keys(this.panels).forEach((key) => {
-      if (this.panels[key] && this.handels[key]) {
-        this.makeDraggable(this.panels[key], this.handels[key]);
+    Object.entries(this.panels).forEach(([key, panel]) => {
+      const handle = this.handles[key];
+      if (panel && handle) {
+        this.makeDraggable(panel, handle);
       }
     });
   }
 
   makeDraggable(panel, handleSelector) {
-    // Initialize the panel as draggable with Interact.js
     interact(panel).draggable({
-      // Only allow dragging from the specified handle (a CSS selector)
       allowFrom: handleSelector,
       listeners: {
         move(event) {
           const target = event.target;
-          // Get current translation values or default to 0
-          let x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
-          let y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
+          const x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
+          const y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
 
-          // Apply the translation using CSS transform
           target.style.transform = `translate(${x}px, ${y}px)`;
-
-          // Store the new position in data attributes
           target.setAttribute("data-x", x);
           target.setAttribute("data-y", y);
         },
@@ -153,54 +128,24 @@ export class Widgets {
     });
   }
 
-  listeners() {
-    d.querySelector("widgets #tools-panel .scale").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "scale" });
-      },
-    );
+  registerToolListeners() {
+    const toolActions = {
+      scale: "scale",
+      tree: "tree",
+      force: "forceSimulation",
+      panning: "panning",
+      select: "select",
+      component: "component",
+      "color-picker": "colorPicker",
+    };
 
-    d.querySelector("widgets #tools-panel .tree").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "tree" });
-      },
-    );
-
-    d.querySelector("widgets #tools-panel .force").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "forceSimulation" });
-      },
-    );
-
-    d.querySelector("widgets #tools-panel .panning").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "panning" });
-      },
-    );
-
-    d.querySelector("widgets #tools-panel .select").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "select" });
-      },
-    );
-
-    d.querySelector("widgets #tools-panel .component").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "component" });
-      },
-    );
-
-    d.querySelector("widgets #tools-panel .color-picker").addEventListener(
-      "click",
-      (event) => {
-        this.eventBus.emit("toggleSetting", { key: "colorPicker" });
-      },
-    );
+    Object.entries(toolActions).forEach(([cls, key]) => {
+      d.querySelector(`widgets #tools-panel .${cls}`)?.addEventListener(
+        "click",
+        () => {
+          this.eventBus.emit("toggleSetting", { key });
+        },
+      );
+    });
   }
 }

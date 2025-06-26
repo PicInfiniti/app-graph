@@ -226,6 +226,8 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "tools_panel" }),
       "graphs-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "graphs_panel" }),
+      "faces-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "face_panel" }),
 
       "shortcut-chord-btn": () => d.dispatchEvent(this.spaceEvent),
       //Tools

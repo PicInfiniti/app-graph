@@ -148,6 +148,7 @@ export const menuData = [
           { title: "Info Panel", id: "panel-btn", check: true },
           { title: "Tools Panel", id: "tools-btn", check: true },
           { title: "Graphs Panel", id: "graphs-btn", check: true },
+          { title: "Face Panel", id: "faces-btn", check: true },
           { type: "divider" },
           { title: "Key Chord", id: "shortcut-chord-btn", shortcut: "⎵" },
         ],

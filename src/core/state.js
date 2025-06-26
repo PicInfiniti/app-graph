@@ -47,6 +47,7 @@ class AppSettings {
       saveHistory: true,
       historyLimit: 100,
       graphs_panel: true,
+      face_panel: true,
     };
 
     this.nightSkyTheme = {
