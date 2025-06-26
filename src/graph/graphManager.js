@@ -192,7 +192,6 @@ export class GraphManager {
       });
       nodes.forEach((node) => {
         if (graph.hasNode(node)) graph.dropNode(node);
-        if (!graph.order) this.graphs.splice(index, 1);
       });
     });
 
