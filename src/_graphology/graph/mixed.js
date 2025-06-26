@@ -379,13 +379,13 @@ export default class Mixed extends Graph {
 
     // Replace this graph's contents with the combined graph
     this.clear();
-    this.import(combined.export());
+    this.Import(combined.export());
     return sub;
   }
 
   replace(graph) {
     this.clear();
-    this.import(graph.export());
+    this.Import(graph.export());
   }
 
   //faces
@@ -424,6 +424,48 @@ export default class Mixed extends Graph {
 
   getFaceAttribute(face, key) {
     return this._faces.get(face).attributes[key];
+  }
+
+  export() {
+    var _this2 = this;
+
+    var nodes = new Array(this._nodes.size);
+    var i = 0;
+    this._nodes.forEach(function (data, key) {
+      nodes[i++] = serializeNode(key, data);
+    });
+
+    var edges = new Array(this._edges.size);
+    i = 0;
+    this._edges.forEach(function (data, key) {
+      edges[i++] = serializeEdge(_this2.type, key, data);
+    });
+
+    var faces = new Array(this._faces.size);
+    var i = 0;
+    this._faces.forEach(function (data, key) {
+      faces[i++] = serializeFace(key, data);
+    });
+
+    return {
+      options: {
+        type: this.type,
+        multi: this.multi,
+        allowSelfLoops: this.allowSelfLoops,
+      },
+      attributes: this.getAttributes(),
+      nodes: nodes,
+      edges: edges,
+      faces: faces,
+    };
+  }
+
+  Import(h) {
+    const graph = this.import(h);
+    for (const face of h.faces) {
+      this.addFace(face.nodes, face.attributes);
+    }
+    return graph;
   }
 }
 
@@ -470,4 +512,39 @@ function FaceData(key, nodes, attributes) {
   this.key = key;
   this.attributes = attributes;
   this.nodes = nodes;
+}
+
+function serializeNode(key, data) {
+  var serialized = {
+    key: key,
+  };
+  if (!isEmpty(data.attributes))
+    serialized.attributes = assign({}, data.attributes);
+  return serialized;
+}
+
+function serializeEdge(type, key, data) {
+  var serialized = {
+    key: key,
+    source: data.source.key,
+    target: data.target.key,
+  };
+  if (!isEmpty(data.attributes))
+    serialized.attributes = assign({}, data.attributes);
+  if (type === "mixed" && data.undirected) serialized.undirected = true;
+  return serialized;
+}
+
+function serializeFace(key, data) {
+  var serialized = {
+    key: key,
+    nodes: data.nodes,
+  };
+  if (!isEmpty(data.attributes))
+    serialized.attributes = assign({}, data.attributes);
+  return serialized;
+}
+
+function isEmpty(o) {
+  return Object.keys(o).length === 0;
 }

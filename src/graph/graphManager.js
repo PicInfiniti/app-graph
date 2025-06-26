@@ -93,7 +93,7 @@ export class GraphManager {
     this.graphs = [];
     for (const h of this.history[this.index]) {
       const graph = empty(this.graphClass[h.options.type], 0);
-      this.graphs.push(graph.import(h));
+      this.graphs.push(graph.Import(h));
     }
     this.eventBus.emit("updateSetting", {
       key: "type",

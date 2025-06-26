@@ -33,7 +33,6 @@ export class EventHandlers {
 
     // When graph data updates, re-render visualization
     this.app.eventBus.on("graph:updated", (event) => {
-      this.app.drawGraph(); // Visualize the graph
       const updateTypes = [
         "addEdges",
         "dropNodesEdges",
@@ -111,7 +110,6 @@ export class EventHandlers {
           this.app.graphManager.updateIndex(
             this.app.graphManager.history.length - 1,
           );
-          this.app.eventBus.emit("graph:updated", { type: "import" });
         };
         reader.readAsText(file);
       }
