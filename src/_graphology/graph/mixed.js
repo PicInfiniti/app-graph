@@ -390,11 +390,22 @@ export default class Mixed extends Graph {
   //nodes
   dropNode(node) {
     super.dropNode(node);
-    const faces = this.faceNeighbors(node);
+    const faces = this.faceNodeNeighbors(node);
     if (faces.length)
       faces.map((face) => {
         this.dropFace(face);
       });
+  }
+
+  //edges
+  dropEdge(edge) {
+    const faces = this.faceEdgeNeighbors(edge);
+    if (faces.length)
+      faces.map((face) => {
+        this.dropFace(face);
+      });
+
+    super.dropEdge(edge);
   }
   //faces
   addFace(nodes, attributes) {
@@ -428,10 +439,23 @@ export default class Mixed extends Graph {
     return this._faces.has(face);
   }
 
-  faceNeighbors(node) {
+  faceNodeNeighbors(node) {
     const faces = [];
     this.forEachFace((face, attrs) => {
       if (attrs.nodes.includes(node)) faces.push(face);
+    });
+    return faces;
+  }
+
+  faceEdgeNeighbors(edge) {
+    const { source, target } = this.getEdgeAttributes(edge);
+    const faces = [];
+    this.forEachFace((face, attrs) => {
+      if (
+        attrs.nodes.includes("" + source) &&
+        attrs.nodes.includes("" + target)
+      )
+        faces.push(face);
     });
     return faces;
   }
