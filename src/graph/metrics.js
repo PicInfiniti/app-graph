@@ -16,6 +16,7 @@ import eccentricity from "graphology-metrics/node/eccentricity";
 import pagerank from "graphology-metrics/centrality/pagerank";
 import neighborhoodPreservation from "graphology-metrics/layout-quality/neighborhood-preservation";
 import disparity from "graphology-metrics/edge/disparity";
+import { subgraph } from "graphology-operators";
 
 const d = document;
 
@@ -340,7 +341,7 @@ export class Metric {
   }
 
   disparity() {
-    this.addHeader("disparity");
+    this.addHeader("Disparity");
     const graph = this.graphManager.graph;
     const disparities = disparity(graph);
     for (const key in disparities) {
@@ -349,6 +350,34 @@ export class Metric {
         `${graph.getNodeAttribute(source, "label")}, ${graph.getNodeAttribute(target, "label")} : ${disparities[key]}`,
       );
     }
+    this.addLine();
+  }
+
+  _isCycle(graph) {
+    if (graph.order == graph.size && countConnectedComponents(graph) == 1) {
+      const edge = graph.edges()[0];
+      const { source, target } = graph.getEdgeAttributes(edge);
+      graph.dropEdge(edge);
+      console.log(source, target);
+
+      const path = bidirectional(graph, target, source);
+      return path;
+    }
+
+    return false;
+  }
+
+  liesOnCycle() {
+    this.addHeader("Lies on cycle");
+    const graph = this.graphManager.graph;
+    const selectedNodes = this.graphManager.graph.getSelectedNodes();
+    if (selectedNodes.length < 3) {
+      this.addInfo("Select at least 3 nodes");
+      this.addLine();
+      return;
+    }
+    const _subgraph = subgraph(graph, selectedNodes);
+    this.addInfo(Boolean(this._isCycle(_subgraph)));
     this.addLine();
   }
 }

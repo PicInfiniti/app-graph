@@ -549,9 +549,11 @@ export const menuData = [
       {
         title: "Basic",
         id: "basic",
+        shortcut: ">",
         submenu: [
           { title: "Basic Information", id: "basic-info-btn" },
           { title: "Components", id: "components-btn" },
+          { title: "Lies On Cycle", id: "lies-on-cycle-btn" },
           { title: "Degree Sequence", id: "list-degrees-btn" },
           { title: "Density", id: "density-btn" },
           { title: "Diameter", id: "diameter-btn" },
@@ -560,6 +562,7 @@ export const menuData = [
       {
         title: "Centrality",
         id: "centrality",
+        shortcut: ">",
         submenu: [
           { title: "Betweenness Centrality", id: "betweenness-centrality-btn" },
           { title: "Closeness Centrality", id: "closeness-centrality-btn" },
@@ -572,6 +575,7 @@ export const menuData = [
       {
         title: "Layout Quality",
         id: "layout-quality",
+        shortcut: ">",
         submenu: [
           { title: "Edge Uniformity", id: "edge-uniformity-btn" },
           {
@@ -583,6 +587,7 @@ export const menuData = [
       },
       {
         title: "Other",
+        shortcut: ">",
         id: "other",
         submenu: [
           { title: "Simmelian Strength", id: "simmelian-strength-btn" },

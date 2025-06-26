@@ -290,6 +290,7 @@ export class Menu {
 
       //Metrics
       "basic-info-btn": () => this.graphManager.metric.basicInfo(),
+      "lies-on-cycle-btn": () => this.graphManager.metric.liesOnCycle(),
       "list-degrees-btn": () => this.graphManager.metric.degreeSequesnce(),
       "components-btn": () => this.graphManager.metric.countComponents(),
       "neighbors-btn": () => this.graphManager.metric.neighbors(),
