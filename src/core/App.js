@@ -114,7 +114,7 @@ export class App {
         graph.setFaceAttribute(face, "labelColor", settings.label_color);
       }
       const _subgraph = subgraph(graph, attr.nodes);
-      const hull = this.graphManager.metric._isCycle(_subgraph).map((p) => {
+      const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);
         return [node.x, node.y];
       });
