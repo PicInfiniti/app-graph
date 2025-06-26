@@ -478,6 +478,7 @@ export class Menu {
       "subgraph-btn": () => this.graphManager.subgraph(),
 
       graphs: () => this.graphManager.graphsPanel.selectLis(val),
+      faces: () => this.graphManager.facePanel.selectLis(val),
 
       //Help
       "how-to-use": () =>

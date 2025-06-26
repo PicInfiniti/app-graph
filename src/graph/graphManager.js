@@ -10,6 +10,7 @@ import {
   toMixed,
 } from "graphology-operators";
 import { GraphsPanel } from "../wedgets/graphsPanel.js";
+import { FacePanel } from "../wedgets/facePanel.js";
 import { subgraph } from "graphology-operators";
 
 const d = document;
@@ -23,6 +24,7 @@ export class GraphManager {
     this.generator = new Generator(this);
     this.metric = new Metric(this);
     this.graphsPanel = new GraphsPanel(this);
+    this.facePanel = new FacePanel(this);
 
     this.limit = limit;
     this.index = 0;
@@ -54,6 +56,7 @@ export class GraphManager {
   init() {
     this.setupEventListeners();
     this.graphsPanel.init();
+    this.facePanel.init();
   }
 
   get graph() {
@@ -61,7 +64,6 @@ export class GraphManager {
   }
 
   set graph(value) {
-    console.log(this.graphs);
     value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
     // this.graphs[this.graphIndex] = value;
     this.graphs = [value];
@@ -102,6 +104,7 @@ export class GraphManager {
     });
     this.graphIndex = 0;
     this.graphsPanel.updateGraphsPanel();
+    this.facePanel.updateFacePanel();
     return true;
   }
 
@@ -156,6 +159,7 @@ export class GraphManager {
       this.saveHistoryToLocalStorage();
     }
     this.graphsPanel.updateGraphsPanel();
+    this.facePanel.updateFacePanel();
     if (force) {
       this.app.updateSimulation();
     }
@@ -285,17 +289,14 @@ export class GraphManager {
   selectAllNode(array) {
     if (array) {
       this.deselectAllNode();
-      array.forEach((id) => {
-        const graph = this.graphs[id];
-        graph.forEachNode((node, attr) => {
-          if (this.graph.hasNode(node))
-            this.graph.updateNodeAttributes(node, (attrs) => {
-              return {
-                ...attrs,
-                selected: attrs.id + 1,
-              };
-            });
-        });
+      array.forEach((node) => {
+        if (this.graph.hasNode(node))
+          this.graph.updateNodeAttributes(node, (attrs) => {
+            return {
+              ...attrs,
+              selected: attrs.id + 1,
+            };
+          });
       });
     } else {
       this.graph.updateEachNodeAttributes((node, attrs) => {

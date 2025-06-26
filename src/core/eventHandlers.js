@@ -56,7 +56,7 @@ export class EventHandlers {
         const reader = new FileReader();
         reader.onload = (e) => {
           const importedData = JSON.parse(e.target.result);
-          console.log("Imported Data:", importedData); // Debugging
+          // console.log("Imported Data:", importedData); // Debugging
           this.app.graphManager.history.push(...importedData);
           this.app.graphManager.updateIndex(
             this.app.graphManager.history.length - 1,

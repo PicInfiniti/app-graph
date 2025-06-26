@@ -99,5 +99,33 @@
 
 #graphs-panel
   top: 300px
+
 #face-panel
   top: 600px
+  .body-faces
+    overflow: auto
+    scrollbar-width: thin
+    cursor: pointer
+    user-select: none
+    
+    ul 
+      list-style-type: none
+      padding-left: 10px
+      li 
+        margin: 5px
+        width: 90% 
+        font-size: 18px
+        font-weight: bold
+        padding: 5px
+        border-radius: 5px
+        display: block
+        position: relative
+
+        &:hover
+          background-color: #46b45580
+          color: #f2f2f2ff !important
+
+        &.select
+          background-color: #46b455bf
+          color: #ffffff !important
+      

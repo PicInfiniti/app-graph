@@ -102,11 +102,6 @@ export class App {
     // Draw edges
 
     graph.forEachFace((face, attr) => {
-      if (attr.label === undefined) {
-        const newLabel = getAvailableLabel(attr.id);
-        graph.setFaceAttribute(face, "label", newLabel);
-      }
-
       if (!attr.color) {
         graph.setFaceAttribute(face, "color", settings.face_color);
       }

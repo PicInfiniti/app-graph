@@ -28,7 +28,13 @@ export class GraphsPanel {
 
     if (this.app.keyHandler.isCtrlHold())
       this.graphManager.graphIndex = this.index;
-    else this.graphManager.selectAllNode(this.lis());
+    else {
+      let nodes = this.lis().map((index) =>
+        this.graphManager.graphs[index].nodes(),
+      );
+      nodes = new Set(nodes.flat());
+      this.graphManager.selectAllNode(nodes);
+    }
   }
 
   updateGraphsPanel() {

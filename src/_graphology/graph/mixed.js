@@ -426,6 +426,10 @@ export default class Mixed extends Graph {
     return this._faces.get(face).attributes[key];
   }
 
+  getFaceAttributes(face) {
+    return this._faces.get(face).attributes;
+  }
+
   Export() {
     const _export = this.export();
 

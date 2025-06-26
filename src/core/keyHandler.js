@@ -53,6 +53,9 @@ export class KeyHandler {
         event.preventDefault();
         this.action(this.findKey());
       }
+      this.eventBus.emit("key:down", {
+        key: this.pressedKeys,
+      });
     });
 
     d.addEventListener("keyup", (event) => {
@@ -70,6 +73,9 @@ export class KeyHandler {
           );
         }
       }
+      this.eventBus.emit("key:up", {
+        key: this.pressedKeys,
+      });
     });
 
     const modals = d.querySelectorAll(".modal, .modal-chord, .modal-input");
