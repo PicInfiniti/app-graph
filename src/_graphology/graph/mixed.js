@@ -1,5 +1,8 @@
 import { Graph } from "graphology";
 import { subgraph, disjointUnion, union } from "graphology-operators";
+import { attachNodeMethods } from "./methods/node-methods";
+import { attachEdgeMethods } from "./methods/edge-methods";
+import { attachFaceMethods } from "./methods/face-methods";
 
 export default class Mixed extends Graph {
   constructor(options) {
@@ -49,22 +52,6 @@ export default class Mixed extends Graph {
     this._faces = new Map();
   }
 
-  getEdgeWeight(edge) {
-    const { weight } = this.getEdgeAttributes(edge);
-    return weight;
-  }
-
-  setEdgeWeight(edge, val) {
-    this.updateEdgeAttribute(edge, "weight", (n) => val);
-  }
-
-  setDefaultEdgeWeight(val = 1) {
-    this.updateEachEdgeAttributes((_, attrs) => ({
-      ...attrs,
-      weight: val,
-    }));
-  }
-
   // 🧬 Deep copy with structure and attributes
   // other tyoe of copy includes emptyCopy and copy use this so it will fix functionality of all of them
 
@@ -74,29 +61,6 @@ export default class Mixed extends Graph {
     return graph;
   }
 
-  // 🚀 Prepare nodes for D3
-  getNodesForD3() {
-    return this.nodes().map((id) => ({
-      ...this.getNodeAttributes(id),
-      id: Number(id),
-    }));
-  }
-
-  // 🚀 Prepare edges for D3
-  getEdgesForD3() {
-    return this.edges().map((edgeKey) => {
-      const { source, target, ...attributes } = this.getEdgeAttributes(edgeKey);
-      return {
-        source: Number(source),
-        target: Number(target),
-        ...attributes,
-      };
-    });
-  }
-
-  getEdgeSourceTarget(e) {
-    return [this.source(e), this.target(e)];
-  }
   // ❌ Clear selection on all nodes and edges
   deselectAll() {
     this.updateEachNodeAttributes((_, attrs) => ({
@@ -110,97 +74,10 @@ export default class Mixed extends Graph {
     }));
   }
 
-  // ✅ Select node/edge
-  selectNode(node) {
-    this.setNodeAttribute(node, "selected", true);
-  }
-
-  selectEdge(edge) {
-    this.setEdgeAttribute(edge, "selected", true);
-  }
-
-  // ❌ Deselect node/edge
-  deselectNode(node) {
-    this.setNodeAttribute(node, "selected", false);
-  }
-
-  deselectEdge(edge) {
-    this.setEdgeAttribute(edge, "selected", false);
-  }
-
-  // 🔁 Toggle selection
-  toggleNodeSelection(node) {
-    const current = this.getNodeAttribute(node, "selected") || 0;
-
-    if (current > 0) {
-      // Deselect
-      this.setNodeAttribute(node, "selected", 0);
-    } else {
-      // Assign next available number
-      let max = 0;
-      this.forEachNode((_, attrs) => {
-        if (attrs.selected > max) {
-          max = attrs.selected;
-        }
-      });
-      this.setNodeAttribute(node, "selected", max + 1);
-    }
-  }
-
-  toggleEdgeSelection(edge) {
-    const current = this.getEdgeAttribute(edge, "selected") || 0;
-
-    if (current > 0) {
-      // Deselect
-      this.setEdgeAttribute(edge, "selected", 0);
-    } else {
-      // Assign next available number
-      let max = 0;
-      this.forEachEdge((_, attrs) => {
-        if (attrs.selected > max) {
-          max = attrs.selected;
-        }
-      });
-      this.setEdgeAttribute(edge, "selected", max + 1);
-    }
-  }
-
-  // 📦 Get selected node/edge keys
-  getSelectedNodes() {
-    return this.filterNodes((_, attrs) => attrs.selected > 0).sort(
-      (a, b) =>
-        this.getNodeAttribute(a, "selected") -
-        this.getNodeAttribute(b, "selected"),
-    );
-  }
-
-  getSelectedEdges() {
-    return this.filterEdges((_, attrs) => attrs.selected > 0).sort(
-      (a, b) =>
-        this.getEdgeAttribute(a, "selected") -
-        this.getEdgeAttribute(b, "selected"),
-    );
-  }
-
   // 🧹 Delete all selected nodes and edges
   deleteSelected() {
     this.getSelectedEdges().forEach((edge) => this.dropEdge(edge));
     this.getSelectedNodes().forEach((node) => this.dropNode(node));
-  }
-
-  // 🎨 Update a specific attribute (like color) for all selected nodes
-  updateSelectedNodesColor(color, stroke, labelColor) {
-    if (!color || !stroke || !labelColor) {
-      if (color) {
-        this.updateSelectedNodesAttributes({ color });
-      } else if (stroke) {
-        this.updateSelectedNodesAttributes({ stroke });
-      } else if (labelColor) {
-        this.updateSelectedNodesAttributes({ labelColor });
-      }
-    } else {
-      this.updateSelectedNodesAttributes({ color, stroke, labelColor });
-    }
   }
 
   updateSelectedName(label) {
@@ -216,107 +93,6 @@ export default class Mixed extends Graph {
   updateSelectedWeight(weight) {
     this.updateSelectedNodesAttributes({ weight });
     this.updateSelectedEdgesAttributes({ weight });
-  }
-
-  updateSelectedNodesName(label) {
-    this.updateSelectedNodesAttributes({ label });
-  }
-
-  updateSelectedNodesInfo(desc) {
-    this.updateSelectedNodesAttributes({ desc });
-  }
-
-  updateSelectedEdgesName(label) {
-    this.updateSelectedEdgesAttributes({ label });
-  }
-
-  updateSelectedEdgesInfo(desc) {
-    this.updateSelectedEdgesAttributes({ desc });
-  }
-
-  // 🎨 Update a specific attribute (like color) for all selected edges
-  updateSelectedEdgesColor(color, labelColor) {
-    if (!color || !labelColor) {
-      if (color) {
-        this.updateSelectedEdgesAttributes({ color });
-      } else if (labelColor) {
-        this.updateSelectedEdgesAttributes({ labelColor });
-      }
-    } else {
-      this.updateSelectedEdgesAttributes({ color, labelColor });
-    }
-  }
-
-  // 🛠️ Update multiple attributes for selected nodes
-  updateSelectedNodesAttributes(updates) {
-    this.getSelectedNodes().forEach((node) => {
-      this.mergeNodeAttributes(node, updates);
-    });
-  }
-
-  // 🛠️ Update multiple attributes for selected edges
-  updateSelectedEdgesAttributes(updates) {
-    this.getSelectedEdges().forEach((edge) => {
-      this.mergeEdgeAttributes(edge, updates);
-    });
-  }
-
-  // 🔗 Connect all selected nodes (fully connected using merge)
-  connectSelectedNodes(color, type = "directed") {
-    const selected = this.getSelectedNodes();
-    if (selected.length < 1) return;
-    if (selected.length > 1) {
-      for (let i = 0; i < selected.length; i++) {
-        for (let j = i + 1; j < selected.length; j++) {
-          const source = selected[i];
-          const target = selected[j];
-          // This creates the edge if it doesn't exist, or merges attributes if it does
-          if (type == "undirected") {
-            this.mergeUndirectedEdge(source, target, {
-              color: color,
-              selected: false,
-            });
-          } else {
-            this.mergeDirectedEdge(source, target, {
-              color: color,
-              selected: false,
-            });
-          }
-        }
-      }
-    } else if (this.allowSelfLoops) {
-      const node = selected[0];
-      if (type == "undirected") {
-        this.mergeUndirectedEdge(node, node, {
-          color: color,
-          selected: false,
-        });
-      } else {
-        this.mergeDirectedEdge(node, node, {
-          color: color,
-          selected: false,
-        });
-      }
-    }
-  }
-
-  connectSelectedNodesInOrder(color, type = "directed") {
-    const ordered = this.getSelectedNodes();
-    for (let i = 0; i < ordered.length - 1; i++) {
-      const source = ordered[i];
-      const target = ordered[i + 1];
-      if (type == "undirected") {
-        this.mergeUndirectedEdge(source, target, {
-          color: color,
-          selected: false,
-        });
-      } else {
-        this.mergeDirectedEdge(source, target, {
-          color: color,
-          selected: false,
-        });
-      }
-    }
   }
 
   // ✅ Select a path of nodes and connecting edges
@@ -387,14 +163,17 @@ export default class Mixed extends Graph {
     this.clear();
     this.import(graph.export());
   }
+
+  // extends parent methods. Can't move to prototype.
   //nodes
   dropNode(node) {
-    super.dropNode(node);
     const faces = this.faceNodeNeighbors(node);
     if (faces.length)
       faces.map((face) => {
         this.dropFace(face);
       });
+
+    super.dropNode(node);
   }
 
   //edges
@@ -406,76 +185,6 @@ export default class Mixed extends Graph {
       });
 
     super.dropEdge(edge);
-  }
-  //faces
-  addFace(nodes, attributes) {
-    const face = nodes.join("_");
-
-    attributes = {
-      ...attributes,
-      key: face,
-      id: this._faces.size,
-      nodes: nodes,
-    };
-
-    var faceData = new FaceData(face, nodes, attributes);
-    this._faces.set(face, faceData);
-  }
-
-  faces() {
-    return Array.from(this._faces.keys());
-  }
-
-  findFace(nodes) {
-    nodes.sort();
-    return nodes.join("_");
-  }
-
-  dropFace(face) {
-    if (this._faces.has(face)) this._faces.delete(face);
-  }
-
-  hasFace(face) {
-    return this._faces.has(face);
-  }
-
-  faceNodeNeighbors(node) {
-    const faces = [];
-    this.forEachFace((face, attrs) => {
-      if (attrs.nodes.includes(node)) faces.push(face);
-    });
-    return faces;
-  }
-
-  faceEdgeNeighbors(edge) {
-    const { source, target } = this.getEdgeAttributes(edge);
-    const faces = [];
-    this.forEachFace((face, attrs) => {
-      if (
-        attrs.nodes.includes("" + source) &&
-        attrs.nodes.includes("" + target)
-      )
-        faces.push(face);
-    });
-    return faces;
-  }
-
-  forEachFace(callback) {
-    for (const faceData of this._faces.values()) {
-      callback(faceData.key, faceData.attributes);
-    }
-  }
-
-  setFaceAttribute(face, key, attr) {
-    this._faces.get(face).attributes[key] = attr;
-  }
-
-  getFaceAttribute(face, key) {
-    return this._faces.get(face).attributes[key];
-  }
-
-  getFaceAttributes(face) {
-    return this._faces.get(face).attributes;
   }
 
   export() {
@@ -513,12 +222,6 @@ function assignPolyfill() {
 var assign = assignPolyfill;
 if (typeof Object.assign === "function") assign = Object.assign;
 
-function FaceData(key, nodes, attributes) {
-  this.key = key;
-  this.attributes = attributes;
-  this.nodes = nodes;
-}
-
 function serializeFace(key, data) {
   var serialized = {
     key: key,
@@ -529,3 +232,7 @@ function serializeFace(key, data) {
   }
   return serialized;
 }
+
+attachNodeMethods(Mixed);
+attachEdgeMethods(Mixed);
+attachFaceMethods(Mixed);
