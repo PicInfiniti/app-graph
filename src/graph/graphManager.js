@@ -105,6 +105,9 @@ export class GraphManager {
     this.graphIndex = 0;
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
+    if (this.settings.forceSimulation) {
+      this.app.updateSimulation();
+    }
     return true;
   }
 
