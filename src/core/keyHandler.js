@@ -51,12 +51,14 @@ export class KeyHandler {
           this.toggleInput("rename", false);
         }
       } else {
-        event.preventDefault();
         if (this.isChordVisible())
           this.eventBus.emit("key:down", {
             key: this.pressedKeys,
           });
-        this.action(this.findKey());
+
+        const key = this.findKey();
+        if (key) event.preventDefault();
+        this.action(key);
       }
     });
 
