@@ -129,20 +129,6 @@ export class GraphManager {
     });
   }
 
-  updateNodesPostion(positions, center = { x: 0, y: 0 }) {
-    // update position of all nodes
-    this.graph.forEachNode((node, attr) => {
-      this.graph.updateNodeAttributes(node, (attr) => {
-        return {
-          ...attr,
-          x: positions[node].x + center.x,
-          y: positions[node].y + center.y,
-        };
-      });
-    });
-    this.saveGraphState();
-  }
-
   push(graphs) {
     this.history.push(graphs);
     this.index++;
@@ -375,30 +361,30 @@ export class GraphManager {
   }
 
   reverseGraph() {
-    if (this.graph.type == "directed") {
-      this.saveGraphState();
+    if (this.graph.type !== "undirected") {
       const reversedGraph = reverse(this.graph);
       this.graph.replace(reversedGraph);
+      this.saveGraphState();
     }
   }
 
   toDirectedGraph() {
     if (this.graph.type !== "directed") {
-      this.saveGraphState();
       const diGraph = toDirected(this.graph);
       this.clearTo("directed");
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
+      this.saveGraphState();
     }
   }
 
   toMixedGraph() {
     if (this.graph.type !== "mixed") {
-      this.saveGraphState();
       const graph = toMixed(this.graph);
       this.clearTo("mixed");
       this.graph.replace(graph);
       this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
+      this.saveGraphState();
     }
   }
 

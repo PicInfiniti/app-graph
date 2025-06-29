@@ -92,7 +92,6 @@ export class Rect {
 
       //Scale rect
       if (this.settings.scale && this.scale.active) {
-        this.app.graphManager.saveGraphState();
         const [mx, my] = d3.pointer(event);
         this.scale.prevMouse = { x: mx, y: my };
         this.scale.activeHandle = this.hitTestHandle(mx, my);
@@ -109,6 +108,7 @@ export class Rect {
           this.scale.offsetX = mx - this.scale.rect.x;
           this.scale.offsetY = my - this.scale.rect.y;
         }
+        this.app.graphManager.saveGraphState();
       }
     } else {
       this.selection.active = false;

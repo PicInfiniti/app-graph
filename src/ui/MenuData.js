@@ -33,8 +33,6 @@ export const menuData = [
     title: "Edit",
     id: "edit",
     submenu: [
-      { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
-      { title: "Complete Graph", name: "complete-btn", shortcut: "(alt-C)" },
       { title: "Delete", name: "remove-selection-btn", shortcut: "(d)" },
       { title: "Assign Color", name: "color-selection-btn", shortcut: "(c)" },
       { title: "Add Edge", name: "add-edge-btn", shortcut: "(alt-e)" },
@@ -620,6 +618,42 @@ export const menuData = [
     id: "help",
     submenu: [
       {
+        title: "Layout",
+        id: "layout",
+        shortcut: ">",
+        submenu: [
+          { title: "Center Nodes", name: "center-layout" },
+          { title: "Organize Nodes", name: "organize-circle", shortcut: "(O)" },
+          { title: "Random", name: "random-layout" },
+          { title: "Vertical Flip", name: "vflip-layout" },
+          { title: "Horizontal Flip", name: "hflip-layout" },
+          {
+            title: "Rotate",
+            name: "rotate-layout",
+            input: [
+              {
+                type: "number",
+                id: "rotate-layout-1",
+                min: -180,
+                max: 180,
+                value: 45,
+              },
+            ],
+          },
+          { type: "divider" },
+          {
+            title: "Force Atlas",
+            name: "force-layout",
+            link: "https://graphology.github.io/standard-library/layout-forceatlas2.html",
+          },
+          // {
+          //   title: "Noverlap",
+          //   name: "noverlap-layout",
+          //   link: "https://graphology.github.io/standard-library/layout-noverlap.html",
+          // },
+        ],
+      },
+      {
         title: "Converter",
         id: "converter",
         shortcut: ">",
@@ -633,6 +667,7 @@ export const menuData = [
       },
       { title: "Reverse Direction", id: "reverse-direction" },
       { title: "Subgraph", id: "subgraph-btn" },
+      { title: "Complete Graph", name: "complete-btn", shortcut: "(alt-C)" },
     ],
   },
   {

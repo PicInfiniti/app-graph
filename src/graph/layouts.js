@@ -1,4 +1,12 @@
-import { circular } from "graphology-library/layout";
+import * as d3 from "d3";
+import { collectLayout, assignLayout } from "graphology-layout/utils";
+import {
+  circular,
+  random as _random,
+  rotation,
+} from "graphology-library/layout";
+import forceAtlas2 from "graphology-layout-forceatlas2";
+import noverlap from "graphology-layout-noverlap";
 
 export class Layout {
   constructor(app) {
@@ -10,48 +18,173 @@ export class Layout {
   init() {}
 
   applyLayout(type, param) {
+    let layoutApplied = true;
     switch (type) {
+      case "force":
+        this.force();
+        break;
+
+      case "noverlap":
+        this.noverlap();
+        break;
+
       case "rotate180":
         this.rotate180();
-        this.eventBus.emit("graph:updated", { type: "layout" });
+        break;
+
+      case "rotate":
+        this.rotate(param);
+        break;
+
+      case "h-flip":
+        this.hFlip();
+        break;
+
+      case "v-flip":
+        this.vFlip();
+        break;
+
+      case "center":
+        this.center();
+        break;
+
+      case "random":
+        this.random();
         break;
 
       case "circle":
         this.organizeNodesInCircle();
-        this.eventBus.emit("graph:updated", { type: "layout" });
         break;
 
       case "oneLine":
         this.organizeNodesInLine();
-        this.eventBus.emit("graph:updated", { type: "layout" });
 
         break;
 
       case "twoLine":
         this.organizeNodesInTwoLines(param.line1Count, param.Y);
-        this.eventBus.emit("graph:updated", { type: "layout" });
         break;
 
       default:
+        layoutApplied = false;
         break;
     }
 
-    // More layouts can be added here
+    if (layoutApplied) this.app.graphManager.saveGraphState();
+  }
+
+  noverlap() {
+    const graph = this.app.graphManager.graph;
+    const positions = noverlap(graph, {
+      maxIterations: 50,
+      settings: {
+        ratio: 100,
+        expansion: 1.5,
+        gridSize: 5,
+      },
+    });
+    this.center(positions);
+  }
+
+  force() {
+    const graph = this.app.graphManager.graph;
+    const positions = forceAtlas2(graph, {
+      iterations: 5,
+      settings: {
+        gravity: 10,
+        scalingRatio: 100,
+      },
+    });
+
+    this.center(positions);
+  }
+
+  hFlip() {
+    const centerX = this.canvas.width / 2;
+    const graph = this.app.graphManager.graph;
+    const positions = collectLayout(graph);
+
+    Object.values(positions).forEach((node) => {
+      const dx = centerX - node.x;
+      node.x += 2 * dx;
+    });
+
+    assignLayout(graph, positions);
+  }
+
+  vFlip() {
+    const centerY = this.canvas.height / 2;
+    const graph = this.app.graphManager.graph;
+    const positions = collectLayout(graph);
+
+    Object.values(positions).forEach((node) => {
+      const dy = centerY - node.y;
+      node.y += 2 * dy;
+    });
+
+    assignLayout(graph, positions);
+  }
+
+  rotate(degree = 90) {
+    const graph = this.app.graphManager.graph;
+    const radians = (degree * Math.PI) / -180;
+
+    const positions = rotation(graph, radians);
+    this.center(positions);
+  }
+
+  center(positions = undefined) {
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+
+    const graph = this.app.graphManager.graph;
+    if (!positions) positions = collectLayout(graph);
+
+    const centroid = {
+      x: d3.mean(Object.values(positions), (d) => d.x),
+      y: d3.mean(Object.values(positions), (d) => d.y),
+    };
+
+    const dx = centerX - centroid.x;
+    const dy = centerY - centroid.y;
+    Object.values(positions).forEach((node) => {
+      node.x += dx;
+      node.y += dy;
+    });
+
+    assignLayout(graph, positions);
+  }
+
+  random() {
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    const graph = this.app.graphManager.graph;
+    const positions = _random(graph, {
+      scale: Math.max(centerX, centerY) - 200,
+    });
+
+    this.center(positions);
   }
 
   organizeNodesInCircle() {
     const centerX = this.canvas.width / 2;
     const centerY = this.canvas.height / 2;
+
+    const graph = this.app.graphManager.graph;
+
     const radius = Math.min(centerX * 0.5, centerY * 0.5);
 
-    const positions = circular(this.app.graphManager.graph, {
+    const positions = circular(graph, {
       scale: radius,
       dimensions: ["x", "y"],
     });
-    this.app.graphManager.updateNodesPostion(positions, {
-      x: centerX,
-      y: centerY,
+
+    Object.values(positions).forEach((node) => {
+      node.x += centerX;
+      node.y += centerY;
     });
+
+    assignLayout(graph, positions);
   }
 
   organizeNodesInLine() {
@@ -72,7 +205,7 @@ export class Layout {
       positions[node] = { x: padding + index * stepX, y: centerY };
     });
 
-    this.app.graphManager.updateNodesPostion(positions);
+    assignLayout(graph, positions);
   }
 
   organizeNodesInTwoLines(line1Count, Y = 50) {
@@ -127,7 +260,7 @@ export class Layout {
       };
     });
 
-    this.app.graphManager.updateNodesPostion(positions);
+    assignLayout(graph, positions);
   }
 
   rotate180() {
@@ -178,6 +311,6 @@ export class Layout {
       };
     });
 
-    this.app.graphManager.updateNodesPostion(positions);
+    assignLayout(graph, positions);
   }
 }

@@ -182,7 +182,7 @@ export class Menu {
       "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
       "color-selection-btn": () =>
         this.graphManager.updateSelectedNodesEdgesColor(true, true, true, true),
-      "organize-circle": () => this.layout.applyLayout("circle"),
+
       "complete-btn": () => this.graphManager.makeGraphComplete("undirected"),
       "complete-directed-btn": () =>
         this.graphManager.makeGraphComplete("directed"),
@@ -469,6 +469,20 @@ export class Menu {
       aquarius: () => this.graphManager.generator.zodiac.aquarius(),
       pisces: () => this.graphManager.generator.zodiac.pisces(),
       //Operators
+      "organize-circle": () => this.layout.applyLayout("circle"),
+      "center-layout": () => this.layout.applyLayout("center"),
+      "random-layout": () => this.layout.applyLayout("random"),
+      "rotate-layout-1": () => this.layout.applyLayout("rotate", val),
+      "rotate-layout": () => {
+        const value = d.getElementById("rotate-layout-1").value;
+        return this.layout.applyLayout("rotate", value);
+      },
+      "hflip-layout": () => this.layout.applyLayout("h-flip"),
+      "vflip-layout": () => this.layout.applyLayout("v-flip"),
+
+      "force-layout": () => this.layout.applyLayout("force"),
+      "noverlap-layout": () => this.layout.applyLayout("noverlap"),
+
       "reverse-direction": () => this.graphManager.reverseGraph(),
       "to-undirected": () => this.graphManager.toUndirectedGraph(),
       "to-directed": () => this.graphManager.toDirectedGraph(),

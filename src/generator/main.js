@@ -102,7 +102,7 @@ export class Generator {
         clusters: Number(c),
       },
     );
-    this.layout.applyLayout("circle");
+    this.layout.applyLayout("random");
   }
 
   erdosRenyi(o, p) {
