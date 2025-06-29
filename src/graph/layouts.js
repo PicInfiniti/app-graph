@@ -21,7 +21,7 @@ export class Layout {
     let layoutApplied = true;
     switch (type) {
       case "force":
-        this.force();
+        this.force(param.itteration, param.gravity);
         break;
 
       case "noverlap":
@@ -86,12 +86,13 @@ export class Layout {
     this.center(positions);
   }
 
-  force() {
+  force(itteration = 50, gravity = 25) {
+    console.log(itteration, gravity);
     const graph = this.app.graphManager.graph;
     const positions = forceAtlas2(graph, {
-      iterations: 5,
+      iterations: parseInt(itteration),
       settings: {
-        gravity: 10,
+        gravity: parseInt(gravity),
         scalingRatio: 100,
       },
     });

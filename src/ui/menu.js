@@ -480,7 +480,24 @@ export class Menu {
       "hflip-layout": () => this.layout.applyLayout("h-flip"),
       "vflip-layout": () => this.layout.applyLayout("v-flip"),
 
-      "force-layout": () => this.layout.applyLayout("force"),
+      "force-layout": () =>
+        this.layout.applyLayout("force", {
+          itteration: d.getElementById("force-itteration").value,
+          gravity: d.getElementById("force-gravity").value,
+        }),
+
+      "froce-itteration": () =>
+        this.layout.applyLayout("force", {
+          val,
+          gravity: d.getElementById("force-gravity").value,
+        }),
+
+      "force-gravity": () =>
+        this.layout.applyLayout("force", {
+          itteration: d.getElementById("force-itteration").value,
+          gravity: val,
+        }),
+
       "noverlap-layout": () => this.layout.applyLayout("noverlap"),
 
       "reverse-direction": () => this.graphManager.reverseGraph(),

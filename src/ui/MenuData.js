@@ -644,6 +644,23 @@ export const menuData = [
           {
             title: "Force Atlas",
             name: "force-layout",
+            input: [
+              {
+                type: "number",
+                id: "force-itteration",
+                min: 0,
+                max: 500,
+                value: 50,
+              },
+              {
+                type: "number",
+                id: "force-gravity",
+                min: 0,
+                max: 1,
+                value: 25,
+              },
+            ],
+
             link: "https://graphology.github.io/standard-library/layout-forceatlas2.html",
           },
           // {
