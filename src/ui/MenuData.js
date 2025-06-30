@@ -153,6 +153,7 @@ export const menuData = [
       },
 
       { type: "divider" },
+      { title: "Performance", id: "performance", check: true },
       {
         title: "History",
         id: "History",

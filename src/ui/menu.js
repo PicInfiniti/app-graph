@@ -281,6 +281,8 @@ export class Menu {
         this.eventBus.emit("updateSetting", { key: "grid", value: val }),
       "stroke-size-1": () =>
         this.eventBus.emit("updateSetting", { key: "stroke_size", value: val }),
+      performance: () =>
+        this.eventBus.emit("toggleSetting", { key: "performance" }),
       "save-history": () =>
         this.eventBus.emit("toggleSetting", { key: "saveHistory" }),
       "clear-histoory-btn": () => this.graphManager.cleanLocalStorage(),

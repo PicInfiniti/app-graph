@@ -142,6 +142,7 @@ export class Canvas {
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
     event.subject.__moved = false;
+    if (event.subject.id !== null) this.canvas.style.cursor = "grab"; // Corrected this line
   }
 
   dragged(event) {
@@ -163,7 +164,9 @@ export class Canvas {
         });
       }
 
-      if (event.subject.id !== null) {
+      if (event.subject.id !== null && !this.settings.performance) {
+        this.canvas.style.cursor = "grabbing"; // Corrected this line
+
         this.app.graphManager.graph.updateNodeAttributes(
           event.subject.id,
           (attr) => {
@@ -184,6 +187,8 @@ export class Canvas {
     event.subject.fy = null;
     event.subject.x = event.x;
     event.subject.y = event.y;
+    this.canvas.style.cursor = "default"; // Corrected this line
+
     if (!this.settings.forceSimulation) this.app.updateSimulation();
 
     if (
@@ -191,6 +196,18 @@ export class Canvas {
       event.subject.id &&
       !this.settings.forceSimulation
     ) {
+      if (event.subject.id !== null) {
+        this.app.graphManager.graph.updateNodeAttributes(
+          event.subject.id,
+          (attr) => {
+            return {
+              ...attr,
+              x: event.x,
+              y: event.y,
+            };
+          },
+        );
+      }
       this.app.graphManager.saveGraphState();
     }
   }

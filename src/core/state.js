@@ -48,6 +48,7 @@ class AppSettings {
       historyLimit: 100,
       graphs_panel: true,
       face_panel: true,
+      performance: false,
     };
 
     this.nightSkyTheme = {
@@ -213,6 +214,10 @@ class AppSettings {
         this.settings.component = false;
         this.settings.scale = false;
         this.settings.panning = false;
+      }
+
+      if (key === "forceSimulation" && this.settings.performance) {
+        this.settings.forceSimulation = false;
       }
 
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });

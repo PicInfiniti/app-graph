@@ -27,6 +27,11 @@ export function applySettingsToUI(settings, canvas) {
     !settings.weightLabel,
   );
 
+  d.querySelector("#performance .check").classList.toggle(
+    "hidden",
+    !settings.performance,
+  );
+
   d.querySelector("#save-history .check").classList.toggle(
     "hidden",
     !settings.saveHistory,
