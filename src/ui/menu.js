@@ -577,8 +577,6 @@ export class Menu {
     } else {
       console.log(`No action defined for: ${menuId}`);
     }
-    // this.app.graphManager.graph.deselectAll()
-    // this.app.drawGraph()
   }
 
   attachEventListeners() {

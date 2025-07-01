@@ -11,6 +11,7 @@ import { Layout } from "../graph/layouts.js";
 import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
 import { ColorPicker } from "../ui/colorPickr.js";
+import { GraphRenderer } from "../graph/graphRenderer.js";
 
 export class App {
   constructor() {
@@ -26,6 +27,13 @@ export class App {
       this.settings.type,
     ); // Handles graph logic
     this.rect = new Rect(this);
+    this.graphRenderer = new GraphRenderer(
+      this.graphManager,
+      this.canvas,
+      this.appSettings,
+      this.rect,
+      this.canvas.getContext("2d"),
+    );
     this.menu = new Menu(this, menuData);
     this.widget = new Widgets(this);
     this.keyHandler = new KeyHandler(this); // Handle global keyboard shortcuts
@@ -90,171 +98,6 @@ export class App {
     }
   }
 
-  drawGraph() {
-    const graph = this.graphManager.graph;
-    const canvas = this.canvas;
-    const settings = this.appSettings.settings;
-
-    const ctx = this._canvas.ctx;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Draw edges
-
-    graph.forEachFace((_, attr) => {
-      const hull = attr.nodes.map((p) => {
-        const node = graph.getNodeAttributes(p);
-        return [node.x, node.y];
-      });
-
-      const centroid = {
-        x: d3.mean(hull, (d) => d[0]),
-        y: d3.mean(hull, (d) => d[1]),
-      };
-
-      if (hull) {
-        ctx.fillStyle = attr.color;
-
-        ctx.beginPath();
-        ctx.moveTo(hull[0][0], hull[0][1]);
-        for (let i = 1; i < hull.length; i++) {
-          ctx.lineTo(hull[i][0], hull[i][1]);
-        }
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      if (settings.faceLabel) {
-        ctx.fillStyle = attr.labelColor || "#000"; // fallback if labelColor missing
-        ctx.font = `${settings.label_size}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(attr.label, centroid.x, centroid.y);
-      }
-    });
-
-    graph.forEachEdge((edge, attr, s, t, source, target) => {
-      if (graph.isDirected(edge)) {
-        const dx = target.x - source.x;
-        const dy = target.y - source.y;
-        const length = Math.sqrt(dx * dx + dy * dy);
-        const shorten = 12 + Number(settings.edge_size);
-
-        const offsetX = (dx / length) * shorten;
-        const offsetY = (dy / length) * shorten;
-
-        // Check for reverse edge
-        const hasReverseEdge = graph.hasEdge(t, s);
-
-        // Adjust start and end based on reverse presence
-        const startX = hasReverseEdge ? source.x + offsetX : source.x;
-        const startY = hasReverseEdge ? source.y + offsetY : source.y;
-        const endX = target.x - offsetX;
-        const endY = target.y - offsetY;
-
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = attr.selected ? "orange" : attr.color;
-        ctx.lineWidth = settings.edge_size;
-        ctx.stroke();
-        ctx.closePath();
-      } else {
-        // Draw the edge line
-        ctx.beginPath();
-        ctx.moveTo(source.x, source.y);
-        ctx.lineTo(target.x, target.y);
-        ctx.strokeStyle = attr.selected ? "orange" : attr.color;
-        ctx.lineWidth = settings.edge_size;
-        ctx.stroke();
-        ctx.closePath();
-      }
-
-      if (graph.isDirected(edge)) {
-        // Draw arrowhead for directed edge
-        const arrowSize = 14 + Number(settings.edge_size); // size of the arrowhead
-        const angle = Math.atan2(target.y - source.y, target.x - source.x);
-
-        const arrowX = target.x - (Math.cos(angle) * settings.node_radius) / 4; // slightly back from node center
-        const arrowY = target.y - (Math.sin(angle) * settings.node_radius) / 4;
-
-        ctx.beginPath();
-        ctx.moveTo(arrowX, arrowY);
-        ctx.lineTo(
-          arrowX - arrowSize * Math.cos(angle - Math.PI / 6),
-          arrowY - arrowSize * Math.sin(angle - Math.PI / 6),
-        );
-        ctx.lineTo(
-          arrowX - arrowSize * Math.cos(angle + Math.PI / 6),
-          arrowY - arrowSize * Math.sin(angle + Math.PI / 6),
-        );
-        ctx.closePath();
-        ctx.fillStyle = attr.selected ? "orange" : attr.color;
-        ctx.fill();
-      }
-
-      if (settings.edgeLabel || settings.weightLabel) {
-        ctx.fillStyle = attr.labelColor;
-        ctx.font = `${settings.label_size}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        const midX = (source.x + target.x) / 2;
-        const midY = (source.y + target.y) / 2;
-
-        // Calculate perpendicular offset
-        const dx = target.x - source.x;
-        const dy = target.y - source.y;
-        const len = Math.sqrt(dx * dx + dy * dy);
-        const offset = 10; // margin in pixels — tweak as you like
-
-        // Normalized perpendicular vector
-        const perpX = -dy / len;
-        const perpY = dx / len;
-
-        // Final position with margin
-        const labelX = midX + perpX * offset + settings.label_pos.x;
-        const labelY = midY + perpY * offset + settings.label_pos.y;
-
-        if (settings.edgeLabel && settings.weightLabel) {
-          if (attr.weight)
-            ctx.fillText(`${attr.label}, ${attr.weight}`, labelX, labelY);
-          else ctx.fillText(attr.label, labelX, labelY);
-        } else if (!settings.edgeLabel && settings.weightLabel && attr.weight) {
-          ctx.fillText(attr.weight, labelX, labelY);
-        } else if (settings.edgeLabel && !settings.weightLabel) {
-          ctx.fillText(attr.label, labelX, labelY);
-        }
-      }
-    });
-
-    // Draw nodes
-    graph.forEachNode((node, attr) => {
-      ctx.beginPath();
-      ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
-      ctx.fillStyle = attr.selected ? "orange" : attr.color;
-      ctx.fill();
-      if (this.settings.stroke_size != 0) {
-        ctx.lineWidth = this.settings.stroke_size;
-        ctx.strokeStyle = attr.selected ? "orange" : attr.stroke;
-        ctx.stroke();
-      }
-      ctx.closePath();
-
-      if (settings.vertexLabel) {
-        ctx.fillStyle = attr.labelColor;
-        ctx.font = `${settings.label_size}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(
-          attr.label,
-          attr.x + settings.label_pos.x,
-          attr.y + settings.label_pos.y,
-        );
-      }
-    });
-
-    this.rect.draw(); // Redraw to remove rectangle
-  }
-
   ticked() {
     // Draw nodes
     this.nodes.forEach((d) => {
@@ -315,13 +158,12 @@ export class App {
   }
 
   startAnimationLoop() {
-    let counter = 0;
     const loop = () => {
       if (this.appSettings.settings.forceSimulation) {
         this.simulation.tick(); // Advance the simulation manually
         this.ticked(); // Update graph model with simulation state
       }
-      this.drawGraph(); // Always redraw
+      this.graphRenderer.drawGraph(); // Always redraw
       requestAnimationFrame(loop); // Loop
     };
 

@@ -44,8 +44,6 @@ export class Rect {
     this.canvas.addEventListener("mousedown", this.startSelection.bind(this));
     this.canvas.addEventListener("mousemove", this.updateSelection.bind(this));
     this.canvas.addEventListener("mouseup", this.endSelection.bind(this));
-
-    this.app.drawGraph();
   }
 
   draw() {
@@ -125,7 +123,6 @@ export class Rect {
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
       selection.width = mouseX - selection.x;
       selection.height = mouseY - selection.y;
-      this.app.drawGraph();
       return;
     }
 
@@ -143,7 +140,6 @@ export class Rect {
             };
           });
         }
-        this.app.drawGraph();
         return;
       }
 
@@ -163,7 +159,6 @@ export class Rect {
           });
         }
         this.scale.prevMouse = { x: mx, y: my };
-        this.app.drawGraph();
         return;
       }
 
@@ -217,7 +212,6 @@ export class Rect {
         };
       });
     }
-    this.app.drawGraph();
   }
 
   pointsInRect(selection) {

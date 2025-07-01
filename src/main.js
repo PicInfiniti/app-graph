@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", () => {
     app.canvas.width = window.innerWidth;
     app.canvas.height = window.innerHeight;
-    app.drawGraph();
   });
 
   document.querySelectorAll("img").forEach((img) => {

@@ -204,7 +204,6 @@ export class Metric {
       );
       this.addLine();
       graph.selectPath(path);
-      this.graphManager.app.drawGraph();
     } else {
       this.addInfo("They are not connected");
       this.addLine();

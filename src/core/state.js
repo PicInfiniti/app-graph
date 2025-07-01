@@ -182,7 +182,6 @@ class AppSettings {
       this.saveToLocalStorage();
     }
     this.init();
-    this.app.drawGraph();
   }
 
   toggleSetting(key, value = null) {
