@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { collectLayout, assignLayout } from "graphology-layout/utils";
+import { runGraphAlgorithm } from "../webWorkers/metrics-runner";
 import {
   circular,
   random as _random,
@@ -87,17 +88,33 @@ export class Layout {
   }
 
   force(itteration = 50, gravity = 25) {
-    console.log(itteration, gravity);
     const graph = this.app.graphManager.graph;
-    const positions = forceAtlas2(graph, {
-      iterations: parseInt(itteration),
-      settings: {
-        gravity: parseInt(gravity),
-        scalingRatio: 100,
-      },
-    });
+    if (graph.order < 250) {
+      const positions = forceAtlas2(graph, {
+        iterations: parseInt(itteration),
+        settings: {
+          gravity: parseInt(gravity),
+          scalingRatio: 100,
+        },
+      });
 
-    this.center(positions);
+      this.center(positions);
+    } else {
+      runGraphAlgorithm(
+        "force",
+        graph,
+        (positions) => {
+          this.center(positions);
+        },
+        {
+          iterations: parseInt(itteration),
+          settings: {
+            gravity: parseInt(gravity),
+            scalingRatio: 100,
+          },
+        },
+      );
+    }
   }
 
   hFlip() {

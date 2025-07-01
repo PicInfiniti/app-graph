@@ -70,13 +70,16 @@ export default class Mixed extends Graph {
   }
 
   loadFromLocalStorage() {
-    const savedSettings = localStorage.getItem("appSettings");
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        return this.validateSettings(parsedSettings);
-      } catch (error) {
-        console.warn("Invalid settings in localStorage. Using defaults.");
+    // for webworkers who don't access to local storage.
+    if (typeof localStorage !== "undefined") {
+      const savedSettings = localStorage.getItem("appSettings");
+      if (savedSettings) {
+        try {
+          const parsedSettings = JSON.parse(savedSettings);
+          return this.validateSettings(parsedSettings);
+        } catch (error) {
+          console.warn("Invalid settings in localStorage. Using defaults.");
+        }
       }
     }
     return { ...this.defaultColors };
