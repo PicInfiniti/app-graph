@@ -47,6 +47,7 @@ export class Rect {
   }
 
   draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     if (this.settings.select || this.settings.scale) {
       if (this.selection.active) {
         this.drawSelect(this.selection);

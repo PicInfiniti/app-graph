@@ -4,12 +4,33 @@ import {
   getAvailableLabel,
   getMinAvailableNumber,
 } from "../utils/helperFunctions.js";
+import { canvas } from "graphology-library";
 
 export class Canvas {
   constructor(app) {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.appSettings.settings;
+
+    this._canvas = {
+      main: {
+        canvas: d3.select("#main-canvas").node(),
+        ctx: d3.select("#main-canvas").node().getContext("2d"),
+      },
+      node: {
+        canvas: d3.select("#node-canvas").node(),
+        ctx: d3.select("#node-canvas").node().getContext("2d"),
+      },
+      edge: {
+        canvas: d3.select("#edge-canvas").node(),
+        ctx: d3.select("#edge-canvas").node().getContext("2d"),
+      },
+      face: {
+        canvas: d3.select("#face-canvas").node(),
+        ctx: d3.select("#face-canvas").node().getContext("2d"),
+      },
+    };
+
     this.canvas = d3.select("#main-canvas").node();
     this.ctx = this.canvas.getContext("2d");
 
@@ -21,8 +42,7 @@ export class Canvas {
   }
 
   init() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    this.updateCanvasSize(window.innerWidth, window.innerHeight);
     this.canvas.addEventListener("dblclick", this.handleDbclick.bind(this));
     this.canvas.addEventListener("click", this.handleclick.bind(this));
 
@@ -67,6 +87,13 @@ export class Canvas {
         .on("drag", this.dragged.bind(this))
         .on("end", this.dragended.bind(this)),
     );
+  }
+
+  updateCanvasSize(w, h) {
+    for (const canvas in this._canvas) {
+      this._canvas[canvas].canvas.width = w;
+      this._canvas[canvas].canvas.height = h;
+    }
   }
 
   addNodeAtEvent(event) {

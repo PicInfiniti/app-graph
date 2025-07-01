@@ -1,10 +1,19 @@
+import * as d3 from "d3";
+
 export class GraphRenderer {
-  constructor(graphManager, canvas, appSettings, rect, canvasContext) {
+  constructor(graphManager, appSettings, rect) {
     this.graphManager = graphManager;
-    this.canvas = canvas;
+    let canvas = d3.select("#main-canvas").node();
+    this.mainCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
+    canvas = d3.select("#node-canvas").node();
+    this.nodeCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
+    canvas = d3.select("#edge-canvas").node();
+    this.edgeCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
+    canvas = d3.select("#face-canvas").node();
+    this.faceCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
+
     this.appSettings = appSettings;
     this.rect = rect;
-    this._canvas = { ctx: canvasContext };
   }
 
   drawArrowhead(x, y, angle, size, color, ctx) {
@@ -32,7 +41,10 @@ export class GraphRenderer {
     ctx.fillText(text, x, y);
   }
 
-  drawFaces(ctx, graph, settings, labelFont, labelOffsetX, labelOffsetY) {
+  drawFaces(canvas, graph, settings, labelFont, labelOffsetX, labelOffsetY) {
+    const ctx = canvas.ctx;
+    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+
     graph.forEachFace((_, attr) => {
       const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);
@@ -44,7 +56,7 @@ export class GraphRenderer {
         y: d3.mean(hull, (d) => d[1]),
       };
 
-      if (hull.length > 0) {
+      if (hull) {
         ctx.fillStyle = attr.color;
         ctx.beginPath();
         ctx.moveTo(hull[0][0], hull[0][1]);
@@ -69,7 +81,7 @@ export class GraphRenderer {
   }
 
   drawEdges(
-    ctx,
+    canvas,
     graph,
     settings,
     edgeSize,
@@ -78,6 +90,9 @@ export class GraphRenderer {
     labelOffsetX,
     labelOffsetY,
   ) {
+    const ctx = canvas.ctx;
+    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+
     graph.forEachEdge((edge, attr, s, t, source, target) => {
       const dx = target.x - source.x;
       const dy = target.y - source.y;
@@ -148,7 +163,7 @@ export class GraphRenderer {
   }
 
   drawNodes(
-    ctx,
+    canvas,
     graph,
     settings,
     nodeRadius,
@@ -157,6 +172,9 @@ export class GraphRenderer {
     labelOffsetX,
     labelOffsetY,
   ) {
+    const ctx = canvas.ctx;
+    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+
     graph.forEachNode((node, attr) => {
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, nodeRadius * attr.size, 0, 2 * Math.PI);
@@ -184,9 +202,7 @@ export class GraphRenderer {
 
   drawGraph() {
     const graph = this.graphManager.graph;
-    const canvas = this.canvas;
     const settings = this.appSettings.settings;
-    const ctx = this._canvas.ctx;
     // Pre-extract commonly used settings
     const edgeSize = +settings.edge_size;
     const labelSize = settings.label_size;
@@ -196,21 +212,26 @@ export class GraphRenderer {
     const nodeRadius = settings.node_radius;
     const strokeSize = settings.stroke_size;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //
-    // this.drawFaces(ctx, graph, settings, labelFont, labelOffsetX, labelOffsetY);
-    // this.drawEdges(
-    //   ctx,
-    //   graph,
-    //   settings,
-    //   edgeSize,
-    //   nodeRadius,
-    //   labelFont,
-    //   labelOffsetX,
-    //   labelOffsetY,
-    // );
+    this.drawFaces(
+      this.faceCanvas,
+      graph,
+      settings,
+      labelFont,
+      labelOffsetX,
+      labelOffsetY,
+    );
+    this.drawEdges(
+      this.edgeCanvas,
+      graph,
+      settings,
+      edgeSize,
+      nodeRadius,
+      labelFont,
+      labelOffsetX,
+      labelOffsetY,
+    );
     this.drawNodes(
-      ctx,
+      this.nodeCanvas,
       graph,
       settings,
       nodeRadius,

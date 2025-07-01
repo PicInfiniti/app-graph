@@ -29,10 +29,8 @@ export class App {
     this.rect = new Rect(this);
     this.graphRenderer = new GraphRenderer(
       this.graphManager,
-      this.canvas,
       this.appSettings,
       this.rect,
-      this.canvas.getContext("2d"),
     );
     this.menu = new Menu(this, menuData);
     this.widget = new Widgets(this);

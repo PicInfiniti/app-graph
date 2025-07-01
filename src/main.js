@@ -9,8 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const app = new App(); // Create the app instance
   window.graphStudio = app;
   window.addEventListener("resize", () => {
-    app.canvas.width = window.innerWidth;
-    app.canvas.height = window.innerHeight;
+    app._canvas.updateCanvasSize(window.innerWidth, window.innerHeight);
   });
 
   document.querySelectorAll("img").forEach((img) => {
