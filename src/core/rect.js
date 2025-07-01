@@ -279,6 +279,7 @@ export class Rect {
       ctx.strokeRect(hx, hy, this.scale.handleSize, this.scale.handleSize);
     });
   }
+
   getHandlePosition(dir) {
     const { x, y, width: w, height: h } = this.scale.rect;
     const s = this.scale.handleSize / 2;

@@ -162,7 +162,6 @@ export class GraphRenderer {
       ctx.arc(attr.x, attr.y, nodeRadius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = attr.selected ? "orange" : attr.color;
       ctx.fill();
-
       if (strokeSize !== 0) {
         ctx.lineWidth = strokeSize;
         ctx.strokeStyle = attr.selected ? "orange" : attr.stroke;
@@ -188,7 +187,6 @@ export class GraphRenderer {
     const canvas = this.canvas;
     const settings = this.appSettings.settings;
     const ctx = this._canvas.ctx;
-    console.log();
     // Pre-extract commonly used settings
     const edgeSize = +settings.edge_size;
     const labelSize = settings.label_size;
@@ -199,18 +197,18 @@ export class GraphRenderer {
     const strokeSize = settings.stroke_size;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    this.drawFaces(ctx, graph, settings, labelFont, labelOffsetX, labelOffsetY);
-    this.drawEdges(
-      ctx,
-      graph,
-      settings,
-      edgeSize,
-      nodeRadius,
-      labelFont,
-      labelOffsetX,
-      labelOffsetY,
-    );
+    //
+    // this.drawFaces(ctx, graph, settings, labelFont, labelOffsetX, labelOffsetY);
+    // this.drawEdges(
+    //   ctx,
+    //   graph,
+    //   settings,
+    //   edgeSize,
+    //   nodeRadius,
+    //   labelFont,
+    //   labelOffsetX,
+    //   labelOffsetY,
+    // );
     this.drawNodes(
       ctx,
       graph,

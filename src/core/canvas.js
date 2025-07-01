@@ -38,7 +38,7 @@ export class Canvas {
       lastTap = currentTime;
     });
 
-    d3.select("canvas")
+    d3.select("#main-canvas")
       .on("mousedown", (event) => {
         this.mouse.dragging = false;
         [this.mouse.x, this.mouse.y] = d3.pointer(event);
