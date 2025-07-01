@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { collectLayout, assignLayout } from "graphology-layout/utils";
-import { runGraphAlgorithm } from "../webWorkers/metrics-runner";
+import { runGraphAlgorithm } from "./webWorkers/metrics-runner";
 import {
   circular,
   random as _random,

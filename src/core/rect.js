@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { scale } from "sigma/utils";
+
 export class Rect {
   constructor(app, canvas) {
     this.app = app;

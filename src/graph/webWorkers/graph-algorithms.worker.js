@@ -1,4 +1,4 @@
-import { Mixed, DirectedGraph, UndirectedGraph } from "../_graphology/graph";
+import { Mixed, DirectedGraph, UndirectedGraph } from "../../_graphology/graph";
 import { empty } from "graphology-generators/classic";
 
 import forceAtlas2 from "graphology-layout-forceatlas2";
