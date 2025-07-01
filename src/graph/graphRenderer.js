@@ -1,19 +1,16 @@
 import * as d3 from "d3";
 
 export class GraphRenderer {
-  constructor(graphManager, appSettings, rect) {
-    this.graphManager = graphManager;
-    let canvas = d3.select("#main-canvas").node();
-    this.mainCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
-    canvas = d3.select("#node-canvas").node();
-    this.nodeCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
-    canvas = d3.select("#edge-canvas").node();
-    this.edgeCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
-    canvas = d3.select("#face-canvas").node();
-    this.faceCanvas = { canvas: canvas, ctx: canvas.getContext("2d") };
+  constructor(app) {
+    this.app = app;
+    this.graphManager = app.graphManager;
+    this.mainCanvas = app._canvas._canvas.main;
+    this.nodeCanvas = app._canvas._canvas.node;
+    this.edgeCanvas = app._canvas._canvas.edge;
+    this.faceCanvas = app._canvas._canvas.face;
 
-    this.appSettings = appSettings;
-    this.rect = rect;
+    this.settings = app.settings;
+    this.rect = app.rect;
   }
 
   drawArrowhead(x, y, angle, size, color, ctx) {
@@ -202,7 +199,7 @@ export class GraphRenderer {
 
   drawGraph() {
     const graph = this.graphManager.graph;
-    const settings = this.appSettings.settings;
+    const settings = this.settings;
     // Pre-extract commonly used settings
     const edgeSize = +settings.edge_size;
     const labelSize = settings.label_size;

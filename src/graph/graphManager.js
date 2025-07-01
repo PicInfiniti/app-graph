@@ -23,6 +23,7 @@ export class GraphManager {
     this.metric = new Metric(this);
     this.graphsPanel = new GraphsPanel(this);
     this.facePanel = new FacePanel(this);
+    this.needsRedraw = true;
 
     this.limit = limit;
     this.index = 0;
@@ -150,6 +151,7 @@ export class GraphManager {
     if (force) {
       this.app.updateSimulation();
     }
+    this.needsRedraw = true;
   }
 
   makeGraphComplete(type = "directed") {

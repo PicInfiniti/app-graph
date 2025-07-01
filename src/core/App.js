@@ -27,11 +27,7 @@ export class App {
       this.settings.type,
     ); // Handles graph logic
     this.rect = new Rect(this);
-    this.graphRenderer = new GraphRenderer(
-      this.graphManager,
-      this.appSettings,
-      this.rect,
-    );
+    this.graphRenderer = new GraphRenderer(this);
     this.menu = new Menu(this, menuData);
     this.widget = new Widgets(this);
     this.keyHandler = new KeyHandler(this); // Handle global keyboard shortcuts
@@ -157,12 +153,19 @@ export class App {
 
   startAnimationLoop() {
     const loop = () => {
+      let updated = false;
+
       if (this.appSettings.settings.forceSimulation) {
-        this.simulation.tick(); // Advance the simulation manually
-        this.ticked(); // Update graph model with simulation state
+        this.simulation.tick(); // Advance the simulation
+        this.ticked(); // Update graph model
+        updated = true; // Mark that state has changed
       }
-      this.graphRenderer.drawGraph(); // Always redraw
-      requestAnimationFrame(loop); // Loop
+
+      if (this.graphManager.needsRedraw || updated) {
+        this.graphRenderer.drawGraph(); // Only draw when needed
+      }
+
+      requestAnimationFrame(loop); // Continue loop
     };
 
     requestAnimationFrame(loop); // Start loop
