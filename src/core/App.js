@@ -5,14 +5,12 @@ import { GraphManager } from "../graph/graphManager.js";
 import { KeyHandler } from "./keyHandler.js";
 import AppSettings from "./state.js";
 import { Menu } from "../ui/menu.js";
-import { getAvailableLabel } from "../utils/helperFunctions.js";
 import { EventHandlers } from "./eventHandlers.js";
 import { menuData } from "../ui/MenuData.js";
 import { Layout } from "../graph/layouts.js";
 import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
 import { ColorPicker } from "../ui/colorPickr.js";
-import { subgraph } from "graphology-operators";
 
 export class App {
   constructor() {
@@ -101,14 +99,7 @@ export class App {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // Draw edges
 
-    graph.forEachFace((face, attr) => {
-      if (!attr.color) {
-        graph.setFaceAttribute(face, "color", settings.face_color);
-      }
-      if (!attr.labelColor) {
-        graph.setFaceAttribute(face, "labelColor", settings.label_color);
-      }
-      const _subgraph = subgraph(graph, attr.nodes);
+    graph.forEachFace((_, attr) => {
       const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);
         return [node.x, node.y];
@@ -141,17 +132,6 @@ export class App {
     });
 
     graph.forEachEdge((edge, attr, s, t, source, target) => {
-      if (attr.label === undefined) {
-        const newLabel = getAvailableLabel(attr.id);
-        graph.setEdgeAttribute(edge, "label", newLabel);
-      }
-      if (!attr.color) {
-        graph.setEdgeAttribute(edge, "color", settings.edge_color);
-      }
-      if (!attr.labelColor) {
-        graph.setEdgeAttribute(edge, "labelColor", settings.label_color);
-      }
-
       if (graph.isDirected(edge)) {
         const dx = target.x - source.x;
         const dy = target.y - source.y;
@@ -248,20 +228,6 @@ export class App {
 
     // Draw nodes
     graph.forEachNode((node, attr) => {
-      if (attr.label === undefined) {
-        const newLabel = getAvailableLabel(node);
-        graph.setNodeAttribute(node, "label", newLabel);
-      }
-      if (!attr.color) {
-        graph.setNodeAttribute(node, "color", settings.node_color);
-      }
-      if (!attr.stroke) {
-        graph.setNodeAttribute(node, "stroke", settings.stroke_color);
-      }
-      if (!attr.labelColor) {
-        graph.setNodeAttribute(node, "labelColor", settings.label_color);
-      }
-
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, settings.node_radius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = attr.selected ? "orange" : attr.color;

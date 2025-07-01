@@ -3,24 +3,44 @@ import { subgraph, disjointUnion, union } from "graphology-operators";
 import { attachNodeMethods } from "./methods/node-methods";
 import { attachEdgeMethods } from "./methods/edge-methods";
 import { attachFaceMethods } from "./methods/face-methods";
-
+import { getAvailableLabel } from "../../utils/helperFunctions";
 export default class Mixed extends Graph {
   constructor(options) {
     super(options);
     this.isCustom = true;
+
+    this.defaultColors = {
+      edge_color: "#4682b4",
+      label_color: "#000000",
+      node_color: "#ffffff",
+      face_color: "#4682b455",
+      stroke_color: "#4682b4",
+    };
+
+    this.colors = this.loadFromLocalStorage();
+
+    // Faces
+    this._faces = new Map();
+    this.events();
+  }
+
+  events() {
     // Automatically add 'id' and 'selected' to nodes
     this.on("nodeAdded", ({ key }) => {
       const attrs = this.getNodeAttributes(key);
 
       if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
       if (attrs.label === undefined)
-        this.setNodeAttribute(key, "label", undefined); // it shouldn't be null
+        this.setNodeAttribute(key, "label", getAvailableLabel(attrs.id)); // it shouldn't be null
       if (attrs.weight === undefined)
         this.setNodeAttribute(key, "weight", undefined);
+
       if (attrs.color === undefined)
-        this.setNodeAttribute(key, "color", undefined);
+        this.setNodeAttribute(key, "color", this.colors.node_color);
+      if (attrs.stroke === undefined)
+        this.setNodeAttribute(key, "stroke", this.colors.stroke_color);
       if (attrs.labelColor === undefined)
-        this.setNodeAttribute(key, "labelColor", undefined);
+        this.setNodeAttribute(key, "labelColor", this.colors.label_color);
       if (attrs.selected === undefined)
         this.setNodeAttribute(key, "selected", false);
       if (attrs.size === undefined) this.setNodeAttribute(key, "size", 0.25);
@@ -34,11 +54,11 @@ export default class Mixed extends Graph {
       const attrs = this.getEdgeAttributes(key);
       if (!attrs.id) this.setEdgeAttribute(key, "id", this.size - 1);
       if (attrs.label === undefined)
-        this.setEdgeAttribute(key, "label", undefined);
+        this.setEdgeAttribute(key, "label", getAvailableLabel(attrs.id));
       if (attrs.weight === undefined)
         this.setEdgeAttribute(key, "weight", undefined);
       if (attrs.color === undefined)
-        this.setEdgeAttribute(key, "color", undefined);
+        this.setEdgeAttribute(key, "color", this.colors.edge_color);
       if (attrs.labelColor === undefined)
         this.setEdgeAttribute(key, "labelColor", undefined);
       if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
@@ -47,9 +67,28 @@ export default class Mixed extends Graph {
         this.setEdgeAttribute(key, "selected", false);
       if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
+  }
 
-    // Faces
-    this._faces = new Map();
+  loadFromLocalStorage() {
+    const savedSettings = localStorage.getItem("appSettings");
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        return this.validateSettings(parsedSettings);
+      } catch (error) {
+        console.warn("Invalid settings in localStorage. Using defaults.");
+      }
+    }
+    return { ...this.defaultColors };
+  }
+
+  validateSettings(saved = {}) {
+    return Object.fromEntries(
+      Object.keys(this.defaultColors).map((key) => [
+        key,
+        key in saved ? saved[key] : this.defaultColors[key],
+      ]),
+    );
   }
 
   // 🧬 Deep copy with structure and attributes

@@ -1,7 +1,6 @@
 // 📁 face-methods.js
 export function attachFaceMethods(Mixed) {
   Mixed.prototype.addFace = function (nodes, attributes) {
-    console.log("jk");
     const face = nodes.join("_");
 
     attributes = {
@@ -9,6 +8,7 @@ export function attachFaceMethods(Mixed) {
       key: face,
       id: this._faces.size,
       nodes: nodes,
+      color: this.colors.face_color,
     };
 
     var faceData = new FaceData(face, nodes, attributes);

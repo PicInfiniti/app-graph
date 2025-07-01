@@ -216,7 +216,7 @@ class AppSettings {
         this.settings.panning = false;
       }
 
-      if (key === "forceSimulation" && this.settings.performance) {
+      if (this.settings.performance) {
         this.settings.forceSimulation = false;
       }
 
