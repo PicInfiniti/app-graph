@@ -1,19 +1,16 @@
 import * as d3 from "d3";
 import { pointToSegmentDistance } from "../utils/helperFunctions";
-import { applySettingsToUI } from "../ui/uiManager";
 import {
   getAvailableLabel,
   getMinAvailableNumber,
 } from "../utils/helperFunctions.js";
-
-const d = document;
 
 export class Canvas {
   constructor(app) {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.appSettings.settings;
-    this.canvas = d3.select("#chart").node();
+    this.canvas = d3.select("#main-canvas").node();
     this.ctx = this.canvas.getContext("2d");
 
     this.mouse = {
