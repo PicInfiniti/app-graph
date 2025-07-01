@@ -600,7 +600,8 @@ export class Menu {
         return;
       const menuId = target.id || target.getAttribute("name");
       if (menuId) {
-        this.handleMenuAction(menuId, target.value);
+        const value = target.value || 1;
+        this.handleMenuAction(menuId, value);
       }
     });
   }

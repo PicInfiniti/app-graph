@@ -23,7 +23,7 @@ export class Generator {
   empty(n) {
     this.graphManager.graph = empty(
       this.graphManager.graphClass[this.settings.type],
-      Number(n),
+      +n,
     );
     this.layout.applyLayout("circle");
   }
@@ -31,7 +31,7 @@ export class Generator {
   complete(n) {
     this.graphManager.graph = complete(
       this.graphManager.graphClass[this.settings.type],
-      Number(n),
+      +n,
     );
     this.layout.applyLayout("circle");
   }
@@ -39,30 +39,30 @@ export class Generator {
   ladder(n) {
     this.graphManager.graph = ladder(
       this.graphManager.graphClass[this.settings.type],
-      Number(n),
+      +n,
     );
-    this.layout.applyLayout("twoLine", { line1Count: Number(n), Y: 50 });
+    this.layout.applyLayout("twoLine", { line1Count: +n, Y: 50 });
   }
 
   completeBipartite(n1, n2) {
     this.graphManager.graph = empty(
       this.graphManager.graphClass[this.settings.type],
-      Number(n1) + Number(n2),
+      +n1 + +n2,
     );
-    for (let i = 0; i < Number(n1); i++) {
-      for (let j = Number(n1); j < Number(n1) + Number(n2); j++) {
+    for (let i = 0; i < +n1; i++) {
+      for (let j = +n1; j < Number(n1) + +n2; j++) {
         this.graphManager.graph.addEdge(i, j);
       }
     }
-    this.layout.applyLayout("twoLine", { line1Count: Number(n1), Y: 50 });
+    this.layout.applyLayout("twoLine", { line1Count: +n1, Y: 50 });
   }
 
   cycle(n) {
     this.graphManager.graph = path(
       this.graphManager.graphClass[this.settings.type],
-      Number(n),
+      +n,
     );
-    this.graphManager.graph.addEdge(0, Number(n) - 1);
+    this.graphManager.graph.addEdge(0, +n - 1);
 
     this.layout.applyLayout("circle");
   }
@@ -70,7 +70,7 @@ export class Generator {
   path(n) {
     this.graphManager.graph = path(
       this.graphManager.graphClass[this.settings.type],
-      Number(n),
+      +n,
     );
     this.layout.applyLayout("oneLine");
   }
@@ -78,8 +78,8 @@ export class Generator {
   caveman(n1, n2) {
     this.graphManager.graph = caveman(
       this.graphManager.graphClass[this.settings.type],
-      Number(n1),
-      Number(n2),
+      +n1,
+      +n2,
     );
     this.layout.applyLayout("circle");
   }
@@ -87,8 +87,8 @@ export class Generator {
   connectedCaveman(n1, n2) {
     this.graphManager.graph = connectedCaveman(
       this.graphManager.graphClass[this.settings.type],
-      Number(n1),
-      Number(n2),
+      +n1,
+      +n2,
     );
     this.layout.applyLayout("circle");
   }
@@ -97,9 +97,9 @@ export class Generator {
     this.graphManager.graph = clusters(
       this.graphManager.graphClass[this.settings.type],
       {
-        order: Number(o),
-        size: Number(s),
-        clusters: Number(c),
+        order: +o < 2 ? 2 : +o,
+        size: +s < 2 ? 2 : +s,
+        clusters: +c < 2 ? 2 : +c,
       },
     );
     this.layout.applyLayout("random");
@@ -109,8 +109,8 @@ export class Generator {
     this.graphManager.graph = erdosRenyi(
       this.graphManager.graphClass[this.settings.type],
       {
-        order: Number(o),
-        probability: Number(p),
+        order: +o,
+        probability: +p > 1 ? 1 : +p,
       },
     );
     this.layout.applyLayout("circle");
