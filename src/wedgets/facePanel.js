@@ -29,7 +29,7 @@ export class FacePanel {
     const face = val.split("-")[1];
     const attrs = graph.getFaceAttributes(face);
     this.selectLi(face);
-
+    this.graphManager.selectAllFace(this.lis());
     let nodes = this.lis().map((face) => graph.getFaceAttribute(face, "nodes"));
     nodes = new Set(nodes.flat());
     this.graphManager.selectAllNode(nodes);
@@ -38,13 +38,14 @@ export class FacePanel {
   updateFacePanel() {
     this.ul.innerHTML = "";
     const graph = this.graphManager.graph;
-    let i = 1;
+    let i = 0;
     graph.forEachFace((face, attr) => {
+      i++;
       if (graph.getFaceAttribute(face, "id") === undefined)
         graph.setFaceAttribute(face, "id", index);
 
       if (!graph.getFaceAttribute(face, "label"))
-        graph.setFaceAttribute(face, "label", `face ${i++}`);
+        graph.setFaceAttribute(face, "label", `face ${i}`);
 
       const li = d.createElement("li");
       li.id = `face-${face}`; // set the ID
@@ -79,7 +80,6 @@ export class FacePanel {
     if (li) {
       li.classList.toggle("select");
     }
-    console.log(5);
     if (this.settings.colorPicker) {
       const faceColor = this.graphManager.graph.getFaceAttribute(face, "color");
       const labelColor = this.graphManager.graph.getFaceAttribute(

@@ -241,6 +241,7 @@ export class GraphManager {
   deselectAll() {
     this.deselectAllNode();
     this.deselectAllEdge();
+    this.deselectAllFace();
   }
 
   deselectAllNode() {
@@ -259,13 +260,37 @@ export class GraphManager {
     this.app.rect.scale.active = false;
   }
 
+  deselectAllFace() {
+    this.graph.forEachFace((face, _) => this.graph.deselectFace(face));
+    this.app.rect.scale.active = false;
+  }
+
   selectAll(array = null) {
     this.selectAllNode(array);
     this.selectAllEdge(array);
+    this.selectAllFace(array);
+  }
+
+  selectAllFace(array) {
+    this.deselectAllFace();
+    if (array) {
+      array.forEach((face) => {
+        this.selectFace(face);
+      });
+    } else {
+      this.graph.updateEachFaceAttributes((edge, attrs) => ({
+        ...attrs,
+        selected: attrs.id + 1,
+      }));
+    }
   }
 
   selectAllEdge(array) {
+    this.deselectAllEdge();
     if (array) {
+      array.forEach((edge) => {
+        this.selectEdge(edge);
+      });
     } else {
       this.graph.updateEachEdgeAttributes((edge, attrs) => ({
         ...attrs,
@@ -298,6 +323,14 @@ export class GraphManager {
 
   selectNode(node) {
     this.graph.selectNode(node);
+  }
+
+  selectFace(face) {
+    this.graph.selectFace(face);
+  }
+
+  selectEdge(edge) {
+    this.graph.selectEdge(edge);
   }
 
   selectNextNode() {

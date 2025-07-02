@@ -2,7 +2,7 @@
 export function attachFaceMethods(Mixed) {
   Mixed.prototype.addFace = function (nodes, attributes) {
     const face = nodes.join("_");
-
+    console.trace(attributes);
     attributes = {
       ...attributes,
       key: face,

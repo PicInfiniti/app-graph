@@ -54,7 +54,7 @@ export class GraphRenderer {
       };
 
       if (hull) {
-        ctx.fillStyle = attr.color;
+        ctx.fillStyle = attr.selected ? "#FFA50055" : attr.color;
         ctx.beginPath();
         ctx.moveTo(hull[0][0], hull[0][1]);
         for (let i = 1; i < hull.length; i++) {
