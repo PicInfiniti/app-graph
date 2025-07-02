@@ -95,11 +95,14 @@ export function attachNodeMethods(Mixed) {
           const source = selected[i];
           const target = selected[j];
           const edgeAttrs = { color, selected: false };
-
-          if (type === "undirected") {
-            this.mergeUndirectedEdge(source, target, edgeAttrs);
+          if (this.type === "mixed") {
+            if (type === "undirected") {
+              this.mergeUndirectedEdge(source, target, edgeAttrs);
+            } else {
+              this.mergeDirectedEdge(source, target, edgeAttrs);
+            }
           } else {
-            this.mergeDirectedEdge(source, target, edgeAttrs);
+            this.mergeEdge(source, target, edgeAttrs);
           }
         }
       }

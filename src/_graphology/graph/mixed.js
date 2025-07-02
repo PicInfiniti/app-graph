@@ -125,16 +125,19 @@ export default class Mixed extends Graph {
   updateSelectedName(label) {
     this.updateSelectedNodesAttributes({ label });
     this.updateSelectedEdgesAttributes({ label });
+    this.updateSelectedFacesAttributes({ label });
   }
 
   updateSelectedInfo(desc) {
     this.updateSelectedNodesAttributes({ desc });
     this.updateSelectedEdgesAttributes({ desc });
+    this.updateSelectedFacesAttributes({ desc });
   }
 
   updateSelectedWeight(weight) {
     this.updateSelectedNodesAttributes({ weight });
     this.updateSelectedEdgesAttributes({ weight });
+    this.updateSelectedFacesAttributes({ weight });
   }
 
   // ✅ Select a path of nodes and connecting edges

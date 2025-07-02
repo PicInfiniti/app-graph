@@ -32,7 +32,8 @@ export class FacePanel {
     this.graphManager.selectAllFace(this.lis());
     let nodes = this.lis().map((face) => graph.getFaceAttribute(face, "nodes"));
     nodes = new Set(nodes.flat());
-    this.graphManager.selectAllNode(nodes);
+    if (this.app.keyHandler.isCtrlHold())
+      this.graphManager.selectAllNode(nodes);
   }
 
   updateFacePanel() {

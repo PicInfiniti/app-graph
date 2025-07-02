@@ -175,10 +175,17 @@ export class GraphManager {
   dropSelectedNodesEdges() {
     const edges = this.graph.getSelectedEdges();
     const nodes = this.graph.getSelectedNodes();
+    const faces = this.graph.getSelectedFaces();
+
     this.graphs.forEach((graph, index) => {
+      faces.forEach((face) => {
+        if (graph.hasFace(face)) graph.dropFace(face);
+      });
+
       edges.forEach((edge) => {
         if (graph.hasEdge(edge)) graph.dropEdge(edge);
       });
+
       nodes.forEach((node) => {
         if (graph.hasNode(node)) graph.dropNode(node);
       });
