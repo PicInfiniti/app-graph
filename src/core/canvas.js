@@ -103,7 +103,11 @@ export class Canvas {
         ? getTouchPosition(event, this.canvas)
         : d3.pointer(event, this.canvas);
 
-    const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
+    const allNodes = [
+      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+    ];
+
+    const newID = getMinAvailableNumber(allNodes);
     const newLabel = getAvailableLabel(newID);
     this.app.graphManager.addNode(newID, {
       x: x,
@@ -114,7 +118,11 @@ export class Canvas {
   }
 
   addNodeConnectedToNode(node) {
-    const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
+    const allNodes = [
+      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+    ];
+
+    const newID = getMinAvailableNumber(allNodes);
     const newLabel = getAvailableLabel(newID);
     const newNode = {
       x: node.x + 30,
@@ -265,7 +273,11 @@ export class Canvas {
   }
 
   insertNodeInEdge(edge) {
-    const newID = getMinAvailableNumber(this.app.graphManager.graph.nodes());
+    const allNodes = [
+      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+    ];
+
+    const newID = getMinAvailableNumber(allNodes);
     const newLabel = getAvailableLabel(newID);
     let midX = (edge.source.x + edge.target.x) / 2;
     let midY = (edge.source.y + edge.target.y) / 2;
@@ -278,6 +290,7 @@ export class Canvas {
     });
 
     // Remove old edge
+    console.log(edge);
     this.app.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
 
     // Add two new edges

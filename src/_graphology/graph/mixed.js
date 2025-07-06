@@ -29,7 +29,7 @@ export default class Mixed extends Graph {
     this.on("nodeAdded", ({ key }) => {
       const attrs = this.getNodeAttributes(key);
 
-      if (!attrs.id) this.setNodeAttribute(key, "id", Number(key));
+      if (!attrs.id) this.setNodeAttribute(key, "id", +key);
       if (attrs.label === undefined)
         this.setNodeAttribute(key, "label", getAvailableLabel(attrs.id)); // it shouldn't be null
       if (attrs.weight === undefined)
@@ -223,13 +223,24 @@ export default class Mixed extends Graph {
 
   //edges
   dropEdge(edge) {
-    const faces = this.faceEdgeNeighbors(edge);
+    var edgeData;
+    if (arguments.length > 1) {
+      var source = "" + arguments[0];
+      var target = "" + arguments[1];
+      this.findEdge(source, target, (edge) => {
+        edgeData = edge;
+      });
+    } else {
+      edgeData = edge;
+    }
+
+    const faces = this.faceEdgeNeighbors(edgeData);
     if (faces.length)
       faces.map((face) => {
         this.dropFace(face);
       });
 
-    super.dropEdge(edge);
+    super.dropEdge(edgeData);
   }
 
   export() {
