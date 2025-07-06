@@ -41,7 +41,6 @@ export class GraphRenderer {
   drawFaces(canvas, graph, settings, labelFont, labelOffsetX, labelOffsetY) {
     const ctx = canvas.ctx;
     ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
-
     graph.forEachFace((_, attr) => {
       const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);

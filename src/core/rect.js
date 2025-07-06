@@ -116,18 +116,16 @@ export class Rect {
   }
 
   updateSelection(event) {
-    const selection = this.selection;
-    const rect = this.scale.rect;
-    const selectedNodes = this.app.graphManager.graph.getSelectedNodes();
-
-    if (selection.active && !this.scale.active) {
+    if (this.selection.active && !this.scale.active) {
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
-      selection.width = mouseX - selection.x;
-      selection.height = mouseY - selection.y;
+      this.selection.width = mouseX - this.selection.x;
+      this.selection.height = mouseY - this.selection.y;
       return;
     }
 
     if (this.scale.active) {
+      const rect = this.scale.rect;
+      const selectedNodes = this.app.graphManager.graph.getSelectedNodes();
       const [mx, my] = d3.pointer(event);
 
       if (this.scale.activeHandle) {

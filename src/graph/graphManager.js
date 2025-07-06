@@ -82,6 +82,7 @@ export class GraphManager {
   }
 
   updateIndex(value) {
+    const length = this.graphs.length;
     if (value < 0) {
       console.log("Nothing to Undo...");
       return false;
@@ -101,7 +102,7 @@ export class GraphManager {
       key: "type",
       value: this.history[this.index][0].options.type,
     });
-    this.graphIndex = 0;
+    if (length != this.graphs.length) this.graphIndex = 0;
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
     if (this.settings.forceSimulation) {
@@ -177,18 +178,16 @@ export class GraphManager {
     const nodes = this.graph.getSelectedNodes();
     const faces = this.graph.getSelectedFaces();
 
-    this.graphs.forEach((graph, index) => {
-      faces.forEach((face) => {
-        if (graph.hasFace(face)) graph.dropFace(face);
-      });
+    faces.forEach((face) => {
+      if (this.graph.hasFace(face)) this.graph.dropFace(face);
+    });
 
-      edges.forEach((edge) => {
-        if (graph.hasEdge(edge)) graph.dropEdge(edge);
-      });
+    edges.forEach((edge) => {
+      if (this.graph.hasEdge(edge)) this.graph.dropEdge(edge);
+    });
 
-      nodes.forEach((node) => {
-        if (graph.hasNode(node)) graph.dropNode(node);
-      });
+    nodes.forEach((node) => {
+      if (this.graph.hasNode(node)) this.graph.dropNode(node);
     });
 
     this.saveGraphState();
