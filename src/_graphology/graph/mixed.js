@@ -1,5 +1,5 @@
 import { Graph } from "graphology";
-import { subgraph, disjointUnion, union } from "graphology-operators";
+import { disjointUnion, union } from "graphology-operators";
 import { attachNodeMethods } from "./methods/node-methods";
 import { attachEdgeMethods } from "./methods/edge-methods";
 import { attachFaceMethods } from "./methods/face-methods";
@@ -167,7 +167,7 @@ export default class Mixed extends Graph {
     const selectedNodes = this.getSelectedNodes();
     if (selectedNodes.length === 0) return null;
 
-    return subgraph(this, selectedNodes);
+    return this.subgraph(selectedNodes);
   }
 
   //✂️ cutSelected()
@@ -250,6 +250,46 @@ export default class Mixed extends Graph {
       this.addFace(face.nodes, face.attributes);
     }
     return graph;
+  }
+
+  subgraph(nodes) {
+    const S = this.nullCopy();
+
+    // Normalize nodes to an array or set
+    if (
+      !nodes ||
+      (Array.isArray(nodes) && nodes.length === 0) ||
+      (nodes instanceof Set && nodes.size === 0)
+    ) {
+      return S;
+    }
+
+    const nodeSet = new Set(nodes); // To allow efficient lookups
+
+    // Add nodes
+    for (const node of nodeSet) {
+      S.addNode(node, this.getNodeAttributes(node));
+    }
+
+    // Add relevant edges
+    this.forEachEdge(
+      (key, attr, source, target, sourceAttr, targetAttr, undirected) => {
+        if (nodeSet.has(source) && nodeSet.has(target)) {
+          if (undirected) S.addUndirectedEdgeWithKey(key, source, target, attr);
+          else S.addDirectedEdgeWithKey(key, source, target, attr);
+        }
+      },
+    );
+
+    // Add relevant faces
+    this.forEachFace((face, attr) => {
+      const faceNodes = attr.nodes || [];
+      if (faceNodes.every((n) => nodeSet.has(n))) {
+        S.addFace(attr.nodes, attr);
+      }
+    });
+
+    return S;
   }
 }
 
