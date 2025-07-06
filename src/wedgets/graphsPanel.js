@@ -27,7 +27,7 @@ export class GraphsPanel {
     this.selectLi(this.index);
 
     if (this.app.keyHandler.isCtrlHold()) {
-      this.graphManager.graphIndex = this.index;
+      this.graphManager.graphs.index = this.index;
       this.graphManager.facePanel.updateFacePanel();
     } else {
       let nodes = this.lis().map((index) =>
