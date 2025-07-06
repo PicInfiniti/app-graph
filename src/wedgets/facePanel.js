@@ -29,6 +29,7 @@ export class FacePanel {
     const face = val.split("-")[1];
     const attrs = graph.getFaceAttributes(face);
     this.selectLi(face);
+    this.graphManager.metric.addNEFGInfo(attrs);
     this.graphManager.selectAllFace(this.lis());
     let nodes = this.lis().map((face) => graph.getFaceAttribute(face, "nodes"));
     nodes = new Set(nodes.flat());

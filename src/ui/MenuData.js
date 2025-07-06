@@ -610,6 +610,10 @@ export const menuData = [
         id: "all-edge-info-btn",
         shortcut: "(Alt+a)",
       },
+      {
+        title: "Selected Faces Info",
+        id: "all-face-info-btn",
+      },
       { type: "divider" },
       { title: "Clear Panel", id: "clear-info-panel-btn", shortcut: "(q)" },
     ],

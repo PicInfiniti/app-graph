@@ -331,7 +331,7 @@ export class Canvas {
           this.eventBus.emit("graph:updated", { type: "selected" });
         }
       } else {
-        this.app.graphManager.metric.addNodeInfo(clickedNode);
+        this.app.graphManager.metric.addNEFGInfo(clickedNode);
 
         if (this.settings.colorPicker) {
           this.app.colorPicker.setColor("node", clickedNode.color);
@@ -352,7 +352,7 @@ export class Canvas {
           },
         );
       } else {
-        this.app.graphManager.metric.addEdgeInfo(clickedEdge);
+        this.app.graphManager.metric.addNEFGInfo(clickedEdge);
 
         if (this.settings.colorPicker) {
           this.app.colorPicker.setColor("edge", clickedEdge.color);

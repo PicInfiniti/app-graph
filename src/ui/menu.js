@@ -325,6 +325,7 @@ export class Menu {
 
       "all-node-info-btn": () => this.graphManager.metric.allNodeInfo(),
       "all-edge-info-btn": () => this.graphManager.metric.allEdgeInfo(),
+      "all-face-info-btn": () => this.graphManager.metric.allFaceInfo(),
       //Generator
       //Classic
       empty: () =>

@@ -46,71 +46,37 @@ export class Metric {
     this.pannel.scrollTop = this.pannel.scrollHeight;
   }
 
-  addNodeInfo(node) {
-    if (typeof node === "string") {
-      const attrs = this.graphManager.graph.getNodeAttributes(node);
-      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
-        this.addHeader(`${attrs.label}:`);
-        for (let key in attrs.desc) {
-          this.addInfo(`${key}: ${attrs.desc[key]}`);
-        }
-        if (attrs.weight) {
-          this.addInfo(`weight: ${attrs.weight}`);
-        }
-        this.addLine();
+  addNEFGInfo(attrs) {
+    if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
+      this.addHeader(`${attrs.label}:`);
+      for (let key in attrs.desc) {
+        this.addInfo(`${key}: ${attrs.desc[key]}`);
       }
-    } else {
-      const attrs = node;
-      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
-        this.addHeader(`${attrs.label}:`);
-        for (let key in attrs.desc) {
-          this.addInfo(`${key}: ${attrs.desc[key]}`);
-        }
-        if (attrs.weight) {
-          this.addInfo(`weight: ${attrs.weight}`);
-        }
-        this.addLine();
+      if (attrs.weight) {
+        this.addInfo(`weight: ${attrs.weight}`);
       }
+      this.addLine();
     }
   }
 
   allNodeInfo() {
     for (let node of this.graphManager.graph.getSelectedNodes()) {
-      this.addNodeInfo(node);
-    }
-  }
-
-  addEdgeInfo(edge) {
-    if (typeof edge === "string") {
-      const attrs = this.graphManager.graph.getEdgeAttributes(edge);
-      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
-        this.addHeader(`${attrs.label}:`);
-        for (let key in attrs.desc) {
-          this.addInfo(`${key}: ${attrs.desc[key]}`);
-        }
-        if (attrs.weight) {
-          this.addInfo(`weight: ${attrs.weight}`);
-        }
-        this.addLine();
-      }
-    } else {
-      const attrs = edge;
-      if ((attrs.desc && Object.keys(attrs.desc).length != 0) || attrs.weight) {
-        this.addHeader(`${attrs.label}:`);
-        for (let key in attrs.desc) {
-          this.addInfo(`${key}: ${attrs.desc[key]}`);
-        }
-        if (attrs.weight) {
-          this.addInfo(`weight: ${attrs.weight}`);
-        }
-        this.addLine();
-      }
+      const attrs = this.graphManager.graph.getNodeAttributes(node);
+      this.addNEFGInfo(attrs);
     }
   }
 
   allEdgeInfo() {
     for (let edge of this.graphManager.graph.getSelectedEdges()) {
-      this.addEdgeInfo(edge);
+      const attrs = this.graphManager.graph.getEdgeAttributes(edge);
+      this.addNEFGInfo(attrs);
+    }
+  }
+
+  allFaceInfo() {
+    for (let face of this.graphManager.graph.getSelectedFaces()) {
+      const attrs = this.graphManager.graph.getFaceAttributes(face);
+      this.addNEFGInfo(attrs);
     }
   }
 
