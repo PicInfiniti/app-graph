@@ -26,7 +26,7 @@ export class GraphsPanel {
     this.index = val.split("-")[1];
     this.selectLi(this.index);
 
-    if (this.app.keyHandler.isCtrlHold()) {
+    if (!this.app.keyHandler.isCtrlHold()) {
       this.graphManager.graphs.index = this.index;
       this.graphManager.facePanel.updateFacePanel();
     } else {
@@ -65,7 +65,7 @@ export class GraphsPanel {
   }
 
   selectLi(id) {
-    if (this.app.keyHandler.isCtrlHold()) this.deselectLis();
+    if (!this.app.keyHandler.isCtrlHold()) this.deselectLis();
     const li = this.ul.querySelector(`#graphs-${id}`);
     if (li) {
       li.classList.toggle("select");
