@@ -31,7 +31,7 @@ export class GraphsPanel {
       this.graphManager.facePanel.updateFacePanel();
     } else {
       let nodes = this.lis().map((index) =>
-        this.graphManager.graphs[index].nodes(),
+        this.graphManager.graphs.all[index].nodes(),
       );
       nodes = new Set(nodes.flat());
       this.graphManager.selectAllNode(nodes);
@@ -40,7 +40,7 @@ export class GraphsPanel {
 
   updateGraphsPanel() {
     this.ul.innerHTML = "";
-    this.graphManager.graphs.forEach((graph, index) => {
+    this.graphManager.graphs.all.forEach((graph, index) => {
       if (graph.getAttribute("label") === "Graph") {
         graph.setAttribute("id", 0);
       } else {

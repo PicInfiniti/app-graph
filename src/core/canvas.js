@@ -104,7 +104,7 @@ export class Canvas {
         : d3.pointer(event, this.canvas);
 
     const allNodes = [
-      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+      ...new Set(this.app.graphManager.graphs.all.flatMap((g) => g.nodes())),
     ];
 
     const newID = getMinAvailableNumber(allNodes);
@@ -119,7 +119,7 @@ export class Canvas {
 
   addNodeConnectedToNode(node) {
     const allNodes = [
-      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+      ...new Set(this.app.graphManager.graphs.all.flatMap((g) => g.nodes())),
     ];
 
     const newID = getMinAvailableNumber(allNodes);
@@ -274,7 +274,7 @@ export class Canvas {
 
   insertNodeInEdge(edge) {
     const allNodes = [
-      ...new Set(this.app.graphManager.graphs.flatMap((g) => g.nodes())),
+      ...new Set(this.app.graphManager.graphs.all.flatMap((g) => g.nodes())),
     ];
 
     const newID = getMinAvailableNumber(allNodes);

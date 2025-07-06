@@ -33,7 +33,7 @@ export class GraphManager {
       undirected: UndirectedGraph,
       mixed: Mixed,
     };
-    this.graphIndex = 0;
+
     this._graph = empty(this.graphClass[type], 0);
     this._graph.updateAttributes((attr) => {
       return {
@@ -42,8 +42,10 @@ export class GraphManager {
         id: 0,
       };
     });
-    this.graphs = [this._graph];
-    this.history = [this.graphs.map((graph) => graph.export())];
+    this.graphs = { index: 0, all: [this._graph] };
+    this.history = [
+      { index: 0, all: this.graphs.all.map((graph) => graph.export()) },
+    ];
 
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
@@ -59,13 +61,12 @@ export class GraphManager {
   }
 
   get graph() {
-    return this.graphs[this.graphIndex];
+    return this.graphs.all[this.graphs.index];
   }
 
   set graph(value) {
-    value.mergeAttributes(this.graphs[this.graphIndex].getAttributes());
-    // this.graphs[this.graphIndex] = value;
-    this.graphs = [value];
+    value.mergeAttributes(this.graphs.all[this.graphs.index].getAttributes());
+    this.graphs.all[this.graphs.index] = value;
   }
 
   addNode(id, attr) {
@@ -82,7 +83,6 @@ export class GraphManager {
   }
 
   updateIndex(value) {
-    const length = this.graphs.length;
     if (value < 0) {
       console.log("Nothing to Undo...");
       return false;
@@ -93,16 +93,15 @@ export class GraphManager {
     }
 
     this.index = value;
-    this.graphs = [];
-    for (const h of this.history[this.index]) {
+    this.graphs = { index: this.history[this.index].index };
+    for (const h of this.history[this.index].all) {
       const graph = empty(this.graphClass[h.options.type], 0);
-      this.graphs.push(graph.import(h));
+      this.graphs.all.push(graph.import(h));
     }
     this.eventBus.emit("updateSetting", {
       key: "type",
       value: this.history[this.index][0].options.type,
     });
-    if (length != this.graphs.length) this.graphIndex = 0;
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
     if (this.settings.forceSimulation) {
@@ -143,7 +142,10 @@ export class GraphManager {
     if (this.history.length != this.index + 1) {
       this.history.length = this.index + 1;
     }
-    this.push(this.graphs.map((graph) => graph.export()));
+    this.push({
+      index: this.graphs.index,
+      all: this.graphs.all.map((graph) => graph.export()),
+    });
     if (this.settings.saveHistory) {
       this.saveHistoryToLocalStorage();
     }
@@ -498,7 +500,7 @@ export class GraphManager {
 
     for (const h of history) {
       const graph = h[0]; // Each graph state is wrapped in an array
-      if (!graph) {
+      if (!graph.all) {
         console.error(`Graph at index ${i} is missing.`);
         return false;
       }
@@ -564,7 +566,7 @@ export class GraphManager {
     const subgraph = this.graph.copySubgraph();
     subgraph.removeAttribute("id");
     subgraph.removeAttribute("label");
-    this.graphs.push(subgraph);
+    this.graphs.all.push(subgraph);
     subgraph.deselectAll();
     this.deselectAll();
     this.saveGraphState();
