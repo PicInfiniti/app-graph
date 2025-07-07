@@ -198,7 +198,11 @@ export class Canvas {
           };
         });
 
-        this.app.graphManager.needsRedraw = true;
+        this.app.graphManager.needsRedraw = {
+          node: true,
+          edge: true,
+          face: true,
+        };
       }
 
       if (event.subject.id !== null && !this.settings.performance) {
@@ -214,7 +218,29 @@ export class Canvas {
             };
           },
         );
-        this.app.graphManager.needsRedraw = true;
+        this.app.graphManager.needsRedraw = {
+          node: true,
+          edge: true,
+          face: true,
+        };
+      }
+
+      if (event.subject.id !== null && this.settings.performance) {
+        this.canvas.style.cursor = "grabbing"; // Corrected this line
+
+        this.app.graphManager.graph.updateNodeAttributes(
+          event.subject.id,
+          (attr) => {
+            return {
+              ...attr,
+              x: event.x,
+              y: event.y,
+            };
+          },
+        );
+        this.app.graphManager.needsRedraw = {
+          node: true,
+        };
       }
     }
   }
@@ -246,8 +272,9 @@ export class Canvas {
           },
         );
       }
-      this.app.graphManager.saveGraphState();
     }
+
+    this.app.graphManager.saveGraphState();
   }
 
   findClickedNode(x, y) {
@@ -363,9 +390,6 @@ export class Canvas {
           clickedEdge.target.id,
           (edge) => {
             this.app.graphManager.graph.toggleEdgeSelection(edge);
-            if (!this.settings.forceSimulation) {
-              this.eventBus.emit("graph:updated", { type: "selected" });
-            }
           },
         );
       } else {
@@ -379,6 +403,11 @@ export class Canvas {
     } else {
       this.app.graphManager.deselectAll();
       this.app.rect.scale.active = false;
+      this.app.graphManager.needsRedraw = {
+        node: true,
+        edge: true,
+        rect: true,
+      };
     }
   }
 }

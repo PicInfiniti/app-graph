@@ -23,7 +23,12 @@ export class GraphManager {
     this.metric = new Metric(this);
     this.graphsPanel = new GraphsPanel(this);
     this.facePanel = new FacePanel(this);
-    this.needsRedraw = true;
+    this.needsRedraw = {
+      node: true,
+      edge: true,
+      face: true,
+      rect: false,
+    };
 
     this.limit = limit;
     this.index = 0;
@@ -107,9 +112,9 @@ export class GraphManager {
     this.facePanel.updateFacePanel();
     this.app.updateSimulation();
 
-    this.needsRedraw = true;
+    this.needsRedraw = { node: true, edge: true, face: true };
     setTimeout(() => {
-      this.needsRedraw = false;
+      this.needsRedraw = { node: false, edge: false, face: false, rect: false };
     }, 120);
     return true;
   }
@@ -158,9 +163,9 @@ export class GraphManager {
     if (force) {
       this.app.updateSimulation();
     }
-    this.needsRedraw = true;
+    this.needsRedraw = { node: true, edge: true, face: true, rect: true };
     setTimeout(() => {
-      this.needsRedraw = false;
+      this.needsRedraw = { node: false, edge: false, face: false, rect: false };
     }, 120);
   }
 

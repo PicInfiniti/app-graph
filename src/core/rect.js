@@ -15,6 +15,7 @@ export class Rect {
       active: false,
     };
 
+    this.mouseDown = false;
     this.scale = {
       isDragging: false,
       active: false,
@@ -78,8 +79,23 @@ export class Rect {
     }
   }
 
+  redraw() {
+    if (!this.mouseDown) return;
+    if (this.settings.performance)
+      this.app.graphManager.needsRedraw = { rect: true };
+    else
+      this.app.graphManager.needsRedraw = {
+        node: true,
+        edge: true,
+        face: true,
+        rect: true,
+      };
+  }
   // Dragging logic
   startSelection(event) {
+    this.mouseDown = true;
+
+    this.redraw();
     if (this.settings.select || this.settings.scale) {
       // selection rect
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
@@ -107,7 +123,6 @@ export class Rect {
           this.scale.offsetX = mx - this.scale.rect.x;
           this.scale.offsetY = my - this.scale.rect.y;
         }
-        this.app.graphManager.saveGraphState();
       }
     } else {
       this.selection.active = false;
@@ -120,6 +135,7 @@ export class Rect {
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
       this.selection.width = mouseX - this.selection.x;
       this.selection.height = mouseY - this.selection.y;
+
       return;
     }
 
@@ -175,10 +191,13 @@ export class Rect {
       } else {
         this.canvas.style.cursor = "default";
       }
+
+      this.redraw();
     }
   }
 
   endSelection(event) {
+    this.mouseDown = false;
     this.selection.active = false;
     this.scale.isDragging = false;
     this.scale.activeHandle = null;
@@ -211,6 +230,7 @@ export class Rect {
         };
       });
     }
+    this.app.graphManager.saveGraphState();
   }
 
   pointsInRect(selection) {

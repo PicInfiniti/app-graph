@@ -13,6 +13,63 @@ export class GraphRenderer {
     this.rect = app.rect;
   }
 
+  drawGraph(
+    option = {
+      node: true,
+      edge: true,
+      face: true,
+      rect: true,
+    },
+  ) {
+    if (!option.node && !option.edge && !option.face && !option.rect) return;
+    const graph = this.graphManager.graph;
+    const settings = this.settings;
+    // Pre-extract commonly used settings
+    const edgeSize = +settings.edge_size;
+    const labelSize = settings.label_size;
+    const labelFont = `${labelSize}px sans-serif`;
+    const labelOffsetX = settings.label_pos.x;
+    const labelOffsetY = settings.label_pos.y;
+    const nodeRadius = settings.node_radius;
+    const strokeSize = settings.stroke_size;
+
+    if (option.face)
+      this.drawFaces(
+        this.faceCanvas,
+        graph,
+        settings,
+        labelFont,
+        labelOffsetX,
+        labelOffsetY,
+      );
+
+    if (option.edge)
+      this.drawEdges(
+        this.edgeCanvas,
+        graph,
+        settings,
+        edgeSize,
+        nodeRadius,
+        labelFont,
+        labelOffsetX,
+        labelOffsetY,
+      );
+
+    if (option.node)
+      this.drawNodes(
+        this.nodeCanvas,
+        graph,
+        settings,
+        nodeRadius,
+        strokeSize,
+        labelFont,
+        labelOffsetX,
+        labelOffsetY,
+      );
+
+    if (option.rect) this.rect.draw();
+  }
+
   drawArrowhead(x, y, angle, size, color, ctx) {
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -194,50 +251,5 @@ export class GraphRenderer {
         );
       }
     });
-  }
-
-  drawGraph() {
-    const graph = this.graphManager.graph;
-    const settings = this.settings;
-    // Pre-extract commonly used settings
-    const edgeSize = +settings.edge_size;
-    const labelSize = settings.label_size;
-    const labelFont = `${labelSize}px sans-serif`;
-    const labelOffsetX = settings.label_pos.x;
-    const labelOffsetY = settings.label_pos.y;
-    const nodeRadius = settings.node_radius;
-    const strokeSize = settings.stroke_size;
-
-    this.drawFaces(
-      this.faceCanvas,
-      graph,
-      settings,
-      labelFont,
-      labelOffsetX,
-      labelOffsetY,
-    );
-    this.drawEdges(
-      this.edgeCanvas,
-      graph,
-      settings,
-      edgeSize,
-      nodeRadius,
-      labelFont,
-      labelOffsetX,
-      labelOffsetY,
-    );
-    this.drawNodes(
-      this.nodeCanvas,
-      graph,
-      settings,
-      nodeRadius,
-      strokeSize,
-      labelFont,
-      labelOffsetX,
-      labelOffsetY,
-    );
-
-    // Redraw selection rectangle
-    this.rect.draw();
   }
 }

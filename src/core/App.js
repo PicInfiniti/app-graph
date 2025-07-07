@@ -156,13 +156,9 @@ export class App {
       if (this.appSettings.settings.forceSimulation) {
         this.simulation.tick(); // Advance the simulation
         this.ticked(); // Update graph model
-      }
-      if (
-        this.appSettings.settings.forceSimulation ||
-        this.graphManager.needsRedraw
-      ) {
-        this.graphRenderer.drawGraph(); // Only draw when needed
-        console.log(5);
+        this.graphRenderer.drawGraph({ node: true, edge: true, face: true }); // Only draw when needed
+      } else {
+        this.graphRenderer.drawGraph(this.graphManager.needsRedraw); // Only draw when needed
       }
 
       requestAnimationFrame(loop); // Continue loop
