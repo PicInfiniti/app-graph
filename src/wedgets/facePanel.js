@@ -30,11 +30,31 @@ export class FacePanel {
     const attrs = graph.getFaceAttributes(face);
     this.selectLi(face);
     this.graphManager.metric.addNEFGInfo(attrs);
-    this.graphManager.selectAllFace(this.lis());
     let nodes = this.lis().map((face) => graph.getFaceAttribute(face, "nodes"));
     nodes = new Set(nodes.flat());
-    if (this.app.keyHandler.isCtrlHold())
+    if (this.app.keyHandler.isCtrlHold()) {
       this.graphManager.selectAllNode(nodes);
+      this.graphManager.redraw({ face: true, node: true });
+    }
+  }
+
+  selectLi(face) {
+    if (!this.app.keyHandler.isCtrlHold()) this.deselectLis();
+    this.graphManager.graph.selectFace(face);
+
+    const li = this.ul.querySelector(`#face-${face}`);
+    if (li) {
+      li.classList.toggle("select");
+    }
+    if (this.settings.colorPicker) {
+      const faceColor = this.graphManager.graph.getFaceAttribute(face, "color");
+      const labelColor = this.graphManager.graph.getFaceAttribute(
+        face,
+        "labelColor",
+      );
+      this.app.colorPicker.setColor("face", faceColor);
+      this.app.colorPicker.setColor("label", labelColor);
+    }
   }
 
   updateFacePanel() {
@@ -75,22 +95,6 @@ export class FacePanel {
           break;
       }
     });
-  }
-
-  selectLi(face) {
-    const li = this.ul.querySelector(`#face-${face}`);
-    if (li) {
-      li.classList.toggle("select");
-    }
-    if (this.settings.colorPicker) {
-      const faceColor = this.graphManager.graph.getFaceAttribute(face, "color");
-      const labelColor = this.graphManager.graph.getFaceAttribute(
-        face,
-        "labelColor",
-      );
-      this.app.colorPicker.setColor("face", faceColor);
-      this.app.colorPicker.setColor("label", labelColor);
-    }
   }
 
   deselectLis() {

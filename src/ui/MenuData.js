@@ -614,6 +614,10 @@ export const menuData = [
         title: "Selected Faces Info",
         id: "all-face-info-btn",
       },
+      {
+        title: "Selected Graphs Info",
+        id: "all-graph-info-btn",
+      },
       { type: "divider" },
       { title: "Clear Panel", id: "clear-info-panel-btn", shortcut: "(q)" },
     ],

@@ -80,6 +80,15 @@ export class Metric {
     }
   }
 
+  allGraphInfo() {
+    for (let graph of this.graphManager.graphs.all.filter((graph) =>
+      graph.getAttribute("selected"),
+    )) {
+      const attrs = graph.getAttributes();
+      this.addNEFGInfo(attrs);
+    }
+  }
+
   getComponent(node) {
     const graph = this.graphManager.graph;
     const components = connectedComponents(graph);

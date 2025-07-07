@@ -163,7 +163,11 @@ export class GraphManager {
     if (force) {
       this.app.updateSimulation();
     }
-    this.needsRedraw = { node: true, edge: true, face: true, rect: true };
+    this.redraw();
+  }
+
+  redraw(options = { node: true, edge: true, face: true, rect: true }) {
+    this.needsRedraw = options;
     setTimeout(() => {
       this.needsRedraw = { node: false, edge: false, face: false, rect: false };
     }, 120);
@@ -233,18 +237,28 @@ export class GraphManager {
   updateSelectedName(name) {
     if (name) {
       this.graph.updateSelectedName(name);
-      this.graph.setAttribute("label", name);
+      this.updateSelectedGarphsAttributes({ label: name });
     } else {
       this.graph.updateSelectedName("");
     }
     this.saveGraphState(false);
   }
 
+  getSelectedGraphs() {
+    return this.graphs.all.filter((graph) => graph.getAttribute("selected"));
+  }
+
+  updateSelectedGarphsAttributes(updates) {
+    this.getSelectedGraphs().forEach((graph) => {
+      graph.mergeAttributes(updates);
+    });
+  }
+
   updateSelectedInfo(val) {
     if (val) {
       const desc = { "": val };
       this.graph.updateSelectedInfo(desc);
-      this.graph.setAttribute("desc", desc);
+      this.updateSelectedGarphsAttributes({ desc: desc });
     } else {
       this.graph.updateSelectedInfo({});
     }
@@ -255,7 +269,7 @@ export class GraphManager {
     const weight = parseFloat(val);
     if (weight) {
       this.graph.updateSelectedWeight(weight);
-      this.graph.setAttribute("weight", weight);
+      this.updateSelectedGarphsAttributes({ weight: weight });
     } else {
       this.graph.updateSelectedWeight(undefined);
     }
@@ -267,11 +281,12 @@ export class GraphManager {
     this.deselectAllEdge();
     this.deselectAllFace();
     this.deselectAllGraph();
+    this.redraw();
   }
 
   deselectAllGraph() {
     for (const graph of this.graphs.all) {
-      graph.setAttribute("selected", false);
+      graph.updateAttribute("selected", (x) => false);
     }
     this.app.rect.scale.active = false;
   }

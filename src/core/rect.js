@@ -230,7 +230,6 @@ export class Rect {
         };
       });
     }
-    this.app.graphManager.saveGraphState();
   }
 
   pointsInRect(selection) {

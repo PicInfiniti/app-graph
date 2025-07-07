@@ -245,6 +245,7 @@ export default class Mixed extends Graph {
 
   export() {
     const _export = super.export();
+    _export.attributes.selected = false;
 
     var faces = new Array(this._faces.size);
     var i = 0;

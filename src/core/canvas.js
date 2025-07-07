@@ -273,8 +273,8 @@ export class Canvas {
         );
       }
     }
-
-    this.app.graphManager.saveGraphState();
+    if (event.subject.component.length || event.subject.id)
+      this.app.graphManager.saveGraphState();
   }
 
   findClickedNode(x, y) {
@@ -403,11 +403,6 @@ export class Canvas {
     } else {
       this.app.graphManager.deselectAll();
       this.app.rect.scale.active = false;
-      this.app.graphManager.needsRedraw = {
-        node: true,
-        edge: true,
-        rect: true,
-      };
     }
   }
 }
