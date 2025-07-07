@@ -50,9 +50,10 @@ export class KeyHandler {
           this.app.menu.handleMenuAction(this._input, input.value);
           this.toggleInput("rename", false);
         }
+        this.pressedKeys.clear();
       } else {
         if (this.isChordVisible())
-          this.eventBus.emit("key:down", {
+          this.eventBus.on("key:down", {
             key: this.pressedKeys,
           });
 
@@ -186,15 +187,20 @@ export class KeyHandler {
   }
 
   findKey() {
+    console.log(this.lastChord);
     const keys = Object.keys(this.lastChord);
+    console.log(keys);
     const found = keys.find((item) => {
       const comboKeys = item.split("+");
+      console.log(comboKeys);
       return this.isCombo(...comboKeys);
     });
+    console.log(found);
     return found;
   }
 
   isCombo(...keys) {
+    console.log(this.pressedKeys);
     return (
       keys.every((key) => this.pressedKeys.has(key)) &&
       this.pressedKeys.size === keys.length
