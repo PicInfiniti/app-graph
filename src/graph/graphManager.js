@@ -261,6 +261,7 @@ export class GraphManager {
       this.updateSelectedGarphsAttributes({ desc: desc });
     } else {
       this.graph.updateSelectedInfo({});
+      this.updateSelectedGarphsAttributes({ desc: {} });
     }
     this.saveGraphState(false);
   }
@@ -272,6 +273,7 @@ export class GraphManager {
       this.updateSelectedGarphsAttributes({ weight: weight });
     } else {
       this.graph.updateSelectedWeight(undefined);
+      this.updateSelectedGarphsAttributes({ weight: undefined });
     }
     this.saveGraphState(false);
   }

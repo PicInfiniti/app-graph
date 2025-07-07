@@ -187,20 +187,15 @@ export class KeyHandler {
   }
 
   findKey() {
-    console.log(this.lastChord);
     const keys = Object.keys(this.lastChord);
-    console.log(keys);
     const found = keys.find((item) => {
       const comboKeys = item.split("+");
-      console.log(comboKeys);
       return this.isCombo(...comboKeys);
     });
-    console.log(found);
     return found;
   }
 
   isCombo(...keys) {
-    console.log(this.pressedKeys);
     return (
       keys.every((key) => this.pressedKeys.has(key)) &&
       this.pressedKeys.size === keys.length
