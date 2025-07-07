@@ -153,16 +153,16 @@ export class App {
 
   startAnimationLoop() {
     const loop = () => {
-      let updated = false;
-
       if (this.appSettings.settings.forceSimulation) {
         this.simulation.tick(); // Advance the simulation
         this.ticked(); // Update graph model
-        updated = true; // Mark that state has changed
       }
-
-      if (this.graphManager.needsRedraw || updated) {
+      if (
+        this.appSettings.settings.forceSimulation ||
+        this.graphManager.needsRedraw
+      ) {
         this.graphRenderer.drawGraph(); // Only draw when needed
+        console.log(5);
       }
 
       requestAnimationFrame(loop); // Continue loop

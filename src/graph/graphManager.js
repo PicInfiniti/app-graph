@@ -40,6 +40,7 @@ export class GraphManager {
         ...attr,
         label: "Graph",
         id: 0,
+        selected: false,
       };
     });
     this.graphs = { index: 0, all: [this._graph] };
@@ -104,9 +105,12 @@ export class GraphManager {
     });
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
-    if (this.settings.forceSimulation) {
-      this.app.updateSimulation();
-    }
+    this.app.updateSimulation();
+
+    this.needsRedraw = true;
+    setTimeout(() => {
+      this.needsRedraw = false;
+    }, 120);
     return true;
   }
 
@@ -155,6 +159,9 @@ export class GraphManager {
       this.app.updateSimulation();
     }
     this.needsRedraw = true;
+    setTimeout(() => {
+      this.needsRedraw = false;
+    }, 120);
   }
 
   makeGraphComplete(type = "directed") {
@@ -221,6 +228,7 @@ export class GraphManager {
   updateSelectedName(name) {
     if (name) {
       this.graph.updateSelectedName(name);
+      this.graph.setAttribute("label", name);
     } else {
       this.graph.updateSelectedName("");
     }
@@ -229,7 +237,9 @@ export class GraphManager {
 
   updateSelectedInfo(val) {
     if (val) {
-      this.graph.updateSelectedInfo({ "": val });
+      const desc = { "": val };
+      this.graph.updateSelectedInfo(desc);
+      this.graph.setAttribute("desc", desc);
     } else {
       this.graph.updateSelectedInfo({});
     }
@@ -240,6 +250,7 @@ export class GraphManager {
     const weight = parseFloat(val);
     if (weight) {
       this.graph.updateSelectedWeight(weight);
+      this.graph.setAttribute("weight", weight);
     } else {
       this.graph.updateSelectedWeight(undefined);
     }
@@ -250,6 +261,14 @@ export class GraphManager {
     this.deselectAllNode();
     this.deselectAllEdge();
     this.deselectAllFace();
+    this.deselectAllGraph();
+  }
+
+  deselectAllGraph() {
+    for (const graph of this.graphs.all) {
+      graph.setAttribute("selected", false);
+    }
+    this.app.rect.scale.active = false;
   }
 
   deselectAllNode() {

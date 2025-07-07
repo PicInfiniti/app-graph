@@ -134,7 +134,7 @@ export class Canvas {
     this.app.graphManager.addNode(newID, newNode);
     this.app.graphManager.graph.addEdge(node.id, newID);
 
-    this.eventBus.emit("graph:updated", { type: "addNode", node: newID });
+    this.app.graphManager.saveGraphState();
   }
 
   dragsubject(event) {
@@ -174,7 +174,10 @@ export class Canvas {
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
     event.subject.__moved = false;
-    if (event.subject.id !== null) this.canvas.style.cursor = "grab"; // Corrected this line
+    if (event.subject.id !== null) {
+      this.app.graphManager.update = true;
+      this.canvas.style.cursor = "grab"; // Corrected this line
+    }
   }
 
   dragged(event) {
@@ -194,6 +197,8 @@ export class Canvas {
             y: attr.y + event.dy,
           };
         });
+
+        this.app.graphManager.needsRedraw = true;
       }
 
       if (event.subject.id !== null && !this.settings.performance) {
@@ -209,6 +214,7 @@ export class Canvas {
             };
           },
         );
+        this.app.graphManager.needsRedraw = true;
       }
     }
   }
@@ -290,14 +296,12 @@ export class Canvas {
     });
 
     // Remove old edge
-    console.log(edge);
     this.app.graphManager.graph.dropEdge(edge.source.id, edge.target.id);
 
     // Add two new edges
     this.app.graphManager.graph.addEdge(edge.source.id, newID);
     this.app.graphManager.graph.addEdge(newID, edge.target.id);
-
-    this.eventBus.emit("graph:updated", { type: "addNodeInEdge", node: newID });
+    this.app.graphManager.saveGraphState();
   }
 
   handleDbclick(event) {
