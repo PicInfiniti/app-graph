@@ -2,20 +2,24 @@
 
 ![GitHub release](https://img.shields.io/github/v/release/PicInfiniti/app-graph?sort=semver)
 
-**Graph Studio** is a modern, browser-based graph creation and analysis platform built with **D3 (Canvas)** and **Graphology.js**. Whether you're exploring graph theory, modeling networks, or visualizing data, Graph Studio offers a rich, intuitive environment tailored for both casual users and researchers.
+**Graph Studio** is a powerful, browser-based platform for building, visualizing, and analyzing graphs. Built using **D3.js (Canvas)** and **Graphology.js**, it supports complex graph modeling with a sleek interface and deep analytical tools — now reengineered with multi-layer canvas rendering for better performance and richer interaction.
 
 👉 [Live Demo](https://graph.picinfiniti.net/)
 
 ---
 
-## 🚀 What's New
+## 🚀 What's New in v1.9.3
 
-- 🔁 **Support for Weighted Graphs** — Works with both undirected and directed graphs.
-- 🏷️ **Editable Labels, Descriptions, and Weights** — For both nodes and edges.
-- 🎨 **Advanced Color Picker** — Includes alpha transparency support.
-- ⌨️ **Vim-like Shortcuts** — Copy (y), Cut (x), Paste (p), Undo (u), Redo (Ctrl+r), etc.
-- 🎹 **Key Chord Navigation** — Activate and toggle shortcuts with `Space`.
-- 🔼 **Arrow Key Navigation** — Select and deselect nodes/edges with arrows and Alt+arrows.
+- 🎯 **Canvas Layer Overhaul** — Uses 4 separate canvas layers (nodes, edges, faces, interaction) for smoother rendering and control.
+- 🔺 **Face Support** — Define and color enclosed cycles using the new _Face_ tool (`Ctrl+F`). Each face is editable and visible in the _Faces Panel_.
+- 🌐 **Subgraphs** — Select any group of nodes to create reusable, editable subgraphs. View/edit from the _Graphs Panel_.
+- 📝 **Full Metadata Editing** — Add/edit labels, weights, and descriptions for nodes, edges, faces, and subgraphs.
+- 📑 **Dedicated Panels** — Manage everything from separate _Info_, _Graphs_, and _Faces_ panels. Toggle them from `Settings → View`.
+- 🧠 **Shortcut Chord System** — Combine key sequences like `Space → c → c` for quick tool access (see guide below).
+- 💾 **Autosave** — Your graph state and history are saved in-browser between sessions. Recover work even after tab closes.
+- ⚙️ **Performance Mode** — Disable animations for smoother handling of large graphs (enable from `Settings → Performance`).
+- 📦 **Export Includes History** — Save full state (graph + edit history) in JSON exports.
+- 🧰 **New Operators Menu** — Control layout (flip, rotate, force atlas), convert graph types, generate subgraphs, and more.
 
 ---
 
@@ -23,63 +27,62 @@
 
 ### 📁 File Menu
 
-- 🆕 Create new graphs or digraphs
+- 🆕 New Graph (Mixed / Directed / Undirected)
 - 📂 Import JSON graphs
-- 💾 Export graphs or save as PNG
-- 🌙 Toggle Night Sky Theme
-- 🔄 Reload workspace or reset to defaults
+- 💾 Export Graph (JSON with history)
+- 🖼️ Export PNG snapshot
+- 🌙 Sky Night Theme
+- 🔄 Reload workspace
 
 ### ✏️ Edit Menu
 
-- 🧩 Organize (Circle layout), Complete Graph
-- 🎯 Add Edge / Directed Edge
+- ➕ Add Edge / Directed Edge / Face (`Ctrl+F`)
 - 🗑️ Delete, Copy, Cut, Paste
-- 🎨 Assign Color with full RGBA control
-- 🔠 Rename, Edit Descriptions, Edit Weights
+- 🎨 Assign Color (RGBA, label, edge, fill, stroke)
+- 🔠 Rename, Add Weight, Add Description
 - 🔄 Undo / Redo
-- ⚙️ Customize:
 
-  - Vertex/Edge size, Stroke width
-  - Label size, Grid visibility and density
-  - Toggle label types (vertex/edge/weight)
+### ⚙️ Settings Menu
 
-### 👁️ View Menu
-
-- 🧾 Toggle Info & Tools Panels
-- ⌨️ Enable/Disable Key Chord Mode (⎵)
+- 📐 Graph: label toggles, size sliders (vertex, edge, label, stroke)
+- 🌌 View: toggle Info, Tools, Graphs, and Faces panels, Key Chord mode
+- 🚀 Performance Mode: disables animations for large graphs
+- 🕰️ History Options: limit memory size, disable autosave, clear saved data
 
 ### 🧰 Tools Menu
 
-- 🌳 Tree generator, Force-directed layout
-- 🖱️ Panning, Selecting, Scaling
-- 🎨 Quick access Color Picker (Alt+C)
+- 🔍 Zoom, Panning (`Ctrl`), Selecting (`Shift`), Component Selector (`Alt`)
+- 🌳 Tree & Force Simulation tools
+- 🎨 Quick Color Picker (`Space → c → c`)
 
 ### ⚙️ Generator Menu
 
 Create graphs from built-in templates:
 
-- **Classic Graphs:** Kₙ, Kₙ,ₙ, Pₙ, Cₙ, Lₙ, Empty
+- **Classic:** Empty, Kₙ, Kₙ,ₙ, Pₙ, Cₙ, Lₙ
 - **Community:** Caveman, Connected Caveman
-- **Random Models:** Clusters, Erdős-Rényi, Girvan-Newman
-- **Famous Graphs:** Krackhardt Kite, Karate Club, Florentine Families
-- **Zodiac Constellations:** Real astronomical data with RA/DEC, magnitude
+- **Random:** Clusters, Erdős-Rényi, Girvan-Newman
+- **Famous:** Krackhardt Kite, Karate Club, Florentine Families
+- **Zodiac:** 13 real constellations with RA/DEC and magnitude
 
 ### 📊 Metrics Menu
 
 - **Basic:** Degree Sequence, Density, Components, Diameter
 - **Centrality:** Betweenness, Closeness, PageRank, Eigenvector
-- **Layout Quality:** Edge Uniformity, Neighborhood Preservation, Stress
-- **Other:** Simmelian Strength, Disparity
-- 🔍 Explore: Shortest Path, Neighbors, Selected Info
+- **Layout Quality:** Edge Uniformity, Stress, Neighborhood Preservation
+- **Extras:** Disparity, Simmelian Strength
+- 🔍 Explore Neighbors, Shortest Path, Info Panels
 
-### 🔁 Operators
+### 🔁 Operators Menu (NEW)
 
+- Layout: Organize, Rotate, Flip, Random, Force Atlas
 - Convert: Graph ⇌ Digraph, Weighted ⇌ Unweighted
-- Reverse Edge Direction
+- Subgraph creation & selection
+- Reverse direction, Complete Graph
 
 ### ❓ Help Menu
 
-- 💡 Usage Guide, Touch Commands, About
+- 💡 Shortcut Guide, Mouse Commands, Usage Instructions, About (v1.9.3)
 
 ---
 
@@ -87,23 +90,42 @@ Create graphs from built-in templates:
 
 ### Touch
 
-- Double-tap to create a node
-- Tap once (with Select Tool active) to select nodes or edges
-- Drag to move
+- Double-tap canvas: Add node
+- Tap (Select Tool): Select nodes or edges
+- Drag: Move node (with visual update after drop in Performance mode)
 
-### Keyboard (Key Chord Mode)
+### Keyboard Shortcut Guide
 
-- `Space`: Toggle shortcut mode
-- `y/x/p`: Copy, Cut, Paste
-- `e/E`: Add Edge / Directed Edge
-- `Alt + Arrow`: Precise selection
-- `Ctrl + r`: Redo
+#### ⌨️ Shortcut Notation
+
+- `Alt+a` → Press **a** while holding **Alt**
+- `Alt-a` → **Two different shortcuts**: `Alt` and `Alt + a`
+- `Space cc` → Press **Space**, then **c**, then **c** (in sequence)
+
+Chord keys show hints as you type. Examples:
+
+- `Space → n → d`: Start a new **Directed** graph
+- `Alt+e`: Add Edge (in order)
+- `Ctrl+f`: Add Face (requires 3+ nodes forming a cycle)
+
+---
+
+## 💡 Tips for Large Graphs
+
+- ⚙️ Enable **Performance Mode** (Settings → Performance)
+  - Disables force animations
+  - Defers redraws until after interactions
+- 💾 Disable **Autosave History** for large graphs (Settings → History)
+- ❌ If the app crashes or won’t load:
+  - Go to **Settings → History → Clear History**, then reload
+  - Always **export your graph** if you're doing important work
+- 💡 Local autosave is limited — avoid using autosave with extremely large graphs. IndexedDB support coming in the future.
 
 ---
 
 ## 📸 Screenshots
 
-### Interface Overview
+### Graph Studio UI
 
 ![Graph Studio UI](./src/assets/img/Screenshot-3.png)
 
@@ -124,7 +146,7 @@ npm install
 npm run dev
 ```
 
-Or explore instantly at: 👉 [https://graph.picinfiniti.net/](https://graph.picinfiniti.net/)
+Or open instantly at: 👉 [https://graph.picinfiniti.net/](https://graph.picinfiniti.net/)
 
 ---
 
@@ -140,8 +162,6 @@ Or explore instantly at: 👉 [https://graph.picinfiniti.net/](https://graph.pic
 
 If this tool assists your academic work, please cite:
 
-**BibTeX:**
-
 ```bibtex
 @misc{graphstudio2025,
   author       = {PicInfiniti},
@@ -155,20 +175,18 @@ If this tool assists your academic work, please cite:
 
 ## 📄 License
 
-Licensed under the [MIT License](./LICENSE).
-Free to use, modify, and share — just credit the original author.
+Licensed under the [MIT License](./LICENSE). Free to use, modify, and share — just credit the original author.
 
 ---
 
 ## 🤝 Contributing
 
-Suggestions, issues, and PRs are welcome!
-Check the issues tab or submit a pull request to improve Graph Studio.
+Suggestions, issues, and PRs are welcome! Check the issues tab or submit a pull request to improve Graph Studio.
 
 ---
 
 ## 🌠 Author
 
-Created by **[PicInfiniti](https://github.com/PicInfiniti)** — fueled by curiosity and a love for the stars.
+Created by [**PicInfiniti**](https://github.com/PicInfiniti) — fueled by curiosity and a love for the stars.
 
 Check the `About` section in-app for version info and more.
