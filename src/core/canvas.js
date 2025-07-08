@@ -94,6 +94,7 @@ export class Canvas {
       this._canvas[canvas].canvas.width = w;
       this._canvas[canvas].canvas.height = h;
     }
+    this.app.graphManager.redraw();
   }
 
   addNodeAtEvent(event) {

@@ -432,6 +432,7 @@ export class GraphManager {
   cutSubgraph() {
     this.subGraph = this.graph.cutSubgraph();
     this.cut = true;
+    this.redraw();
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})

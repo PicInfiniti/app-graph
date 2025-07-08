@@ -50,7 +50,6 @@ export class KeyHandler {
           this.app.menu.handleMenuAction(this._input, input.value);
           this.toggleInput("rename", false);
         }
-        this.pressedKeys.clear();
       } else {
         if (this.isChordVisible())
           this.eventBus.on("key:down", {
@@ -59,6 +58,8 @@ export class KeyHandler {
 
         const key = this.findKey();
         if (key) event.preventDefault();
+        else this.pressedKeys.clear();
+
         this.action(key);
       }
     });

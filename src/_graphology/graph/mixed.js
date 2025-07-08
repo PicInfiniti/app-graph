@@ -258,9 +258,16 @@ export default class Mixed extends Graph {
 
   import(h) {
     const graph = super.import(h);
-    for (const face of h.faces) {
-      this.addFace(face.nodes, face.attributes);
+    if (typeof h.faces === "function") {
+      h.forEachFace((_, attrs) => {
+        graph.addFace(attrs.nodes, attrs);
+      });
+    } else {
+      for (const face of h.faces) {
+        graph.addFace(face.nodes, face.attributes);
+      }
     }
+
     return graph;
   }
 
