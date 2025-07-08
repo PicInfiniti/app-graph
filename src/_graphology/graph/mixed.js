@@ -1,5 +1,5 @@
 import { Graph } from "graphology";
-import { disjointUnion, union } from "graphology-operators";
+import { union } from "graphology-operators";
 import { attachNodeMethods } from "./methods/node-methods";
 import { attachEdgeMethods } from "./methods/edge-methods";
 import { attachFaceMethods } from "./methods/face-methods";
@@ -194,13 +194,12 @@ export default class Mixed extends Graph {
     let combined;
     if (cut) {
       combined = union(this, sub);
+      this.clear();
+      this.import(combined.export());
     } else {
-      combined = disjointUnion(this, sub);
+      this.disjointUnion(this, sub);
     }
 
-    // Replace this graph's contents with the combined graph
-    this.clear();
-    this.import(combined.export());
     return sub;
   }
 
@@ -309,6 +308,58 @@ export default class Mixed extends Graph {
     });
 
     return S;
+  }
+
+  disjointUnion(G, H) {
+    if (G.multi !== H.multi)
+      throw new Error(
+        "graphology-operators/disjoint-union: both graph should be simple or multi.",
+      );
+
+    // TODO: in the spirit of this operator we should probably prefix something
+    G.mergeAttributes(G.getAttributes());
+
+    var labelsH = {};
+
+    var i = Math.max(...G.nodes()) + 1;
+
+    // Adding nodes
+    H.forEachNode(function (key, attr) {
+      labelsH[key] = i;
+      G.addNode(i++, attr);
+    });
+
+    // Adding edges
+    i = Math.max(...G.edges()) + 1;
+
+    H.forEachEdge(function (key, attr, source, target, _s, _t, undirected) {
+      if (undirected)
+        G.addUndirectedEdge(labelsH[source], labelsH[target], {
+          ...attr,
+          id: i++,
+        });
+      else
+        G.addDirectedEdge(labelsH[source], labelsH[target], {
+          ...attr,
+          id: i++,
+        });
+    });
+
+    i = Math.max(...G.faces()) + 1;
+
+    H.forEachFace((_, attrs) => {
+      G.addFace(
+        attrs.nodes.map((old) => labelsH[old]),
+        { ...attrs, id: i++ },
+      );
+    });
+    return G;
+  }
+
+  clear() {
+    this._faces.clear();
+    this._edges.clear();
+    this._nodes.clear();
   }
 }
 
