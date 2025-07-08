@@ -274,7 +274,10 @@ export class Canvas {
         );
       }
     }
-    if (event.subject.component.length || event.subject.id)
+    if (
+      (event.subject.component && event.subject.component.length) ||
+      event.subject.id
+    )
       this.app.graphManager.saveGraphState();
   }
 

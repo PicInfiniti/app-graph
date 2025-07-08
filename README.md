@@ -127,11 +127,11 @@ Chord keys show hints as you type. Examples:
 
 ### Graph Studio UI
 
-![Graph Studio UI](./src/assets/img/Screenshot-3.png)
+![Graph Studio UI](./src/assets/img/Screenshot-5.png)
 
 ### Night Sky Mode
 
-![Night Sky](./src/assets/img/Screenshot-4.png)
+![Night Sky](./src/assets/img/Screenshot-6.png)
 
 ---
 

@@ -1,5 +1,3 @@
-import { EventBus } from "./eventBus";
-import { ShortcutChord } from "./shortcutChord.js";
 import shortcuts from "./shortcuts.json";
 
 const d = document;

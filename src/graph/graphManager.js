@@ -299,6 +299,7 @@ export class GraphManager {
       selected: false,
     }));
     this.app.rect.scale.active = false;
+    this.redraw({ node: true });
   }
 
   deselectAllEdge() {
@@ -307,17 +308,20 @@ export class GraphManager {
       selected: false,
     }));
     this.app.rect.scale.active = false;
+    this.redraw({ edge: true });
   }
 
   deselectAllFace() {
     this.graph.forEachFace((face, _) => this.graph.deselectFace(face));
     this.app.rect.scale.active = false;
+    this.redraw({ face: true });
   }
 
   selectAll(array = null) {
     this.selectAllNode(array);
     this.selectAllEdge(array);
     this.selectAllFace(array);
+    this.redraw();
   }
 
   selectAllFace(array) {
@@ -332,6 +336,7 @@ export class GraphManager {
         selected: attrs.id + 1,
       }));
     }
+    this.redraw({ face: true });
   }
 
   selectAllEdge(array) {
@@ -346,6 +351,7 @@ export class GraphManager {
         selected: attrs.id + 1,
       }));
     }
+    this.redraw({ edge: true });
   }
 
   selectAllNode(array) {
@@ -368,6 +374,7 @@ export class GraphManager {
         };
       });
     }
+    this.redraw({ node: true });
   }
 
   selectNode(node) {
