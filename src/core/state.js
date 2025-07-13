@@ -1,3 +1,4 @@
+import { db } from "./db";
 import { applySettingsToUI } from "../ui/uiManager";
 
 class AppSettings {
@@ -66,14 +67,14 @@ class AppSettings {
     };
 
     // Load validated settings from localStorage or use defaults
-    this.settings = this.loadFromLocalStorage();
 
     // Listen for external setting updates
     this.registerEventListeners();
   }
 
-  init() {
-    applySettingsToUI(this.settings, this.app.canvas);
+  async init() {
+    this.settings = await this.loadFromIndexDb();
+    return this.settings;
   }
 
   registerEventListeners() {
@@ -118,27 +119,45 @@ class AppSettings {
     });
   }
 
-  loadFromLocalStorage() {
-    const savedSettings = localStorage.getItem("appSettings");
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        return this.validateSettings(parsedSettings);
-      } catch (error) {
-        console.warn("Invalid settings in localStorage. Using defaults.");
+  async loadFromIndexDb() {
+    try {
+      const savedSettings = await db.settings.get("appSettings");
+      const validated = this.validateSettings(savedSettings);
+      const hasMissingKeys = Object.keys(this.defaultSettings).some(
+        (key) => !savedSettings || !(key in savedSettings),
+      );
+
+      if (hasMissingKeys) {
+        await db.settings.put(validated, "appSettings");
+        console.log(
+          "Missing or invalid keys found — defaults merged and saved.",
+        );
+      } else {
+        console.log("Settings loaded successfully from IndexedDB.");
       }
+
+      return validated;
+    } catch (err) {
+      console.warn(
+        "Failed to load settings from IndexedDB. Using defaults.",
+        err,
+      );
+      return { ...this.defaultSettings };
     }
-    return { ...this.defaultSettings };
   }
 
-  saveToLocalStorage() {
+  saveToIndexedDB(settings = this.settings) {
     clearTimeout(this.debounceTimer);
-    this.debounceTimer = setTimeout(() => {
-      localStorage.setItem("appSettings", JSON.stringify(this.settings));
-      console.log("Settings saved to localStorage");
+    this.debounceTimer = setTimeout(async () => {
+      try {
+        await db.settings.update("appSettings", settings);
+        console.log("Settings saved to IndexedDB");
 
-      // Emit a global settings change event
-      this.eventBus.emit("settingsChanged", this.getAllSettings());
+        // Emit a global settings change event
+        this.eventBus.emit("settingsChanged", this.getAllSettings());
+      } catch (err) {
+        console.error("Failed to save settings to IndexedDB", err);
+      }
     }, 500);
   }
 
@@ -158,10 +177,9 @@ class AppSettings {
     if (key in this.settings) {
       if (this.settings[key] !== value) {
         this.settings[key] = value;
-        this.eventBus.emit("settingChanged", { key, value });
 
         if (this.#autoSave) {
-          this.saveToLocalStorage();
+          this.saveToIndexedDB({ [key]: this.settings[key] });
         }
       }
     } else {
@@ -179,16 +197,16 @@ class AppSettings {
     this.eventBus.emit("settingsChanged", this.getAllSettings());
 
     if (this.#autoSave) {
-      this.saveToLocalStorage();
+      this.saveToIndexedDB();
     }
-    this.init();
+    applySettingsToUI(this.settings, this.app.canvas);
   }
 
   toggleSetting(key, value = null) {
     const one = ["scale", "panning", "select", "component"];
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
-      if (value === null) this.settings[key] = !this.settings[key];
+      if (!value) this.settings[key] = !this.settings[key];
       else this.settings[key] = value;
 
       if (one.includes(key)) {
@@ -221,9 +239,10 @@ class AppSettings {
 
       this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
 
-      if (this.#autoSave && value === null) this.saveToLocalStorage();
+      if (this.#autoSave && value === null)
+        this.saveToIndexedDB({ [key]: this.settings[key] });
 
-      this.init();
+      applySettingsToUI(this.settings, this.app.canvas);
       this.app.widget.init();
     } else {
       console.warn(`Setting "${key}" does not exist or is not a boolean.`);
@@ -235,13 +254,13 @@ class AppSettings {
   }
 
   validateSettings(saved) {
-    return Object.keys(this.defaultSettings).reduce((acc, key) => {
-      acc[key] =
-        saved && saved.hasOwnProperty(key)
-          ? saved[key]
-          : this.defaultSettings[key];
-      return acc;
-    }, {});
+    const defaults = this.defaultSettings;
+
+    const validated = {};
+    for (const key in defaults) {
+      validated[key] = saved?.hasOwnProperty(key) ? saved[key] : defaults[key];
+    }
+    return validated;
   }
 
   loadNightSkyTheme() {

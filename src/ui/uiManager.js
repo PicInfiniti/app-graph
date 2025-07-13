@@ -5,7 +5,7 @@ export function applySettingsToUI(settings, canvas) {
     "grid-hidden",
     settings.grid <= 2,
   );
-  d.getElementById("grid-size-1").value = settings.node_radius;
+  d.getElementById("grid-size-1").value = settings.grid;
   d.getElementById("vertex-size-1").value = settings.node_radius;
   d.getElementById("edge-size-1").value = settings.edge_size;
   d.getElementById("label-size-1").value = settings.label_size;

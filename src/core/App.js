@@ -12,12 +12,33 @@ import { Widgets } from "../wedgets/main.js";
 import { Rect } from "./rect.js";
 import { ColorPicker } from "../ui/colorPickr.js";
 import { GraphRenderer } from "../graph/graphRenderer.js";
+import { applySettingsToUI } from "../ui/uiManager";
 
 export class App {
   constructor() {
     this.eventBus = EventBus;
     this.appSettings = new AppSettings(this);
-    this.settings = this.appSettings.settings;
+
+    this._canvas = null;
+    this.layout = null;
+    this.graphManager = null;
+    this.rect = null;
+    this.graphRenderer = null;
+    this.menu = null;
+    this.widget = null;
+    this.keyHandler = null; // Handle global keyboard shortcuts
+    this.eventHanders = null;
+    this.colorPicker = null;
+
+    this.simulation = null;
+    this.nodes = [];
+    this.links = [];
+    // Rectangle properties
+    this.init();
+  }
+
+  async init() {
+    this.settings = await this.appSettings.init();
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas;
     this.layout = new Layout(this);
@@ -34,17 +55,9 @@ export class App {
     this.eventHanders = new EventHandlers(this);
     this.colorPicker = new ColorPicker(this);
 
-    this.simulation = null;
-    this.nodes = [];
-    this.links = [];
-
-    // Rectangle properties
-    this.init();
-  }
-
-  init() {
     this.menu.init();
-    this.appSettings.init();
+    applySettingsToUI(this.settings, this.canvas);
+
     this.widget.init();
     this._canvas.init();
     this.rect.init();
