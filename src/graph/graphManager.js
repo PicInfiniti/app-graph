@@ -77,18 +77,19 @@ export class GraphManager {
     this.saveGraphState();
   }
 
-  async updateIndex(value) {
+  async updateIndex(value = null) {
+    const totalCount = await db.history.count();
+
     if (value < 0) {
       console.log("Nothing to Undo...");
       return false;
     }
-    if (value >= db.history.count().length) {
+    if (value >= totalCount) {
       console.log("Nothing to Redo...");
       return false;
     }
-
-    this.index = value;
-
+    if (value === null) this.index = totalCount;
+    else this.index = value;
     const snapshot = await this.getSnapshot(value);
     this.loadSnapshot(snapshot);
     this.refresh();
@@ -102,22 +103,20 @@ export class GraphManager {
   }
 
   setupEventListeners() {
-    this.eventBus.on("redo", (event) => {
-      if (this.updateIndex(this.index + 1))
+    this.eventBus.on("redo", async (event) => {
+      if (await this.updateIndex(this.index + 1))
         this.eventBus.emit("graph:updated", { type: "redo" });
     });
 
-    this.eventBus.on("undo", (event) => {
-      if (this.updateIndex(this.index - 1))
+    this.eventBus.on("undo", async (event) => {
+      if (await this.updateIndex(this.index - 1))
         this.eventBus.emit("graph:updated", { type: "undo" });
     });
   }
 
   async saveGraphState(force = true, action = "") {
     const totalCount = await db.history.count();
-
     if (totalCount !== this.index + 1) {
-      // You want to remove future snapshots after undo (e.g., redo path)
       const snapshotsToDelete = await db.history
         .where("id")
         .above(this.index)
@@ -125,8 +124,6 @@ export class GraphManager {
 
       const ids = snapshotsToDelete.map((s) => s.id);
       await db.history.bulkDelete(ids);
-    } else {
-      this.index = totalCount - 1;
     }
 
     const snapshot = {
@@ -139,6 +136,7 @@ export class GraphManager {
 
     if (this.settings.saveHistory) {
       await this.saveHistory(snapshot); // ✅ await this, it's async
+      this.index = (await db.history.count()) - 1;
     }
 
     this.graphsPanel.updateGraphsPanel();
@@ -516,7 +514,7 @@ export class GraphManager {
   }
 
   async getSnapshot(value) {
-    const snapshot = await db.history.get(value);
+    const snapshot = await db.history.orderBy("id").offset(value).first();
     return snapshot;
   }
 
@@ -545,6 +543,7 @@ export class GraphManager {
 
   async clearHistory() {
     await db.history.clear();
+    this.index = -1;
     console.log("History table cleared.");
   }
 

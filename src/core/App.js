@@ -101,7 +101,7 @@ export class App {
       this.graphManager.generator.clusters(20, 20, 10);
     } else {
       this.graphManager.loadSnapshot(snapshot);
-      this.graphManager.refresh();
+      await this.graphManager.updateIndex();
     }
   }
 
