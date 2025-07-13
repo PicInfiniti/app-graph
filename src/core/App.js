@@ -42,11 +42,7 @@ export class App {
     this._canvas = new Canvas(this);
     this.canvas = this._canvas.canvas;
     this.layout = new Layout(this);
-    this.graphManager = new GraphManager(
-      this,
-      this.settings.historyLimit,
-      this.settings.type,
-    ); // Handles graph logic
+    this.graphManager = new GraphManager(this, this.settings.type); // Handles graph logic
     this.rect = new Rect(this);
     this.graphRenderer = new GraphRenderer(this);
     this.menu = new Menu(this, menuData);
@@ -64,7 +60,7 @@ export class App {
     this.keyHandler.init(); // Handle global keyboard shortcuts
     this.eventHanders.init();
     this.initSimulation();
-    this.loadInitialGraph();
+    await this.loadInitialGraph();
     this.colorPicker.init();
     this.startAnimationLoop();
   }
@@ -99,9 +95,13 @@ export class App {
     }
   }
 
-  loadInitialGraph() {
-    if (!this.graphManager.loadHitoryFromLocalStorage()) {
+  async loadInitialGraph() {
+    const snapshot = await this.graphManager.getLastSnapshot();
+    if (!snapshot) {
       this.graphManager.generator.clusters(20, 20, 10);
+    } else {
+      this.graphManager.loadSnapshot(snapshot);
+      this.graphManager.refresh();
     }
   }
 

@@ -285,7 +285,7 @@ export class Menu {
         this.eventBus.emit("toggleSetting", { key: "performance" }),
       "save-history": () =>
         this.eventBus.emit("toggleSetting", { key: "saveHistory" }),
-      "clear-histoory-btn": () => this.graphManager.cleanLocalStorage(),
+      "clear-histoory-btn": () => this.graphManager.clearHistory(),
       "history-limit-1": () => {
         this.graphManager.limit = val;
         this.eventBus.emit("updateSetting", {

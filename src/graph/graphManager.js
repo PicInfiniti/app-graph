@@ -12,9 +12,11 @@ import {
 import { GraphsPanel } from "../wedgets/graphsPanel.js";
 import { FacePanel } from "../wedgets/facePanel.js";
 import { subgraph } from "graphology-operators";
+import { db } from "../core/db.js";
+import { index } from "d3";
 
 export class GraphManager {
-  constructor(app, limit, type = "mixed") {
+  constructor(app, type = "mixed") {
     this.app = app;
     this.eventBus = app.eventBus;
     this.settings = app.settings;
@@ -30,7 +32,6 @@ export class GraphManager {
       rect: false,
     };
 
-    this.limit = limit;
     this.index = 0;
     this.cut = false;
     this.graphClass = {
@@ -49,10 +50,6 @@ export class GraphManager {
       };
     });
     this.graphs = { index: 0, all: [this._graph] };
-    this.history = [
-      { index: 0, all: this.graphs.all.map((graph) => graph.export()) },
-    ];
-
     this.selectNodeIndex = 0;
     this.selectEdgeIndex = 0;
 
@@ -80,42 +77,21 @@ export class GraphManager {
     this.saveGraphState();
   }
 
-  getHistory() {
-    return this.history;
-  }
-
-  getIndex(index) {
-    return this.history[index] ?? undefined;
-  }
-
-  updateIndex(value) {
+  async updateIndex(value) {
     if (value < 0) {
       console.log("Nothing to Undo...");
       return false;
     }
-    if (value >= this.history.length) {
+    if (value >= db.history.count().length) {
       console.log("Nothing to Redo...");
       return false;
     }
 
     this.index = value;
-    this.graphs = { index: this.history[this.index].index, all: [] };
-    for (const h of this.history[this.index].all) {
-      const graph = empty(this.graphClass[h.options.type], 0);
-      this.graphs.all.push(graph.import(h));
-    }
-    this.eventBus.emit("updateSetting", {
-      key: "type",
-      value: this.history[this.index].all[0].options.type,
-    });
-    this.graphsPanel.updateGraphsPanel();
-    this.facePanel.updateFacePanel();
-    this.app.updateSimulation();
 
-    this.needsRedraw = { node: true, edge: true, face: true };
-    setTimeout(() => {
-      this.needsRedraw = { node: false, edge: false, face: false, rect: false };
-    }, 120);
+    const snapshot = await this.getSnapshot(value);
+    this.loadSnapshot(snapshot);
+    this.refresh();
     return true;
   }
 
@@ -137,32 +113,37 @@ export class GraphManager {
     });
   }
 
-  push(graphs) {
-    this.history.push(graphs);
-    this.index++;
+  async saveGraphState(force = true, action = "") {
+    const totalCount = await db.history.count();
 
-    if (this.history.length >= this.limit) {
-      this.history = this.history.slice(-this.limit);
-      this.index = this.history.length - 1;
-    }
-  }
+    if (totalCount !== this.index + 1) {
+      // You want to remove future snapshots after undo (e.g., redo path)
+      const snapshotsToDelete = await db.history
+        .where("id")
+        .above(this.index)
+        .toArray();
 
-  saveGraphState(force = true) {
-    if (this.history.length != this.index + 1) {
-      this.history.length = this.index + 1;
+      const ids = snapshotsToDelete.map((s) => s.id);
+      await db.history.bulkDelete(ids);
+    } else {
+      this.index = totalCount - 1;
     }
-    this.push({
+
+    const snapshot = {
+      version: 1,
       index: this.graphs.index,
       all: this.graphs.all.map((graph) => graph.export()),
-    });
+      timestamp: Date.now(),
+      action: action,
+    };
+
     if (this.settings.saveHistory) {
-      this.saveHistoryToLocalStorage();
+      await this.saveHistory(snapshot); // ✅ await this, it's async
     }
+
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
-    if (force) {
-      this.app.updateSimulation();
-    }
+    if (force) this.app.updateSimulation();
     this.redraw();
   }
 
@@ -504,34 +485,67 @@ export class GraphManager {
     this.saveGraphState();
   }
 
-  saveHistoryToLocalStorage() {
+  async saveHistory(snapshot) {
     try {
-      const historyJSON = JSON.stringify(this.history);
-      localStorage.setItem("graphStudio-history", historyJSON);
-      // console.log("History successfully saved to local storage.");
-      return true;
-    } catch (error) {
-      console.error("Failed to save history to local storage:", error);
-      return false;
-    }
-  }
+      await db.history.add(snapshot);
+      console.log("History snapshot saved.");
 
-  loadHitoryFromLocalStorage() {
-    const history = localStorage.getItem("graphStudio-history");
-    if (history) {
-      try {
-        const parsedHistory = JSON.parse(history);
-        this.history = parsedHistory;
-        this.updateIndex(this.history.length - 1);
-        return true;
-      } catch (error) {
-        console.warn("Invalid JSON format in localStorage.");
+      // Enforce history limit (optional: use from settings if available)
+      const limit = this.settings?.historyLimit || 100;
+
+      const count = await db.history.count();
+      if (count > limit) {
+        const excess = await db.history
+          .orderBy("id")
+          .limit(count - limit)
+          .toArray();
+
+        const idsToDelete = excess.map((item) => item.id);
+        await db.history.bulkDelete(idsToDelete);
+
+        console.log(`Pruned ${idsToDelete.length} old history snapshots.`);
       }
+    } catch (err) {
+      console.error("Failed to save history snapshot:", err);
     }
   }
 
-  cleanLocalStorage() {
-    localStorage.removeItem("graphStudio-history");
+  async getLastSnapshot() {
+    const lastSnapshot = await db.history.orderBy("id").reverse().first();
+    return lastSnapshot;
+  }
+
+  async getSnapshot(value) {
+    const snapshot = await db.history.get(value);
+    return snapshot;
+  }
+
+  loadSnapshot(snapshot) {
+    this.graphs = { index: snapshot.index, all: [] };
+    for (const h of snapshot.all) {
+      const graph = empty(this.graphClass[h.options.type], 0);
+      this.graphs.all.push(graph.import(h));
+    }
+  }
+
+  refresh() {
+    this.eventBus.emit("updateSetting", {
+      key: "type",
+      value: this.graphs.all[0].type,
+    });
+    this.graphsPanel.updateGraphsPanel();
+    this.facePanel.updateFacePanel();
+    this.app.updateSimulation();
+
+    this.needsRedraw = { node: true, edge: true, face: true };
+    setTimeout(() => {
+      this.needsRedraw = { node: false, edge: false, face: false, rect: false };
+    }, 120);
+  }
+
+  async clearHistory() {
+    await db.history.clear();
+    console.log("History table cleared.");
   }
 
   subgraph() {

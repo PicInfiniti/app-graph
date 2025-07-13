@@ -17,7 +17,7 @@ export default class Mixed extends Graph {
       stroke_color: "#4682b4",
     };
 
-    this.colors = this.loadFromLocalStorage();
+    this.colors = this.defaultColors;
 
     // Faces
     this._faces = new Map();
@@ -67,22 +67,6 @@ export default class Mixed extends Graph {
         this.setEdgeAttribute(key, "selected", false);
       if (attrs.desc === undefined) this.setEdgeAttribute(key, "desc", {});
     });
-  }
-
-  loadFromLocalStorage() {
-    // for webworkers who don't access to local storage.
-    if (typeof localStorage !== "undefined") {
-      const savedSettings = localStorage.getItem("appSettings");
-      if (savedSettings) {
-        try {
-          const parsedSettings = JSON.parse(savedSettings);
-          return this.validateSettings(parsedSettings);
-        } catch (error) {
-          console.warn("Invalid settings in localStorage. Using defaults.");
-        }
-      }
-    }
-    return { ...this.defaultColors };
   }
 
   validateSettings(saved = {}) {
