@@ -13,7 +13,6 @@ import { GraphsPanel } from "../wedgets/graphsPanel.js";
 import { FacePanel } from "../wedgets/facePanel.js";
 import { subgraph } from "graphology-operators";
 import { db } from "../core/db.js";
-import { index } from "d3";
 
 export class GraphManager {
   constructor(app, type = "mixed") {

@@ -79,23 +79,20 @@ export class Rect {
     }
   }
 
-  redraw() {
-    if (!this.mouseDown) return;
-    if (this.settings.performance)
-      this.app.graphManager.needsRedraw = { rect: true };
-    else
-      this.app.graphManager.needsRedraw = {
-        node: true,
-        edge: true,
-        face: true,
-        rect: true,
-      };
-  }
   // Dragging logic
   startSelection(event) {
     this.mouseDown = true;
 
-    this.redraw();
+    if (this.settings.performance)
+      this.app.graphManager.needsRedraw = { rect: true, node: true };
+    else
+      this.app.graphManager.needsRedraw = {
+        rect: true,
+        node: true,
+        edge: true,
+        face: true,
+      };
+
     if (this.settings.select || this.settings.scale) {
       // selection rect
       const [mouseX, mouseY] = d3.pointer(event, this.canvas);
@@ -191,8 +188,6 @@ export class Rect {
       } else {
         this.canvas.style.cursor = "default";
       }
-
-      this.redraw();
     }
   }
 
@@ -207,10 +202,12 @@ export class Rect {
       this.app.graphManager.graph.toggleNodeSelection(node);
     });
 
-    const selectedEdges = this.linesInRect(this.selection);
-    selectedEdges.forEach((edge) => {
-      this.app.graphManager.graph.toggleEdgeSelection(edge);
-    });
+    if (!this.settings.scale) {
+      const selectedEdges = this.linesInRect(this.selection);
+      selectedEdges.forEach((edge) => {
+        this.app.graphManager.graph.toggleEdgeSelection(edge);
+      });
+    }
 
     const SELECTED = this.app.graphManager.graph.getSelectedNodes();
     if (this.settings.scale && SELECTED.length > 0 && !this.scale.active) {
@@ -230,6 +227,7 @@ export class Rect {
         };
       });
     }
+    this.app.graphManager.redraw();
   }
 
   pointsInRect(selection) {
