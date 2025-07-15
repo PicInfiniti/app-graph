@@ -60,7 +60,7 @@ export default class Mixed extends Graph {
       if (attrs.color === undefined)
         this.setEdgeAttribute(key, "color", this.colors.edge_color);
       if (attrs.labelColor === undefined)
-        this.setEdgeAttribute(key, "labelColor", undefined);
+        this.setEdgeAttribute(key, "labelColor", this.colors.label_color);
       if (!attrs.source) this.setEdgeAttribute(key, "source", Number(source));
       if (!attrs.target) this.setEdgeAttribute(key, "target", Number(target));
       if (attrs.selected === undefined)

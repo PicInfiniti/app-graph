@@ -45,11 +45,11 @@ export class ColorPicker {
     for (const key in this.pickrs) {
       const pickr = this.pickrs[key];
       pickr.on("change", (color) => {
-        const rgba = color.toRGBA().toString();
-        pickr.setColor(rgba);
+        const hexa = color.toHEXA().toString().toLowerCase();
+        pickr.setColor(hexa);
         this.eventBus.emit("updateSetting", {
           key: `${key}_color`,
-          value: rgba,
+          value: hexa,
         });
       });
     }
@@ -58,22 +58,50 @@ export class ColorPicker {
   setColor(key, color) {
     const pickr = this.pickrs[key];
     if (pickr) {
-      pickr.setColor(color);
+      pickr.setColor(this.ToHex(color));
       this.eventBus.emit("updateSetting", {
         key: `${key}_color`,
-        value: color,
+        value: this.ToHex(color),
       });
     }
   }
 
   getColor(key) {
     const pickr = this.pickrs[key];
-    return pickr ? pickr.getColor().toRGBA().toString() : null;
+    return pickr ? pickr.getColor().toHEXA().toString().toLowerCase() : null;
   }
 
   resetColors() {
     for (const key in this.pickrs) {
       this.setColor(key, this.settings[`${key}_color`]);
     }
+  }
+
+  ToHex(colorStr) {
+    if (typeof colorStr !== "string") return null;
+
+    const trimmed = colorStr.trim().toLowerCase();
+
+    // Already a hex code (#fff, #ffffff, or #ffffffff)
+    if (/^#([0-9a-f]{3,8})$/i.test(trimmed)) {
+      return trimmed.length === 4 // e.g. "#f0f"
+        ? "#" + [...trimmed.slice(1)].map((c) => c + c).join("") // expand to 6-digit
+        : trimmed;
+    }
+
+    // Use a canvas to parse and convert to rgba
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.fillStyle = trimmed;
+
+    // Now get rgba values
+    const rgba = ctx.fillStyle.match(/\d+(\.\d+)?/g).map(Number); // [r, g, b, a?]
+
+    const [r, g, b, a = 1] = rgba;
+    const toHex = (v) => Math.round(v).toString(16).padStart(2, "0");
+    const alpha = Math.round(a * 255)
+      .toString(16)
+      .padStart(2, "0");
+
+    return "#" + toHex(r) + toHex(g) + toHex(b) + (a < 1 ? alpha : "");
   }
 }

@@ -175,13 +175,12 @@ class AppSettings {
   }
 
   setSetting(key, value) {
+    const oldval = this.settings[key];
     if (key in this.settings) {
       if (this.settings[key] !== value) {
         this.settings[key] = value;
-
-        if (this.#autoSave) {
+        if (this.#autoSave && this.settings[key] != oldval)
           this.saveToIndexedDB({ [key]: this.settings[key] });
-        }
       }
     } else {
       console.warn(`Setting "${key}" does not exist.`);
@@ -205,6 +204,7 @@ class AppSettings {
 
   toggleSetting(key, value = null) {
     const one = ["scale", "panning", "select", "component"];
+    const oldval = this.settings[key];
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
       console.log();
@@ -232,7 +232,7 @@ class AppSettings {
       if (this.settings.performance) {
         this.settings.forceSimulation = false;
       }
-      if (this.#autoSave && this.settings[key] != value && !one.includes(key))
+      if (this.#autoSave && this.settings[key] != oldval && !one.includes(key))
         this.saveToIndexedDB({ [key]: this.settings[key] });
 
       applySettingsToUI(this.settings, this.app.canvas);
