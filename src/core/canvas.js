@@ -198,14 +198,21 @@ export class Canvas {
           };
         });
 
-        this.app.graphManager.needsRedraw = {
-          node: true,
-          edge: true,
-          face: true,
-        };
+        if (this.settings.performance)
+          this.app.graphManager.needsRedraw = {
+            node: true,
+            edge: false,
+            face: false,
+          };
+        else
+          this.app.graphManager.needsRedraw = {
+            node: true,
+            edge: true,
+            face: true,
+          };
       }
 
-      if (event.subject.id !== null && !this.settings.performance) {
+      if (event.subject.id !== null) {
         this.canvas.style.cursor = "grabbing"; // Corrected this line
 
         this.app.graphManager.graph.updateNodeAttributes(
@@ -218,29 +225,19 @@ export class Canvas {
             };
           },
         );
-        this.app.graphManager.needsRedraw = {
-          node: true,
-          edge: true,
-          face: true,
-        };
-      }
 
-      if (event.subject.id !== null && this.settings.performance) {
-        this.canvas.style.cursor = "grabbing"; // Corrected this line
-
-        this.app.graphManager.graph.updateNodeAttributes(
-          event.subject.id,
-          (attr) => {
-            return {
-              ...attr,
-              x: event.x,
-              y: event.y,
-            };
-          },
-        );
-        this.app.graphManager.needsRedraw = {
-          node: true,
-        };
+        if (this.settings.performance)
+          this.app.graphManager.needsRedraw = {
+            node: true,
+            edge: false,
+            face: false,
+          };
+        else
+          this.app.graphManager.needsRedraw = {
+            node: true,
+            edge: true,
+            face: true,
+          };
       }
     }
   }

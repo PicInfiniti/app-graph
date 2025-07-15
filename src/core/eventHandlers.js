@@ -47,14 +47,7 @@ export class EventHandlers {
       }
 
       if (event.detail.type === "png") {
-        this.app.canvas.toBlob((blob) => {
-          const link = d.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = "d3-canvas-export.png";
-          d.body.appendChild(link);
-          link.click();
-          d.body.removeChild(link);
-        }, "image/png");
+        this.exportGraphAsImage();
       }
     });
 
@@ -118,5 +111,37 @@ export class EventHandlers {
       // Allow re-uploading the same file later
       event.target.value = "";
     });
+  }
+
+  exportGraphAsImage() {
+    // Create a temporary canvas with full size
+    const width = this.app.canvas.width;
+    const height = this.app.canvas.height;
+    const exportCanvas = d.createElement("canvas");
+    exportCanvas.width = width;
+    exportCanvas.height = height;
+    const ctx = exportCanvas.getContext("2d");
+
+    // Draw each layer in order: edges → faces → nodes (or your actual order)
+    ctx.drawImage(this.app._canvas._canvas.face.canvas, 0, 0);
+    ctx.drawImage(this.app._canvas._canvas.edge.canvas, 0, 0);
+    ctx.drawImage(this.app._canvas._canvas.node.canvas, 0, 0);
+
+    // Optionally add interaction or label layer if you want to export UI overlays
+    // ctx.drawImage(this.app.interactionCanvas, 0, 0);
+
+    // Export as PNG
+    exportCanvas.toBlob((blob) => {
+      if (!blob) {
+        console.error("Export failed: canvas may be empty or tainted.");
+        return;
+      }
+      const link = d.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "graph-studio-export.png";
+      d.body.appendChild(link);
+      link.click();
+      d.body.removeChild(link);
+    }, "image/png");
   }
 }
