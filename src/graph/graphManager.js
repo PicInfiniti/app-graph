@@ -31,6 +31,7 @@ export class GraphManager {
       rect: false,
     };
 
+    this._saveQueue = Promise.resolve();
     this.index = -1;
     this.cut = false;
     this.graphClass = {
@@ -112,34 +113,42 @@ export class GraphManager {
     });
   }
 
-  async saveGraphState(action = "", force = true) {
-    console.log(action);
+  saveGraphState(action = "", force = true) {
+    // Add to the queue
+    this._saveQueue = this._saveQueue
+      .then(() => this._performSaveGraphState(action, force))
+      .catch((e) => {
+        console.error("Error saving graph state:", e);
+      });
 
-    const snapshot = {
-      version: 1,
-      index: this.graphs.index,
-      all: this.graphs.all.map((graph) => graph.export()),
-      timestamp: Date.now(),
-      action: action,
-    };
+    // Return nothing — fire and forget
+  }
+
+  async _performSaveGraphState(action = "", force = true) {
+    const currentSnapshot = await this.getSnapshot(this.index);
+
+    if (currentSnapshot) {
+      await db.history
+        .where("timestamp")
+        .above(currentSnapshot.timestamp)
+        .delete();
+    }
 
     if (this.settings.saveHistory) {
-      this.saveHistory(snapshot).then(async () => {
-        this.index++;
-        const totalCount = await db.history.count();
-        if (totalCount !== this.index + 1) {
-          const snapshots = await db.history.orderBy("timestamp").toArray();
-          const snapshotsToDelete = snapshots.slice(this.index);
+      const snapshot = {
+        version: 1,
+        index: this.graphs.index,
+        all: this.graphs.all.map((graph) => graph.export()),
+        timestamp: Date.now(),
+        action,
+      };
 
-          const ids = snapshotsToDelete.map((s) => s.id);
-          await db.history.bulkDelete(ids);
-        }
-
-        this.graphsPanel.updateGraphsPanel();
-        this.facePanel.updateFacePanel();
-        if (force) this.app.updateSimulation();
-        this.redraw();
-      });
+      await this.saveHistory(snapshot);
+      this.index++;
+      this.graphsPanel.updateGraphsPanel();
+      this.facePanel.updateFacePanel();
+      if (force) this.app.updateSimulation();
+      this.redraw();
     }
   }
 
