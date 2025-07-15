@@ -8,17 +8,6 @@ export class EventHandlers {
   }
 
   init() {
-    this.app.eventBus.on("settingToggled", (event) => {
-      const { key, value } = event.detail;
-      if (key == "forceSimulation") {
-        if (value) {
-          this.app.startSimulation();
-        } else {
-          this.app.stopSimulation();
-        }
-      }
-    });
-
     this.app.eventBus.on("import", (event) => {
       d.getElementById("file-input").click(); // Open file dialog
     });

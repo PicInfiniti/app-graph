@@ -1,5 +1,6 @@
 import { db } from "./db";
 import { applySettingsToUI } from "../ui/uiManager";
+import { edge } from "graphology-metrics";
 
 class AppSettings {
   static instance = null;
@@ -107,14 +108,15 @@ class AppSettings {
       const { key, value } = event.detail;
       if (key) {
         this.toggleSetting(key, value);
-        if (
-          key == "vertexLabel" ||
-          key == "directed_edge" ||
-          key == "edgeLabel" ||
-          key == "weightLabel"
-        ) {
-          this.eventBus.emit("graph:updated", { type: "vertexLabel" });
-        }
+        console.log(key);
+        this.app.graphManager.needsRedraw = {
+          node: key == "vertexLabel",
+          edge:
+            key == "directed_edge" ||
+            key == "edgeLabel" ||
+            key == "weightLabel",
+          face: key == "faceLabel",
+        };
       }
     });
   }
@@ -206,40 +208,32 @@ class AppSettings {
     const one = ["scale", "panning", "select", "component"];
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
-      if (!value) this.settings[key] = !this.settings[key];
+      if (value === null) this.settings[key] = !this.settings[key];
       else this.settings[key] = value;
 
       if (one.includes(key)) {
-        one.forEach((val) => {
-          if (val != key && this.settings[key]) this.settings[val] = false;
+        this.toggleSetting("forceSimulation", false);
+        one.forEach((_key) => {
+          if (_key != key && this.settings[key]) this.settings[_key] = false;
         });
       }
 
-      if (
-        (key === "component" && this.settings.component) ||
-        (key === "scale" && this.settings.scale) ||
-        (key === "panning" && this.settings.panning)
-      ) {
-        this.settings.forceSimulation = false;
-        this.eventBus.emit("settingToggled", {
-          key: "forceSimulation",
-          value: this.settings.forceSimulation,
-        });
-      }
-
-      if (key === "forceSimulation" && this.settings.forceSimulation) {
-        this.settings.component = false;
-        this.settings.scale = false;
-        this.settings.panning = false;
+      if (key === "forceSimulation") {
+        if (this.settings.forceSimulation) {
+          one.forEach((_key) => {
+            if (this.settings[key]) this.settings[_key] = false;
+          });
+          this.app.startSimulation();
+        } else {
+          this.app.stopSimulation();
+        }
       }
 
       if (this.settings.performance) {
         this.settings.forceSimulation = false;
       }
 
-      this.eventBus.emit("settingToggled", { key, value: this.settings[key] });
-
-      if (this.#autoSave && value === null)
+      if (this.#autoSave && !one.includes(key))
         this.saveToIndexedDB({ [key]: this.settings[key] });
 
       applySettingsToUI(this.settings, this.app.canvas);
