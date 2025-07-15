@@ -257,7 +257,6 @@ export class Canvas {
       event.subject.id !== null &&
       !this.settings.forceSimulation
     ) {
-      console.log(6);
       this.app.graphManager.graph.updateNodeAttributes(
         event.subject.id,
         (attr) => {
