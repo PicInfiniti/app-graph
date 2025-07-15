@@ -31,7 +31,7 @@ export class GraphManager {
       rect: false,
     };
 
-    this.index = 0;
+    this.index = -1;
     this.cut = false;
     this.graphClass = {
       directed: DirectedGraph,
@@ -73,7 +73,7 @@ export class GraphManager {
 
   addNode(id, attr) {
     this.graph.addNode(id, attr);
-    this.saveGraphState();
+    this.saveGraphState("add node");
   }
 
   async updateIndex(value = null) {
@@ -87,9 +87,10 @@ export class GraphManager {
       console.log("Nothing to Redo...");
       return false;
     }
-    if (value === null) this.index = totalCount;
+
+    if (value === null) this.index = totalCount - 1;
     else this.index = value;
-    const snapshot = await this.getSnapshot(value);
+    const snapshot = await this.getSnapshot(this.index);
     this.loadSnapshot(snapshot);
     this.refresh();
     return true;
@@ -98,33 +99,21 @@ export class GraphManager {
   clearTo(type = "mixed") {
     this.eventBus.emit("updateSetting", { key: "type", value: type });
     this.graph = empty(this.graphClass[type], 0);
-    this.saveGraphState();
+    this.saveGraphState(`new ${type}`);
   }
 
   setupEventListeners() {
     this.eventBus.on("redo", async (event) => {
-      if (await this.updateIndex(this.index + 1))
-        this.eventBus.emit("graph:updated", { type: "redo" });
+      await this.updateIndex(this.index + 1);
     });
 
     this.eventBus.on("undo", async (event) => {
-      if (await this.updateIndex(this.index - 1))
-        this.eventBus.emit("graph:updated", { type: "undo" });
+      await this.updateIndex(this.index - 1);
     });
   }
 
   async saveGraphState(action = "", force = true) {
     console.log(action);
-    const totalCount = await db.history.count();
-    if (totalCount !== this.index + 1) {
-      const snapshotsToDelete = await db.history
-        .where("id")
-        .above(this.index)
-        .toArray();
-
-      const ids = snapshotsToDelete.map((s) => s.id);
-      await db.history.bulkDelete(ids);
-    }
 
     const snapshot = {
       version: 1,
@@ -135,14 +124,23 @@ export class GraphManager {
     };
 
     if (this.settings.saveHistory) {
-      await this.saveHistory(snapshot); // ✅ await this, it's async
-      this.index = (await db.history.count()) - 1;
-    }
+      this.saveHistory(snapshot).then(async () => {
+        this.index++;
+        const totalCount = await db.history.count();
+        if (totalCount !== this.index + 1) {
+          const snapshots = await db.history.orderBy("timestamp").toArray();
+          const snapshotsToDelete = snapshots.slice(this.index);
 
-    this.graphsPanel.updateGraphsPanel();
-    this.facePanel.updateFacePanel();
-    if (force) this.app.updateSimulation();
-    this.redraw();
+          const ids = snapshotsToDelete.map((s) => s.id);
+          await db.history.bulkDelete(ids);
+        }
+
+        this.graphsPanel.updateGraphsPanel();
+        this.facePanel.updateFacePanel();
+        if (force) this.app.updateSimulation();
+        this.redraw();
+      });
+    }
   }
 
   redraw(options = { node: true, edge: true, face: true, rect: true }) {
@@ -200,7 +198,7 @@ export class GraphManager {
     this.saveGraphState(`add ${type} edge in order`);
   }
 
-  updateSelectedColor(n = true, s = true, e = true, l = true, f = true) {
+  updateSelectedColor(n = true, s = true, e = true, f = true, l = true) {
     this.graph.updateSelectedNodesColor(
       n ? this.settings.node_color : false,
       s ? this.settings.stroke_color : false,
@@ -224,7 +222,7 @@ export class GraphManager {
     } else {
       this.graph.updateSelectedName("");
     }
-    this.saveGraphState("", false);
+    this.saveGraphState("update name", false);
   }
 
   getSelectedGraphs() {
@@ -246,7 +244,7 @@ export class GraphManager {
       this.graph.updateSelectedInfo({});
       this.updateSelectedGarphsAttributes({ desc: {} });
     }
-    this.saveGraphState("", false);
+    this.saveGraphState("update info", false);
   }
 
   updateSelectedWeight(val) {
@@ -258,7 +256,7 @@ export class GraphManager {
       this.graph.updateSelectedWeight(undefined);
       this.updateSelectedGarphsAttributes({ weight: undefined });
     }
-    this.saveGraphState("", false);
+    this.saveGraphState("update weight", false);
   }
 
   deselectAll() {
@@ -515,8 +513,12 @@ export class GraphManager {
     return lastSnapshot;
   }
 
-  async getSnapshot(value) {
-    const snapshot = await db.history.orderBy("id").offset(value).first();
+  async getSnapshot(index) {
+    const snapshot = await db.history
+      .orderBy("id")
+      .offset(index)
+      .limit(1)
+      .first();
     return snapshot;
   }
 
@@ -536,11 +538,7 @@ export class GraphManager {
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();
     this.app.updateSimulation();
-
-    this.needsRedraw = { node: true, edge: true, face: true };
-    setTimeout(() => {
-      this.needsRedraw = { node: false, edge: false, face: false, rect: false };
-    }, 120);
+    this.redraw();
   }
 
   async clearHistory() {

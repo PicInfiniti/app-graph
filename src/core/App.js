@@ -60,7 +60,7 @@ export class App {
     this.keyHandler.init(); // Handle global keyboard shortcuts
     this.eventHanders.init();
     this.initSimulation();
-    await this.loadInitialGraph();
+    this.loadInitialGraph();
     this.colorPicker.init();
     this.startAnimationLoop();
   }

@@ -108,7 +108,6 @@ class AppSettings {
       const { key, value } = event.detail;
       if (key) {
         this.toggleSetting(key, value);
-        console.log(key);
         this.app.graphManager.needsRedraw = {
           node: key == "vertexLabel",
           edge:
@@ -153,7 +152,7 @@ class AppSettings {
     this.debounceTimer = setTimeout(async () => {
       try {
         await db.settings.update("appSettings", settings);
-        console.log("Settings saved to IndexedDB");
+        console.trace("Settings saved to IndexedDB");
 
         // Emit a global settings change event
         this.eventBus.emit("settingsChanged", this.getAllSettings());
@@ -208,11 +207,12 @@ class AppSettings {
     const one = ["scale", "panning", "select", "component"];
 
     if (key in this.settings && typeof this.settings[key] === "boolean") {
+      console.log();
       if (value === null) this.settings[key] = !this.settings[key];
       else this.settings[key] = value;
 
       if (one.includes(key)) {
-        this.toggleSetting("forceSimulation", false);
+        this.settings.forceSimulation = false;
         one.forEach((_key) => {
           if (_key != key && this.settings[key]) this.settings[_key] = false;
         });
@@ -232,8 +232,7 @@ class AppSettings {
       if (this.settings.performance) {
         this.settings.forceSimulation = false;
       }
-
-      if (this.#autoSave && !one.includes(key))
+      if (this.#autoSave && this.settings[key] != value && !one.includes(key))
         this.saveToIndexedDB({ [key]: this.settings[key] });
 
       applySettingsToUI(this.settings, this.app.canvas);

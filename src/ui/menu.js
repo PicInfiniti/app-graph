@@ -545,13 +545,15 @@ export class Menu {
 
       // color chord
       "update-node-color": () =>
-        this.graphManager.updateSelectedColor(true, false, false, false),
+        this.graphManager.updateSelectedColor(true, false, false, false, false),
       "update-stroke-color": () =>
-        this.graphManager.updateSelectedColor(false, true, false, false),
+        this.graphManager.updateSelectedColor(false, true, false, false, false),
       "update-edge-color": () =>
-        this.graphManager.updateSelectedColor(false, false, true, false),
+        this.graphManager.updateSelectedColor(false, false, true, false, false),
+      "update-face-color": () =>
+        this.graphManager.updateSelectedColor(false, false, false, true, false),
       "update-label-color": () =>
-        this.graphManager.updateSelectedColor(false, false, false, true),
+        this.graphManager.updateSelectedColor(false, false, false, false, true),
     };
 
     if (actions[menuId]) {

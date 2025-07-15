@@ -53,7 +53,7 @@
       "action": "select-pervious-node"
     },
 
-    "shift": { "desc": "Tree", "action": "toggle-select-btn", "value": true },
+    "shift": { "desc": "Select", "action": "toggle-select-btn", "value": true },
     "alt": {
       "desc": "Component",
       "action": "toggle-component-btn",

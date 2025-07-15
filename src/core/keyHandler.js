@@ -57,7 +57,6 @@ export class KeyHandler {
         const key = this.findKey();
         if (key) event.preventDefault();
         else this.pressedKeys.clear();
-
         this.action(key);
       }
     });
