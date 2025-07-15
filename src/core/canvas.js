@@ -254,25 +254,25 @@ export class Canvas {
 
     if (
       event.subject.__moved &&
-      event.subject.id &&
+      event.subject.id !== null &&
       !this.settings.forceSimulation
     ) {
-      if (event.subject.id !== null) {
-        this.app.graphManager.graph.updateNodeAttributes(
-          event.subject.id,
-          (attr) => {
-            return {
-              ...attr,
-              x: event.x,
-              y: event.y,
-            };
-          },
-        );
-      }
+      console.log(6);
+      this.app.graphManager.graph.updateNodeAttributes(
+        event.subject.id,
+        (attr) => {
+          return {
+            ...attr,
+            x: event.x,
+            y: event.y,
+          };
+        },
+      );
     }
+
     if (
       (event.subject.component && event.subject.component.length) ||
-      event.subject.id
+      event.subject.id !== null
     )
       if (!this.settings.forceSimulation)
         this.app.graphManager.saveGraphState("update-position");
