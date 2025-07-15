@@ -105,6 +105,7 @@ export class Metric {
     this.addHeader("Basic Informattion");
     this.addInfo(`|V|: ${graph.order}`);
     this.addInfo(`|E|: ${graph.size}`);
+    this.addInfo(`|F|: ${graph._faces.size}`);
     const weighted = graph.someEdge((_, attrs) => attrs.weight);
     this.addInfo(
       weighted ? `Type: ${graph.type}, weighted` : `Type: ${graph.type}`,
