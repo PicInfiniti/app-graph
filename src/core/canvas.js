@@ -43,7 +43,7 @@ export class Canvas {
   init() {
     this.updateCanvasSize(window.innerWidth, window.innerHeight);
     this.canvas.addEventListener("dblclick", this.handleDbclick.bind(this));
-    this.canvas.addEventListener("click", this.handleclick.bind(this));
+    this.canvas.addEventListener("click", this.handleClick.bind(this));
 
     // 👇 Double-tap detection for touchscreens
     let lastTap = 0;
@@ -168,15 +168,15 @@ export class Canvas {
   }
 
   dragstarted(event) {
-    if (!event.active && this.settings.forceSimulation) {
-      this.app.simulation.alphaTarget(0.3).restart();
-    }
     event.subject.fx = event.subject.x;
     event.subject.fy = event.subject.y;
     event.subject.__moved = false;
     if (event.subject.id !== null) {
       this.app.graphManager.update = true;
       this.canvas.style.cursor = "grab"; // Corrected this line
+      if (!event.active && this.settings.forceSimulation) {
+        this.app.simulation.alphaTarget(0.5).restart();
+      }
     }
   }
 
@@ -366,7 +366,7 @@ export class Canvas {
     }
   }
 
-  handleclick(event) {
+  handleClick(event) {
     if (this.mouse.dragging) return;
     let [x, y] = d3.pointer(event, this.canvas);
     let clickedNode = this.findClickedNode(x, y);

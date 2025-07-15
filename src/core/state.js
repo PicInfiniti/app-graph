@@ -152,7 +152,7 @@ class AppSettings {
     this.debounceTimer = setTimeout(async () => {
       try {
         await db.settings.update("appSettings", settings);
-        console.trace("Settings saved to IndexedDB");
+        console.log("Settings saved to IndexedDB");
 
         // Emit a global settings change event
         this.eventBus.emit("settingsChanged", this.getAllSettings());
