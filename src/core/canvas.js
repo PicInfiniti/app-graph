@@ -135,7 +135,7 @@ export class Canvas {
     this.app.graphManager.addNode(newID, newNode);
     this.app.graphManager.graph.addEdge(node.id, newID);
 
-    this.app.graphManager.saveGraphState();
+    this.app.graphManager.saveGraphState("tree-node");
   }
 
   dragsubject(event) {
@@ -278,7 +278,8 @@ export class Canvas {
       (event.subject.component && event.subject.component.length) ||
       event.subject.id
     )
-      this.app.graphManager.saveGraphState();
+      if (!this.settings.forceSimulation)
+        this.app.graphManager.saveGraphState("update-position");
   }
 
   findClickedNode(x, y) {
@@ -332,7 +333,7 @@ export class Canvas {
     // Add two new edges
     this.app.graphManager.graph.addEdge(edge.source.id, newID);
     this.app.graphManager.graph.addEdge(newID, edge.target.id);
-    this.app.graphManager.saveGraphState();
+    this.app.graphManager.saveGraphState("tree-edge");
   }
 
   handleDbclick(event) {

@@ -179,9 +179,9 @@ export class Menu {
       "add-directed-edge-in-order-btn": () =>
         this.graphManager.connectSelectedNodesInOrder("directed"),
 
-      "remove-selection-btn": () => this.graphManager.dropSelectedNodesEdges(),
+      "remove-selection-btn": () => this.graphManager.dropSelected(),
       "color-selection-btn": () =>
-        this.graphManager.updateSelectedNodesEdgesColor(true, true, true, true),
+        this.graphManager.updateSelectedColor(true, true, true, true),
 
       "complete-btn": () => this.graphManager.makeGraphComplete("undirected"),
       "complete-directed-btn": () =>
@@ -545,33 +545,13 @@ export class Menu {
 
       // color chord
       "update-node-color": () =>
-        this.graphManager.updateSelectedNodesEdgesColor(
-          true,
-          false,
-          false,
-          false,
-        ),
+        this.graphManager.updateSelectedColor(true, false, false, false),
       "update-stroke-color": () =>
-        this.graphManager.updateSelectedNodesEdgesColor(
-          false,
-          true,
-          false,
-          false,
-        ),
+        this.graphManager.updateSelectedColor(false, true, false, false),
       "update-edge-color": () =>
-        this.graphManager.updateSelectedNodesEdgesColor(
-          false,
-          false,
-          true,
-          false,
-        ),
+        this.graphManager.updateSelectedColor(false, false, true, false),
       "update-label-color": () =>
-        this.graphManager.updateSelectedNodesEdgesColor(
-          false,
-          false,
-          false,
-          true,
-        ),
+        this.graphManager.updateSelectedColor(false, false, false, true),
     };
 
     if (actions[menuId]) {

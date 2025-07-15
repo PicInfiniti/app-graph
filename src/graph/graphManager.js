@@ -113,7 +113,8 @@ export class GraphManager {
     });
   }
 
-  async saveGraphState(force = true, action = "") {
+  async saveGraphState(action = "", force = true) {
+    console.log(action);
     const totalCount = await db.history.count();
     if (totalCount !== this.index + 1) {
       const snapshotsToDelete = await db.history
@@ -166,10 +167,10 @@ export class GraphManager {
       }
     }
 
-    this.saveGraphState();
+    this.saveGraphState("connect all edges");
   }
 
-  dropSelectedNodesEdges() {
+  dropSelected() {
     const edges = this.graph.getSelectedEdges();
     const nodes = this.graph.getSelectedNodes();
     const faces = this.graph.getSelectedFaces();
@@ -186,20 +187,20 @@ export class GraphManager {
       if (this.graph.hasNode(node)) this.graph.dropNode(node);
     });
 
-    this.saveGraphState();
+    this.saveGraphState("remove selected");
   }
 
   connectSelectedNodes(type = "directed") {
     this.graph.connectSelectedNodes(this.settings.edge_color, type);
-    this.saveGraphState();
+    this.saveGraphState(`add ${type} edge`);
   }
 
   connectSelectedNodesInOrder(type = "directed") {
     this.graph.connectSelectedNodesInOrder(this.settings.edge_color, type);
-    this.saveGraphState();
+    this.saveGraphState(`add ${type} edge in order`);
   }
 
-  updateSelectedNodesEdgesColor(n = true, s = true, e = true, l = true) {
+  updateSelectedColor(n = true, s = true, e = true, l = true, f = true) {
     this.graph.updateSelectedNodesColor(
       n ? this.settings.node_color : false,
       s ? this.settings.stroke_color : false,
@@ -209,7 +210,11 @@ export class GraphManager {
       e ? this.settings.edge_color : false,
       l ? this.settings.label_color : false,
     );
-    this.saveGraphState(false);
+    this.graph.updateSelectedFacesColor(
+      f ? this.settings.face_color : false,
+      l ? this.settings.label_color : false,
+    );
+    this.saveGraphState("update color", false);
   }
 
   updateSelectedName(name) {
@@ -219,7 +224,7 @@ export class GraphManager {
     } else {
       this.graph.updateSelectedName("");
     }
-    this.saveGraphState(false);
+    this.saveGraphState("", false);
   }
 
   getSelectedGraphs() {
@@ -241,7 +246,7 @@ export class GraphManager {
       this.graph.updateSelectedInfo({});
       this.updateSelectedGarphsAttributes({ desc: {} });
     }
-    this.saveGraphState(false);
+    this.saveGraphState("", false);
   }
 
   updateSelectedWeight(val) {
@@ -253,7 +258,7 @@ export class GraphManager {
       this.graph.updateSelectedWeight(undefined);
       this.updateSelectedGarphsAttributes({ weight: undefined });
     }
-    this.saveGraphState(false);
+    this.saveGraphState("", false);
   }
 
   deselectAll() {
@@ -467,26 +472,24 @@ export class GraphManager {
   }
 
   toWeighted() {
-    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+    this.graph.updateEachEdgeAttributes((_, attrs) => ({
       ...attrs,
       weight: 1,
     }));
-    this.saveGraphState();
+    this.saveGraphState("add weight to all edge");
   }
 
   toUnweighted() {
-    this.graph.updateEachEdgeAttributes((edge, attrs) => ({
+    this.graph.updateEachEdgeAttributes((_, attrs) => ({
       ...attrs,
       weight: undefined,
     }));
-    this.saveGraphState();
+    this.saveGraphState("remove weight from all edge");
   }
 
   async saveHistory(snapshot) {
     try {
       await db.history.add(snapshot);
-      console.log("History snapshot saved.");
-
       // Enforce history limit (optional: use from settings if available)
       const limit = this.settings?.historyLimit || 100;
 
@@ -560,7 +563,7 @@ export class GraphManager {
     this.graphs.all.push(subgraph);
     subgraph.deselectAll();
     this.deselectAll();
-    this.saveGraphState();
+    this.saveGraphState("add subgraph");
   }
 
   // Faces
@@ -569,7 +572,7 @@ export class GraphManager {
     const _subgraph = subgraph(this.graph, nodes);
     if (this.metric._isCycle(_subgraph)) {
       this.graph.addFace(nodes);
-      this.saveGraphState();
+      this.saveGraphState("add face");
     }
   }
 }
