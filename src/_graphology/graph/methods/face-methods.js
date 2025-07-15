@@ -8,6 +8,7 @@ export function attachFaceMethods(Mixed) {
       id: this._faces.size,
       nodes: nodes,
       color: this.colors.face_color,
+      labelColor: this.colors.label_color,
     };
 
     var faceData = new FaceData(face, nodes, attributes);

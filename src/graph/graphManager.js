@@ -185,6 +185,7 @@ export class GraphManager {
       if (this.graph.hasNode(node)) this.graph.dropNode(node);
     });
 
+    this.app.rect.scale.active = false;
     this.saveGraphState("remove selected");
   }
 

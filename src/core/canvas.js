@@ -4,7 +4,6 @@ import {
   getAvailableLabel,
   getMinAvailableNumber,
 } from "../utils/helperFunctions.js";
-import { canvas } from "graphology-library";
 
 export class Canvas {
   constructor(app) {
