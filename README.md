@@ -8,18 +8,19 @@
 
 ---
 
-## 🚀 What's New in v1.9.3
+## 🚀 What's New in v1.9.5
 
 - 🎯 **Canvas Layer Overhaul** — Uses 4 separate canvas layers (nodes, edges, faces, interaction) for smoother rendering and control.
 - 🔺 **Face Support** — Define and color enclosed cycles using the new _Face_ tool (`Ctrl+F`). Each face is editable and visible in the _Faces Panel_.
 - 🌐 **Subgraphs** — Select any group of nodes to create reusable, editable subgraphs. View/edit from the _Graphs Panel_.
 - 📝 **Full Metadata Editing** — Add/edit labels, weights, and descriptions for nodes, edges, faces, and subgraphs.
-- 📑 **Dedicated Panels** — Manage everything from separate _Info_, _Graphs_, and _Faces_ panels. Toggle them from `Settings → View`.
+- 📁 **Dedicated Panels** — Manage everything from separate _Info_, _Graphs_, and _Faces_ panels. Toggle them from `Settings → View`.
 - 🧠 **Shortcut Chord System** — Combine key sequences like `Space → c → c` for quick tool access (see guide below).
+- 📀 **IndexedDB Storage** — Workflow state and history now saved in-browser using **Dexie.js** (IndexedDB). Works reliably even with large graphs.
 - 💾 **Autosave** — Your graph state and history are saved in-browser between sessions. Recover work even after tab closes.
-- ⚙️ **Performance Mode** — Disable animations for smoother handling of large graphs (enable from `Settings → Performance`).
+- ⚙️ **Performance Mode** — Optional mode disables animations for smoother handling of massive graphs.
 - 📦 **Export Includes History** — Save full state (graph + edit history) in JSON exports.
-- 🧰 **New Operators Menu** — Control layout (flip, rotate, force atlas), convert graph types, generate subgraphs, and more.
+- 🛠️ **New Operators Menu** — Control layout (flip, rotate, force atlas), convert graph types, generate subgraphs, and more.
 
 ---
 
@@ -73,7 +74,7 @@ Create graphs from built-in templates:
 - **Extras:** Disparity, Simmelian Strength
 - 🔍 Explore Neighbors, Shortest Path, Info Panels
 
-### 🔁 Operators Menu (NEW)
+### ♻️ Operators Menu (NEW)
 
 - Layout: Organize, Rotate, Flip, Random, Force Atlas
 - Convert: Graph ⇌ Digraph, Weighted ⇌ Unweighted
@@ -115,11 +116,10 @@ Chord keys show hints as you type. Examples:
 - ⚙️ Enable **Performance Mode** (Settings → Performance)
   - Disables force animations
   - Defers redraws until after interactions
-- 💾 Disable **Autosave History** for large graphs (Settings → History)
+- 📀 Your workflow and history now persist via **IndexedDB** — no more size limitations
 - ❌ If the app crashes or won’t load:
   - Go to **Settings → History → Clear History**, then reload
-  - Always **export your graph** if you're doing important work
-- 💡 Local autosave is limited — avoid using autosave with extremely large graphs. IndexedDB support coming in the future.
+  - Always **export your graph** if you're doing important worke.
 
 ---
 

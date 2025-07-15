@@ -63,10 +63,10 @@ export class Rect {
   drawSelect(selection) {
     if (!selection) return;
     const ctx = this.ctx;
-    ctx.fillStyle = "#0000001a)"; // Semi-transparent blue fill
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Semi-transparent blue fill
     ctx.fillRect(selection.x, selection.y, selection.width, selection.height);
 
-    ctx.strokeStyle = "#0000ffb3"; // Blue outline
+    ctx.strokeStyle = "rgba(0, 0, 255, 0.7)"; // Blue outline
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]); // Dashed border effect
     ctx.strokeRect(selection.x, selection.y, selection.width, selection.height);
