@@ -108,15 +108,15 @@ export class App {
   ticked() {
     // Draw nodes
     this.nodes.forEach((d) => {
-      this.graphManager.graph.updateNodeAttributes(d.id, (attr) => {
-        return {
-          ...attr,
-          x: d.x,
-          y: d.y,
-        };
-      });
+      if (this.graphManager.graph.hasNode(d.id))
+        this.graphManager.graph.updateNodeAttributes(d.id, (attr) => {
+          return {
+            ...attr,
+            x: d.x,
+            y: d.y,
+          };
+        });
     });
-    this.eventBus.emit("graph:updated", { type: "tick" });
   }
 
   startSimulation() {
