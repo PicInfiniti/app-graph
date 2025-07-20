@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { applySettingsToUI } from "../ui/uiManager";
-import { edge } from "graphology-metrics";
+const d = document;
 
 class AppSettings {
   static instance = null;
@@ -83,10 +83,11 @@ class AppSettings {
       const { key, value } = event.detail;
       this.setSetting(key, value);
       if (key == "grid") {
-        const root = document.documentElement;
-        document
-          .querySelector(".container")
-          .classList.toggle("grid-hidden", this.settings.grid <= 2);
+        const root = d.documentElement;
+        d.querySelector(".container").classList.toggle(
+          "grid-hidden",
+          this.settings.grid <= 2,
+        );
         root.style.setProperty("--grid-size", `${this.settings.grid}px`);
       } else if (key && value !== undefined) {
         this.eventBus.emit("graph:updated", { type: key });
@@ -181,6 +182,8 @@ class AppSettings {
         this.settings[key] = value;
         if (this.#autoSave && this.settings[key] != oldval)
           this.saveToIndexedDB({ [key]: this.settings[key] });
+
+        applySettingsToUI(this.settings, this.app.canvas);
       }
     } else {
       console.warn(`Setting "${key}" does not exist.`);
@@ -196,9 +199,8 @@ class AppSettings {
 
     this.eventBus.emit("settingsChanged", this.getAllSettings());
 
-    if (this.#autoSave) {
-      this.saveToIndexedDB();
-    }
+    if (this.#autoSave) this.saveToIndexedDB();
+
     applySettingsToUI(this.settings, this.app.canvas);
   }
 
