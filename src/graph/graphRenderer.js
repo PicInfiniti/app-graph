@@ -97,38 +97,52 @@ export class GraphRenderer {
 
   drawFaces(canvas, graph, settings, labelFont, labelOffsetX, labelOffsetY) {
     const ctx = canvas.ctx;
-    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    const width = canvas.canvas.width;
+    const height = canvas.canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    let loop = false;
     graph.forEachFace((_, attr) => {
       const hull = attr.nodes.map((p) => {
         const node = graph.getNodeAttributes(p);
         return [node.x, node.y];
       });
 
-      const centroid = {
-        x: d3.mean(hull, (d) => d[0]),
-        y: d3.mean(hull, (d) => d[1]),
-      };
-
-      if (hull) {
-        ctx.fillStyle = attr.selected ? "#FFA50055" : attr.color;
-        ctx.beginPath();
-        ctx.moveTo(hull[0][0], hull[0][1]);
-        for (let i = 1; i < hull.length; i++) {
-          ctx.lineTo(hull[i][0], hull[i][1]);
+      for (const node of hull)
+        if (this.check(node[0], node[1], width, height)) {
+          loop = true;
+          break;
         }
-        ctx.closePath();
-        ctx.fill();
-      }
 
-      if (settings.faceLabel) {
-        this.drawLabel(
-          ctx,
-          attr.label,
-          centroid.x,
-          centroid.y,
-          attr.labelColor,
-          labelFont,
-        );
+      if (loop) {
+        loop = false;
+        const centroid = {
+          x: d3.mean(hull, (d) => d[0]),
+          y: d3.mean(hull, (d) => d[1]),
+        };
+
+        if (hull) {
+          ctx.fillStyle = attr.selected ? "#FFA50055" : attr.color;
+          ctx.beginPath();
+          ctx.moveTo(hull[0][0], hull[0][1]);
+          for (let i = 1; i < hull.length; i++) {
+            ctx.lineTo(hull[i][0], hull[i][1]);
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        if (settings.faceLabel) {
+          this.drawLabel(
+            ctx,
+            attr.label,
+            centroid.x,
+            centroid.y,
+            attr.labelColor,
+            labelFont,
+          );
+        }
       }
     });
   }
@@ -144,9 +158,17 @@ export class GraphRenderer {
     labelOffsetY,
   ) {
     const ctx = canvas.ctx;
-    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    const width = canvas.canvas.width;
+    const height = canvas.canvas.height;
 
+    ctx.clearRect(0, 0, width, height);
     graph.forEachEdge((edge, attr, s, t, source, target) => {
+      if (
+        !this.check(source.x, source.y, width, height) &&
+        !this.check(target.x, target.y, width, height)
+      )
+        return;
+
       const dx = target.x - source.x;
       const dy = target.y - source.y;
       const length = Math.hypot(dx, dy);
@@ -226,9 +248,13 @@ export class GraphRenderer {
     labelOffsetY,
   ) {
     const ctx = canvas.ctx;
-    ctx.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    const width = canvas.canvas.width;
+    const height = canvas.canvas.height;
 
+    ctx.clearRect(0, 0, width, height);
     graph.forEachNode((node, attr) => {
+      if (!this.check(attr.x, attr.y, width, height)) return;
+
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, nodeRadius * attr.size, 0, 2 * Math.PI);
       ctx.fillStyle = attr.selected ? "orange" : attr.color;
@@ -251,5 +277,9 @@ export class GraphRenderer {
         );
       }
     });
+  }
+
+  check(x, y, w, h) {
+    return x >= 0 && x <= w && y >= 0 && y <= h;
   }
 }
