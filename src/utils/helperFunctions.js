@@ -71,3 +71,28 @@ export function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
 export function positiveModulus(a, b) {
   return ((a % b) + b) % b;
 }
+
+export function setHexAlpha(hex, alpha) {
+  // Remove '#' if present
+  hex = hex.replace(/^#/, "");
+
+  // Convert shorthand hex (#abc) to full form (#aabbcc)
+  if (hex.length === 3 || hex.length === 4) {
+    hex = hex
+      .split("")
+      .map((c) => c + c)
+      .join("");
+  }
+
+  // Strip existing alpha if present
+  if (hex.length === 8) {
+    hex = hex.slice(0, 6);
+  }
+
+  // Clamp alpha between 0 and 1, then convert to 2-digit hex
+  const alphaHex = Math.round(Math.min(Math.max(alpha, 0), 1) * 255)
+    .toString(16)
+    .padStart(2, "0");
+
+  return `#${hex}${alphaHex}`;
+}

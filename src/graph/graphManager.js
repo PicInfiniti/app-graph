@@ -34,6 +34,7 @@ export class GraphManager {
     this._saveQueue = Promise.resolve();
     this.index = -1;
     this.cut = false;
+    this._cutNode = [];
     this.graphClass = {
       directed: DirectedGraph,
       undirected: UndirectedGraph,
@@ -81,11 +82,11 @@ export class GraphManager {
     const totalCount = await db.history.count();
 
     if (value < 0) {
-      console.log("Nothing to Undo...");
+      console.log("Nothing to Undo...", value, totalCount);
       return false;
     }
     if (value >= totalCount) {
-      console.log("Nothing to Redo...");
+      console.log("Nothing to Redo...", value, totalCount);
       return false;
     }
 
@@ -135,6 +136,8 @@ export class GraphManager {
     }
 
     if (this.settings.saveHistory) {
+      const limit = this.settings?.historyLimit || 100;
+
       const snapshot = {
         version: 1,
         index: this.graphs.index,
@@ -144,7 +147,7 @@ export class GraphManager {
       };
 
       await this.saveHistory(snapshot);
-      this.index++;
+      if (this.index++ >= limit) this.index = limit - 1;
       this.graphsPanel.updateGraphsPanel();
       this.facePanel.updateFacePanel();
       if (force) this.app.updateSimulation();
@@ -422,22 +425,38 @@ export class GraphManager {
 
   //🔁 copySelected()
   copySubgraph() {
-    this.subGraph = this.graph.copySubgraph();
+    const selectedNodes = this.graph.getSelectedNodes();
+    if (selectedNodes.length === 0) return null;
+    this.subGraph = this.graph.subgraph(selectedNodes);
     this.cut = false;
   }
 
   //✂️ cutSelected()
   cutSubgraph() {
-    this.subGraph = this.graph.cutSubgraph();
+    this._cutNode = this.graph.getSelectedNodes();
+    if (this._cutNode.length === 0) return null;
+    this.subGraph = this.graph.subgraph(this._cutNode);
     this.cut = true;
+
     this.redraw();
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
   pasteSubgraph(val = false, offset = { x: 150, y: 100 }) {
-    this.subGraph = this.graph.pasteSubgraph(this.subGraph, this.cut, offset);
-    if (val) this.subgraph();
+    if (!this.subGraph) return;
+    this.subGraph.forEachNode((key, attrs) => {
+      const newAttrs = { ...attrs };
+      if ("x" in newAttrs) newAttrs.x += offset.x;
+      if ("y" in newAttrs) newAttrs.y += offset.y;
+      this.subGraph.replaceNodeAttributes(key, newAttrs);
+    });
+
+    this.deselectAll();
+    this.graph.mergeWith(this.subGraph);
+    for (const node of this._cutNode) this.graph.dropNode(node);
+
     this.cut = false;
+    this._cutNode.length = 0;
     this.saveGraphState();
   }
 

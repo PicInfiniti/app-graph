@@ -146,47 +146,6 @@ export default class Mixed extends Graph {
     }
   }
 
-  //🔁 copySelected()
-  copySubgraph() {
-    const selectedNodes = this.getSelectedNodes();
-    if (selectedNodes.length === 0) return null;
-
-    return this.subgraph(selectedNodes);
-  }
-
-  //✂️ cutSelected()
-  cutSubgraph() {
-    const selected = this.copySubgraph();
-    if (selected) this.deleteSelected();
-    return selected;
-  }
-
-  //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
-  pasteSubgraph(sub, cut = false, offset = { x: 0, y: 0 }) {
-    if (!sub) return;
-
-    // Optional: adjust layout if using x/y coordinates
-    sub.forEachNode((key, attrs) => {
-      const newAttrs = { ...attrs };
-      if ("x" in newAttrs) newAttrs.x += offset.x;
-      if ("y" in newAttrs) newAttrs.y += offset.y;
-      sub.replaceNodeAttributes(key, newAttrs);
-    });
-
-    // Use disjointUnion to merge with remapped node keys
-    this.deselectAll();
-    let combined;
-    if (cut) {
-      combined = union(this, sub);
-      this.clear();
-      this.import(combined.export());
-    } else {
-      this.disjointUnion(this, sub);
-    }
-
-    return sub;
-  }
-
   replace(graph) {
     this.clear();
     this.import(graph.export());
@@ -294,50 +253,49 @@ export default class Mixed extends Graph {
     return S;
   }
 
-  disjointUnion(G, H) {
-    if (G.multi !== H.multi)
+  mergeWith(H) {
+    if (this.multi !== H.multi)
       throw new Error(
         "graphology-operators/disjoint-union: both graph should be simple or multi.",
       );
 
     // TODO: in the spirit of this operator we should probably prefix something
-    G.mergeAttributes(G.getAttributes());
+    this.mergeAttributes(this.getAttributes());
 
     var labelsH = {};
 
-    var i = Math.max(...G.nodes()) + 1;
+    var i = Math.max(...this.nodes()) + 1;
 
     // Adding nodes
-    H.forEachNode(function (key, attr) {
+    H.forEachNode((key, attr) => {
       labelsH[key] = i;
-      G.addNode(i++, attr);
+      this.addNode(i++, attr);
     });
 
     // Adding edges
-    i = Math.max(...G.edges()) + 1;
+    i = Math.max(...this.edges()) + 1;
 
-    H.forEachEdge(function (key, attr, source, target, _s, _t, undirected) {
+    H.forEachEdge((key, attr, source, target, _s, _t, undirected) => {
       if (undirected)
-        G.addUndirectedEdge(labelsH[source], labelsH[target], {
+        this.addUndirectedEdge(labelsH[source], labelsH[target], {
           ...attr,
           id: i++,
         });
       else
-        G.addDirectedEdge(labelsH[source], labelsH[target], {
+        this.addDirectedEdge(labelsH[source], labelsH[target], {
           ...attr,
           id: i++,
         });
     });
 
-    i = Math.max(...G.faces()) + 1;
+    i = Math.max(...this.faces()) + 1;
 
     H.forEachFace((_, attrs) => {
-      G.addFace(
+      this.addFace(
         attrs.nodes.map((old) => labelsH[old]),
         { ...attrs, id: i++ },
       );
     });
-    return G;
   }
 
   clear() {

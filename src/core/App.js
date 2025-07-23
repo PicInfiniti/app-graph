@@ -66,8 +66,12 @@ export class App {
   }
 
   initSimulation() {
+    this.nodes.length = 0;
     this.nodes = this.graphManager.graph.getNodesForD3();
-    this.links = this.graphManager.graph.getEdgesForD3();
+
+    this.links.length = 0;
+    if (this.settings.force_edge)
+      this.links = this.graphManager.graph.getEdgesForD3();
 
     this.simulation = d3
       .forceSimulation(this.nodes)
@@ -132,11 +136,12 @@ export class App {
     this.nodes = this.graphManager.graph.getNodesForD3();
 
     this.links.length = 0;
-    this.links = this.graphManager.graph.getEdgesForD3();
+    if (this.settings.force_edge)
+      this.links = this.graphManager.graph.getEdgesForD3();
 
     this.simulation.nodes(this.nodes);
     this.simulation.force("link").links(this.links);
-    if (this.appSettings.settings.forceSimulation) {
+    if (this.settings.forceSimulation) {
       this.startSimulation();
     } else {
       this.stopSimulation();
@@ -145,7 +150,7 @@ export class App {
 
   startAnimationLoop() {
     const loop = () => {
-      if (this.appSettings.settings.forceSimulation) {
+      if (this.settings.forceSimulation) {
         this.simulation.tick(); // Advance the simulation
         this.ticked(); // Update graph model
         this.graphRenderer.drawGraph({ node: true, edge: true, face: true }); // Only draw when needed

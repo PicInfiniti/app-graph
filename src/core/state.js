@@ -26,6 +26,7 @@ class AppSettings {
       edge_color: "#4682b4",
       edge_size: 2,
       forceSimulation: true,
+      force_edge: false,
       grid: 20,
       type: "mixed", // directed, undirected, mixed
       grid_color: "#00000020",

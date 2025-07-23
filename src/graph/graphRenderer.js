@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { setHexAlpha } from "../utils/helperFunctions";
 
 export class GraphRenderer {
   constructor(app) {
@@ -185,7 +186,19 @@ export class GraphRenderer {
       ctx.beginPath();
       ctx.moveTo(startX, startY);
       ctx.lineTo(endX, endY);
-      ctx.strokeStyle = attr.selected ? "orange" : attr.color;
+
+      let color;
+      if (attr.selected) {
+        if (this.graphManager.cut) {
+          color = setHexAlpha(attr.color, 0.5);
+        } else {
+          color = "orange";
+        }
+      } else {
+        color = attr.color;
+      }
+      ctx.strokeStyle = color;
+
       ctx.lineWidth = edgeSize;
       ctx.stroke();
       ctx.closePath();
@@ -195,14 +208,7 @@ export class GraphRenderer {
         const angle = Math.atan2(dy, dx);
         const arrowX = target.x - (Math.cos(angle) * nodeRadius) / 4;
         const arrowY = target.y - (Math.sin(angle) * nodeRadius) / 4;
-        this.drawArrowhead(
-          arrowX,
-          arrowY,
-          angle,
-          14 + edgeSize,
-          attr.selected ? "orange" : attr.color,
-          ctx,
-        );
+        this.drawArrowhead(arrowX, arrowY, angle, 14 + edgeSize, color, ctx);
       }
 
       // Edge label
@@ -257,11 +263,29 @@ export class GraphRenderer {
 
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, nodeRadius * attr.size, 0, 2 * Math.PI);
-      ctx.fillStyle = attr.selected ? "orange" : attr.color;
+      if (attr.selected) {
+        if (this.graphManager.cut) {
+          ctx.fillStyle = setHexAlpha(attr.color, 0.5);
+        } else {
+          ctx.fillStyle = "orange";
+        }
+      } else {
+        ctx.fillStyle = attr.color;
+      }
+
       ctx.fill();
       if (strokeSize !== 0) {
         ctx.lineWidth = strokeSize;
-        ctx.strokeStyle = attr.selected ? "orange" : attr.stroke;
+        if (attr.selected) {
+          if (this.graphManager.cut) {
+            ctx.strokeStyle = setHexAlpha(attr.stroke, 0.4);
+          } else {
+            ctx.strokeStyle = "orange";
+          }
+        } else {
+          ctx.strokeStyle = attr.stroke;
+        }
+
         ctx.stroke();
       }
       ctx.closePath();
