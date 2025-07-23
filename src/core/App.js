@@ -143,27 +143,6 @@ export class App {
     }
   }
 
-  updateForce() {
-    const graph = this.graphManager.graph;
-
-    this.nodes.length = 0;
-    graph.forEachNode((node, attr) => {
-      this.nodes.push({
-        id: Number(node),
-        x: attr.x,
-        y: attr.y,
-      });
-    });
-
-    this.links.length = 0;
-    graph.forEachEdge(function (edge, attr, s, t, source, target) {
-      this.links.push({
-        source: Number(s),
-        target: Number(t),
-      });
-    });
-  }
-
   startAnimationLoop() {
     const loop = () => {
       if (this.appSettings.settings.forceSimulation) {
