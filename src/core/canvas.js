@@ -371,9 +371,6 @@ export class Canvas {
     if (clickedNode) {
       if (this.settings.select) {
         this.app.graphManager.graph.toggleNodeSelection(clickedNode.id);
-        if (!this.settings.forceSimulation) {
-          this.eventBus.emit("graph:updated", { type: "selected" });
-        }
       } else {
         this.app.graphManager.metric.addNEFGInfo(clickedNode);
 

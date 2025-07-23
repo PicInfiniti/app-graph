@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { applySettingsToUI } from "../ui/uiManager";
-const d = document;
+import { edge } from "graphology-library/metrics";
 
 class AppSettings {
   static instance = null;
@@ -82,16 +82,6 @@ class AppSettings {
     this.eventBus.on("updateSetting", (event) => {
       const { key, value } = event.detail;
       this.setSetting(key, value);
-      if (key == "grid") {
-        const root = d.documentElement;
-        d.querySelector(".container").classList.toggle(
-          "grid-hidden",
-          this.settings.grid <= 2,
-        );
-        root.style.setProperty("--grid-size", `${this.settings.grid}px`);
-      } else if (key && value !== undefined) {
-        this.eventBus.emit("graph:updated", { type: key });
-      }
     });
 
     this.eventBus.on("updateAllSettings", (event) => {
@@ -154,9 +144,12 @@ class AppSettings {
       try {
         await db.settings.update("appSettings", settings);
         console.log("Settings saved to IndexedDB");
-
-        // Emit a global settings change event
-        this.eventBus.emit("settingsChanged", this.getAllSettings());
+        this.app.graphManager.needsRedraw = {
+          node: false,
+          edge: false,
+          face: false,
+          rect: false,
+        };
       } catch (err) {
         console.error("Failed to save settings to IndexedDB", err);
       }
@@ -184,6 +177,30 @@ class AppSettings {
           this.saveToIndexedDB({ [key]: this.settings[key] });
 
         applySettingsToUI(this.settings, this.app.canvas);
+        switch (key) {
+          case "node_radius":
+            this.app.graphManager.needsRedraw = { node: true };
+            break;
+
+          case "stroke_size":
+            this.app.graphManager.needsRedraw = { node: true };
+            break;
+
+          case "edge_size":
+            this.app.graphManager.needsRedraw = { edge: true };
+            break;
+
+          case "label_size":
+            this.app.graphManager.needsRedraw = {
+              node: true,
+              edge: true,
+              face: true,
+            };
+            break;
+
+          default:
+            break;
+        }
       }
     } else {
       console.warn(`Setting "${key}" does not exist.`);
@@ -196,8 +213,6 @@ class AppSettings {
         this.settings[key] = newSettings[key];
       }
     });
-
-    this.eventBus.emit("settingsChanged", this.getAllSettings());
 
     if (this.#autoSave) this.saveToIndexedDB();
 
