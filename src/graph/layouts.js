@@ -178,7 +178,7 @@ export class Layout {
     const centerY = this.canvas.height / 2;
     const graph = this.app.graphManager.graph;
     const positions = _random(graph, {
-      scale: Math.max(centerX, centerY) - 200,
+      scale: Math.max(centerX, centerY),
     });
 
     this.center(positions);

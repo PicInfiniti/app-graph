@@ -25,6 +25,8 @@ export class Generator {
       this.graphManager.graphClass[this.settings.type],
       +n,
     );
+
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -33,6 +35,7 @@ export class Generator {
       this.graphManager.graphClass[this.settings.type],
       +n,
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -41,6 +44,7 @@ export class Generator {
       this.graphManager.graphClass[this.settings.type],
       +n,
     );
+    this.syncColor();
     this.layout.applyLayout("twoLine", { line1Count: +n, Y: 50 });
   }
 
@@ -54,6 +58,8 @@ export class Generator {
         this.graphManager.graph.addEdge(i, j);
       }
     }
+
+    this.syncColor();
     this.layout.applyLayout("twoLine", { line1Count: +n1, Y: 50 });
   }
 
@@ -64,6 +70,7 @@ export class Generator {
     );
     this.graphManager.graph.addEdge(0, +n - 1);
 
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -72,6 +79,7 @@ export class Generator {
       this.graphManager.graphClass[this.settings.type],
       +n,
     );
+    this.syncColor();
     this.layout.applyLayout("oneLine");
   }
 
@@ -81,6 +89,7 @@ export class Generator {
       +n1,
       +n2,
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -90,6 +99,7 @@ export class Generator {
       +n1,
       +n2,
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -102,6 +112,7 @@ export class Generator {
         clusters: +c < 2 ? 2 : +c,
       },
     );
+    this.syncColor();
     this.layout.applyLayout("random");
   }
 
@@ -113,6 +124,7 @@ export class Generator {
         probability: +p > 1 ? 1 : +p,
       },
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -123,6 +135,7 @@ export class Generator {
         zOut: 4,
       },
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -130,6 +143,7 @@ export class Generator {
     this.graphManager.graph = krackhardtKite(
       this.graphManager.graphClass[this.settings.type],
     );
+    this.syncColor();
     this.layout.applyLayout("oneLine");
   }
 
@@ -137,6 +151,7 @@ export class Generator {
     this.graphManager.graph = florentineFamilies(
       this.graphManager.graphClass[this.settings.type],
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
   }
 
@@ -144,6 +159,26 @@ export class Generator {
     this.graphManager.graph = karateClub(
       this.graphManager.graphClass[this.settings.type],
     );
+    this.syncColor();
     this.layout.applyLayout("circle");
+  }
+
+  syncColor() {
+    this.graphManager.graph.updateEachNodeAttributes((node, attr) => {
+      return {
+        ...attr,
+        color: this.settings.node_color,
+        labelColor: this.settings.label_color,
+        stroke: this.settings.stroke_color,
+      };
+    });
+
+    this.graphManager.graph.updateEachEdgeAttributes((edge, attr) => {
+      return {
+        ...attr,
+        color: this.settings.edge_color,
+        labelColor: this.settings.label_color,
+      };
+    });
   }
 }

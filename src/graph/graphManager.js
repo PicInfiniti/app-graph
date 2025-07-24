@@ -165,14 +165,16 @@ export class GraphManager {
   makeGraphComplete(type = "directed") {
     for (let i = 0; i < this.graph.order; i++) {
       for (let j = i + 1; j < this.graph.order; j++) {
+        const edgeAttrs = { color: this.settings.edge_color, selected: false };
+
         if (this.graph.type == "mixed") {
           if (type == "undirected") {
-            this.graph.mergeUndirectedEdge(i, j);
+            this.graph.mergeUndirectedEdge(i, j, edgeAttrs);
           } else {
-            this.graph.mergeDirectedEdge(i, j);
+            this.graph.mergeDirectedEdge(i, j, edgeAttrs);
           }
         } else {
-          this.graph.mergeEdge(i, j);
+          this.graph.mergeEdge(i, j, edgeAttrs);
         }
       }
     }
