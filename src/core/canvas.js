@@ -178,6 +178,19 @@ export class Canvas {
         this.app.simulation.alphaTarget(0.5).restart();
       }
     }
+
+    if (this.settings.performance)
+      this.app.graphManager.needsRedraw = {
+        node: true,
+        edge: false,
+        face: false,
+      };
+    else
+      this.app.graphManager.needsRedraw = {
+        node: true,
+        edge: true,
+        face: true,
+      };
   }
 
   dragged(event) {
@@ -197,19 +210,6 @@ export class Canvas {
             y: attr.y + event.dy,
           };
         });
-
-        if (this.settings.performance)
-          this.app.graphManager.needsRedraw = {
-            node: true,
-            edge: false,
-            face: false,
-          };
-        else
-          this.app.graphManager.needsRedraw = {
-            node: true,
-            edge: true,
-            face: true,
-          };
       }
 
       if (event.subject.id !== null) {
@@ -225,19 +225,6 @@ export class Canvas {
             };
           },
         );
-
-        if (this.settings.performance)
-          this.app.graphManager.needsRedraw = {
-            node: true,
-            edge: false,
-            face: false,
-          };
-        else
-          this.app.graphManager.needsRedraw = {
-            node: true,
-            edge: true,
-            face: true,
-          };
       }
     }
   }

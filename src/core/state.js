@@ -1,6 +1,5 @@
 import { db } from "./db";
 import { applySettingsToUI } from "../ui/uiManager";
-import { edge } from "graphology-library/metrics";
 
 class AppSettings {
   static instance = null;
@@ -159,6 +158,7 @@ class AppSettings {
 
   resetToDefault() {
     this.setAllSettings(this.defaultSettings);
+    this.app.colorPicker.resetColors();
   }
 
   getSetting(key) {

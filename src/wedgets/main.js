@@ -61,9 +61,7 @@ export class Widgets {
       });
     });
 
-    d.addEventListener("click", () => {
-      menu.style.display = "none";
-    });
+    d.addEventListener("click", () => (menu.style.display = "none"));
   }
 
   togglePanel(key, buttonSelector, isVisible) {

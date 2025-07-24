@@ -1,5 +1,6 @@
 import Pickr from "@simonwep/pickr";
 import "@simonwep/pickr/dist/themes/nano.min.css";
+const d = document;
 
 export class ColorPicker {
   constructor(app) {
@@ -72,9 +73,8 @@ export class ColorPicker {
   }
 
   resetColors() {
-    for (const key in this.pickrs) {
+    for (const key in this.pickrs)
       this.setColor(key, this.settings[`${key}_color`]);
-    }
   }
 
   ToHex(colorStr) {
@@ -90,7 +90,7 @@ export class ColorPicker {
     }
 
     // Use a canvas to parse and convert to rgba
-    const ctx = document.createElement("canvas").getContext("2d");
+    const ctx = d.createElement("canvas").getContext("2d");
     ctx.fillStyle = trimmed;
 
     // Now get rgba values
