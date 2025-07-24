@@ -267,14 +267,9 @@ export class Canvas {
           };
         },
       );
-    }
-
-    if (
-      (event.subject.component && event.subject.component.length) ||
-      event.subject.id !== null
-    )
       if (!this.settings.forceSimulation)
         this.app.graphManager.saveGraphState("update-position");
+    }
   }
 
   findClickedNode(x, y) {
@@ -289,10 +284,10 @@ export class Canvas {
 
   findClickedEdge(x, y) {
     let threshold = 10; // Distance threshold for edge selection
-    return this.app.links.find((link) => {
-      let source = link.source;
-      let target = link.target;
 
+    const link = this.app.graphManager.graph.getEdgesForD3().find((link) => {
+      let source = this.app.graphManager.graph.getNodeAttributes(link.source);
+      let target = this.app.graphManager.graph.getNodeAttributes(link.target);
       let dist = pointToSegmentDistance(
         x,
         y,
@@ -303,6 +298,11 @@ export class Canvas {
       );
       return dist < threshold;
     });
+    if (link)
+      return {
+        source: this.app.graphManager.graph.getNodeAttributes(link.source),
+        target: this.app.graphManager.graph.getNodeAttributes(link.target),
+      };
   }
 
   insertNodeInEdge(edge) {
@@ -344,6 +344,7 @@ export class Canvas {
         this.addNodeConnectedToNode(clickedNode);
       } else {
         this.app.graphManager.graph.toggleNodeSelection(clickedNode.id);
+        this.app.graphManager.redraw({ node: true });
       }
     } else if (clickedEdge) {
       if (this.settings.tree) {
@@ -354,6 +355,7 @@ export class Canvas {
           clickedEdge.target.id,
           (edge) => {
             this.app.graphManager.graph.toggleEdgeSelection(edge);
+            this.app.graphManager.redraw({ edge: true });
           },
         );
       }
