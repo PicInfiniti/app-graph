@@ -22,11 +22,10 @@ export function attachEdgeMethods(Mixed) {
   // 🚀 Prepare edges for D3
   Mixed.prototype.getEdgesForD3 = function () {
     return this.edges().map((edgeKey) => {
-      const { source, target, ...attributes } = this.getEdgeAttributes(edgeKey);
+      const { source, target } = this.getEdgeAttributes(edgeKey);
       return {
-        source: Number(source),
-        target: Number(target),
-        ...attributes,
+        source: source,
+        target: target,
       };
     });
   };

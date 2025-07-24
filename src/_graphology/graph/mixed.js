@@ -245,7 +245,8 @@ export default class Mixed extends Graph {
     // Add relevant faces
     this.forEachFace((face, attr) => {
       const faceNodes = attr.nodes || [];
-      if (faceNodes.every((n) => nodeSet.has(n))) {
+      console.log(faceNodes);
+      if (faceNodes.every((n) => nodeSet.has(n) || nodeSet.has("" + n))) {
         S.addFace(attr.nodes, attr);
       }
     });
@@ -269,7 +270,11 @@ export default class Mixed extends Graph {
     // Adding nodes
     H.forEachNode((key, attr) => {
       labelsH[key] = i;
-      this.addNode(i++, attr);
+      this.addNode(i, {
+        ...attr,
+        id: i,
+      });
+      i++;
     });
 
     // Adding edges
@@ -280,6 +285,8 @@ export default class Mixed extends Graph {
         this.addUndirectedEdge(labelsH[source], labelsH[target], {
           ...attr,
           id: i++,
+          source: labelsH[source],
+          target: labelsH[target],
         });
       else
         this.addDirectedEdge(labelsH[source], labelsH[target], {
@@ -291,10 +298,8 @@ export default class Mixed extends Graph {
     i = Math.max(...this.faces()) + 1;
 
     H.forEachFace((_, attrs) => {
-      this.addFace(
-        attrs.nodes.map((old) => labelsH[old]),
-        { ...attrs, id: i++ },
-      );
+      const nodes = attrs.nodes.map((old) => labelsH[old]);
+      this.addFace(nodes, { ...attrs, id: i++, nodes: nodes });
     });
   }
 
