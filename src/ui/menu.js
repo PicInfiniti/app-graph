@@ -237,6 +237,9 @@ export class Menu {
       "tree-btn": () => this.eventBus.emit("toggleSetting", { key: "tree" }),
       "force-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "forceSimulation" }),
+      "force-edge-btn": () =>
+        this.eventBus.emit("toggleSetting", { key: "force_edge" }),
+
       "panning-btn": () =>
         this.eventBus.emit("toggleSetting", { key: "panning" }),
       "select-btn": () =>

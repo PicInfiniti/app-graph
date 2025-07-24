@@ -26,7 +26,7 @@ class AppSettings {
       edge_color: "#4682b4",
       edge_size: 2,
       forceSimulation: true,
-      force_edge: false,
+      force_edge: true,
       grid: 20,
       type: "mixed", // directed, undirected, mixed
       grid_color: "#00000020",
@@ -246,6 +246,8 @@ class AppSettings {
           this.app.stopSimulation();
         }
       }
+
+      if (key === "force_edge") this.app.updateSimulation();
 
       if (this.settings.performance) {
         this.settings.forceSimulation = false;

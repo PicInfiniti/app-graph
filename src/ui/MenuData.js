@@ -199,6 +199,8 @@ export const menuData = [
         check: false,
         shortcut: "(f)",
       },
+      { title: "Force Edge", id: "force-edge-btn", check: true },
+
       { type: "divider" },
       {
         title: "Color Picker",

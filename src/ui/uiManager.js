@@ -45,6 +45,10 @@ export function applySettingsToUI(settings, canvas) {
     "gray-background",
     !settings.scale,
   );
+  d.querySelector("#force-edge-btn .check").classList.toggle(
+    "hidden",
+    !settings.force_edge,
+  );
   d.querySelector("#tree").classList.toggle("gray-background", !settings.tree);
   d.querySelector("#force").classList.toggle(
     "gray-background",
