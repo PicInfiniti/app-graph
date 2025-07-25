@@ -8,7 +8,7 @@
 
 ---
 
-## 🚀 What's New in v1.9.5
+## 🚀 What's New in v1.9.11
 
 - 🎯 **Canvas Layer Overhaul** — Uses 4 separate canvas layers (nodes, edges, faces, interaction) for smoother rendering and control.
 - 🔺 **Face Support** — Define and color enclosed cycles using the new _Face_ tool (`Ctrl+F`). Each face is editable and visible in the _Faces Panel_.
@@ -54,6 +54,7 @@
 
 - 🔍 Zoom, Panning (`Ctrl`), Selecting (`Shift`), Component Selector (`Alt`)
 - 🌳 Tree & Force Simulation tools
+- 🎛️ **Force Edge Toggle** – Enable/disable edge influence in force layout
 - 🎨 Quick Color Picker (`Space → c → c`)
 
 ### ⚙️ Generator Menu
@@ -120,6 +121,7 @@ Chord keys show hints as you type. Examples:
 - ❌ If the app crashes or won’t load:
   - Go to **Settings → History → Clear History**, then reload
   - Always **export your graph** if you're doing important worke.
+- 🧭 Only visible regions are rendered, dramatically improving frame rates on graphs with thousands of nodes.
 
 ---
 
