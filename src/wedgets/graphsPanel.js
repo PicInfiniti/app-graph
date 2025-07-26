@@ -42,14 +42,13 @@ export class GraphsPanel {
   selectLi(id) {
     if (!this.app.keyHandler.isCtrlHold()) {
       this.graphManager.graphs.index = this.index;
-      this.deselectLis();
+      this.deselectLis("graphs-panel");
     }
     this.graphManager.graph.updateAttribute("selected", (x) => true);
 
     const li = this.ul.querySelector(`#graphs-${id}`);
-    if (li) {
-      li.classList.toggle("select");
-    }
+    if (li) li.classList.toggle("select");
+    this.graphManager.redraw();
   }
 
   updateGraphsPanel() {
@@ -80,6 +79,7 @@ export class GraphsPanel {
 
   deselectLis(id) {
     if (id !== "graphs-panel") return;
+
     this.lis("node").forEach((li) => li.classList.remove("select"));
     for (const graph of this.graphManager.graphs.all)
       graph.updateAttribute("selected", (x) => false);
