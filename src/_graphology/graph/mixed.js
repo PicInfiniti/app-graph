@@ -1,9 +1,9 @@
 import { Graph } from "graphology";
-import { union } from "graphology-operators";
 import { attachNodeMethods } from "./methods/node-methods";
 import { attachEdgeMethods } from "./methods/edge-methods";
 import { attachFaceMethods } from "./methods/face-methods";
 import { getAvailableLabel } from "../../utils/helperFunctions";
+
 export default class Mixed extends Graph {
   constructor(options) {
     super(options);
@@ -82,7 +82,7 @@ export default class Mixed extends Graph {
   // other tyoe of copy includes emptyCopy and copy use this so it will fix functionality of all of them
 
   nullCopy(options) {
-    var graph = new Mixed(assign({}, this._options, options));
+    const graph = new this.constructor(assign({}, this._options, options));
     graph.replaceAttributes(assign({}, this.getAttributes()));
     return graph;
   }

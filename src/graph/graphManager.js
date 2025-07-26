@@ -283,9 +283,9 @@ export class GraphManager {
   }
 
   deselectAllGraph() {
-    for (const graph of this.graphs.all) {
+    for (const graph of this.graphs.all)
       graph.updateAttribute("selected", (x) => false);
-    }
+
     this.app.rect.scale.active = false;
   }
 
@@ -431,6 +431,7 @@ export class GraphManager {
     if (selectedNodes.length === 0) return null;
     this.subGraph = this.graph.subgraph(selectedNodes);
     this.cut = false;
+    return this.subGraph;
   }
 
   //✂️ cutSelected()
@@ -586,11 +587,12 @@ export class GraphManager {
       this.metric.addLine();
       return;
     }
-    const subgraph = this.graph.copySubgraph();
-    subgraph.removeAttribute("id");
-    subgraph.removeAttribute("label");
-    this.graphs.all.push(subgraph);
-    subgraph.deselectAll();
+    this.subGraph = this.copySubgraph();
+
+    this.subGraph.removeAttribute("id");
+    this.subGraph.removeAttribute("label");
+    this.graphs.all.push(this.subGraph);
+    this.subGraph.deselectAll();
     this.deselectAll();
     this.saveGraphState("add subgraph");
   }
