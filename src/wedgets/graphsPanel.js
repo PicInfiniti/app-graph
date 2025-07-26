@@ -74,12 +74,14 @@ export class GraphsPanel {
 
   listeners() {
     this.panel.addEventListener("click", (event) => {
-      if (event.target.id == "graphs-panel") this.deselectLis();
+      this.deselectLis(event.target.id);
     });
   }
 
-  deselectLis() {
+  deselectLis(id) {
+    if (id !== "graphs-panel") return;
     this.lis("node").forEach((li) => li.classList.remove("select"));
-    this.graphManager.deselectAll();
+    for (const graph of this.graphManager.graphs.all)
+      graph.updateAttribute("selected", (x) => false);
   }
 }

@@ -278,15 +278,10 @@ export class GraphManager {
     this.deselectAllNode();
     this.deselectAllEdge();
     this.deselectAllFace();
-    this.deselectAllGraph();
-    this.redraw();
-  }
-
-  deselectAllGraph() {
-    for (const graph of this.graphs.all)
-      graph.updateAttribute("selected", (x) => false);
-
+    this.graphsPanel.deselectLis();
     this.app.rect.scale.active = false;
+
+    this.redraw();
   }
 
   deselectAllNode() {
