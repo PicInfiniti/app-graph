@@ -260,9 +260,9 @@ export class Canvas {
   }
 
   findClickedNode(x, y) {
-    return this.app.nodes.find((node) => {
-      let dx = x - node.x;
-      let dy = y - node.y;
+    return this.app.graphRenderer.visible.node.find((node) => {
+      const dx = x - node.x;
+      const dy = y - node.y;
       return (
         Math.sqrt(dx * dx + dy * dy) < this.settings.node_radius * node.size
       ); // Adjust radius threshold as needed
@@ -270,12 +270,15 @@ export class Canvas {
   }
 
   findClickedEdge(x, y) {
-    let threshold = 10; // Distance threshold for edge selection
+    const threshold = +this.settings.edge_size + 5; // Distance threshold for edge selection
 
-    const link = this.app.graphManager.graph.getEdgesForD3().find((link) => {
-      let source = this.app.graphManager.graph.getNodeAttributes(link.source);
-      let target = this.app.graphManager.graph.getNodeAttributes(link.target);
-      let dist = pointToSegmentDistance(
+    let source;
+    let target;
+
+    const link = this.app.graphRenderer.visible.edge.find((link) => {
+      source = this.app.graphManager.graph.getNodeAttributes(link.source);
+      target = this.app.graphManager.graph.getNodeAttributes(link.target);
+      const dist = pointToSegmentDistance(
         x,
         y,
         source.x,
@@ -287,8 +290,8 @@ export class Canvas {
     });
     if (link)
       return {
-        source: this.app.graphManager.graph.getNodeAttributes(link.source),
-        target: this.app.graphManager.graph.getNodeAttributes(link.target),
+        source: source,
+        target: target,
       };
   }
 

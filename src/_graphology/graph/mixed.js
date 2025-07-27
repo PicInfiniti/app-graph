@@ -81,8 +81,14 @@ export default class Mixed extends Graph {
   // 🧬 Deep copy with structure and attributes
   // other tyoe of copy includes emptyCopy and copy use this so it will fix functionality of all of them
 
-  nullCopy(options) {
+  _nullCopy(options) {
     const graph = new this.constructor(assign({}, this._options, options));
+    graph.replaceAttributes(assign({}, this.getAttributes()));
+    return graph;
+  }
+
+  nullCopy(options) {
+    const graph = new Mixed(assign({}, this._options, options));
     graph.replaceAttributes(assign({}, this.getAttributes()));
     return graph;
   }
@@ -214,7 +220,7 @@ export default class Mixed extends Graph {
   }
 
   subgraph(nodes) {
-    const S = this.nullCopy();
+    const S = this._nullCopy();
 
     // Normalize nodes to an array or set
     if (

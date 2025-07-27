@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { setHexAlpha } from "../utils/helperFunctions";
+import { edge } from "graphology-library/metrics";
 
 export class GraphRenderer {
   constructor(app) {
@@ -12,6 +13,12 @@ export class GraphRenderer {
 
     this.settings = app.settings;
     this.rect = app.rect;
+
+    this.visible = {
+      node: [],
+      edge: [],
+      face: [],
+    };
   }
 
   drawGraph(
@@ -27,12 +34,18 @@ export class GraphRenderer {
     const settings = this.settings;
     // Pre-extract commonly used settings
     const edgeSize = +settings.edge_size;
-    const labelSize = settings.label_size;
+    const labelSize = +settings.label_size;
     const labelFont = `${labelSize}px sans-serif`;
-    const labelOffsetX = settings.label_pos.x;
-    const labelOffsetY = settings.label_pos.y;
-    const nodeRadius = settings.node_radius;
-    const strokeSize = settings.stroke_size;
+    const labelOffsetX = +settings.label_pos.x;
+    const labelOffsetY = +settings.label_pos.y;
+    const nodeRadius = +settings.node_radius;
+    const strokeSize = +settings.stroke_size;
+
+    this.visible = {
+      node: [],
+      edge: [],
+      face: [],
+    };
 
     if (option.face)
       this.drawFaces(
@@ -113,6 +126,7 @@ export class GraphRenderer {
       for (const node of hull)
         if (this.check(node[0], node[1], width, height)) {
           loop = true;
+          this.visible.face.push(attr);
           break;
         }
 
@@ -169,6 +183,7 @@ export class GraphRenderer {
         !this.check(target.x, target.y, width, height)
       )
         return;
+      else this.visible.edge.push(attr);
 
       const dx = target.x - source.x;
       const dy = target.y - source.y;
@@ -260,6 +275,7 @@ export class GraphRenderer {
     ctx.clearRect(0, 0, width, height);
     graph.forEachNode((node, attr) => {
       if (!this.check(attr.x, attr.y, width, height)) return;
+      else this.visible.node.push(attr);
 
       ctx.beginPath();
       ctx.arc(attr.x, attr.y, nodeRadius * attr.size, 0, 2 * Math.PI);
