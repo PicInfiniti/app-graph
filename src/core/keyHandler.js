@@ -56,7 +56,6 @@ export class KeyHandler {
 
         const key = this.findKey();
         if (key) event.preventDefault();
-        else this.pressedKeys.clear();
         this.action(key);
       }
     });
@@ -76,9 +75,6 @@ export class KeyHandler {
           );
         }
       }
-      this.eventBus.emit("key:up", {
-        key: this.pressedKeys,
-      });
     });
 
     const modals = d.querySelectorAll(".modal, .modal-chord, .modal-input");
@@ -203,11 +199,8 @@ export class KeyHandler {
   updatePressedKeys(event, action = "add") {
     const key = this.eventKeyMap[event.code] || event.key;
 
-    if (action === "add" && key !== "meta") {
-      this.pressedKeys.add(key);
-    } else {
-      this.pressedKeys.delete(key);
-    }
+    if (action === "add" && key !== "meta") this.pressedKeys.add(key);
+    else this.pressedKeys.delete(key);
 
     return key;
   }

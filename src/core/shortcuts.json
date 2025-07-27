@@ -94,6 +94,8 @@
 
     "C": { "desc": "Complete", "action": "complete-btn" },
     "alt+C": { "desc": "Complete", "action": "complete-directed-btn" },
+    "shift+C": { "desc": "Complete", "action": "complete-btn" },
+    "alt+shift+C": { "desc": "Complete", "action": "complete-directed-btn" },
     "O": { "desc": "Organize circle", "action": "organize-circle" },
     "E": { "desc": "Add directed edge", "action": "add-directed-edge-btn" },
     "alt+E": {
@@ -101,8 +103,6 @@
       "action": "add-directed-edge-in-order-btn"
     },
     "P": { "desc": "Export PNG", "action": "export-png" },
-    "shift+C": { "desc": "Complete", "action": "complete-btn" },
-    "shift+alt+C": { "desc": "Complete", "action": "complete-directed-btn" },
     "shift+O": { "desc": "Organize circle", "action": "organize-circle" },
     "shift+alt+E": {
       "desc": "Add directed edge",
