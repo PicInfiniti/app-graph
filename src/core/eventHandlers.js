@@ -8,11 +8,11 @@ export class EventHandlers {
   }
 
   init() {
-    this.app.eventBus.on("import", (event) => {
+    this.eventBus.on("import", (event) => {
       d.getElementById("file-input").click(); // Open file dialog
     });
 
-    this.app.eventBus.on("export", async (event) => {
+    this.eventBus.on("export", async (event) => {
       const d = document;
 
       if (event.detail.type === "json") {

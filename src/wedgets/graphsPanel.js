@@ -49,6 +49,7 @@ export class GraphsPanel {
     const li = this.ul.querySelector(`#graphs-${id}`);
     if (li) li.classList.toggle("select");
     this.graphManager.redraw();
+    this.eventBus.emit("App:method", { method: "updateSimulation", args: [] });
   }
 
   updateGraphsPanel() {

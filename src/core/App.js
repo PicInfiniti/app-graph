@@ -63,6 +63,8 @@ export class App {
     this.loadInitialGraph();
     this.colorPicker.init();
     this.startAnimationLoop();
+
+    this.listeners();
   }
 
   initSimulation() {
@@ -162,5 +164,17 @@ export class App {
     };
 
     requestAnimationFrame(loop); // Start loop
+  }
+
+  listeners() {
+    this.eventBus.on("App:method", (event) => {
+      const { method, args = [] } = event.detail;
+
+      if (typeof this[method] === "function") {
+        this[method](...args);
+      } else {
+        console.warn(`App: method "${method}" does not exist.`);
+      }
+    });
   }
 }
