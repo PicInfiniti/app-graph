@@ -44,7 +44,7 @@ export class GraphsPanel {
       this.graphManager.graphs.index = this.index;
       this.deselectLis("graphs-panel");
     }
-    this.graphManager.graph.updateAttribute("selected", (x) => true);
+    this.graphManager.graph.updateAttribute("selected", () => true);
 
     const li = this.ul.querySelector(`#graphs-${id}`);
     if (li) li.classList.toggle("select");
@@ -83,6 +83,6 @@ export class GraphsPanel {
 
     this.lis("node").forEach((li) => li.classList.remove("select"));
     for (const graph of this.graphManager.graphs.all)
-      graph.updateAttribute("selected", (x) => false);
+      graph.updateAttribute("selected", () => false);
   }
 }

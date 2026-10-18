@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { setHexAlpha } from "../utils/helperFunctions";
-import { edge } from "graphology-library/metrics";
 
 export class GraphRenderer {
   constructor(app) {
@@ -109,7 +108,7 @@ export class GraphRenderer {
     ctx.fillText(text, x, y);
   }
 
-  drawFaces(canvas, graph, settings, labelFont, labelOffsetX, labelOffsetY) {
+  drawFaces(canvas, graph, settings, labelFont) {
     const ctx = canvas.ctx;
     const width = canvas.canvas.width;
     const height = canvas.canvas.height;

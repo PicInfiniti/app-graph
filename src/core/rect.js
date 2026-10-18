@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 export class Rect {
-  constructor(app, canvas) {
+  constructor(app) {
     this.app = app;
     this.settings = app.settings;
     this.canvas = app.canvas;
@@ -191,7 +191,7 @@ export class Rect {
     }
   }
 
-  endSelection(event) {
+  endSelection() {
     this.mouseDown = false;
     this.selection.active = false;
     this.scale.isDragging = false;

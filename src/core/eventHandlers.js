@@ -8,7 +8,7 @@ export class EventHandlers {
   }
 
   init() {
-    this.eventBus.on("import", (event) => {
+    this.eventBus.on("import", () => {
       d.getElementById("file-input").click(); // Open file dialog
     });
 

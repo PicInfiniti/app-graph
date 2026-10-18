@@ -42,6 +42,7 @@ export class GraphManager {
     };
 
     this._graph = empty(this.graphClass[type], 0);
+    this._graph.colors = this.settings;
     this._graph.updateAttributes((attr) => {
       return {
         ...attr,
@@ -69,6 +70,7 @@ export class GraphManager {
   }
 
   set graph(value) {
+    value.colors = this.settings;
     value.mergeAttributes(this.graphs.all[this.graphs.index].getAttributes());
     this.graphs.all[this.graphs.index] = value;
   }
@@ -105,11 +107,11 @@ export class GraphManager {
   }
 
   setupEventListeners() {
-    this.eventBus.on("redo", async (event) => {
+    this.eventBus.on("redo", async () => {
       await this.updateIndex(this.index + 1);
     });
 
-    this.eventBus.on("undo", async (event) => {
+    this.eventBus.on("undo", async () => {
       await this.updateIndex(this.index - 1);
     });
   }
@@ -303,7 +305,7 @@ export class GraphManager {
   }
 
   deselectAllFace() {
-    this.graph.forEachFace((face, _) => this.graph.deselectFace(face));
+    this.graph.forEachFace((face) => this.graph.deselectFace(face));
     this.app.rect.scale.active = false;
     this.redraw({ face: true });
   }
@@ -440,7 +442,7 @@ export class GraphManager {
   }
 
   //📋 pasteSubgraph(subgraph, offset = {x: 0, y: 0})
-  pasteSubgraph(val = false, offset = { x: 150, y: 100 }) {
+  pasteSubgraph(_val = false, offset = { x: 150, y: 100 }) {
     if (!this.subGraph) return;
     this.subGraph.forEachNode((key, attrs) => {
       const newAttrs = { ...attrs };
@@ -553,6 +555,7 @@ export class GraphManager {
     this.graphs = { index: snapshot.index, all: [] };
     for (const h of snapshot.all) {
       const graph = empty(this.graphClass[h.options.type], 0);
+      graph.colors = this.settings;
       this.graphs.all.push(graph.import(h));
     }
   }
@@ -583,6 +586,7 @@ export class GraphManager {
       return;
     }
     this.subGraph = this.copySubgraph();
+    this.subGraph.colors = this.settings;
 
     this.subGraph.removeAttribute("id");
     this.subGraph.removeAttribute("label");

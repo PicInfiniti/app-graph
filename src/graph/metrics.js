@@ -117,7 +117,7 @@ export class Metric {
     this.addHeader("Degree Sequence");
 
     const graph = this.graphManager.graph;
-    const ds = graph.mapNodes((node, attr) => graph.degree(node));
+    const ds = graph.mapNodes((node) => graph.degree(node));
     const degrees = `(${ds.join(", ")})`;
 
     this.addInfo(degrees);

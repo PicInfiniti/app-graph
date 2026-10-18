@@ -79,7 +79,7 @@ export class Canvas {
         .drag()
         .container(this.canvas)
         .subject(this.dragsubject.bind(this)) // 👈 Bind this
-        .filter((event) => {
+        .filter(() => {
           return !(this.settings.scale || this.settings.select);
         })
         .on("start", this.dragstarted.bind(this))

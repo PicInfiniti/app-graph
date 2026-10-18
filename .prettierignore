@@ -1,0 +1,8 @@
+dist/
+coverage/
+package-lock.json
+# Prettier does not support indented Sass.
+**/*.sass
+# Legacy compiled Sass output; edit the .sass sources instead.
+src/assets/sass/**/*.css
+src/assets/sass/**/*.css.map

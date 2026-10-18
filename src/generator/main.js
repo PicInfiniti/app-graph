@@ -128,7 +128,7 @@ export class Generator {
     this.layout.applyLayout("circle");
   }
 
-  girvanNewman(n) {
+  girvanNewman() {
     this.graphManager.graph = girvanNewman(
       this.graphManager.graphClass[this.settings.type],
       {

@@ -7,7 +7,9 @@ export const EventBus = {
 
   on(event, callback) {
     if (typeof callback !== "function") {
-      console.warn(`EventBus: Tried to register a non-function listener for event: ${event}`);
+      console.warn(
+        `EventBus: Tried to register a non-function listener for event: ${event}`,
+      );
       return;
     }
 
@@ -17,7 +19,9 @@ export const EventBus = {
 
     const callbacks = this.listeners.get(event);
     if (callbacks.has(callback)) {
-      console.warn(`EventBus: Listener for event "${event}" is already registered.`);
+      console.warn(
+        `EventBus: Listener for event "${event}" is already registered.`,
+      );
       return;
     }
 
@@ -27,13 +31,17 @@ export const EventBus = {
 
   off(event, callback) {
     if (!this.listeners.has(event)) {
-      console.warn(`EventBus: Attempted to remove a listener from a non-existent event: ${event}`);
+      console.warn(
+        `EventBus: Attempted to remove a listener from a non-existent event: ${event}`,
+      );
       return;
     }
 
     const callbacks = this.listeners.get(event);
     if (!callbacks.has(callback)) {
-      console.warn(`EventBus: Attempted to remove a non-existent listener from event: ${event}`);
+      console.warn(
+        `EventBus: Attempted to remove a non-existent listener from event: ${event}`,
+      );
       return;
     }
 
@@ -47,7 +55,9 @@ export const EventBus = {
 
   removeAll(event) {
     if (!this.listeners.has(event)) {
-      console.warn(`EventBus: Attempted to remove all listeners from a non-existent event: ${event}`);
+      console.warn(
+        `EventBus: Attempted to remove all listeners from a non-existent event: ${event}`,
+      );
       return;
     }
 

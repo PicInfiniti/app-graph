@@ -137,18 +137,70 @@ Chord keys show hints as you type. Examples:
 
 ---
 
-## 🛠 Installation
+## 🛠 Development and deployment
 
-Clone and run locally:
+Graph Studio uses the [PicInfiniti Vite template](https://github.com/PicInfiniti/template-vite)
+(tooling adopted from commit `586f3e9`), with Vite 8, vanilla JavaScript, and
+indented Sass. The graph editor, local autosave, and graph dependencies are retained.
+
+Use Node.js 24 LTS (see `.nvmrc`), or Node.js 22 starting at 22.13:
 
 ```bash
-git clone https://github.com/PicInfiniti/graph-studio.git
-cd graph-studio
-npm install
+git clone https://github.com/PicInfiniti/app-graph.git
+cd app-graph
+nvm use
+npm ci
 npm run dev
 ```
 
-Or open instantly at: 👉 [https://graph.picinfiniti.net/](https://graph.picinfiniti.net/)
+| Command                                   | Purpose                                                               |
+| ----------------------------------------- | --------------------------------------------------------------------- |
+| `npm run dev`                             | Start the development server                                          |
+| `npm run build`                           | Build the app into `dist/`                                            |
+| `npm run preview`                         | Preview the production build locally                                  |
+| `npm run lint` / `npm run lint:fix`       | Check JavaScript / apply automatic fixes                              |
+| `npm run format` / `npm run format:check` | Format files / check formatting                                       |
+| `npm test`                                | Run deployment integration tests against temporary local repositories |
+| `npm run check`                           | Run lint, formatting, tests, and the production build                 |
+| `npm run deploy`                          | Run all checks, build, and publish to the deployment branch           |
+
+GitHub Actions runs `npm ci` and `npm run check` on pushes and pull requests.
+Prettier skips indented `.sass` files; EditorConfig provides their whitespace defaults.
+The `@` import alias resolves to `src/`. Additional HTML files under `pages/`
+are automatically included in production builds.
+
+### Configuration
+
+Copy `.env.example` to `.env` or `.env.production` when configuration is needed.
+Use `BASE_PATH=/` for the existing custom domain, or `BASE_PATH=/app-graph/`
+for GitHub project Pages. Use `%BASE_URL%` in HTML public asset URLs and
+`import.meta.env.BASE_URL` when building public asset URLs in JavaScript.
+Only `VITE_*` variables are exposed to browser code; never put secrets in them.
+Restart the development server after changing environment files.
+
+Development and preview servers retain the cross-origin isolation headers used
+by Graph Studio's worker setup. Configure matching headers on your production
+host if your deployment requires cross-origin isolation.
+
+### Deployment
+
+```bash
+npm run deploy
+```
+
+The template's Node/Git deployment script replaces `gh-pages`. It runs checks,
+publishes only `dist/`, adds `.nojekyll`, and preserves `public/CNAME` (Vite
+copies public files automatically). It keeps deployment history, uses no force
+push, and leaves the source branch and working tree intact. Identical output
+does not create another deployment commit.
+
+The defaults are `DEPLOY_REMOTE=origin` and `DEPLOY_BRANCH=gh-pages`; override
+them through `.env.production` or environment variables. Configure Git
+`user.name`, `user.email`, and authentication before deployment. In GitHub's
+**Settings → Pages**, choose **Deploy from a branch**, select **gh-pages**, and
+use **/ (root)**. The CI workflow checks changes without deploying them.
+
+Or use the hosted app at [graph.picinfiniti.net](https://graph.picinfiniti.net/).
 
 ---
 

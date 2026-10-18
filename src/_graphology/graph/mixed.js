@@ -1,8 +1,8 @@
-import { Graph } from "graphology";
-import { attachNodeMethods } from "./methods/node-methods";
-import { attachEdgeMethods } from "./methods/edge-methods";
-import { attachFaceMethods } from "./methods/face-methods";
-import { getAvailableLabel } from "../../utils/helperFunctions";
+import Graph from "graphology";
+import { attachNodeMethods } from "./methods/node-methods.js";
+import { attachEdgeMethods } from "./methods/edge-methods.js";
+import { attachFaceMethods } from "./methods/face-methods.js";
+import { getAvailableLabel } from "../../utils/helperFunctions.js";
 
 export default class Mixed extends Graph {
   constructor(options) {

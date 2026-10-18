@@ -59,7 +59,7 @@ class AppSettings {
       edge_size: 1,
       forceSimulation: false,
       grid_color: "#ffffff10",
-      label_color: "#d1d5db", // soft gray labels (like Tailwind's text-gray-300)
+      label_color: "#ffffff",
       label_pos: { x: -20, y: -20 },
       node_color: "#ffffff", // crisp white stars
       node_radius: 10,
@@ -159,6 +159,7 @@ class AppSettings {
   resetToDefault() {
     this.setAllSettings(this.defaultSettings);
     this.app.colorPicker.resetColors();
+    this.applyThemeLabelColor("default theme");
   }
 
   getSetting(key) {
@@ -271,13 +272,30 @@ class AppSettings {
 
     const validated = {};
     for (const key in defaults) {
-      validated[key] = saved?.hasOwnProperty(key) ? saved[key] : defaults[key];
+      validated[key] =
+        saved != null && Object.hasOwn(saved, key) ? saved[key] : defaults[key];
     }
     return validated;
   }
 
   loadNightSkyTheme() {
     this.setAllSettings(this.nightSkyTheme);
+    this.applyThemeLabelColor("night sky theme");
+  }
+
+  applyThemeLabelColor(action) {
+    const { graphManager, colorPicker } = this.app;
+    const labelColor = this.settings.label_color;
+    for (const graph of graphManager.graphs.all) {
+      graph.updateEachNodeAttributes((_, attrs) => ({ ...attrs, labelColor }));
+      graph.updateEachEdgeAttributes((_, attrs) => ({ ...attrs, labelColor }));
+      graph.forEachFace((face) =>
+        graph.setFaceAttribute(face, "labelColor", labelColor),
+      );
+    }
+    colorPicker.setColor("label", labelColor);
+    graphManager.saveGraphState(action, false);
+    graphManager.redraw();
   }
 }
 

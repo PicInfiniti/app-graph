@@ -61,10 +61,10 @@ export class FacePanel {
     this.ul.innerHTML = "";
     const graph = this.graphManager.graph;
     let i = 0;
-    graph.forEachFace((face, attr) => {
+    graph.forEachFace((face) => {
       i++;
       if (graph.getFaceAttribute(face, "id") === undefined)
-        graph.setFaceAttribute(face, "id", index);
+        graph.setFaceAttribute(face, "id", face);
 
       if (!graph.getFaceAttribute(face, "label"))
         graph.setFaceAttribute(face, "label", `face ${i}`);

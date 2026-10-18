@@ -1,4 +1,4 @@
-import constellationData from "./constellations.json";
+import constellationData from "./constellations.json" with { type: "json" };
 
 export class Zodiac {
   constructor(graphManager) {
@@ -15,6 +15,7 @@ export class Zodiac {
         data.stars,
         data.edges,
         this.graphManager.graphClass[this.settings.type],
+        this.settings,
       );
       this.layout.applyLayout("rotate180");
     } else {
@@ -103,8 +104,9 @@ function convertDECtoDecimal(decStr) {
   return sign * (d + m / 60 + s / 3600);
 }
 
-function createConstellation(name, stars, edges, graphClass) {
+function createConstellation(name, stars, edges, graphClass, settings) {
   const graph = new graphClass();
+  graph.colors = settings;
 
   stars.forEach((star) => {
     const ra = convertRAtoDecimal(star.ra);

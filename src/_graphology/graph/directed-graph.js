@@ -1,3 +1,4 @@
+import { InvalidArgumentsGraphError } from "graphology";
 import Mixed from "./mixed.js";
 
 export default class DirectedGraph extends Mixed {

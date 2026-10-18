@@ -1,5 +1,5 @@
-import { Graph } from '../utils/classes';
-import constellationData from './constellations.json';
+import { Graph } from "../utils/classes";
+import constellationData from "./constellations.json";
 
 export class ConstellationData {
   constructor(graphManager) {
@@ -12,14 +12,14 @@ export class ConstellationData {
     if (data) {
       const graph = createConstellation(name, data.stars, data.edges);
       this.graphManager.push(graph);
-      this.layout.applyLayout('rotate180');
+      this.layout.applyLayout("rotate180");
     } else {
       console.warn(`Constellation "${name}" not found.`);
     }
   }
 
   orion() {
-    this.load('orion');
+    this.load("orion");
   }
 }
 
@@ -35,7 +35,12 @@ function convertRAtoDecimal(raStr) {
 
 function convertDECtoDecimal(decStr) {
   const sign = decStr.trim().startsWith("-") ? -1 : 1;
-  const parts = decStr.trim().replace("+", "").replace("-", "").split(" ").map(parseFloat);
+  const parts = decStr
+    .trim()
+    .replace("+", "")
+    .replace("-", "")
+    .split(" ")
+    .map(parseFloat);
   const [d, m, s] = parts;
   return sign * (d + m / 60 + s / 3600);
 }
@@ -43,7 +48,7 @@ function convertDECtoDecimal(decStr) {
 function createConstellation(name, stars, edges) {
   const graph = new Graph();
 
-  stars.forEach(star => {
+  stars.forEach((star) => {
     const ra = convertRAtoDecimal(star.ra);
     const dec = convertDECtoDecimal(star.dec);
 
@@ -57,8 +62,8 @@ function createConstellation(name, stars, edges) {
         name: star.label,
         magnitude: star.magnitude,
         RA: wrapTimeString(star.ra),
-        DEC: star.dec
-      }
+        DEC: star.dec,
+      },
     });
   });
 
@@ -76,10 +81,9 @@ function wrapTimeString(timeStr) {
   h = h % 24;
 
   // Format with leading zeros
-  const hh = String(h).padStart(2, '0');
-  const mm = String(m).padStart(2, '0');
-  const ss = s.toFixed(1).padStart(4, '0'); // e.g., "04.3"
+  const hh = String(h).padStart(2, "0");
+  const mm = String(m).padStart(2, "0");
+  const ss = s.toFixed(1).padStart(4, "0"); // e.g., "04.3"
 
-  return [hh, mm, ss].join(' ');
+  return [hh, mm, ss].join(" ");
 }
-

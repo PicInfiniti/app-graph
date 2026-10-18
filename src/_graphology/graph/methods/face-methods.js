@@ -5,10 +5,10 @@ export function attachFaceMethods(Mixed) {
     attributes = {
       ...attributes,
       key: face,
-      id: this._faces.size,
+      id: attributes?.id ?? this._faces.size,
       nodes: nodes,
-      color: this.colors.face_color,
-      labelColor: this.colors.label_color,
+      color: attributes?.color ?? this.colors.face_color,
+      labelColor: attributes?.labelColor ?? this.colors.label_color,
     };
 
     var faceData = new FaceData(face, nodes, attributes);

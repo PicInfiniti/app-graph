@@ -58,11 +58,12 @@ export class ColorPicker {
 
   setColor(key, color) {
     const pickr = this.pickrs[key];
-    if (pickr) {
-      pickr.setColor(this.ToHex(color));
+    const hexa = this.ToHex(color);
+    if (pickr && hexa) {
+      pickr.setColor(hexa);
       this.eventBus.emit("updateSetting", {
         key: `${key}_color`,
-        value: this.ToHex(color),
+        value: hexa,
       });
     }
   }
@@ -82,21 +83,26 @@ export class ColorPicker {
 
     const trimmed = colorStr.trim().toLowerCase();
 
-    // Already a hex code (#fff, #ffffff, or #ffffffff)
-    if (/^#([0-9a-f]{3,8})$/i.test(trimmed)) {
-      return trimmed.length === 4 // e.g. "#f0f"
-        ? "#" + [...trimmed.slice(1)].map((c) => c + c).join("") // expand to 6-digit
-        : trimmed;
+    // The browser normalizes CSS colors to hex or rgba, depending on opacity.
+    const ctx = d.createElement("canvas").getContext("2d");
+    ctx.fillStyle = "#010203";
+    ctx.fillStyle = trimmed;
+    const normalized = ctx.fillStyle;
+
+    // Invalid assignments retain the previous fillStyle. A second sentinel
+    // distinguishes invalid input from the valid color #010203.
+    ctx.fillStyle = "#040506";
+    ctx.fillStyle = trimmed;
+    if (ctx.fillStyle !== normalized) return null;
+
+    if (/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(normalized)) {
+      return normalized.toLowerCase();
     }
 
-    // Use a canvas to parse and convert to rgba
-    const ctx = d.createElement("canvas").getContext("2d");
-    ctx.fillStyle = trimmed;
+    const rgba = normalized.match(/^rgba?\(([^)]+)\)$/i);
+    if (!rgba) return null;
 
-    // Now get rgba values
-    const rgba = ctx.fillStyle.match(/\d+(\.\d+)?/g).map(Number); // [r, g, b, a?]
-
-    const [r, g, b, a = 1] = rgba;
+    const [r, g, b, a = 1] = rgba[1].split(",").map(Number);
     const toHex = (v) => Math.round(v).toString(16).padStart(2, "0");
     const alpha = Math.round(a * 255)
       .toString(16)
