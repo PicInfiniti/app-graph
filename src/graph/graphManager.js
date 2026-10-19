@@ -107,13 +107,16 @@ export class GraphManager {
   }
 
   setupEventListeners() {
-    this.eventBus.on("redo", async () => {
-      await this.updateIndex(this.index + 1);
-    });
-
-    this.eventBus.on("undo", async () => {
-      await this.updateIndex(this.index - 1);
-    });
+    for (const [event, step] of [
+      ["redo", 1],
+      ["undo", -1],
+    ]) {
+      this.eventBus.on(event, () => {
+        this._saveQueue = this._saveQueue
+          .then(() => this.updateIndex(this.index + step))
+          .catch((error) => console.error("Error navigating history:", error));
+      });
+    }
   }
 
   saveGraphState(action = "", force = true) {
@@ -124,9 +127,16 @@ export class GraphManager {
 
     if (!this.settings.saveHistory) return this._saveQueue;
 
-    // Add to the queue
+    // Freeze this edit before later mutations or simulation ticks can change it.
+    const snapshot = structuredClone({
+      version: 1,
+      index: this.graphs.index,
+      all: this.graphs.all.map((graph) => graph.export()),
+      timestamp: Date.now(),
+      action,
+    });
     this._saveQueue = this._saveQueue
-      .then(() => this._performSaveGraphState(action))
+      .then(() => this._performSaveGraphState(snapshot))
       .catch((e) => {
         console.error("Error saving graph state:", e);
       });
@@ -134,30 +144,16 @@ export class GraphManager {
     return this._saveQueue;
   }
 
-  async _performSaveGraphState(action = "") {
-    const currentSnapshot = await this.getSnapshot(this.index);
-
-    if (currentSnapshot) {
-      await db.history
-        .where("timestamp")
-        .above(currentSnapshot.timestamp)
-        .delete();
-    }
-
-    if (this.settings.saveHistory) {
-      const limit = this.settings?.historyLimit || 100;
-
-      const snapshot = {
-        version: 1,
-        index: this.graphs.index,
-        all: this.graphs.all.map((graph) => graph.export()),
-        timestamp: Date.now(),
-        action,
-      };
-
+  async _performSaveGraphState(snapshot) {
+    const index = await db.transaction("rw", db.history, async () => {
+      const currentSnapshot = await this.getSnapshot(this.index);
+      if (currentSnapshot) {
+        await db.history.where("id").above(currentSnapshot.id).delete();
+      }
       await this.saveHistory(snapshot);
-      if (this.index++ >= limit) this.index = limit - 1;
-    }
+      return (await db.history.count()) - 1;
+    });
+    this.index = index;
   }
 
   redraw(options = { node: true, edge: true, face: true, rect: true }) {
@@ -474,7 +470,7 @@ export class GraphManager {
   toDirectedGraph() {
     if (this.graph.type !== "directed") {
       const diGraph = toDirected(this.graph);
-      this.clearTo("directed");
+      this.graph = empty(this.graphClass.directed, 0);
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "directed" });
       this.saveGraphState();
@@ -484,7 +480,7 @@ export class GraphManager {
   toMixedGraph() {
     if (this.graph.type !== "mixed") {
       const graph = toMixed(this.graph);
-      this.clearTo("mixed");
+      this.graph = empty(this.graphClass.mixed, 0);
       this.graph.replace(graph);
       this.eventBus.emit("updateSetting", { key: "type", value: "mixed" });
       this.saveGraphState();
@@ -494,7 +490,7 @@ export class GraphManager {
   toUndirectedGraph() {
     if (this.graph.type !== "undirected") {
       const diGraph = toUndirected(this.graph);
-      this.clearTo("undirected");
+      this.graph = empty(this.graphClass.undirected, 0);
       this.graph.replace(diGraph);
       this.eventBus.emit("updateSetting", { key: "type", value: "undirected" });
       this.saveGraphState();
@@ -518,25 +514,20 @@ export class GraphManager {
   }
 
   async saveHistory(snapshot) {
-    try {
-      await db.history.add(snapshot);
-      // Enforce history limit (optional: use from settings if available)
-      const limit = this.settings?.historyLimit || 100;
+    await db.history.add(snapshot);
+    const limit = this.settings?.historyLimit || 100;
 
-      const count = await db.history.count();
-      if (count > limit) {
-        const excess = await db.history
-          .orderBy("id")
-          .limit(count - limit)
-          .toArray();
+    const count = await db.history.count();
+    if (count > limit) {
+      const excess = await db.history
+        .orderBy("id")
+        .limit(count - limit)
+        .toArray();
 
-        const idsToDelete = excess.map((item) => item.id);
-        await db.history.bulkDelete(idsToDelete);
+      const idsToDelete = excess.map((item) => item.id);
+      await db.history.bulkDelete(idsToDelete);
 
-        console.log(`Pruned ${idsToDelete.length} old history snapshots.`);
-      }
-    } catch (err) {
-      console.error("Failed to save history snapshot:", err);
+      console.log(`Pruned ${idsToDelete.length} old history snapshots.`);
     }
   }
 
@@ -546,6 +537,7 @@ export class GraphManager {
   }
 
   async getSnapshot(index) {
+    if (index < 0) return undefined;
     const snapshot = await db.history
       .orderBy("id")
       .offset(index)
@@ -639,8 +631,12 @@ export class GraphManager {
   }
 
   async clearHistory() {
-    await db.history.clear();
-    this.index = -1;
+    const operation = this._saveQueue.then(async () => {
+      await db.history.clear();
+      this.index = -1;
+    });
+    this._saveQueue = operation.catch(() => {});
+    await operation;
     console.log("History table cleared.");
   }
 
