@@ -117,17 +117,24 @@ export class GraphManager {
   }
 
   saveGraphState(action = "", force = true) {
+    this.graphsPanel.updateGraphsPanel();
+    this.facePanel.updateFacePanel();
+    if (force) this.app.updateSimulation();
+    this.redraw();
+
+    if (!this.settings.saveHistory) return this._saveQueue;
+
     // Add to the queue
     this._saveQueue = this._saveQueue
-      .then(() => this._performSaveGraphState(action, force))
+      .then(() => this._performSaveGraphState(action))
       .catch((e) => {
         console.error("Error saving graph state:", e);
       });
 
-    // Return nothing — fire and forget
+    return this._saveQueue;
   }
 
-  async _performSaveGraphState(action = "", force = true) {
+  async _performSaveGraphState(action = "") {
     const currentSnapshot = await this.getSnapshot(this.index);
 
     if (currentSnapshot) {
@@ -150,10 +157,6 @@ export class GraphManager {
 
       await this.saveHistory(snapshot);
       if (this.index++ >= limit) this.index = limit - 1;
-      this.graphsPanel.updateGraphsPanel();
-      this.facePanel.updateFacePanel();
-      if (force) this.app.updateSimulation();
-      this.redraw();
     }
   }
 
