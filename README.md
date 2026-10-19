@@ -229,7 +229,9 @@ If this tool assists your academic work, please cite:
 
 ## 📄 License
 
-Licensed under the [MIT License](./LICENSE). Free to use, modify, and share — just credit the original author.
+Copyright (c) 2025 PicInfiniti.
+
+Licensed under the [Apache License, Version 2.0](./LICENSE).
 
 ---
 
