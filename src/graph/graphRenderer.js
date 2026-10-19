@@ -40,13 +40,8 @@ export class GraphRenderer {
     const nodeRadius = +settings.node_radius;
     const strokeSize = +settings.stroke_size;
 
-    this.visible = {
-      node: [],
-      edge: [],
-      face: [],
-    };
-
-    if (option.face)
+    if (option.face) {
+      this.visible.face = [];
       this.drawFaces(
         this.faceCanvas,
         graph,
@@ -55,8 +50,10 @@ export class GraphRenderer {
         labelOffsetX,
         labelOffsetY,
       );
+    }
 
-    if (option.edge)
+    if (option.edge) {
+      this.visible.edge = [];
       this.drawEdges(
         this.edgeCanvas,
         graph,
@@ -67,8 +64,10 @@ export class GraphRenderer {
         labelOffsetX,
         labelOffsetY,
       );
+    }
 
-    if (option.node)
+    if (option.node) {
+      this.visible.node = [];
       this.drawNodes(
         this.nodeCanvas,
         graph,
@@ -79,6 +78,7 @@ export class GraphRenderer {
         labelOffsetX,
         labelOffsetY,
       );
+    }
 
     if (option.rect) this.rect.draw();
   }
