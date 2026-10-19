@@ -551,19 +551,83 @@ export class GraphManager {
     return snapshot;
   }
 
-  loadSnapshot(snapshot) {
-    this.graphs = { index: snapshot.index, all: [] };
+  parseSnapshot(snapshot) {
+    if (
+      !snapshot ||
+      snapshot.version !== 1 ||
+      !Array.isArray(snapshot.all) ||
+      snapshot.all.length === 0 ||
+      !Number.isInteger(snapshot.index) ||
+      snapshot.index < 0 ||
+      snapshot.index >= snapshot.all.length
+    ) {
+      throw new Error("Invalid graph snapshot.");
+    }
+
+    const graphs = { index: snapshot.index, all: [] };
     for (const h of snapshot.all) {
+      if (
+        !h ||
+        !Object.hasOwn(this.graphClass, h.options?.type) ||
+        !Array.isArray(h.nodes) ||
+        !Array.isArray(h.edges) ||
+        !Array.isArray(h.faces)
+      ) {
+        throw new Error("Invalid graph data in snapshot.");
+      }
       const graph = empty(this.graphClass[h.options.type], 0);
       graph.colors = this.settings;
-      this.graphs.all.push(graph.import(h));
+      graph.import(h);
+      graph.forEachFace((_, attrs) => {
+        if (
+          attrs.nodes.length < 3 ||
+          attrs.nodes.some((node) => !graph.hasNode(node))
+        ) {
+          throw new Error("Invalid face in snapshot.");
+        }
+      });
+      graphs.all.push(graph);
     }
+    return graphs;
+  }
+
+  loadSnapshot(snapshot) {
+    this.graphs = this.parseSnapshot(snapshot);
+  }
+
+  async importHistory(snapshots) {
+    if (!Array.isArray(snapshots) || snapshots.length === 0) {
+      throw new Error("Expected a nonempty array of snapshots.");
+    }
+    // Validate every snapshot before replacing any saved or in-memory work.
+    for (const snapshot of snapshots) {
+      if (
+        snapshot.id !== undefined &&
+        (!Number.isSafeInteger(snapshot.id) || snapshot.id < 1)
+      ) {
+        throw new Error("Invalid history ID.");
+      }
+      this.parseSnapshot(snapshot);
+    }
+    const ordered = [...snapshots].sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
+    const graphs = this.parseSnapshot(ordered.at(-1));
+    const operation = this._saveQueue.then(async () => {
+      await db.transaction("rw", db.history, async () => {
+        await db.history.clear();
+        await db.history.bulkAdd(ordered);
+      });
+      this.graphs = graphs;
+      this.index = ordered.length - 1;
+      this.refresh();
+    });
+    this._saveQueue = operation.catch(() => {});
+    await operation;
   }
 
   refresh() {
     this.eventBus.emit("updateSetting", {
       key: "type",
-      value: this.graphs.all[0].type,
+      value: this.graph.type,
     });
     this.graphsPanel.updateGraphsPanel();
     this.facePanel.updateFacePanel();

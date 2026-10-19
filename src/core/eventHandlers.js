@@ -77,23 +77,10 @@ export class EventHandlers {
             );
             if (!confirmClear) return;
 
-            // Optional: sort snapshots by ID if not guaranteed
-            importedData.sort((a, b) => a.id - b.id);
-
-            // Clear and import
-            await db.history.clear();
-            await db.history.bulkAdd(importedData);
-
-            const lastSnapshot = await this.app.graphManager.getLastSnapshot();
-            if (lastSnapshot) {
-              this.app.graphManager.loadSnapshot(lastSnapshot);
-              this.app.graphManager.refresh();
-              console.log(
-                `Imported ${importedData.length} snapshots into history.`,
-              );
-            } else {
-              alert("Import succeeded, but no usable snapshot was found.");
-            }
+            await this.app.graphManager.importHistory(importedData);
+            console.log(
+              `Imported ${importedData.length} snapshots into history.`,
+            );
           } catch (parseErr) {
             console.error("Failed to import history:", parseErr);
             alert(
