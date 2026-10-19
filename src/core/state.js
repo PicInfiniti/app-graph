@@ -138,18 +138,12 @@ class AppSettings {
     }
   }
 
-  saveToIndexedDB(settings = this.settings) {
+  saveToIndexedDB() {
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(async () => {
       try {
-        await db.settings.update("appSettings", settings);
+        await db.settings.put(this.getAllSettings(), "appSettings");
         console.log("Settings saved to IndexedDB");
-        this.app.graphManager.needsRedraw = {
-          node: false,
-          edge: false,
-          face: false,
-          rect: false,
-        };
       } catch (err) {
         console.error("Failed to save settings to IndexedDB", err);
       }
@@ -176,7 +170,7 @@ class AppSettings {
       if (this.settings[key] !== value) {
         this.settings[key] = value;
         if (this.#autoSave && this.settings[key] != oldval)
-          this.saveToIndexedDB({ [key]: this.settings[key] });
+          this.saveToIndexedDB();
 
         applySettingsToUI(this.settings, this.app.canvas);
         switch (key) {
@@ -254,7 +248,7 @@ class AppSettings {
         this.settings.forceSimulation = false;
       }
       if (this.#autoSave && this.settings[key] != oldval && !one.includes(key))
-        this.saveToIndexedDB({ [key]: this.settings[key] });
+        this.saveToIndexedDB();
 
       applySettingsToUI(this.settings, this.app.canvas);
       this.app.widget.init();
