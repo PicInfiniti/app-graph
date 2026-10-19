@@ -35,7 +35,7 @@ export class Metric {
 
   addInfo(info) {
     const div = d.createElement("div");
-    div.insertAdjacentHTML("beforeend", info);
+    div.textContent = info;
     this.pannel.appendChild(div);
     console.log(info);
   }
