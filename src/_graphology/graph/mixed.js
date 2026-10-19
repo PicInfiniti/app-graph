@@ -271,7 +271,7 @@ export default class Mixed extends Graph {
 
     var labelsH = {};
 
-    var i = Math.max(...this.nodes()) + 1;
+    var i = nextNumericId(this.nodes());
 
     // Adding nodes
     H.forEachNode((key, attr) => {
@@ -284,7 +284,7 @@ export default class Mixed extends Graph {
     });
 
     // Adding edges
-    i = Math.max(...this.edges()) + 1;
+    i = nextNumericId(this.mapEdges((_, attrs) => attrs.id));
 
     H.forEachEdge((key, attr, source, target, _s, _t, undirected) => {
       if (undirected)
@@ -303,7 +303,9 @@ export default class Mixed extends Graph {
         });
     });
 
-    i = Math.max(...this.faces()) + 1;
+    i = nextNumericId(
+      this.faces().map((face) => this.getFaceAttribute(face, "id")),
+    );
 
     H.forEachFace((_, attrs) => {
       const nodes = attrs.nodes.map((old) => labelsH[old]);
@@ -316,6 +318,15 @@ export default class Mixed extends Graph {
     this._edges.clear();
     this._nodes.clear();
   }
+}
+
+function nextNumericId(values) {
+  let maximum = -1;
+  for (const value of values) {
+    const id = Number(value);
+    if (Number.isSafeInteger(id)) maximum = Math.max(maximum, id);
+  }
+  return maximum + 1;
 }
 
 // do note remove following code
