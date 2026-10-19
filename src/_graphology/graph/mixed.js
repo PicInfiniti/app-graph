@@ -298,6 +298,8 @@ export default class Mixed extends Graph {
         this.addDirectedEdge(labelsH[source], labelsH[target], {
           ...attr,
           id: i++,
+          source: labelsH[source],
+          target: labelsH[target],
         });
     });
 
